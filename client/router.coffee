@@ -42,6 +42,7 @@ Router.map ->
   @route 'billManager', new skyRouter('billManager')
   @route 'billExport', new skyRouter('billExport')
   @route 'import', new skyRouter('import')
+  @route 'export', new skyRouter('export')
   @route 'delivery', new skyRouter('delivery')
   @route 'returns', new skyRouter('returns')
   @route 'inventory', new skyRouter('inventory')

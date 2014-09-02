@@ -36,7 +36,7 @@ Schema2.userProfiles = new SimpleSchema
 
   systemVersion:
     type: String
-#--------------------------
+    optional: true
 #--------------------------
   currentOrder:
     type: String
@@ -83,5 +83,28 @@ Schema2.userProfiles = new SimpleSchema
     type: String
     optional: true
 #----------------------------
+  exportMerchant:
+    type: String
+    optional: true
 
+  exportWarehouse:
+    type: String
+    optional: true
+
+  targetExportMerchant:
+    type: String
+    optional: true
+
+  targetExportWarehouse:
+    type: String
+    optional: true
+
+  exportProduct:
+    type: String
+    optional: true
+
+  exportQuality:
+    type: Number
+    optional: true
+#----------------------------
 

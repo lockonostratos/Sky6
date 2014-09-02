@@ -50,6 +50,58 @@ Meteor.startup ->
         Session.set "inventoryWarehouse"
 
   Tracker.autorun ->
+    console.log ('exportAutorunWorking..') if autorunDebug
+    if Session.get('currentProfile')?.parentMerchant
+      availableMerchantExports = Schema.merchants.find(
+        {$or:
+          [
+            {_id   : Session.get('currentProfile').parentMerchant}
+            {parent: Session.get('currentProfile').parentMerchant}
+          ]}
+      ).fetch()
+      Session.set "availableMerchantExports", availableMerchantExports
+
+      exportMerchant = _.findWhere(availableMerchantExports, {_id: Session.get('currentProfile').exportMerchant})
+      targetExportMerchant = _.findWhere(availableMerchantExports, {_id: Session.get('currentProfile').targetExportMerchant})
+
+      if exportMerchant
+        Session.set "exportMerchant", exportMerchant
+
+        availableExportWarehouses = Schema.warehouses.find({merchant: exportMerchant._id}).fetch()
+        Session.set "availableExportWarehouses", availableExportWarehouses
+
+        exportWarehouse = _.findWhere(availableExportWarehouses, {_id: Session.get('currentProfile').exportWarehouse})
+        if exportWarehouse then Session.set "exportWarehouse", exportWarehouse
+        else
+          if availableExportWarehouses.length < 1
+            Session.set "exportWarehouse"
+          else
+            Session.set "exportWarehouse", availableExportWarehouses[0]
+      else
+        Session.set "exportMerchant"
+        Session.set "exportWarehouse"
+        Session.set "availableExportWarehouses"
+
+      if targetExportMerchant
+        Session.set "targetExportMerchant", targetExportMerchant
+
+        availableTargetExportWarehouses = Schema.warehouses.find({merchant: targetExportMerchant._id}).fetch()
+        Session.set "availableTargetExportWarehouses", availableTargetExportWarehouses
+
+        targetExportWarehouse = Schema.warehouses.findOne(Session.get('currentProfile').targetExportWarehouse)
+        if targetExportWarehouse
+          Session.set "targetExportWarehouse", targetExportWarehouse
+        else
+          if availableTargetExportWarehouses.length < 1
+            Session.set "targetExportWarehouse"
+          else
+            Session.set "targetExportWarehouse", availableTargetExportWarehouses[0]
+      else
+        Session.set "targetExportMerchant"
+        Session.set "targetExportWarehouse"
+        Session.set "availableWarehouseInventories"
+
+  Tracker.autorun ->
     console.log ('productAutorunWorking..') if autorunDebug
     if Session.get('currentMerchant')
       Session.set "availableWarehouses"  , Schema.warehouses.find({merchant: Session.get("currentMerchant")._id}).fetch()

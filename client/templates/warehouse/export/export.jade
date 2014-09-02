@@ -1,0 +1,53 @@
+template(name="export")
+  .app-header
+    span.caption CHUYỂN KHO
+  .app-editor
+    .row
+      //.col.col-auto(style="width: 250px")
+      //  span.ilabel sản phẩm
+      //  +iSelect(options=productSelectOptions class="field")
+      //.col.col-auto(style="width: 100px")
+      //  span.ilabel.center số lượng
+      //  +iSpinEdit(options=qualityOptions)
+      //.col.col-auto(style="width: 150px")
+      //  span.ilabel.center giá bán
+      //  +iSpinEdit(options=priceOptions)
+      //.col.col-auto(style="width:100px")
+      //  button.btn.btn-default.addOrderDetail(type='submit') THÊM
+      //
+      //.col.col-auto.pull-right(style="width: 150px")
+      //  span.ilabel.optional giá tổng
+      //  input.quality(value="{{formatNumber currentFinalPrice}}" disabled)
+      //.col.col-auto.pull-right(style="width: 150px")
+      //  span.ilabel.center.optional giảm giá
+      //  +iSpinEdit(options=discountCashOptions)
+      //.col.col-auto.pull-right(style="width:100px")
+      //  span.ilabel.center.optional giảm %
+      //  +iSpinEdit(options=discountPercentOptions)
+
+  .app-content
+    +iGrid(options=saleDetailOptions)
+
+  .app-summary
+    .row
+      .col.col-auto(style="width: 200px")
+        span.ilabel chi nhánh
+        +iSelect(options=merchantSelectOptions class="field")
+      .col.col-auto(style="width: 200px")
+        span.ilabel kho
+        +iSelect(options=warehouseSelectOptions class="field")
+    .row
+      .col.col-auto(style="width: 200px")
+        span.ilabel chi nhánh
+        +iSelect(options=merchantSelectOptions class="field")
+      .col.col-auto(style="width: 200px")
+        span.ilabel kho
+        +iSelect(options=warehouseSelectOptions class="field")
+
+    .row.extra(name='export')
+
+  .app-status
+    //+iTab(options=tabOptions)
+
+
+

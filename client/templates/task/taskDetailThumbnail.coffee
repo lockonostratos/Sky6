@@ -15,15 +15,16 @@ Sky.template.extends Template.taskDetailThumbnail,
   priorityDisplay: ->
     priority = _.findWhere(Sky.system.priorityTasks, {_id: @priority})
     priority.display
-  creatorName: -> Schema.userProfiles.findOne({user: @creator})?.fullName if @creator
+  creatorName: -> Sky.helpers.shortName(Schema.userProfiles.findOne({user: @creator})?.fullName if @creator)
   ownerName: -> Sky.helpers.shortName(Schema.userProfiles.findOne({user: @owner})?.fullName if @owner)
-  hideIconUnlock:-> return "display: none" unless @status is 0
-  hideIconLock:-> return "display: none" unless @status is 1
-  hideIconCheck:-> return "display: none" unless @status is 2
+  hideIconEdit:-> return "display: none" unless @status is 0 and Session.get('viewTask') == 2
+  hideIconUnlock:-> return "display: none" unless @status is 0 and @duration > 0
+  hideIconLock:-> return "display: none" unless @status is 1 and @owner == Meteor.userId() and (Session.get('viewTask') == 4 || Session.get('viewTask') == 5)
+  hideIconCheck:-> return "display: none" unless @status is 2 and @creator == Meteor.userId() and (Session.get('viewTask') == 3 || Session.get('viewTask') == 5)
 
   events:
     'dblclick .fa.fa-unlock': (event, template)->
-      if @status == 0
+      if @status == 0 and @duration > 0
         Schema.tasks.update(@_id, $set:{
           owner: Meteor.userId()
           starDate: new Date

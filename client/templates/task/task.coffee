@@ -4,8 +4,7 @@ formatOwnerTaskSearch     = (item) -> "#{item.fullName}" if item
 
 checkAllowCreate = (context) ->
   description = context.ui.$description.val()
-
-  if description.length > 0 and Session.get('durationTask') > 0
+  if description.length > 0
     Session.set('allowCreateNewTask', true)
   else
     Session.set('allowCreateNewTask', false)
@@ -69,8 +68,10 @@ runInitTaskTracker = (context) ->
     if view = Session.get('viewTask')
       if view is 1 then Session.set 'taskList', Schema.tasks.find().fetch()
       if view is 2 then Session.set 'taskList', Schema.tasks.find({status: 0}).fetch()
-      if view is 3 then Session.set 'taskList', Schema.tasks.find({status: {$in:[1,2]}}).fetch()
-      if view is 4 then Session.set 'taskList', Schema.tasks.find({status: 3}).fetch()
+      if view is 3 then Session.set 'taskList', Schema.tasks.find({status: {$in:[1,2]}, creator: Meteor.userId()}).fetch()
+      if view is 4 then Session.set 'taskList', Schema.tasks.find({status: {$in:[1,2]}, owner: Meteor.userId()}).fetch()
+      if view is 5 then Session.set 'taskList', Schema.tasks.find({status: {$in:[1,2]}}).fetch()
+      if view is 6 then Session.set 'taskList', Schema.tasks.find({status: 3}).fetch()
     else
       Session.set 'taskList'
 
@@ -145,15 +146,13 @@ Sky.appTemplate.extends Template.task,
     "input input": (event, template) -> checkAllowCreate(template)
     "click #createTask": (event, template) -> createTask(template)
     "click #resetTask": (event, template) -> resetTask(template)
-    "click .app-header": (event, template) -> console.log 'dasdas'
     "click .taskDetail .fa.fa-unlock": (event, template) -> resetTask(template)
-
-    "dblclick .taskDetail": (event, template) -> selectUpdateTask(@, template)
+    "click .taskDetail .fa.fa-eye": (event, template) -> selectUpdateTask(@, template)
     'blur .group': (event, template)->
       Session.set('groupTask', template.ui.$group.val())
       if Session.get('taskDetail')
         group = template.ui.$group.val()
-        if group > 0
+        if group.length > 0
           Schema.tasks.update Session.get('taskDetail')._id, $set:{group: group}
         else
           Schema.tasks.update Session.get('taskDetail')._id, $unset:{group: ''}
@@ -161,7 +160,7 @@ Sky.appTemplate.extends Template.task,
       Session.set('descriptionTask', template.ui.$description.val())
       if Session.get('taskDetail')
         description = template.ui.$description.val()
-        if description > 0
+        if description.length > 0
           Schema.tasks.update Session.get('taskDetail')._id, $set:{description: description}
         else
           template.ui.$description.val(Session.get('taskDetail').description)
@@ -175,17 +174,10 @@ Sky.appTemplate.extends Template.task,
 
     @ui.$duration.timepicker().on('changeTime.timepicker', (e)->
       if Session.get('taskDetail')
-        if calculateDuration(e.time) > 0
-          Schema.tasks.update Session.get('taskDetail')._id, $set:{duration: calculateDuration(e.time)}
-        else
-          Schema.tasks.update Session.get('taskDetail')._id, $set:{duration: 15}
-          self.ui.$duration.timepicker('setTime', '00:15 AM')
+        Schema.tasks.update Session.get('taskDetail')._id, $set:{duration: calculateDuration(e.time)}
       else
         Session.set('durationTask', calculateDuration(e.time))
-        if Session.get('descriptionTask')?.length > 0 and Session.get('durationTask') > 0
-          Session.set('allowCreateNewTask', true)
-        else
-          Session.set('allowCreateNewTask', false)
+
     )
 
 

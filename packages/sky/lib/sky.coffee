@@ -31,6 +31,10 @@ class Sky
       transactionShow:        { group: 'finance',   key: 'transactionShow',     description: 'xem thu chi' }
       transactionManagement:  { group: 'finance',   key: 'transactionShow',     description: 'q.lý thu chi' }
 
+      taskShow:               { group: 'scrum',     key: 'scrumShow',           description: 'xem task' }
+      createTask:             { group: 'scrum',     key: 'scrumShow',           description: 'tao task' }
+      taskManagement:         { group: 'scrum',     key: 'scrumShow',           description: 'q.lý task' }
+
 
 
     @paymentMethods: [
@@ -95,31 +99,37 @@ class Sky
     ]
     @priorityTasks: [
       _id: 1
-      display: 'Mức 1'
+      display: 'a'
     ,
       _id: 2
-      display: 'Mức 2'
+      display: 'b'
     ,
       _id: 3
-      display: 'Mức 3'
+      display: 'c'
     ,
       _id: 4
-      display: 'Mức 4'
+      display: 'd'
     ,
       _id: 5
-      display: 'Mức 5'
+      display: 'e'
     ]
     @viewTasks: [
       _id: 1
       display: 'Xem Tất Cả'
     ,
       _id: 2
-      display: 'Chưa Nhận'
+      display: 'Chưa Được Nhận'
     ,
       _id: 3
-      display: 'Đang Làm'
+      display: 'Đang Làm (Tạo)'
     ,
       _id: 4
+      display: 'Đang Làm (Nhận)'
+    ,
+      _id: 5
+      display: 'Đang Làm (All)'
+    ,
+      _id: 6
       display: 'Hoàn Thành'
 
     ]

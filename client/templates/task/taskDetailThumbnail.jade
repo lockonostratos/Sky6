@@ -1,8 +1,11 @@
 template(name="taskDetailThumbnail")
   .col.taskDetail
     .thumbnails(class="#{colorClass}")
-      .right-caption.editPriority {{group}} - ({{priorityDisplay}})
-      .message-wrapper(style="width: 200px; height: 80px;") {{description}}
+      .right-caption.editPriority
+        |{{group}}  ({{priorityDisplay}})
+        a(href="#")
+          i.fa.fa-eye(style="{{hideIconEdit}}")
+      .message-wrapper(style="width:170px;height: 80px; margin-top: 20px; line-height: 1;") {{description}}
       .short-desc.quality.editDuration {{duration}}'
       .full-desc.price {{status}}
       .single-price {{creatorName}}
