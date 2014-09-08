@@ -1,9 +1,9 @@
 Schema.add 'merchants', class Merchant
   addAccount: (option, creator, currentWarehouse = null) ->
-    option.merchant = @id
-    option.creator = creator
-    option.currentWarehouse = currentWarehouse if currentWarehouse
-    Accounts.createUser option
+      option.merchant = @id
+      option.creator = creator
+      option.currentWarehouse = currentWarehouse if currentWarehouse
+      Accounts.createUser option
 
   addBranch: (option) ->
     option.parent = @id
