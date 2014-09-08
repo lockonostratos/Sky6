@@ -8,15 +8,18 @@ Sky.template.extends Template.sales,
   orderDetails: -> Session.get('currentOrderDetails')
   fullName: -> Session.get('firstName') + ' ' + Session.get('lastName')
   firstName: -> Session.get('firstName')
-  currentCaption: -> Session.get('currentOrder').orderCode
+  currentCaption: -> Session.get('currentOrder')._id
   tabOptions:
     source: 'orderHistory'
     currentSource: 'currentOrder'
-    caption: 'orderCode'
+    caption: '_id'
     key: '_id'
     createAction: -> orderCreator('dsa', 'asd')
     destroyAction: (instance) -> Schema.orders.remove(instance._id)
     navigateAction: (instance) ->
+
+  productSelectOptions:
+    name: 'cloud'
 
   ui:
     productSelection: ".product-select2"

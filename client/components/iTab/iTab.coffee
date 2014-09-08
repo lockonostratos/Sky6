@@ -1,6 +1,6 @@
 Sky.template.extends Template.iTab,
   allTabs: -> Session.get(@options.source)
-  getCaption: -> @[UI._templateInstance().data.options.caption ? 'caption']
+  getCaption: -> console.log @; @[UI._templateInstance().data.options.caption ? 'caption']
   activeClass: -> generateActiveClass(UI._templateInstance(), @)
 
   events:

@@ -1,24 +1,24 @@
 template(name="warehouse")
-	.app-header
-		span.caption Warehouse <small>Page</small>
-		.commands
-      a#popProduct.btn.btn-danger(href="") Thêm Sản Phẩm
-      a#popProvider.btn.btn-danger(href="") Thêm Nhà Cung Cấp
-      a#popCustomer.btn.btn-danger(href="") Thêm Khách Hàng
-      //a#popStaff.btn.btn-danger(href="") Thêm Nhân Viên
-      a#popSkull.btn.btn-danger(href="") Thêm Skull
-      a#popWarehouse.btn.btn-danger(href="") Thêm Kho
-      a.btn.btn-danger.poptest2(href="#") Poptest 2
-	.app-editor
-		.sl2.field(style="width: 250px;")
-	.app-body
-		.metro.clearfix
-			.tiles
-				.tile
-				.tile.double.double-vertical
-				.tile.double
-				.tile.selected
-				.tile.triple.double-vertical
+  .app-header
+    span.caption Warehouse <small>Page</small>
+      .commands
+        a#popProduct.btn.btn-danger(href="") Them san pham
+        a#popProvider.btn.btn-danger(href="") Thêm Nhà Cung Cấp
+        a#popCustomer.btn.btn-danger(href="") Thêm Khách Hàng
+        //a#popStaff.btn.btn-danger(href="") Thêm Nhân Viên
+        a#popSkull.btn.btn-danger(href="") Thêm Skull
+        a#popWarehouse.btn.btn-danger(href="") Thêm Kho
+        a.btn.btn-danger.poptest2(href="#") Poptest 2
+      .app-editor
+        .sl2.field(style="width: 250px;")
+      .app-body
+        .metro.clearfix
+          .tiles
+            .tile
+            .tile.double.double-vertical
+            .tile.double
+            .tile.selected
+            .tile.triple.double-vertical
 
   +productAside
   +productPopover
@@ -27,19 +27,16 @@ template(name="warehouse")
   +warehousePopover
   +skullPopover
 
-template(name="productSearch")
-	h4 #{name} (#{productCode})
-
 template(name="productAside")
-	#productAside.aside.modal.swipe.right
-		.modal-dialog
-			.modal-content
-				.modal-header
-					button.close(type="button" data-dismiss="modal")
-						span(aria-hidden="true") &times;
-						span.sr-only Close
-					h4.modal-title Modal title
-				.modal-body: p One find body &hellip;
-				.modal-footer
-					button.btn.btn-default(type="button" data-dismiss="modal") Close
-					button.btn.btn-primary(type="button") Save changes
+  #productAside.aside.modal.swipe.right
+    .modal-dialog
+      .modal-content
+      .modal-header
+        button.close(type="button" data-dismiss="modal")
+          span(aria-hidden="true") &times;
+          span.sr-only Close
+        h4.modal-title Modal title
+      .modal-body: p One find body &hellip;
+      .modal-footer
+        button.btn.btn-default(type="button" data-dismiss="modal") Close
+        button.btn.btn-primary(type="button") Save changes
