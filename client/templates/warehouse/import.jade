@@ -1,0 +1,188 @@
+template(name="import")
+    .content
+        .content-heading
+            button.btn.btn-default.create-import(type='submit') Xem Phiếu Nhập Hàng
+            button.btn.btn-default.add-import-detail(type='submit') Xem Sản Phẩm Của Phiếu
+            button.btn.btn-default.create-product(type='submit') Thêm Dòng Sản Phẩm Mới
+            button.btn.btn-default.sale-product(type='submit') Bán Hàng
+
+        if showCreateImport
+            +createImport
+        if showAddImportDetail
+            +addImportDetail
+        if showCreateProduct
+            +createProduct
+        if showOrder
+            +createOrder
+
+        .content-footer footer
+
+
+//--------- Xem Import ----------
+template(name='createImport')
+    .content-sub-heading
+        .row
+            .col-lg-3
+                .input-group
+                    span.input-group-addon Decription:
+                    input.form-control.createImport-description(type='text')
+            .col-lg-2
+                button.btn.btn-default.createImport(type='submit') Tạo
+
+    .content-body
+        +reactiveTable(collection=importCollection)
+//--------- Xem ImportDetail ----------
+template(name='addImportDetail')
+    .content-sub-heading
+        .row
+            .col-lg-2
+                .sl2(style="width: 250px; height: 20px;")
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Số lượng:
+                    input.form-control.importQuality(type='text' value='0')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Giá nhập:
+                    input.form-control.importPrice(type='text' value='0')
+            .col-lg-3
+                .input-group
+                    span.input-group-addon Ngày Hết Hạn:
+                    input.form-control(type='text')
+            .col-lg-3
+                button.btn.btn-default.addImportDetail(type='submit') Create
+                button.btn.btn-default.resetImportDetail(type='submit') Reset
+                button.btn.btn-default.finish(type='submit') Finish
+    .content-body
+        .showCurrentImportDetail
+            +reactiveTable(collection=importDetailCollection)
+//--------- Xem Product ----------
+template(name='createProduct')
+    .content-sub-heading
+        .row
+            .col-lg-3
+                .input-group
+                    span.input-group-addon Tên Sản Phẩm:
+                    input.form-control.createProduct-name(type='text')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon ProductCode:
+                    input.form-control.createProduct-productCode(type='text')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Skull:
+                    input.form-control.createProduct-skull(type='text')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Giá Bán:
+                    input.form-control.createProduct-price(type='text')
+            .col-lg-2
+                button.btn.btn-default.createProduct(type='submit') Tạo
+
+    .content-body
+        +reactiveTable(collection=productCollection)
+//--------- Xem Sale ----------
+template(name='createOrder')
+    .content-sub-heading
+        .row
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Người Bán:
+                    input.form-control.orderSeller(type='text')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Người Mua:
+                    input.form-control.orderBuyer(type='text')
+            .col-lg-3
+                .input-group
+                    span.input-group-addon orderCode:
+                    input.form-control.orderCode(type='text')
+            .col-lg-3
+                button.btn.btn-default.createOrder(type='submit') Create
+
+        .row
+            .col-lg-2
+                .sl2(style="width: 250px; height: 20px;")
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Giá Bán:
+                    input.form-control.orderDetailPrice(type='text')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon SL:
+                    input.form-control.orderDetailQuality(type='text')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Giảm TM:
+                    input.form-control.orderDetail-discountCash(type='text')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Giam %
+                    input.form-control.orderDetail-discountPercent(type='text')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Tổng Tiền:
+                    input.form-control.orderDetail-finalPrice(type='text')
+        .row
+            .col-lg-2
+                .input-group
+                    span.input-group-addon CTT:
+                    input.form-control.orderPaymentMethod(type='text' value='0')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon PTVC:
+                    input.form-control.orderDeliveryType(type='text' value='0')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Giam Bill:
+                    input.form-control.orderDetail-billDiscount(type='text' value='0')
+
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Giam TM
+                    input.form-control.orderDetail-discountCash(type='text' value='0')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon %:
+                    input.form-control.orderDetail-finalPrice(type='text' value='0')
+            .col-lg-2
+                button.btn.btn-default.createOrderDetail(type='submit') Create
+                button.btn.btn-default.finishOrderDetail(type='submit') Finish
+        .row
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Ten:
+                    input.form-control.delivery-contactName(type='text' value='0')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Dia Chi:
+                    input.form-control.delivery-contactAddress(type='text' value='0')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon So DT:
+                    input.form-control.delivery-contactPhone(type='text' value='0')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Ngay Giao:
+                    input.form-control.delivery-deliveryDate(type='text' value='0')
+            .col-lg-2
+                .input-group
+                    span.input-group-addon Ghi Chu:
+                    input.form-control.delivery-comment(type='text' value='0')
+            .col-lg-1
+                input.form-control.delivery-transportationFee(type='text' value='0')
+            .col-lg-1
+                button.btn.btn-default.createDelivery(type='submit') Create
+
+
+
+    .content-body
+        .row.order
+            h3 Order
+            +reactiveTable(collection=orderCollection)
+        .row
+            h3 #{currentOrderDetails}
+        .row.orderDetail
+            h3 OrderDetail
+            +reactiveTable(collection=orderDetailCollection)
+//-----Xem Delivery -------

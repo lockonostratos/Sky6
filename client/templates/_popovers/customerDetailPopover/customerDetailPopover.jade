@@ -1,0 +1,19 @@
+//template(name="skullPopover")
+//    #skullPopover.popover.fade(style='width: 300px')
+//        .arrow
+//        h3.popover-title THÊM MỚI NHÀ PHÂN PHỐI
+//        .popover-content.modalable
+//            .wrapper.bottom
+//                if error
+//                    |#{error}
+//                input.form-control.name(           type='text' placeholder='Tên Công Ty Phân Phối')
+//                input.form-control.representative( type='text' placeholder='Người Đại Diện Công')
+//                input.form-control.address(        type='text' placeholder='Địa Chỉ Công Ty')
+//                input.form-control.phone(          type='text' placeholder='Số Điện Thoại Công Ty')
+//                //.sl2.field(style="width: 250px;")
+//            .wrapper.bottom(align="right"): a.btn.btn-danger.create Tạo mới
+//            ul.grid
+//                each providers
+//                    li
+//                        | #{name}
+//                        a.btn.btn-danger.skullRemove xóa

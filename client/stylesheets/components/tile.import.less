@@ -1,0 +1,118 @@
+.tile-background(@color) {
+//.background(linear-gradient(top left, @color, darken(@color, @darken-amount)));
+//.center-gradial(@color);
+  background-color: @color;
+  &:hover {
+    //background-image: radial-gradient(circle at 50% 50%, lighten(@color, 10), @color);
+    background-color: darken(@color, 5);
+  }
+}
+
+.tile {
+  height: @tile-size;
+  width: @tile-size;
+  margin-right: @tile-space;
+  margin-bottom: @tile-space;
+  background-color: #eee;
+  color: #fff;
+  float: left;
+  position: relative;
+//  box-shadow: 0px 0px 1px #FFC inset;
+  cursor: pointer;
+  &:hover {
+    outline: rgba(0, 0, 0, 0.1) solid 2px;
+  }
+
+  &.menu {
+    margin: 0 !important;
+    box-shadow: none;
+    width: 100% !important;
+    display: table;
+  }
+
+  &.double {
+    width: @tile-size * 2 + @tile-space;
+  }
+
+  &.quatro {
+    width: @tile-size * 2 + @tile-space;
+    height: @tile-size * 2 + @tile-space;
+  }
+
+  h1, h2, h3, h4, h5, h6, h7, h8, i {
+    color: #fff;
+    margin: 0;
+    tiny { font-size: 30%; }
+    tiny4 { font-size: 40%; }
+    tiny5 { font-size: 50%; }
+    tiny6 { font-size: 60%; }
+    tiny7 { font-size: 70%; }
+  }
+
+  .makeTileColors(@i: length(@colors)) when (@i > 0){
+    @color: escape(extract(@colors, @i));
+    &.@{color}{
+      .tile-background(@@color);
+    }
+    .makeTileColors((@i - 1));
+  }
+
+  .makeTileColors();
+
+  .caption {
+    margin: auto;
+    position: absolute;
+    width: 100%;
+  }
+
+  .top {
+    top: 0;
+    // width: 30%;
+    margin-top: @tile-caption-padding;
+  }
+
+  .center {
+    bottom: 0;
+    height: 100%;
+    margin: 35% 0 0 0%;
+    display: table;
+  }
+
+  .table {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .bottom {
+    bottom: 0;
+    height: auto;
+    margin-bottom: @tile-caption-padding !important;
+  }
+
+  .left {
+    text-align: left;
+    margin-left: @tile-caption-padding;
+  }
+  .middle {
+    left: 0;
+    right: 0;
+    text-align: center;
+
+  }
+  .right {
+    left: auto;
+    right:@tile-caption-padding !important;
+    text-align: right;
+  }
+}
+
+.makeTileGroups(@i: 6) when (@i > 0){
+  @color: escape(extract(@colors, @i));
+  &.tile-group-@{i}{
+    width: (@tile-size * @i) + (@tile-space * @i);
+    float: left;
+  }
+  .makeTileGroups((@i - 1));
+}
+
+.makeTileGroups();

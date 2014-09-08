@@ -1,0 +1,69 @@
+.ibtn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  .border-radius(3px);
+}
+
+.ibtn {
+  color: #fff; a {color: #fff !important;}
+
+  .makeButtonColors(@i: length(@colors)) when (@i > 0){
+    @color: escape(extract(@colors, @i));
+    &.@{color} {
+      background-color: @@color;
+      border-color: darken(@@color, 3);
+//      box-shadow: 0 4px 0 darken(@@color, 5);
+      .box-shadow(inset 0 0 0 1px lighten(@@color, 5));
+      &.d3 {
+        border-bottom: 3px solid darken(@@color, 5);
+      }
+
+      & when(lightness(@@color) > 80) {
+        color: #f05b41; i, a { color: #f05b41; };
+        border-color: #c3c3c3;
+      }
+      & when(lightness(@@color) <= 20) {
+        color: #fff; a { color: #333; }
+      }
+
+      &:hover {
+        background-color: darken(@@color, 5);
+        color: #f05b41;
+        & when(lightness(@@color) < 80) {
+          border-color: darken(@@color, 10);
+          color: #fff;
+        }
+      }
+    }
+    .makeButtonColors((@i - 1));
+  }
+
+  .makeButtonColors();
+}
+
+.ibtn-labeled {
+  padding: 0 12px;
+  .ibtn-label {
+    position: relative;
+    display: inline-block;
+    padding: 6px 12px;
+    background: rgba(0,0,0,0.05);
+
+    &.left {
+      left: -13px;
+    }
+    &.right {
+      right: -13px;
+    }
+  }
+}

@@ -1,0 +1,9 @@
+.application {
+  .collapse-transition;
+  nav.main { .collapse-transition; }
+
+  &.collapsed {
+    margin-left: -@left-pane-size + @left-pane-collapse-size;
+    nav.main { margin-left: -@left-pane-size + @left-pane-collapse-size; }
+  }
+}

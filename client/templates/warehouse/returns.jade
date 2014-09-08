@@ -1,0 +1,41 @@
+template(name="returns")
+    .content
+        .content-heading
+            .row
+                .col-lg-3
+                    .input-group
+                        span.input-group-addon Phiếu Bán:
+                        .sl2.field(style="width: 250px;")
+                .col-lg-3
+                    .input-group
+                        span.input-group-addon Tên Phiếu Trả:
+                        input.form-control.returnCode(type='text')
+                .col-lg-4
+                    .input-group
+                        span.input-group-addon Nội dung:
+                        input.form-control.comment(type='text')
+                .col-lg-2
+                    button.btn.btn-default.createReturns(type='submit') Tạo Phiếu Trả Hàng
+            .row
+                .col-lg-3
+                    .input-group
+                        span.input-group-addon Phiếu Trả Hàng:
+                        .sl3.field(style="width: 250px;")
+                .col-lg-3
+                    .input-group
+                        span.input-group-addon Sản Phẩm Trả:
+                        .sl4.field(style="width: 250px;")
+                .col-lg-2
+                    .input-group
+                        span.input-group-addon Số lượng trả:
+                        input.form-control.returnQuality(type='text')
+                .col-lg-4
+                    button.btn.btn-default.createReturnDetail(type='submit') Add
+                    button.btn.btn-default.finishReturn(type='submit') Hoan Tat
+                    button.btn.btn-default.editReturn(type='submit') Re Edit
+                    button.btn.btn-default.submitReturn(type='submit') Xac Nhan
+
+        .content-body
+            +reactiveTable(collection=returnCollection)
+            +reactiveTable(collection=returnDetailCollection)
+        .content-footer footer

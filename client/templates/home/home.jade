@@ -1,0 +1,17 @@
+template(name="home")
+	.content
+		.content-heading: a asdkjad
+		.content-sub-heading: a sub heading
+		.content-body
+			button.lime.ibtn.ibtn-labeled
+				span.ibtn-label.left: i.fa.fa-pencil
+				| button
+			br
+			br
+			button.lime.ibtn.d3.btn-labeled
+				span.btn-label.left: i.fa.fa-pencil
+				| 3d button
+			br
+
+			+reactiveTable(collection=productCollection settings=productTableSettings)
+		.content-footer footer

@@ -1,0 +1,59 @@
+ul.sky-tab {
+  .clearfix;
+  margin: 0; padding: 0;
+  border-top: solid 1px #c3c3c3;
+  padding-bottom: 5px;
+  background-color: #F1F1F1;
+
+  li {
+    .unselectable;
+    background-color: #DFDFDF;
+    max-width: 150px;
+    display: inline; float:left;
+    position: relative;
+    border: solid 1px #c3c3c3;
+    border-right: none;
+    margin-top: -1px;
+    &:last-child { border-right: solid 1px #d3d3d3; }
+    &.active {
+      background-color: #fff;
+      border-top-color: transparent;
+    }
+    &:not(.active):hover { background-color: #e6e6e6; }
+    a {
+      padding: 8px 35px 5px 12px;
+      display: block;
+      color: #333333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
+      &:focus { outline-style: none; -moz-outline-style:none; }
+    }
+    span {
+      position: absolute !important;
+      margin: 0 12px;
+      padding: 1px 2px 2px 2px;
+      right: 0; top: 9px;
+      cursor: pointer;
+      color: #ccc;
+      &:hover {
+        color: @pumpkin;
+      }
+    }
+  }
+  .new-button {
+    background-color: #fff;
+    border: solid 1px #D1D1D1;
+    border-top: solid 1px #E6E6E6;
+    margin: 0 5px 0 10px;
+    top: -1px;
+    a { padding: 8px 22px 5px 12px; }
+    &:hover {
+      a { background: #fff; }
+      span {
+        color: @lime;
+      }
+    }
+  }
+}

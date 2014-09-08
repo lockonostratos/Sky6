@@ -1,0 +1,20 @@
+template(name="productPopover")
+    #productPopover.popover.fade(style='width: 300px')
+        .arrow
+        h3.popover-title THÊM MỚI SẢN PHẨM
+        .popover-content.modalable
+            .wrapper.bottom
+                if error
+                    |#{error}
+                input.form-control.productCode(type='text' placeholder='Mã Code')
+                input.form-control.name(type='text' placeholder='Tên Sản Phẩm')
+                input.form-control.skull(type='text' placeholder='Loại Sản Phẩm')
+                .sl2.field(style="width: 250px;")
+
+                div(align="right"): a.btn.btn-danger.create Tạo mới
+            ul.grid
+                each products
+                    li
+                        | #{name}, #{skulls}
+                        a.btn.btn-danger.productRemove xóa
+            .wrapper.top(align="right"): a.btn.btn-danger Button <br />

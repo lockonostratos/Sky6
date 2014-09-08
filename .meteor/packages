@@ -1,0 +1,21 @@
+# Meteor packages used by this project, one per line.
+#
+# 'meteor add' and 'meteor remove' will edit this file for you,
+# but you can also edit it by hand.
+
+meteor-platform
+less
+coffeescript
+waitingkuo:jade
+bootstrap3-less
+fontawesome4-less
+accounts-password
+joshowens:accounts-entry
+iron:router
+mrt:iron-router-progress
+
+aldeed:simple-schema
+aldeed:collection2
+select2
+sky
+zimme:iron-router-active

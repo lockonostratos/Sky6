@@ -1,0 +1,15 @@
+template(name="delivery")
+    .content
+        .content-heading
+            button.btn.btn-default.createDelivery(type='submit') Tạo Deliverry
+        .content-body
+            +reactiveTable(collection=deliveryCollection settings=deliverySetting)
+        .content-footer footer
+
+
+
+template(name="removeItem")
+    button.btn.btn-default.checkingDelivery(type='submit') Nhan
+    button.btn.btn-default.trueDelivery(type='submit') ThanhCong
+    button.btn.btn-default.falesDelivery(type='submit') ThatBai
+    button.btn.btn-default.resetDelivery(type='submit') reset

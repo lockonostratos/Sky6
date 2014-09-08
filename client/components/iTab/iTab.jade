@@ -1,0 +1,10 @@
+template(name="iTab")
+	ul.sky-tab
+		li.new-button
+			a(href="#") &nbsp;
+			span.fa.fa-plus
+		each allTabs
+			li(class="#{activeClass}")
+				a.hidden
+				a(href="#") #{getCaption}
+				span.fa.fa-trash-o

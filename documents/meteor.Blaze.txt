@@ -1,0 +1,5 @@
+Blaze.getElementData(document.querySelector('.sky-tab'))
+
+Bên trong Helpers của view:
+    UI._templateInstance() //lấy instance của template hiện tại
+    UI._parentData(n) //lấy parent của scope hiện tại (nơi mà helper này được gọi)

@@ -1,0 +1,18 @@
+For a project I'm working on, I wrote a simple ko.unapplyBindings function that accepts
+a jQuery node and the remove boolean. It first unbinds all jQuery events as ko.cleanNode
+method doesn't take care of that. I've tested for memory leaks, and it appears to work
+just fine.
+
+ko.unapplyBindings = function ($node, remove) {
+    // unbind events
+    $node.find("*").each(function () {
+        $(this).unbind();
+    });
+
+    // Remove KO subscriptions and references
+    if (remove) {
+        ko.removeNode($node[0]);
+    } else {
+        ko.cleanNode($node[0]);
+    }
+};

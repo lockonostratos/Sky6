@@ -1,0 +1,71 @@
+/*!
+ *  Font Awesome 4.0.3 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */
+
+@import "variables.import.less";
+
+@fa-font-path: "/packages/fontawesome4-less/lib/fonts";
+//@fa-font-path: "//netdna.bootstrapcdn.com/font-awesome/4.0.3/fonts"; // for referencing Bootstrap CDN font files directly
+
+@import "mixins.import.less";
+@import "path.import.less";
+@import "core.import.less";
+@import "larger.import.less";
+@import "fixed-width.import.less";
+@import "list.import.less";
+@import "bordered-pulled.import.less";
+@import "spinning.import.less";
+@import "rotated-flipped.import.less";
+@import "stacked.import.less";
+@import "icons.import.less";
+
+// Embedding Font Awesome icons
+
+// tried &:@{where} { ... but got an compile error, thus the duplication in #fa-icon-after
+// maybe properties don't work for pseudo classes, as calling a mixin in a pseudo class doesn't work
+//#fa-icon(@name, @where:before) {
+#fa-icon(@name) {
+  //.fa();
+  @n: "fa-var-@{name}";
+  &:before { content: @@n;
+    // .fa() does not work here, but it setting the fa settings on the before
+    // avoids font-family of all children nodes to be changed to FontAwesome
+    // instead, keep the original font for the text and FA for the icon. :)
+      display: inline-block;
+      font-family: FontAwesome;
+      font-style: normal;
+      font-weight: normal;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+  }
+}
+//#fa-icon(@name, @color, @where:before) {
+#fa-icon(@name, @color) {
+  #fa-icon(@name);
+  //&:@{where} { color: @color; }
+  &:before { color: @color; }
+}
+
+#fa-icon-after(@name) {
+  @n: "fa-var-@{name}";
+  &:after { content: @@n;
+      display: inline-block;
+      font-family: FontAwesome;
+      font-style: normal;
+      font-weight: normal;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+  }
+}
+#fa-icon-after(@name, @color) {
+  #fa-icon(@name);
+  &:after { color: @color; }
+}
+
+// Assign a Font Awesome icon to a class name for buttons>i, a>i and i tags
+
+#fa-set-icon(@cls, @icon) { button.@{cls} i, a.@{cls} i, i.@{cls} { #fa-icon(@icon); } }
+#fa-set-icon-after(@cls, @icon) { button.@{cls} i, a.@{cls} i, i.@{cls} { #fa-icon-after(@icon); } }

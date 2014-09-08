@@ -1,0 +1,38 @@
+.modal.aside {
+  &.left  { .modal-dialog { height: 100%; margin: 0; } }
+  &.right { .modal-dialog { height: 100%; margin: 0 0 0 auto; } }
+  .modal-content {   height: 100%; border-radius: 0; }
+}
+
+//Animation for aside
+.swipe {
+  opacity: 0;
+  .transition(opacity .15s linear);
+  &.in {
+    opacity: 1;
+  }
+}
+
+.modal.swipe {
+  &.left {
+    left: -25%;
+    -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, left 0.3s ease-out;
+    transition: opacity 0.3s linear, left 0.3s ease-out;
+  }
+  &.right {
+    right: -25%;
+    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+    transition: opacity 0.3s linear, right 0.3s ease-out;
+  }
+
+
+}
+
+.modal.swipe.in {
+  &.left { left: 0%; }
+  &.right { right: 0%; }
+}
