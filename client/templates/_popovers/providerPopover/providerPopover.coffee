@@ -1,18 +1,17 @@
 Sky.template.extends Template.providerPopover,
   error:      -> Session.get 'errorProviderPopover'
-  providers:  -> Session.get 'currentProviders'
+  providerList:  -> Session.get 'personalNewProviders'
   events:
-    'click .create': (event, template)->
+    'click .createProvider': (event, template)->
       provider =
-        merchant         : currentMerchant._id
-        warehouse        : currentWarehouse._id
+        merchant         : Session.get('currentMerchant')._id
         creator          : Meteor.userId()
         name             : template.find(".name").value
         representative   : template.find(".representative").value
         phone            : template.find(".phone").value
         location         : {address: [template.find(".address").value]}
         status           : false
-      console.log provider
+
       Schema.providers.insert provider, (e,r)->
         console.log e
         console.log r
@@ -24,10 +23,8 @@ Sky.template.extends Template.providerPopover,
         else
           Session.set 'errorProviderPopover', 'Có lỗi trong quá trình tạo'
 
-    'click .providerRemove': (event, template)->
-      if !@status
+    'click .removeProvider': (event, template)->
         Schema.providers.remove @_id
-      else
-        console.log 'Loi, Khong The Xoa Duoc'
+
 
   rendered: ->

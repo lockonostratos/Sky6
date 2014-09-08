@@ -1,19 +1,18 @@
-//template(name="skullPopover")
-//    #skullPopover.popover.fade(style='width: 300px')
-//        .arrow
-//        h3.popover-title THÊM MỚI NHÀ PHÂN PHỐI
-//        .popover-content.modalable
-//            .wrapper.bottom
-//                if error
-//                    |#{error}
-//                input.form-control.name(           type='text' placeholder='Tên Công Ty Phân Phối')
-//                input.form-control.representative( type='text' placeholder='Người Đại Diện Công')
-//                input.form-control.address(        type='text' placeholder='Địa Chỉ Công Ty')
-//                input.form-control.phone(          type='text' placeholder='Số Điện Thoại Công Ty')
-//                //.sl2.field(style="width: 250px;")
-//            .wrapper.bottom(align="right"): a.btn.btn-danger.create Tạo mới
-//            ul.grid
-//                each providers
-//                    li
-//                        | #{name}
-//                        a.btn.btn-danger.skullRemove xóa
+template(name="staffPopover")
+  #staffPopover.popover.fade(style='width: 300px')
+    .arrow
+    h3.popover-title THÊM MỚI NHÂN VIÊN
+    .popover-content.modalable
+      .wrapper.bottom
+        if error
+          |#{error}
+        input.form-control.username(type='text' placeholder='Nhập Tên Đăng Nhập')
+        input.form-control.email(type='text' placeholder='Nhập Email Đăng Nhập')
+        input.form-control.password(type='text' placeholder='Nhập Mật Khẩu')
+
+          div(align="right"):  a.btn.btn-danger.createStaff Tạo mới
+      ul.grid
+        each providers
+          li
+            | #{name}
+            a.btn.btn-danger.removeStaff xóa

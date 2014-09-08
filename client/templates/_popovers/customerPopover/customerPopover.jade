@@ -1,19 +1,21 @@
-//template(name="skullPopover")
-//    #skullPopover.popover.fade(style='width: 300px')
-//        .arrow
-//        h3.popover-title THÊM MỚI NHÀ PHÂN PHỐI
-//        .popover-content.modalable
-//            .wrapper.bottom
-//                if error
-//                    |#{error}
-//                input.form-control.name(           type='text' placeholder='Tên Công Ty Phân Phối')
-//                input.form-control.representative( type='text' placeholder='Người Đại Diện Công')
-//                input.form-control.address(        type='text' placeholder='Địa Chỉ Công Ty')
-//                input.form-control.phone(          type='text' placeholder='Số Điện Thoại Công Ty')
-//                //.sl2.field(style="width: 250px;")
-//            .wrapper.bottom(align="right"): a.btn.btn-danger.create Tạo mới
-//            ul.grid
-//                each providers
-//                    li
-//                        | #{name}
-//                        a.btn.btn-danger.skullRemove xóa
+template(name="customerPopover")
+  #customerPopover.popover.fade(style='width: 300px')
+    .arrow
+    h3.popover-title THÊM MỚI KHÁCH HÀNG
+    .popover-content.modalable
+      .wrapper.bottom
+        if error
+          |#{error}
+        input.form-control.name(type='text' placeholder='Tên Khách Hàng')
+        input.form-control.sex(type='text' placeholder='Giới Tính Khách Hàng')
+        input.form-control.phone(type='text' placeholder='Số Điện Thoại Khách Hàng')
+        input.form-control.address(type='text' placeholder='Địa Chỉ Khách Hàng')
+        input.form-control.email(type='text' placeholder='Email Khách Hàng')
+        input.form-control.companyName(type='text' placeholder='Tên Cty Khách Hàng')
+
+        div(align="right"):  a.btn.btn-danger.createCustomer Tạo mới
+      ul.grid
+        each customerList
+          li
+            | #{name}
+            a.btn.btn-danger.removeCustomer xóa

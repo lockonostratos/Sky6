@@ -48,12 +48,29 @@ _.extend Template.warehouse,
     Template.warehouse.ui.selectBox.select2 "val", Template.warehouse.currentProduct
 
     $(@find '#productPopover').modalPopover
-      target: '#poptest'
+      target: '#popProduct'
       backdrop: true
       placement: 'bottom'
 
     $(@find '#providerPopover').modalPopover
       target: '#popProvider'
+      backdrop: true
+      placement: 'bottom'
+
+    $(@find '#customerPopover').modalPopover
+      target: '#popCustomer'
+      backdrop: true
+      placement: 'bottom'
+
+
+    $(@find '#warehousePopover').modalPopover
+      target: '#popWarehouse'
+      backdrop: true
+      placement: 'bottom'
+
+
+    $(@find '#skullPopover').modalPopover
+      target: '#popSkull'
       backdrop: true
       placement: 'bottom'
 
@@ -71,5 +88,8 @@ _.extend Template.warehouse,
 
   events:
     "click .tile": (event, template) -> $(template.find '#productAside').modal()
-    "click #poptest": (event, template) -> $(template.find '#productPopover').modalPopover('show')
+    "click #popProduct": (event, template) -> $(template.find '#productPopover').modalPopover('show')
     "click #popProvider": (event, template) -> $(template.find '#providerPopover').modalPopover('show')
+    "click #popCustomer": (event, template) -> $(template.find '#customerPopover').modalPopover('show')
+    "click #popWarehouse": (event, template) -> $(template.find '#warehousePopover').modalPopover('show')
+    "click #popSkull": (event, template) -> $(template.find '#skullPopover').modalPopover('show')

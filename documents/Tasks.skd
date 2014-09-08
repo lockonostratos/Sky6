@@ -51,12 +51,12 @@ Skull REST                                           2h [...]
 Provider REST                                        2h [...]
 Role REST                                            2h [...]
 -------modalPopervers ------
-brandNewProducts                      LOC          0.5h [90%] 2h
-brandNewCustomer                      LOC          0.5h [90%] 1.5h   9h30-11h
+brandNewProducts                      LOC          1.5h [Done]
+brandNewCustomer                      LOC          1.5h [Done]
 brandNewStaff                         LOC            2h [???] 1h                                   Can he thong account.
-brandNewWarehouse                     LOC          0.5h [90%] 1h   11h-12h
-brandNewSkull                         LOC          0.5h [90%] 0.5h
-brandNewProvider                      LOC          0.5h [90%] 1.5h
+brandNewWarehouse                     LOC            1h [Done]
+brandNewSkull                         LOC          0.5h [Done]
+brandNewProvider                      LOC          1.5h [Done]
 migrateToSky6                         LOC            2h [Working]
 
 Components ------------------

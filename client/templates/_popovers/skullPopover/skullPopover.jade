@@ -1,0 +1,15 @@
+template(name="skullPopover")
+  #skullPopover.popover.fade(style='width: 300px')
+    .arrow
+    h3.popover-title THÊM MỚI NHÀ PHÂN PHỐI
+    .popover-content.modalable
+      .wrapper.bottom
+        if error
+          |#{error}
+        input.form-control.name(type='text' placeholder='Tên Skull')
+        div(align="right"): a.btn.btn-danger.createSkull Tạo mới
+      ul.grid
+        each skullList
+          li
+            | #{name}
+            a.btn.btn-danger.removeSkull xóa

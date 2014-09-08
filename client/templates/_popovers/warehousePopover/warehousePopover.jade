@@ -1,0 +1,16 @@
+template(name="warehousePopover")
+  #warehousePopover.popover.fade(style='width: 300px')
+    .arrow
+    h3.popover-title THÊM MỚI NHÀ PHÂN PHỐI
+    .popover-content.modalable
+      .wrapper.bottom
+        if error
+          |#{error}
+        input.form-control.name(type='text' placeholder='Tên Kho Mới')
+        input.form-control.address(type='text' placeholder='Đia Điểm')
+        div(align="right"):  a.btn.btn-danger.createWarehouse Tạo mới
+      ul.grid
+        each warehouseList
+          li
+            | #{name}
+            a.btn.btn-danger.removeWarehouse xóa
