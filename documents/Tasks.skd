@@ -6,6 +6,9 @@ Kiem kho                                             2h [...] 4th
 Ban hang                                                [Done]
 Tra hang                                           3.5h [Done]
 Giao hang                                          2.5h [Done]
+Chuyen BAN HANG sang giao dien moi                      [Working] 4h
+Chuyen TRA HANG sang giao dien moi                      [Working] 3h
+Chuyen GIAO HANG sang giao dien moi                     [Working] 3h
 
 Bao cao---------------      8h
  + Product                                              [...]
@@ -54,14 +57,18 @@ brandNewStaff                         LOC            2h [???] 1h                
 brandNewWarehouse                     LOC          0.5h [90%] 1h   11h-12h
 brandNewSkull                         LOC          0.5h [90%] 0.5h
 brandNewProvider                      LOC          0.5h [90%] 1.5h
-migrateToSky6                         LOC            1h [Working]
+migrateToSky6                         LOC            2h [Working]
+
+Components ------------------
+
+
 ------------System-----------
 finish layout parts                                  6h [Done]
 Options                                              3h [40%]
 Aside widget                                            [Done]
 modalPopover                                            [Done]
-twoWayBinding /reactive                                 [Urgent]        <- 1st
-accountCreattionForCustomer                             [Support]       <- 2nd
+twoWayBinding /reactive                                 [Done]  <- Viet components
+accountCreattionForCustomer                             [Done]
 tabControl                                          11h [Done]
 Sky.template                                         5h [Done]
 gridControl                                          4h [...]           <- 3rd
@@ -70,5 +77,4 @@ chat system...                                       6h [...]
 notification-region                                  4h [...]
 form & validation                                    4h [...]
 -------------------------
-Port GUI system from old version                     8h [...]
 Upgrade to Sky6 (Meteor 0.9.1.1)	                 5h [Done]
