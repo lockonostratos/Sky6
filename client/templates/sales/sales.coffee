@@ -19,7 +19,20 @@ Sky.template.extends Template.sales,
     navigateAction: (instance) ->
 
   productSelectOptions:
-    name: 'cloud'
+    query: (query) -> query.callback
+      results: _.filter Session.get('availableProducts'), (item) ->
+        conosle.log 'calculating....', item
+        unsignedTerm = Sky.helpers.removeVnSigns query.term
+        unsignedName = Sky.helpers.removeVnSigns item.name
+
+        unsignedName.indexOf(unsignedTerm) > -1 || item.productCode.indexOf(unsignedTerm) > -1
+      text: 'name'
+    formatSelection: formatProductSearch
+    initSelection: Schema.products.findOne(Session.get('currentOrder')?.currentProduct)
+    id: '_id'
+    placeholder: 'CHỌN SẢN PHẨM'
+    changeAction: -> console.log 'a selection value has been changed'
+    reactiveValueGetter: -> Session.get('currentOrder')?.currentProduct
 
   ui:
     productSelection: ".product-select2"
@@ -31,6 +44,7 @@ Sky.template.extends Template.sales,
       $productSelection.select2("val", Session.get('currentOrder').currentProduct) if Session.get('currentOrder')
 
     $(document).bind 'keyup', 'return', -> $productSelection.select2("open")
+
     $productSelection.select2
       placeholder: "CHỌN SẢN PHẨM"
       query: (query) -> query.callback

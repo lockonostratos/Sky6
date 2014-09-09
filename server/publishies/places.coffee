@@ -10,7 +10,6 @@ Schema.merchants.allow
   update: -> true
   remove: -> true
 
-
 Meteor.publish 'warehouses', -> Schema.warehouses.find({})
 Schema.warehouses.allow
   insert: -> true
