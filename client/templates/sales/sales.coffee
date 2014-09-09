@@ -8,7 +8,7 @@ Sky.template.extends Template.sales,
   orderDetails: -> Session.get('currentOrderDetails')
   fullName: -> Session.get('firstName') + ' ' + Session.get('lastName')
   firstName: -> Session.get('firstName')
-  currentCaption: -> Session.get('currentOrder')._id
+  currentCaption: -> Session.get('currentOrder')?._id
   tabOptions:
     source: 'orderHistory'
     currentSource: 'currentOrder'
