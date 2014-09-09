@@ -13,6 +13,8 @@ Meteor.subscribe 'deliveries'
 Meteor.subscribe 'returns'
 Meteor.subscribe 'returnDetails'
 
+Meteor.subscribe 'customers'
+
 
 
 

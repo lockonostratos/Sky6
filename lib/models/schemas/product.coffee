@@ -1,11 +1,11 @@
 Schema2.products = new SimpleSchema
-  creator:
-    type: String
-
   merchant:
     type: String
 
   warehouse:
+    type: String
+
+  creator:
     type: String
 
   name:

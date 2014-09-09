@@ -6,7 +6,9 @@ Schema2.customers = new SimpleSchema
 
   currentMerchant:
     type: String
-    optional: true
+
+  creator:
+    type: String
 
   areaMerchant:
     type: String
@@ -15,7 +17,7 @@ Schema2.customers = new SimpleSchema
   name:
     type: String
 
-  company_name:
+  companyName:
     type: String
     optional: true
 
@@ -30,6 +32,7 @@ Schema2.customers = new SimpleSchema
 
   sex:
     type: Boolean
+    optional: true
 
   version: { type: Schema.Version }
 

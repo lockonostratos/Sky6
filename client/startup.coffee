@@ -9,29 +9,29 @@ root.test = new Tracker.Dependency
 Sky.global.salesDep = new Deps.Dependency
 Meteor.startup ->
   Deps.autorun ->
-    Session.set "mostExpensiveProduct", Schema.products.findOne({}, {sort: {price: -1}})
-    root.mostExpensiveProduct = Session.get "mostExpensiveProduct"
-
-    Session.set "currentMerchant", Schema.merchants.findOne({})
-    root.currentMerchant = Session.get "currentMerchant"
-
-    if root.currentMerchant
-      Session.set "currentWarehouse", Schema.warehouses.findOne({merchant: root.currentMerchant._id}); root.currentWarehouse = Session.get "currentWarehouse"
-      Session.set 'skullList', Schema.skulls.find({merchant: root.currentMerchant._id}).fetch()
-      Session.set 'currentProviders', Schema.providers.find({merchant: root.currentMerchant._id, status: false}).fetch()
-
-
-
-#    Session.set "personalNewProducts",
-    Sky.global.personalNewProducts = Schema.products.find({creator: Meteor.userId(), totalQuality: 0},sort: {version:{createdAt: -1}})
+    if Meteor.userId()
+      Session.set "currentMerchant", Schema.merchants.findOne({}); root.currentMerchant = Session.get "currentMerchant"
+      Session.set "availableStaffSale", Meteor.users.find({}).fetch()
+      Session.set "availableCustomerSale", Schema.customers.find({}).fetch()
 
     if Session.get('currentMerchant')
-      Session.set('availableProducts', Schema.products.find(merchant: Session.get('currentMerchant')._id).fetch())
+      Session.set "currentWarehouse", Schema.warehouses.findOne({merchant: Session.get("currentMerchant")._id}); root.currentWarehouse = Session.get "currentWarehouse"
 
-    #   Session.set "personalNewProducts",
-    Sky.global.personalNewProducts = Schema.products.find({creator: Meteor.userId(), totalQuality: 0},sort: {version:{createdAt: -1}})
+      Session.set 'skullList', Schema.skulls.find({merchant: Session.get("currentMerchant")._id}).fetch()
+      Session.set 'currentProviders', Schema.providers.find({merchant: Session.get("currentMerchant")._id, status: false}).fetch()
+      Session.set 'availableProducts', Schema.products.find(merchant: Session.get('currentMerchant')._id).fetch()
 
-    Sky.global.sellers = Meteor.users.find({}).fetch()
+  Deps.autorun ->
+    if Session.get('currentMerchant')
+      Sky.global.sellers = Meteor.users.find({}).fetch()
+      Sky.global.personalNewProducts = Schema.products.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId(), totalQuality: 0},sort: {version:{createdAt: -1}})
+
+      Session.set 'personalNewProducts', Schema.products.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId(), totalQuality: 0},sort: {version:{createdAt: -1}}).fetch()
+      Session.set 'personalNewProviders', Schema.providers.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId()},sort: {version:{createdAt: -1}}).fetch()
+      Session.set 'personalNewCustomers', Schema.customers.find({currentMerchant: Session.get("currentMerchant")._id, creator: Meteor.userId()}).fetch()
+      Session.set 'personalNewWarehouses', Schema.warehouses.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId()}).fetch()
+      Session.set 'personalNewSkulls', Schema.skulls.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId()}).fetch()
+  #      Session.set 'personalNewStaffs', Schema.users.find({}).fetch()
 
   Deps.autorun ->
     Session.set('orderHistory', Schema.orders.find({}).fetch())
