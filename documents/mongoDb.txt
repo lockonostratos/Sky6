@@ -1,0 +1,7 @@
+Inside Mint Linux, mongodb package from Synaptic.
+config: "/etc/mongodb.conf
+dbpath: "/var/lib/mongodb
+logpath: "/var/log/mongodb/mongodb.log
+
+journal dir=/var/lib/mongodb/journal
+pid=10199 port=27017

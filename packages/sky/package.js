@@ -10,7 +10,10 @@ Package.onUse(function(api) {
   api.addFiles([
     'lib/3rds/animate.css',
     'lib/3rds/slimscroll.js',
-    'lib/3rds/jquery.hotkeys.js']
+    'lib/3rds/jquery.hotkeys.js',
+    'lib/3rds/jquery.bootstrap-touchspin.css',
+    'lib/3rds/jquery.bootstrap-touchspin.js'
+    ]
   , 'client');
 
   //api.addFiles([

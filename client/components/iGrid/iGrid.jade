@@ -1,7 +1,7 @@
 template(name="iGrid")
   .igrid(class="additional")
     if classicalHeader
-      .igrid-header
+      .igrid-header(class="#{classicalHeader.class}")
         +UI.dynamic(template=itemTemplate data=classicalHeader.columns)
     each dataSource
       .igrid-details

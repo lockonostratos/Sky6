@@ -65,6 +65,7 @@ selectionControl                                     4h [Done]
 textEditControl                                      2h [Urgent]
 spinEditControl                                      3h [Urgent]
 dateSelectControl                                    3h [...]
+gridControl                                          4h [Working]           <- 3rd
 modalPopover                                            [Done]
 Aside widget                                            [Done]
 Sky.template                                         5h [Done]
@@ -74,8 +75,6 @@ finish layout parts                                  6h [Done]
 Options                                              3h [40%]
 twoWayBinding /reactive                                 [Done]  <- Write components
 accountCreattionForCustomer                             [Done]
-
-gridControl                                          4h [Working]           <- 3rd
 
 publish-with-relation                                3h [Drop]
 chat system...                                       6h [Waiting]
