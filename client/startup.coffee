@@ -15,7 +15,6 @@ Meteor.startup ->
       Session.set "availableCustomerSale", Schema.customers.find({}).fetch()
 
     if Session.get('currentMerchant')
-      console.log 'xx'
       Session.set "availableWarehouses", Schema.warehouses.find({merchant: Session.get("currentMerchant")._id}).fetch()
       Session.set "currentWarehouse", Schema.warehouses.findOne({merchant: Session.get("currentMerchant")._id}); root.currentWarehouse = Session.get "currentWarehouse"
 

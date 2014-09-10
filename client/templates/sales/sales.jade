@@ -2,9 +2,19 @@ template(name="sales")
    .app-header
       span.caption Bán hàng <small>(#{currentCaption})</small>
    .app-editor
-      +iSelect(options=productSelectOptions width='250px' class="field")
-      +iSelect(options=sellerSelectOptions width='160px' resultHeight='70px' class="field")
-      +iSelect(options=customerSelectOptions width='160px' resultHeight='70px' class="field")
+      .row
+         +iSelect(options=productSelectOptions width='250px' class="field")
+         input.quality(placeholder='So Luong' value="#{currentOrderDetail.quality}")
+         input.price(placeholder='Gia Tien' value="#{currentOrderDetail.price}")
+         input.discountCash(placeholder='Giam Gia' value="#{currentOrderDetail.discountCash}")
+         input.discountCash(placeholder='Giam Gia %' value="#{currentOrderDetail.discountPercent}")
+         input.discountCash(placeholder='Tam Tinh' value="#{currentOrderDetail.totalPrice}")
+         input.discountCash(placeholder='Tong Tien' value="#{currentOrderDetail.finalPrice}")
+         button.btn.btn-default.addOrderDetail(type='submit') Add
+      .row
+         +iSelect(options=sellerSelectOptions width='160px' resultHeight='70px' class="field")
+         +iSelect(options=customerSelectOptions width='160px' resultHeight='70px' class="field")
+
 
    //+reactiveTable(collection=orderDetails)
    .app-content

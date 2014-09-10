@@ -31,6 +31,8 @@ Sky.template.extends Template.sales,
   fullName: -> Session.get('firstName') + ' ' + Session.get('lastName')
   firstName: -> Session.get('firstName')
   currentCaption: -> Session.get('currentOrder')?._id
+
+
   tabOptions:
     source: 'orderHistory'
     currentSource: 'currentOrder'
@@ -102,6 +104,7 @@ Sky.template.extends Template.sales,
   saleDetailOptions:
     itemTemplate: 'testDyn'
     classicalHeader:
+      class: 'custom-header-class'
       columns: {name: 'Ho ten', price: 'Gia'}
     dataSource: [
       name: 'first item'
@@ -110,3 +113,8 @@ Sky.template.extends Template.sales,
       name: 'second item'
       price: 3000
     ]
+
+  events:
+    'input .quality':  (event, template)-> console.log 'ww'
+    'input .price':  (event, template)-> console.log event.target.valueOf().value
+    'input .discountCash':  (event, template)-> console.log event.target.valueOf().value
