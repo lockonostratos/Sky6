@@ -20,10 +20,6 @@ Schema2.orders = new SimpleSchema
     type: String
     optional: true
 
-  currentProduct:
-    type: String
-    optional: true
-
   productCount:
     type: Number
     optional: true
@@ -34,6 +30,10 @@ Schema2.orders = new SimpleSchema
 
   deliveryType:
     type: Number
+    optional: true
+
+  delivery:
+    type: String
     optional: true
 
   paymentMethod:

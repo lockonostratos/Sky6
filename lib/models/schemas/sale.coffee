@@ -30,6 +30,10 @@ Schema2.sales = new SimpleSchema
   deliveryType:
     type: Number
 
+  delivery:
+    type: String
+    optional: true
+
   paymentMethod:
     type: Number
 

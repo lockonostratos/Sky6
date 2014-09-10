@@ -14,7 +14,7 @@ Sky.template.extends Template.sales,
     currentSource: 'currentOrder'
     caption: '_id'
     key: '_id'
-    createAction: -> orderCreator('dsa', 'asd')
+    createAction: -> orderCreator()
     destroyAction: (instance) -> Schema.orders.remove(instance._id)
     navigateAction: (instance) ->
 
@@ -70,10 +70,10 @@ Sky.template.extends Template.sales,
   events:
     "input input": (e) -> Session.set('firstName', e.target.value)
 
-orderCreator = (merchantId, warehouseId)->
+orderCreator = ()->
   newOrder =
-    merchant      : merchantId
-    warehouse     : warehouseId
+    merchant      : Session.get('currentMerchant')._id
+    warehouse     : Session.get('currentWarehouse')._id
     creator       : Meteor.userId()
     seller        : 'asdsad'
     buyer         : 'asdsad'
