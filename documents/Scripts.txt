@@ -10,5 +10,7 @@ sc.exe delete MongoDB
 
 echo %MONGO_URL%
 set MONGO_URL=mongodb://127.0.0.1:27017/eds
+export MONGO_URL=mongodb://127.0.0.1:27017/eds
+
 
 meteor --settings ./settings.json

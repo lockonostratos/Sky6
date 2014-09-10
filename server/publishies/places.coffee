@@ -29,3 +29,9 @@ Schema.customers.allow
 #  update: -> true
 #  remove: -> true
 
+
+Meteor.publish 'tests', -> Schema.tests.find({})
+Schema.tests.allow
+  insert: -> true
+  update: -> true
+  remove: -> true

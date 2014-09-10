@@ -3,7 +3,7 @@
 .select2-results {
   padding: 0 !important;
   margin: 0 !important;
-  > li {
+  > li:not(:first-child) {
     border-top: solid 1px #eee !important;
   }
 
@@ -17,6 +17,7 @@
   padding-right: 0;
   > input {
     border: none;
+    border-bottom: solid 1px #eee;
   }
 }
 

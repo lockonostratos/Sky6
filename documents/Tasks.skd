@@ -57,7 +57,7 @@ brandNewStaff                         LOC            2h [???] 1h                
 brandNewWarehouse                     LOC            1h [Done]
 brandNewSkull                         LOC          0.5h [Done]
 brandNewProvider                      LOC          1.5h [Done]
-migrateToSky6                         LOC            2h [Working]
+migrateToSky6                         LOC            2h [Done]
 
 Components ------------------
 
@@ -72,6 +72,7 @@ accountCreattionForCustomer                             [Done]
 tabControl                                          11h [Done]
 Sky.template                                         5h [Done]
 gridControl                                          4h [...]           <- 3rd
+selectionControl                                     4h [Done]
 publish-with-relation                                3h [...]
 chat system...                                       6h [...]
 notification-region                                  4h [...]
