@@ -2,10 +2,9 @@ template(name="sales")
    .app-header
       span.caption Bán hàng <small>(#{currentCaption})</small>
    .app-editor
-      .product-select2.field(style="width: 250px;")
       +iSelect(options=productSelectOptions width='250px' class="field")
-      .seller-select2(style="width: 200px;")
-      .buyer-select2(style="width: 200px;")
+      +iSelect(options=sellerSelectOptions width='160px' resultHeight='70px' class="field")
+      +iSelect(options=customerSelectOptions width='160px' resultHeight='70px' class="field")
 
    //+reactiveTable(collection=orderDetails)
    .app-content

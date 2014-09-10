@@ -149,6 +149,7 @@ checkProductInstockQuality= (orderDetailsList, productList)->
 
 createSaleAndSaleOrder= (order, currentOrderDetails)->
   delete order.data._id
+  delete order.data.currentProduct
   delete order.data.status
   delete order.data.version
   order.data.return = false

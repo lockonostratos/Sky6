@@ -15,6 +15,8 @@ Meteor.startup ->
       Session.set "availableCustomerSale", Schema.customers.find({}).fetch()
 
     if Session.get('currentMerchant')
+      console.log 'xx'
+      Session.set "availableWarehouses", Schema.warehouses.find({merchant: Session.get("currentMerchant")._id}).fetch()
       Session.set "currentWarehouse", Schema.warehouses.findOne({merchant: Session.get("currentMerchant")._id}); root.currentWarehouse = Session.get "currentWarehouse"
 
       Session.set 'skullList', Schema.skulls.find({merchant: Session.get("currentMerchant")._id}).fetch()
@@ -32,6 +34,11 @@ Meteor.startup ->
       Session.set 'personalNewWarehouses', Schema.warehouses.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId()}).fetch()
       Session.set 'personalNewSkulls', Schema.skulls.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId()}).fetch()
   #      Session.set 'personalNewStaffs', Schema.users.find({}).fetch()
+
+  Deps.autorun ->
+    if Session.get('currentWarehouse')
+      Session.set 'availableDeliveries', Schema.deliveries.find({warehouse: Session.get('currentWarehouse')._id}).fetch()
+
 
   Deps.autorun ->
     Session.set('orderHistory', Schema.orders.find({}).fetch())

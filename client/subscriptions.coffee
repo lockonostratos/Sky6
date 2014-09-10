@@ -1,3 +1,4 @@
+Meteor.subscribe 'allUsers'
 Meteor.subscribe 'merchants'
 Meteor.subscribe 'warehouses'
 Meteor.subscribe 'products'
@@ -15,7 +16,3 @@ Meteor.subscribe 'returnDetails'
 
 Meteor.subscribe 'customers'
 Meteor.subscribe 'tests'
-
-
-
-

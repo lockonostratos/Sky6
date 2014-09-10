@@ -1,9 +1,10 @@
 template(name="delivery")
     .content
         .content-heading
+            +iSelect(options=warehouseSelectOptions class="field")
             button.btn.btn-default.createDelivery(type='submit') Tạo Deliverry
         .content-body
-            +reactiveTable(collection=deliveryCollection settings=deliverySetting)
+            //+reactiveTable(collection=deliveryCollection settings=deliverySetting)
         .content-footer footer
 
 
