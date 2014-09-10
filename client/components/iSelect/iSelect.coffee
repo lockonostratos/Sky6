@@ -23,10 +23,12 @@ setSelection = ($element, context) ->
   $element.select2('val', val) if val
 
 makeSlimScroll = ($element, context) ->
-  resultHeight = context.data.resultHeight ? '200px'
+  maxResultHeight = context.data.maxResultHeight ? 200
   $element.on 'select2-open', (e) ->
-    $("#select2-drop ul.select2-results").slimScroll({height: resultHeight})
-    $(@).off('select2-open')
+    $results = $("#select2-drop ul.select2-results")
+    realResultHeight = if $results.height() > maxResultHeight then maxResultHeight else $results.height()
+    $results.slimScroll({height: realResultHeight})
+#    $(@).off('select2-open')
 
 destroySelection = ($element, context) -> $element.select2('destroy')
 stopTrackingValue = (context) -> context.valueTracker.stop()

@@ -60,22 +60,26 @@ brandNewProvider                      LOC          1.5h [Done]
 migrateToSky6                         LOC            2h [Done]
 
 Components ------------------
-
+tabControl                                          11h [Done] +8
+selectionControl                                     4h [Done]
+textEditControl                                      2h [Urgent]
+spinEditControl                                      3h [Urgent]
+dateSelectControl                                    3h [...]
+modalPopover                                            [Done]
+Aside widget                                            [Done]
+Sky.template                                         5h [Done]
 
 ------------System-----------
 finish layout parts                                  6h [Done]
 Options                                              3h [40%]
-Aside widget                                            [Done]
-modalPopover                                            [Done]
-twoWayBinding /reactive                                 [Done]  <- Viet components
+twoWayBinding /reactive                                 [Done]  <- Write components
 accountCreattionForCustomer                             [Done]
-tabControl                                          11h [Done]
-Sky.template                                         5h [Done]
-gridControl                                          4h [...]           <- 3rd
-selectionControl                                     4h [Done]
-publish-with-relation                                3h [...]
-chat system...                                       6h [...]
-notification-region                                  4h [...]
-form & validation                                    4h [...]
+
+gridControl                                          4h [Working]           <- 3rd
+
+publish-with-relation                                3h [Drop]
+chat system...                                       6h [Waiting]
+notification-region                                  4h [Waiting]
+form & validation                                    4h [Optional]
 -------------------------
 Upgrade to Sky6 (Meteor 0.9.1.1)	                 5h [Done]
