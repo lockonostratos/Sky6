@@ -14,6 +14,7 @@ Meteor.subscribe 'returns'
 Meteor.subscribe 'returnDetails'
 
 Meteor.subscribe 'customers'
+Meteor.subscribe 'tests'
 
 
 
