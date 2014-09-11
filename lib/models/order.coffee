@@ -29,8 +29,8 @@ Schema.add 'orders', class Order
   finishOrder: ()->
     order = this
     return 'Order Không Tồn Tại' if !Schema.orders.findOne(order.id)
-    orderDetails = Schema.orderDetails.find({order: @id}).fetch()
-    return 'Order Không Có Dữ Liệu' if orderDetails = []
+    orderDetails = Schema.orderDetails.find({order: order.id}).fetch()
+    return 'Order Không Có Dữ Liệu' if orderDetails == []
     product_ids = _.union(_.pluck(orderDetails, 'product'))
     products = Schema.products.find({_id: {$in: product_ids}}).fetch()
 

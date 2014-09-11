@@ -44,7 +44,7 @@ Meteor.startup ->
     if Session.get('orderHistory')
       Session.setDefault('currentOrder', Session.get('orderHistory')[0])
     if Session.get('currentOrder')
-      Session.setDefault('currentOrderDetails', Schema.orderDetails.find({order: Session.get('currentOrder')._id}))
+      Session.setDefault('currentOrderDetails', Schema.orderDetails.find({order: Session.get('currentOrder')._id}).fetch())
 
   Deps.autorun ->
     console.log "Your food is #{root.getFood()}"
