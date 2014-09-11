@@ -5,12 +5,28 @@ Meteor.startup ->
     creator = Accounts.createUser(email: 'lehaoson@gmail.com', password: 'Ultimate5')
     ky = Accounts.createUser(email: 'nguyenhongky@gmail.com', password: 'Ultimate5')
     loc = Accounts.createUser(email: 'nguyenquocloc@gmail.com', password: 'Ultimate5')
-    huynhChauId = Merchant.create { name: 'Huynh Chau', creator: creator }
-    Merchant.create { name: 'Euro Windows', creator: creator }
 
+    euroWindowId = Merchant.create { name: 'Euro Windows', creator: creator }
+
+    huynhChauId = Merchant.create { name: 'Huynh Chau', creator: creator }
     merchant = Merchant.findOne huynhChauId
-    merchant.addBranch { name: 'Huynh Chau HA NOI', creator: creator }
     warehouse = merchant.addWarehouse { name: 'Kho Chính', creator: creator }
+    warehouse2 = merchant.addWarehouse { name: 'Kho Phu', creator: creator }
+
+    hanoi = merchant.addBranch { name: 'Huynh Chau HA NOI', creator: creator }
+    merchant2 = Merchant.findOne hanoi
+    warehouse3 = merchant2.addWarehouse { name: 'Kho Chính', creator: creator }
+
+    Meteor.users.update(creator, $set:{profile: {isRoot: true, parent:huynhChauId, merchant: huynhChauId, warehouse: warehouse}})
+    Meteor.users.update(loc, $set:{profile: {isRoot: false, parent:huynhChauId, merchant: huynhChauId, warehouse: warehouse2, creator: creator}})
+    Meteor.users.update(ky, $set:{profile: {isRoot: false, parent:huynhChauId, merchant: hanoi, warehouse: warehouse3, creator: creator}})
+
+    merchant.addCustomer({creator: creator, name: 'Lê Ngọc Sơn', phone: '01223456789'})
+    merchant.addCustomer({creator: creator, name: 'Nguyễn Hồng Kỳ', phone: '01123456789'})
+    merchant.addCustomer({creator: creator, name: 'Nguyễn Quốc Lộc', phone: '0123456789'})
+    merchant.addCustomer({creator: creator, name: 'Lê Thị Thảo Nh', phone: '0123456789'})
+
+
     seedSystemRoles()
     seedProvidersFor merchant, creator
     seedSkullsFor merchant, creator
@@ -18,6 +34,7 @@ Meteor.startup ->
 
 resetDatabase = ->
   Meteor.users.remove({})
+  Schema.customers.remove({})
   Schema.roles.remove({})
   Schema.merchants.remove({})
   Schema.warehouses.remove({})

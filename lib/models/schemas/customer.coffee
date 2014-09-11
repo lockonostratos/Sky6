@@ -26,9 +26,11 @@ Schema2.customers = new SimpleSchema
 
   address:
     type: String
+    optional: true
 
   email:
     type: String
+    optional: true
 
   sex:
     type: Boolean

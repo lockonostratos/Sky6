@@ -26,6 +26,7 @@ orderCreator = (merchantId, warehouseId)->
     merchant      : Session.get('currentMerchant')._id
     warehouse     : Session.get('currentWarehouse')._id
     creator       : Meteor.userId()
+    seller        : Meteor.userId()
     orderCode     : 'asdsad'
     deliveryType  : 0
     paymentMethod : 0
@@ -42,8 +43,6 @@ orderCreator = (merchantId, warehouseId)->
   newOrder._id = newId
   newOrder
 reloadOrder = -> Session.set('currentOrder', Schema.orders.findOne(Session.get('currentOrder')._id))
-
-
 
 Sky.template.extends Template.sales,
   order: -> Session.get('currentOrder')
@@ -164,8 +163,11 @@ Sky.template.extends Template.sales,
       price: 3000
     ]
 
+#  rendered: ->
   events:
     'input input':  (event, template)-> reloadOrderDetail(template, true)
+
+
 #    'input .quality':  (event, template)-> console.log event.target.valueOf().value
 #    'input .price':  (event, template)-> console.log event.target.valueOf().value
 #    'input .discountCash':  (event, template)-> console.log event.target.valueOf().value
@@ -181,3 +183,4 @@ Sky.template.extends Template.sales,
     'click .finish': (event, template)->
       order = Order.findOne(Session.get('currentOrder')._id)
       console.log order.finishOrder()
+

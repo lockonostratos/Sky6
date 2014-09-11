@@ -2,7 +2,7 @@ template(name="sales")
    .app-header
       span.caption Bán hàng <small>(#{currentCaption})</small>
    .app-editor
-      .irow
+      .row
          +iSelect(options=productSelectOptions width='250px' class="field")
          input.quality(placeholder='So Luong' value="#{currentOrderDetail.quality}"
           data-toggle="tooltip" title="số lượng")
@@ -17,19 +17,35 @@ template(name="sales")
          input.finalPrice(placeholder='Tong Tien' value="#{currentOrderDetail.finalPrice}"
           data-toggle="tooltip" title="tổng tiền")
          button.btn.btn-default.addOrderDetail(type='submit') Add
-      .irow
+      .row
          +iSelect(options=sellerSelectOptions width='200px' resultHeight='70px' class="field")
          +iSelect(options=customerSelectOptions width='160px' resultHeight='70px' class="field")
          +iSelect(options=paymentMethodSelectOption width='160px' resultHeight='70px' class="field")
          +iSelect(options=deliveryTypeSelectOption width='160px' resultHeight='70px' class="field")
          button.btn.btn-default.finish(type='submit') Hoan Tat
-      .irow
+
+      .row
         | #{order._id} -- #{order.finalPrice}-- #{order.debit}-- #{order.deposit}-- #{order.discountCash}-- #{order.totalPrice}
 
    //+reactiveTable(collection=orderDetails)
    .app-content
       +iGrid(options=saleDetailOptions)
-      each orderDetails
-        | #{_id}---
+
    .app-status
       +iTab(options=tabOptions)
+
+
+
+template(name="saleProductAside")
+  #saleProductAside.aside.modal.swipe.right
+    .modal-dialog
+      .modal-content
+      .modal-header
+        button.close(type="button" data-dismiss="modal")
+          span(aria-hidden="true") &times;
+          span.sr-only Close
+        h4.modal-title Modal title
+      .modal-body: p One find body &hellip;
+      .modal-footer
+        button.btn.btn-default(type="button" data-dismiss="modal") Close
+        button.btn.btn-primary(type="button") Save changes

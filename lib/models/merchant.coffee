@@ -5,6 +5,9 @@ Schema.add 'merchants', class Merchant
       option.currentWarehouse = currentWarehouse if currentWarehouse
       Accounts.createUser option
 
+  addUser: (option, creator, currentWarehouse = null)  ->
+    @addAccount(option, creator, currentWarehouse)
+
   addBranch: (option) ->
     option.parent = @id
     Schema.merchants.insert option
@@ -27,6 +30,14 @@ Schema.add 'merchants', class Merchant
     option.availableQuality = 0
     option.instockQuality = 0
     Schema.products.insert option
+
+  addCustomer: (option) ->
+    option.currentMerchant = @id
+    if @data.parent
+      option.parentMerchant = @data.parent
+    else
+      option.parentMerchant = @id
+    Schema.customers.insert option
 
   #option: warehouse, creator, description
   #productDetails: product, importQuality, importPrice, provider?, exprire?
