@@ -13,11 +13,12 @@ Meteor.startup ->
       Session.set "currentUser", Meteor.users.findOne(Meteor.userId())
       Session.set "availableMerchant", Schema.merchants.findOne({})
 
-    if Session.get('currentUser') and Meteor.userId()
+    if Session.get('currentUser')
       Session.set "currentMerchant", Schema.merchants.findOne(Session.get('currentUser').profile.merchant)
       Session.set "currentWarehouse", Schema.warehouses.findOne(Session.get('currentUser').profile.warehouse)
-      Session.set "availableStaffSale", Meteor.users.find({'profile.merchant': Session.get('currentUser').profile.merchant}).fetch()
-      Session.set "availableCustomerSale", Schema.customers.find({currentMerchant: Session.get('currentUser').profile.parent}).fetch()
+
+#      Session.set "availableStaffSale", Meteor.users.find({'profile.merchant': Session.get('currentUser').profile.merchant}).fetch()
+#      Session.set "availableCustomerSale", Schema.customers.find({currentMerchant: Session.get('currentUser').profile.parent}).fetch()
 
   Deps.autorun ->
     if Session.get('currentMerchant') and Meteor.userId()

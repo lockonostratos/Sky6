@@ -4,7 +4,7 @@ template(name="sales")
    .app-editor
       .row
          .col.col-md-2: +iSelect(options=productSelectOptions class="field")
-         .col.col-md-2: +iSpinEdit(options=qualityOptions)
+         .col.col-md-1(style="min-width: 100px" data-toggle="tooltip" title="số lượng"): +iSpinEdit(options=qualityOptions)
          .col.col-md-1: input.quality(placeholder='So Luong' value="#{currentOrderDetail.quality}"
           data-toggle="tooltip" title="số lượng")
          .col.col-md-2: input.price(placeholder='Gia Tien' value="#{currentOrderDetail.price}"

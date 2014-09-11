@@ -45,12 +45,19 @@ reloadOrder = -> Session.set('currentOrder', Schema.orders.findOne(Session.get('
 
 Session.set('dummyMax', 5)
 
+
+runInitTracker = (context) ->
+  return if Sky.global.saleTracker
+  Sky.global.saleTracker = Tracker.autorun ->
+    if Session.get('currentUser')
+      Session.set "availableStaffSale", Meteor.users.find({'profile.merchant': Session.get('currentUser').profile.merchant}).fetch()
+      Session.set "availableCustomerSale", Schema.customers.find({currentMerchant: Session.get('currentUser').profile.parent}).fetch()
+
 Sky.template.extends Template.sales,
   order: -> Session.get('currentOrder')
   fullName: -> Session.get('firstName') + ' ' + Session.get('lastName')
   firstName: -> Session.get('firstName')
   currentCaption: -> Session.get('currentOrder')?._id
-
 
   tabOptions:
     source: 'orderHistory'
@@ -177,3 +184,6 @@ Sky.template.extends Template.sales,
     'click .finish': (event, template)->
       order = Order.findOne(Session.get('currentOrder')._id)
       console.log order.finishOrder()
+
+  rendered: ->
+    runInitTracker()

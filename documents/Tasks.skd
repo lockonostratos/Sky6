@@ -50,7 +50,7 @@ Warehouse REST                                       2h [...]
 Skull REST                                           2h [...]
 Provider REST                                        2h [...]
 Role REST                                            2h [...]
--------modalPopervers ------
+-------modalPopervers ---
 brandNewProducts                      LOC          1.5h [Done]
 brandNewCustomer                      LOC          1.5h [Done]
 brandNewStaff                         LOC            2h [???] 1h                                   Can he thong account.
@@ -59,7 +59,7 @@ brandNewSkull                         LOC          0.5h [Done]
 brandNewProvider                      LOC          1.5h [Done]
 migrateToSky6                         LOC            2h [Done]
 
-Components ------------------
+Components --------------
 tabControl                                          11h [Done] +8
 selectionControl                                     4h [Done] +1
 textEditControl                                      2h [Working]
@@ -70,7 +70,7 @@ modalPopover                                            [Done]
 Aside widget                                            [Done]
 Sky.template                                         5h [Done]
 
-------------System-----------
+------------System-------
 finish layout parts                                  6h [Done]
 Options                                              3h [40%]
 twoWayBinding /reactive                                 [Done]  <- Write components
