@@ -1,29 +1,32 @@
 template(name="navigation")
-	nav(role="navigation").navbar.main.navbar-fixed-top
-		.wrapper
-			.branding
-				form.navbar-form.navbar-left
-					input.form-control(type="text" maxlength="30" placeholder="tìm kiếm nhanh")
-			ul.nav.navbar-nav
-				li.home(class="{{isActiveRoute 'metroHome'}}"): a(href="{{pathFor 'metroHome'}}"): i.fa.fa-home
-				li(class="{{isActiveRoute 'sales'}}"): a(href="{{pathFor 'sales'}}") Sales
-				li(class="{{isActiveRoute 'warehouse'}}"): a(href="{{pathFor 'warehouse'}}") Warehouse
-				li(class="{{isActiveRoute 'import'}}"): a(href="{{pathFor 'import'}}") Import
-				li(class="{{isActiveRoute 'delivery'}}"): a(href="{{pathFor 'delivery'}}") Delivery
-				li(class="{{isActiveRoute 'returns'}}"): a(href="{{pathFor 'returns'}}") Returns
-				li(class="{{isActiveRoute 'inventory'}}"): a(href="{{pathFor 'inventory'}}") Inventery
-				li(class="{{isActiveRoute 'export'}}"): a(href="{{pathFor 'export'}}") Export
+  nav(role="navigation").navbar.main.navbar-fixed-top
+    .wrapper
+      .branding
+        form.navbar-form.navbar-left
+          input.form-control(type="text" maxlength="30" placeholder="tìm kiếm nhanh")
+      ul.nav.navbar-nav.navbar-left
+        li.iconic: a(href="#"): i.fa.fa-
 
-			//form(role="search").navbar-form.navbar-left
-			//	.form-group
-			//		input(type="text", placeholder="Search").form-control
-			//	button(type="submit").btn.btn-default Submit
-			ul.nav.navbar-nav.navbar-right
-				li: a(href="/sign-out") ĐĂNG XUẤT
-				//li.dropdown
-				//	a(href="#", data-toggle="dropdown").dropdown-toggle Dropdown <b class="caret"></b>
-				//	ul.dropdown-menu
-				//		li: a(href="#") Action
-				//		li: a(href="#") Another action
-				//		li: a(href="#") Something else here
-				//		li: a(href="#") Separated link
+      ul.nav.navbar-nav
+        li.home(class="{{isActiveRoute 'metroHome'}}"): a(href="{{pathFor 'metroHome'}}"): i.fa.fa-home
+        li(class="{{isActiveRoute 'sales'}}"): a(href="{{pathFor 'sales'}}") Sales
+        li(class="{{isActiveRoute 'warehouse'}}"): a(href="{{pathFor 'warehouse'}}") Warehouse
+        li(class="{{isActiveRoute 'import'}}"): a(href="{{pathFor 'import'}}") Import
+        li(class="{{isActiveRoute 'delivery'}}"): a(href="{{pathFor 'delivery'}}") Delivery
+        li(class="{{isActiveRoute 'returns'}}"): a(href="{{pathFor 'returns'}}") Returns
+        li(class="{{isActiveRoute 'inventory'}}"): a(href="{{pathFor 'inventory'}}") Inventery
+        li(class="{{isActiveRoute 'export'}}"): a(href="{{pathFor 'export'}}") Export
+
+        //form(role="search").navbar-form.navbar-left
+        //  .form-group
+        //    input(type="text", placeholder="Search").form-control
+        //  button(type="submit").btn.btn-default Submit
+      ul.nav.navbar-nav.navbar-right
+        li: a(href="/sign-out") ĐĂNG XUẤT
+        //li.dropdown
+        //  a(href="#", data-toggle="dropdown").dropdown-toggle Dropdown <b class="caret"></b>
+        //  ul.dropdown-menu
+        //    li: a(href="#") Action
+        //    li: a(href="#") Another action
+        //    li: a(href="#") Something else here
+        //    li: a(href="#") Separated link

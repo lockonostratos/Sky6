@@ -118,3 +118,6 @@ Sky.template.extends Template.sales,
     'input .quality':  (event, template)-> console.log 'ww'
     'input .price':  (event, template)-> console.log event.target.valueOf().value
     'input .discountCash':  (event, template)-> console.log event.target.valueOf().value
+
+  rendered: ->
+    console.log @

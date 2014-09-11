@@ -1,5 +1,5 @@
 root = global ? window
-Session.set('collapse', '');
+Session.setDefault('collapse', 'collapsed');
 
 root.application =
   toggleCollapse: -> Session.set 'collapse', if Template.layout.collapse() then '' else 'collapsed'

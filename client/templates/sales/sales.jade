@@ -4,8 +4,10 @@ template(name="sales")
    .app-editor
       .irow
          +iSelect(options=productSelectOptions width='250px' class="field")
-         input.quality(placeholder='So Luong' value="#{currentOrderDetail.quality}")
-         input.price(placeholder='Gia Tien' value="#{currentOrderDetail.price}")
+         input.quality(placeholder='So Luong' value="#{currentOrderDetail.quality}"
+          data-toggle="tooltip" data-placement="left" title="Tooltip on left")
+         input.price(placeholder='Gia Tien' value="#{currentOrderDetail.price}"
+          data-toggle="tooltip" data-placement="right" title="Tooltip on right")
          input.discountCash(placeholder='Giam Gia' value="#{currentOrderDetail.discountCash}")
          input.discountCash(placeholder='Giam Gia %' value="#{currentOrderDetail.discountPercent}")
          input.discountCash(placeholder='Tam Tinh' value="#{currentOrderDetail.totalPrice}")

@@ -1,6 +1,4 @@
 _.extend Template.layout,
-  collapse: -> Session.get 'collapse'
+  collapse: -> console.log Session.get('collapse'); Session.get('collapse') ? 'collapsed'
   events:
     'click .collapse-toggle': -> application.toggleCollapse()
-
-  rendered: ->
