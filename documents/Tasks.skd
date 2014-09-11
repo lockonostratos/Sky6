@@ -61,7 +61,7 @@ migrateToSky6                         LOC            2h [Done]
 
 Components ------------------
 tabControl                                          11h [Done] +8
-selectionControl                                     4h [Done]
+selectionControl                                     4h [Done] +1
 textEditControl                                      2h [Urgent]
 spinEditControl                                      3h [Urgent]
 dateSelectControl                                    3h [...]
@@ -76,9 +76,10 @@ Options                                              3h [40%]
 twoWayBinding /reactive                                 [Done]  <- Write components
 accountCreattionForCustomer                             [Done]
 
-publish-with-relation                                3h [Drop]
 chat system...                                       6h [Waiting]
-notification-region                                  4h [Waiting]
+publish-with-relation                                3h [Drop]
+notification-region                                  2h [Done]
+notificationSystem                                   4h [...]
 form & validation                                    4h [Optional]
 -------------------------
 Upgrade to Sky6 (Meteor 0.9.1.1)	                 5h [Done]

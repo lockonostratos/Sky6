@@ -3,6 +3,7 @@ header {
 //    margin-left: @left-pane-size;
 //      box-shadow: 0 0 4px 0 rgba(0,0,0,0.6);
       background-color: #2E2C2B;
+      padding-right: 50px;
       border: none;
       z-index: 999;
 
@@ -45,22 +46,29 @@ header {
 
       &.iconic {
         a {
-          padding: 15px 10px;
-          &:hover { background-color: transparent !important;}
+          padding: 22px 10px 0px 10px;
+
           i {
             color: #888;
-            &:hover { color: #ddd; }
             &.notifying { color: #fff; }
           }
+
           span.count {
             position: absolute;
             top: -13px;
-            left: 2px;
+            left: 5px;
             font-size: 10px;
             background-color: #87C735;
             padding: 10px 2px 0 2px;
             border-radius: 9px;
-            min-width: 10px;
+            width: 21px;
+            text-align: center;
+          }
+
+          &:hover {
+            background-color: transparent !important;
+            i { color: #ddd; }
+            span { color: #fff; }
           }
         }
       }
