@@ -27,6 +27,10 @@ resetDatabase = ->
   Schema.importDetails.remove({})
   Schema.products.remove({})
   Schema.productDetails.remove({})
+  Schema.orders.remove({})
+  Schema.orderDetails.remove({})
+  Schema.sales.remove({})
+  Schema.saleDetails.remove({})
 
 seedSystemRoles = ->
   Schema.roles.insert

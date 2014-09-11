@@ -6,9 +6,9 @@ Kiem kho                                             2h [...] 4th
 Ban hang                                                [Done]
 Tra hang                                           3.5h [Done]
 Giao hang                                          2.5h [Done]
-Chuyen BAN HANG sang giao dien moi                      [Working] 4h
-Chuyen TRA HANG sang giao dien moi                      [Working] 3h
-Chuyen GIAO HANG sang giao dien moi                     [Working] 3h
+Chuyen BAN HANG sang giao dien moi                   6h [80%] 1h
+Chuyen TRA HANG sang giao dien moi                      [Working] 2h
+Chuyen GIAO HANG sang giao dien moi                     [Working] 1.5h
 
 Bao cao---------------      8h
  + Product                                              [...]
@@ -62,10 +62,10 @@ migrateToSky6                         LOC            2h [Done]
 Components ------------------
 tabControl                                          11h [Done] +8
 selectionControl                                     4h [Done] +1
-textEditControl                                      2h [Urgent]
-spinEditControl                                      3h [Urgent]
-dateSelectControl                                    3h [...]
-gridControl                                          4h [Working]           <- 3rd
+textEditControl                                      2h [Working]
+spinEditControl                                      3h [Done]
+dateSelectControl                                    3h [Waiting]
+gridControl                                          4h [Finalizing]           <- 3rd
 modalPopover                                            [Done]
 Aside widget                                            [Done]
 Sky.template                                         5h [Done]

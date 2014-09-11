@@ -2,34 +2,33 @@ template(name="sales")
    .app-header
       span.caption Bán hàng <small>(#{currentCaption})</small>
    .app-editor
-      .irow
-         +iSelect(options=productSelectOptions width='250px' class="field")
-         input.quality(placeholder='So Luong' value="#{currentOrderDetail.quality}"
+      .row
+         .col.col-md-2: +iSelect(options=productSelectOptions class="field")
+         .col.col-md-2: +iSpinEdit(options=qualityOptions)
+         .col.col-md-1: input.quality(placeholder='So Luong' value="#{currentOrderDetail.quality}"
           data-toggle="tooltip" title="số lượng")
-         input.price(placeholder='Gia Tien' value="#{currentOrderDetail.price}"
+         .col.col-md-2: input.price(placeholder='Gia Tien' value="#{currentOrderDetail.price}"
           data-toggle="tooltip" title="giá bán")
-         input.discountCash(placeholder='Giam Gia' value="#{currentOrderDetail.discountCash}"
+         .col.col-md-2: input.discountCash(placeholder='Giam Gia' value="#{currentOrderDetail.discountCash}"
           data-toggle="tooltip" title="giảm giá")
-         input.discountPercent(placeholder='Giam Gia %' value="#{currentOrderDetail.discountPercent}"
+         .col.col-md-2: input.discountPercent(placeholder='Giam Gia %' value="#{currentOrderDetail.discountPercent}"
           data-toggle="tooltip" title="giảm giá %")
-         input.totalPrice(placeholder='Tam Tinh' value="#{currentOrderDetail.totalPrice}"
+         .col.col-md-2: input.totalPrice(placeholder='Tam Tinh' value="#{currentOrderDetail.totalPrice}"
           data-toggle="tooltip" title="tạm tính")
          input.finalPrice(placeholder='Tong Tien' value="#{currentOrderDetail.finalPrice}"
           data-toggle="tooltip" title="tổng tiền")
          button.btn.btn-default.addOrderDetail(type='submit') Add
-      .irow
+      .row
          +iSelect(options=sellerSelectOptions width='200px' resultHeight='70px' class="field")
          +iSelect(options=customerSelectOptions width='160px' resultHeight='70px' class="field")
          +iSelect(options=paymentMethodSelectOption width='160px' resultHeight='70px' class="field")
          +iSelect(options=deliveryTypeSelectOption width='160px' resultHeight='70px' class="field")
          button.btn.btn-default.finish(type='submit') Hoan Tat
-      .irow
-        | #{order._id} -- #{order.finalPrice}-- #{order.debit}-- #{order.deposit}-- #{order.discountCash}-- #{order.totalPrice}
+      //.row
+      //  | #{order._id} -- #{order.finalPrice}-- #{order.debit}-- #{order.deposit}-- #{order.discountCash}-- #{order.totalPrice}
 
    //+reactiveTable(collection=orderDetails)
    .app-content
       +iGrid(options=saleDetailOptions)
-      each orderDetails
-        | #{_id}---
    .app-status
       +iTab(options=tabOptions)

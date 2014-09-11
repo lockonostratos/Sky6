@@ -27,20 +27,36 @@
   min-height: 40px;
   border-bottom: 1px solid #eeeeee;
   .field {
-    margin: 5px 0 5px 5px;
+    margin: 5px 0;
+    width: 100%;
   }
 
   .row {
     margin-left: 0;
     margin-right: 0;
+    .col {
+      padding-left: 5px;
+      padding-right: 0;
+    }
   }
 
   input {
+    width: 100%;
     line-height: 28px;
-    margin: 4px 0 5px 5px;
+    margin: 5px 0;
     padding: 0 7px;
     border: 1px solid #DFDFDF;
     .border-radius(3px);
+  }
+
+  .bootstrap-touchspin {
+    .input-group-addon, .bootstrap-touchspin-up, .bootstrap-touchspin-down {
+      margin-top: 5px;
+      padding: 4px 10px;
+    }
+    input {
+      height: 30px;
+    }
   }
 }
 

@@ -43,11 +43,10 @@ orderCreator = (merchantId, warehouseId)->
   newOrder
 reloadOrder = -> Session.set('currentOrder', Schema.orders.findOne(Session.get('currentOrder')._id))
 
-
+Session.set('dummyMax', 5)
 
 Sky.template.extends Template.sales,
   order: -> Session.get('currentOrder')
-  orderDetails: -> Session.get('currentOrderDetails')
   fullName: -> Session.get('firstName') + ' ' + Session.get('lastName')
   firstName: -> Session.get('firstName')
   currentCaption: -> Session.get('currentOrder')?._id
@@ -150,19 +149,16 @@ Sky.template.extends Template.sales,
       reloadOrder()
     reactiveValueGetter: -> _.findWhere(Sky.system.deliveryTypes, {id: Session.get('currentOrder')?.deliveryType})
 
-
   saleDetailOptions:
-    itemTemplate: 'testDyn'
-    classicalHeader:
-      class: 'custom-header-class'
-      columns: {name: 'Ho ten', price: 'Gia'}
-    dataSource: [
-      name: 'first item'
-      price: 2000
-    ,
-      name: 'second item'
-      price: 3000
-    ]
+    itemTemplate: 'saleProductThumbnail'
+    reactiveSourceGetter: -> Session.get('currentOrderDetails')
+
+  qualityOptions:
+    reactiveSetter: (val) -> Session.set('dummyVal', val)
+    reactiveValue: -> 10
+    reactiveMax: -> Session.get('dummyMax') ? 10
+    reactiveMin: -> 1
+    reactiveStep: -> 1
 
   events:
     'input input':  (event, template)-> reloadOrderDetail(template, true)
