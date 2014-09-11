@@ -4,8 +4,16 @@ template(name="navigation")
       .branding
         form.navbar-form.navbar-left
           input.form-control(type="text" maxlength="30" placeholder="tìm kiếm nhanh")
-      ul.nav.navbar-nav.navbar-left
-        li.iconic: a(href="#"): i.fa.fa-
+      ul.nav.navbar-nav.navbar-left.iconic
+        li.iconic: a(href="#")
+          span.count 10
+          i.fa.fa-comments-o
+        li.iconic: a(href="#")
+          span.count 3
+          i.fa.fa-pencil
+        li.iconic: a(href="#")
+          span.count 20
+          i.fa.fa-trash-o
 
       ul.nav.navbar-nav
         li.home(class="{{isActiveRoute 'metroHome'}}"): a(href="{{pathFor 'metroHome'}}"): i.fa.fa-home

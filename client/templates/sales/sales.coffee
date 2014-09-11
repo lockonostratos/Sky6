@@ -55,6 +55,7 @@ Sky.template.extends Template.sales,
     formatResult: formatProductSearch
     id: '_id'
     placeholder: 'CHỌN SẢN PHẨM'
+#    minimumResultsForSearch: -1
     hotkey: 'return'
     changeAction: (e) ->
       Schema.orders.update(Session.get('currentOrder')._id, {$set: {currentProduct: e.added._id}})

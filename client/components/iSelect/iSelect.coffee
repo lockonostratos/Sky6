@@ -8,7 +8,7 @@ registerSelection = ($element, context) ->
 
   selectOptions.id              = options.id if options.id
   selectOptions.placeholder     = options.placeholder if options.placeholder
-
+  selectOptions.minimumResultsForSearch = options.minimumResultsForSearch if options.minimumResultsForSearch
   $element.select2(selectOptions).on 'change', (e) -> options.changeAction(e)
 
 registerHotkey = ($element, context) ->

@@ -44,7 +44,25 @@ header {
       }
 
       &.iconic {
-
+        a {
+          padding: 15px 10px;
+          &:hover { background-color: transparent !important;}
+          i {
+            color: #888;
+            &:hover { color: #ddd; }
+            &.notifying { color: #fff; }
+          }
+          span.count {
+            position: absolute;
+            top: -13px;
+            left: 2px;
+            font-size: 10px;
+            background-color: #87C735;
+            padding: 10px 2px 0 2px;
+            border-radius: 9px;
+            min-width: 10px;
+          }
+        }
       }
 
       a { color: #fff; }
@@ -59,6 +77,10 @@ header {
         &:hover { background-color: #fff !important; }
       }
     }
+  }
+
+  ul.iconic {
+    margin-left: 6px;
   }
 
   nav.secondary {
