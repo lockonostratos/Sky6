@@ -13,6 +13,14 @@ Schema.add 'warehouses', class Warehouse
     Schema.orders.insert option, (error, result)->
       console.log result; console.log error if error
 
+  addImport: (option) ->
+    return ('Mô Tả Không Được Đễ Trống') if !option.description
+    option.merchant   = @data.merchant
+    option.warehouse  = @id
+    option.creator    = Meteor.userId()
+    option.finish     = false
+    Schema.imports.insert option, (error, result)-> console.log result; console.log error if error
+
   updateDelivery: (delivery_id, status)->
     item = Schema.deliveries.findOne(delivery._id)
     if item.status == 0 and status == 0

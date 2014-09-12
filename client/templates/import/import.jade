@@ -1,25 +1,13 @@
 template(name="import")
   .app-header
-    span.caption Nhập Kho <small>(#{currentCaption})</small>
+    span.caption Nhập Kho
   .app-editor
-    .row
-      +iSelect(options=productSelectOptions width='250px' class="field")
-      input.quality(placeholder='So Luong' value="#{currentOrderDetail.quality}"
-      data-toggle="tooltip" title="số lượng")
-      input.price(placeholder='Gia Tien' value="#{currentOrderDetail.price}"
-      data-toggle="tooltip" title="giá bán")
-      input.discountCash(placeholder='Giam Gia' value="#{currentOrderDetail.discountCash}"
-      data-toggle="tooltip" title="giảm giá")
-      input.discountPercent(placeholder='Giam Gia %' value="#{currentOrderDetail.discountPercent}"
-      data-toggle="tooltip" title="giảm giá %")
-      input.totalPrice(placeholder='Tam Tinh' value="#{currentOrderDetail.totalPrice}"
-      data-toggle="tooltip" title="tạm tính")
-      input.finalPrice(placeholder='Tong Tien' value="#{currentOrderDetail.finalPrice}"
-      data-toggle="tooltip" title="tổng tiền")
-      button.btn.btn-default.addOrderDetail(type='submit') Add
-    .row
-      button.btn.btn-default.finish(type='submit') Hoan Tat
-
+     .row
+        .col.col-md-1: +iSelect(options=warehouseSelectOptions width='150px' resultHeight='70px' class="field")
+        .col.col-md-2: input.description(placeholder='Mô Tả' type="text" data-toggle="tooltip" title="số lượng")
+        .col.col-md-2: button.btn.btn-default.addImport(type='submit') Tạo Phiếu Nhập
+     .row
+        .col.col-md-2: +iSelect(options=productSelectOptions class="field")
 
 
   //+reactiveTable(collection=orderDetails)
@@ -27,4 +15,4 @@ template(name="import")
     //+iGrid(options=saleDetailOptions)
 
   .app-status
-    //+iTab(options=tabOptions)
+    +iTab(options=tabOptions)

@@ -18,6 +18,10 @@ Schema2.imports = new SimpleSchema
     type: String
     optional: true
 
+  currentProduct:
+    type: String
+    optional: true
+
 
   version: { type: Schema.Version }
 

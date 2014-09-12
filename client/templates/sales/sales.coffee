@@ -41,7 +41,7 @@ orderCreator = (merchantId, warehouseId)->
   newId = Schema.orders.insert newOrder
   newOrder._id = newId
   newOrder
-reloadOrder = -> Session.set('currentOrder', Schema.orders.findOne(Session.get('currentOrder')._id))
+#reloadOrder = -> Session.set('currentOrder', Schema.orders.findOne(Session.get('currentOrder')._id))
 
 Session.set('dummyMax', 5)
 

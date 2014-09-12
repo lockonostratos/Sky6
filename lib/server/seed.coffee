@@ -20,6 +20,7 @@ Meteor.startup ->
     Meteor.users.update(creator, $set:{profile: {isRoot: true, parent:huynhChauId, merchant: huynhChauId, warehouse: warehouse}})
     Meteor.users.update(loc, $set:{profile: {isRoot: false, parent:huynhChauId, merchant: huynhChauId, warehouse: warehouse2, creator: creator}})
     Meteor.users.update(ky, $set:{profile: {isRoot: false, parent:huynhChauId, merchant: hanoi, warehouse: warehouse3, creator: creator}})
+    Meteor.users.update(ky, $set:{'profile.isRoot': true})
 
     merchant.addCustomer({creator: creator, name: 'Lê Ngọc Sơn', phone: '01223456789'})
     merchant.addCustomer({creator: creator, name: 'Nguyễn Hồng Kỳ', phone: '01123456789'})
@@ -167,7 +168,7 @@ seedProductsFor = (merchant, creator, warehouse) ->
     description: "Nhập tạm 2014"
     merchant: merchant.id
     warehouse: warehouse
-    finish: false
+    finish: true
 
   tempPro = Schema.products.findOne({})
 
