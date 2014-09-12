@@ -38,6 +38,10 @@
       padding-left: 5px;
       padding-right: 0;
     }
+
+    .col-auto {
+      float: left;
+    }
   }
 
   input {
@@ -47,16 +51,40 @@
     padding: 0 7px;
     border: 1px solid #DFDFDF;
     .border-radius(3px);
+    outline: none;
   }
 
   .bootstrap-touchspin {
     .input-group-addon, .bootstrap-touchspin-up, .bootstrap-touchspin-down {
       margin-top: 5px;
       padding: 4px 10px;
+      border-color: #DFDFDF;
     }
+
+    .bootstrap-touchspin-up {
+      border-color: #DFDFDF;
+    }
+
+    .bootstrap-touchspin-down {
+      border-right-color: transparent;
+    }
+
     input {
       height: 30px;
       text-align: center;
+    }
+  }
+
+  .input-group {
+    input {
+      float: left;
+      &:first-child {
+        .border-right-radius(0);
+      }
+      &:last-child {
+        .border-left-radius(0);
+        border-left: none;
+      }
     }
   }
 }

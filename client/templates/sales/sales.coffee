@@ -41,17 +41,36 @@ orderCreator = (merchantId, warehouseId)->
   newId = Schema.orders.insert newOrder
   newOrder._id = newId
   newOrder
-reloadOrder = -> Session.set('currentOrder', Schema.orders.findOne(Session.get('currentOrder')._id))
+
+maxQuality = ->
+  qualityProduct = Session.get('currentProductInstance')?.availableQuality if Session.get('currentProductInstance')
+  qualityOrderDetail = _.findWhere(Session.get('currentOrderDetails'), {product: Session.get('currentOrder').currentProduct})?.quality ? 0
+  qualityProduct - qualityOrderDetail
 
 Session.set('dummyMax', 5)
-
+Session.set('dummyQuality', 10)
 
 runInitTracker = (context) ->
   return if Sky.global.saleTracker
   Sky.global.saleTracker = Tracker.autorun ->
+    currentOrderId = Session.get('currentUser')?currentOrder
+
     if Session.get('currentUser')
       Session.set "availableStaffSale", Meteor.users.find({'profile.merchant': Session.get('currentUser').profile.merchant}).fetch()
       Session.set "availableCustomerSale", Schema.customers.find({currentMerchant: Session.get('currentUser').profile.parent}).fetch()
+
+    if Session.get('currentWarehouse')
+      Session.set 'orderHistory', Schema.orders.find({warehouse: Session.get('currentWarehouse')._id}).fetch()
+
+    if Session.get('currentOrder')
+      Session.set('currentOrderDetails', Schema.orderDetails.find({order: Session.get('currentOrder')._id}).fetch())
+      Session.set 'currentProductMaxQuality', maxQuality()
+      Session.set 'currentProductInstance', Schema.products.findOne(Session.get('currentOrder').currentProduct)
+#
+
+
+    currentOrderId = Session.get('currentUser')?.currentOrder
+    Session.set('currentOrder', Schema.orders.findOne(currentOrderId)) if currentOrderId
 
 Sky.template.extends Template.sales,
   order: -> Session.get('currentOrder')
@@ -66,7 +85,8 @@ Sky.template.extends Template.sales,
     key: '_id'
     createAction: -> orderCreator()
     destroyAction: (instance) -> Schema.orders.remove(instance._id)
-#    navigateAction: (instance) ->
+    navigateAction: (instance) ->
+      Meteor.users.update(Meteor.userId(), {$set: {currentOrder: instance._id}})
 
   productSelectOptions:
     query: (query) -> query.callback
@@ -84,8 +104,13 @@ Sky.template.extends Template.sales,
 #    minimumResultsForSearch: -1
     hotkey: 'return'
     changeAction: (e) ->
-      Schema.orders.update(Session.get('currentOrder')._id, {$set: {currentProduct: e.added._id}})
-      reloadOrder()
+      Schema.orders.update(Session.get('currentOrder')._id, {$set: {
+        currentProduct: e.added._id
+        currentQuality: 1
+        currentPrice: e.added.price
+        currentDiscount: 0
+      }})
+
     reactiveValueGetter: -> Session.get('currentOrder')?.currentProduct
 
   customerSelectOptions:
@@ -103,7 +128,6 @@ Sky.template.extends Template.sales,
     placeholder: 'CHỌN NGƯỜI MUA'
     changeAction: (e) ->
       Schema.orders.update(Session.get('currentOrder')._id, {$set: {buyer: e.added._id}})
-      reloadOrder()
     reactiveValueGetter: -> Session.get('currentOrder')?.buyer
 
   sellerSelectOptions:
@@ -124,7 +148,6 @@ Sky.template.extends Template.sales,
     placeholder: 'CHỌN NGƯỜI BÁN'
     changeAction: (e) ->
       Schema.orders.update(Session.get('currentOrder')._id, {$set: {seller: e.added._id}})
-      reloadOrder()
 
     reactiveValueGetter: -> Session.get('currentOrder')?.seller
 
@@ -139,7 +162,6 @@ Sky.template.extends Template.sales,
     minimumResultsForSearch: -1
     changeAction: (e) ->
       Schema.orders.update(Session.get('currentOrder')._id, {$set: {paymentMethod: e.added.id}})
-      reloadOrder()
     reactiveValueGetter: -> _.findWhere(Sky.system.paymentMethods, {id: Session.get('currentOrder')?.paymentMethod})
 
   deliveryTypeSelectOption:
@@ -153,7 +175,6 @@ Sky.template.extends Template.sales,
     minimumResultsForSearch: -1
     changeAction: (e) ->
       Schema.orders.update(Session.get('currentOrder')._id, {$set: {deliveryType: e.added.id}})
-      reloadOrder()
     reactiveValueGetter: -> _.findWhere(Sky.system.deliveryTypes, {id: Session.get('currentOrder')?.deliveryType})
 
   saleDetailOptions:
@@ -161,12 +182,45 @@ Sky.template.extends Template.sales,
     reactiveSourceGetter: -> Session.get('currentOrderDetails')
 
   qualityOptions:
-    reactiveSetter: (val) -> Session.set('dummyVal', val)
-    reactiveValue: -> 10
-    reactiveMax: -> Session.get('dummyMax') ? 10
-    reactiveMin: -> 1
+    reactiveSetter: (val) ->
+      Schema.orders.update(Session.get('currentOrder')._id, {$set: {currentQuality: val}}) if Session.get('currentOrder')
+    reactiveValue: -> Session.get('currentOrder')?.currentQuality ? 1
+    reactiveMax: -> Session.get('currentProductMaxQuality') ? 1
+    reactiveMin: -> 0
     reactiveStep: -> 1
 
+  priceOptions:
+    reactiveSetter: (val)->
+      Schema.orders.update(Session.get('currentOrder')._id, {$set: {currentPrice: val}}) if Session.get('currentOrder')
+    reactiveValue: -> Session.get('currentOrder')?.currentPrice ? 0
+    reactiveMax: -> 999999999
+    reactiveMin: -> 1
+    reactiveStep: -> 10000
+
+  discountCashOptions:
+    reactiveSetter: (val)->
+      Schema.orders.update(Session.get('currentOrder')._id, {$set: {currentDiscount: val}}) if Session.get('currentOrder')
+    reactiveValue: -> Session.get('currentOrder')?.currentDiscount ? 0
+    reactiveMax: -> (Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality)
+    reactiveMin: -> 0
+    reactiveStep: -> 10000
+
+  discountPercentOptions:
+    reactiveSetter: (val)->
+#      Schema.orders.update(Session.get('currentOrder')._id, {$set: {currentDiscount: val}}) if Session.get('currentOrder')
+    reactiveValue: -> (Session.get('currentOrder')?.currentDiscount*100/(Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality)) ? 0
+    reactiveMax: -> 100
+    reactiveMin: -> 0
+    reactiveStep: -> 1
+
+  finalPriceOptions:
+    reactiveSetter: (val)->
+#      Schema.orders.update(Session.get('currentOrder')._id, {$set: {currentDiscount: val}}) if Session.get('currentOrder')
+    reactiveValue: -> 0
+    reactiveMax: -> 0
+    reactiveMin: -> 0
+    reactiveStep: -> 1
+#
   events:
     'input input':  (event, template)-> reloadOrderDetail(template, true)
 #    'input .quality':  (event, template)-> console.log event.target.valueOf().value

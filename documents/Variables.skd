@@ -1,0 +1,30 @@
+Startup
+    currentUser <- Meteor.userId()
+
+        availableMerchant
+        currentMerchant
+            availableWarehouse
+            skullList
+            currentProviders
+            availableProducts
+
+            personalNewProducts
+            personalNewProviders
+            personalNewCustomers
+            personalNewWarehouses
+            personalNewSkulls
+
+        currentWarehouse
+            availableDeliveries '?
+
+Sales
+    currentUser ->
+        availableStaffSale
+        availableCustomerSale
+        currentOrder '1'
+
+    currentWarehouse ->
+        orderHistory
+
+    '1' ->
+       currentOrderDetails

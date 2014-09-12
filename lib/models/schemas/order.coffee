@@ -20,9 +20,23 @@ Schema2.orders = new SimpleSchema
     type: String
     optional: true
 
+  #-----------
   currentProduct:
     type: String
     optional: true
+
+  currentQuality:
+    type: Number
+    optional: true
+
+  currentPrice:
+    type: Number
+    optional: true
+
+  currentDiscount:
+    type: Number
+    optional: true
+  #-----------
 
   productCount:
     type: Number

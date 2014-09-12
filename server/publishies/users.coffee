@@ -3,3 +3,6 @@ Meteor.publish "allUsers", ->
     fields:
       'emails': 1
       'profile.merchant': 1
+      'currentOrder': 1
+      'currentImport': 1
+      'currentWarehouse': 1

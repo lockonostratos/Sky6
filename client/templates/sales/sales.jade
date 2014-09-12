@@ -4,19 +4,29 @@ template(name="sales")
    .app-editor
       .row
          .col.col-md-2: +iSelect(options=productSelectOptions class="field")
-         .col.col-md-1(style="min-width: 100px" data-toggle="tooltip" title="số lượng"): +iSpinEdit(options=qualityOptions)
-         .col.col-md-1: input.quality(placeholder='So Luong' value="#{currentOrderDetail.quality}"
-          data-toggle="tooltip" title="số lượng")
-         .col.col-md-2: input.price(placeholder='Gia Tien' value="#{currentOrderDetail.price}"
-          data-toggle="tooltip" title="giá bán")
-         .col.col-md-2: input.discountCash(placeholder='Giam Gia' value="#{currentOrderDetail.discountCash}"
-          data-toggle="tooltip" title="giảm giá")
-         .col.col-md-2: input.discountPercent(placeholder='Giam Gia %' value="#{currentOrderDetail.discountPercent}"
-          data-toggle="tooltip" title="giảm giá %")
+         .col.col-auto(style="width: 100px" data-toggle="tooltip" title="số lượng" data-placement="bottom")
+           +iSpinEdit(options=qualityOptions)
+         .col.col-auto(style="width:150px" data-toggle="tooltip" title="giá bán" data-placement="bottom")
+           +iSpinEdit(options=priceOptions)
+         .col.col-auto(style="width:150px" data-toggle="tooltip" title="giảm giá" data-placement="bottom")
+          +iSpinEdit(options=discountCashOptions)
+         .col.col-auto(style="width:150px" data-toggle="tooltip" title="giảm giá %" data-placement="bottom")
+          +iSpinEdit(options=discountPercentOptions)
+         .col.col-auto(style="width:150px" data-toggle="tooltip" title="tổng tiền" data-placement="bottom")
+          +iSpinEdit(options=finalPriceOptions)
+
+      .row
+         .col.col-md-1: input.quality(placeholder='SỐ LƯỢNG' value="#{currentOrderDetail.quality}"
+          data-toggle="tooltip" title="SỐ LƯỢNG" data-placement="bottom")
+         .col.col-md-2: input.price(placeholder='GIÁ BÁN' value="#{currentOrderDetail.price}"
+          data-toggle="tooltip" title="GIÁ BÁN" data-placement="bottom")
+         .col.col-auto: .input-group(data-toggle="tooltip" title="GIẢM GIÁ" data-placement="bottom")
+           input.discountCash(value="#{currentOrderDetail.discountCash}" style="width: 50px;")
+           input.discountPercent(value="#{currentOrderDetail.discountPercent}" style="width: 50px;")
          .col.col-md-2: input.totalPrice(placeholder='Tam Tinh' value="#{currentOrderDetail.totalPrice}"
-          data-toggle="tooltip" title="tạm tính")
+          data-toggle="tooltip" title="tạm tính" data-placement="bottom")
          input.finalPrice(placeholder='Tong Tien' value="#{currentOrderDetail.finalPrice}"
-          data-toggle="tooltip" title="tổng tiền")
+          data-toggle="tooltip" title="tổng tiền" data-placement="bottom")
          button.btn.btn-default.addOrderDetail(type='submit') Add
       .row
          +iSelect(options=sellerSelectOptions width='200px' resultHeight='70px' class="field")
