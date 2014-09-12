@@ -3,17 +3,24 @@ template(name="sales")
       span.caption Bán hàng <small>(#{currentCaption})</small>
    .app-editor
       .row
-         .col.col-md-2: +iSelect(options=productSelectOptions class="field")
-         .col.col-auto(style="width: 100px" data-toggle="tooltip" title="số lượng" data-placement="bottom")
+         .col.col-md-2
+           span.ilabel sản phẩm
+           +iSelect(options=productSelectOptions class="field")
+         .col.col-auto(style="width: 100px")
+           span.ilabel.center số lượng
            +iSpinEdit(options=qualityOptions)
-         .col.col-auto(style="width:150px" data-toggle="tooltip" title="giá bán" data-placement="bottom")
+         .col.col-auto(style="width:150px")
+           span.ilabel giá bán
            +iSpinEdit(options=priceOptions)
-         .col.col-auto(style="width:150px" data-toggle="tooltip" title="giảm giá" data-placement="bottom")
-          +iSpinEdit(options=discountCashOptions)
-         .col.col-auto(style="width:150px" data-toggle="tooltip" title="giảm giá %" data-placement="bottom")
-          +iSpinEdit(options=discountPercentOptions)
-         .col.col-auto(style="width:150px" data-toggle="tooltip" title="tổng tiền" data-placement="bottom")
-          +iSpinEdit(options=finalPriceOptions)
+         .col.col-auto(style="width:250px")
+           span.ilabel.center giảm giá và %
+           .input-group
+             +iSpinEdit(options=discountCashOptions)
+             +iSpinEdit(options=discountPercentOptions)
+
+         .col.col-auto(style="width:150px")
+           span.ilabel giá tổng
+           +iSpinEdit(options=finalPriceOptions)
 
       .row
          .col.col-md-1: input.quality(placeholder='SỐ LƯỢNG' value="#{currentOrderDetail.quality}"

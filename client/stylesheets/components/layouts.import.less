@@ -41,6 +41,7 @@
 
     .col-auto {
       float: left;
+      position: relative;
     }
   }
 
@@ -85,6 +86,46 @@
         .border-left-radius(0);
         border-left: none;
       }
+    }
+    .input-group-btn:not(:first-child):not(:last-child) {
+      .bootstrap-touchspin-up {
+        margin-left: -1px;
+        border-left-color: transparent;
+
+        .border-radius(0)
+      }
+
+      .bootstrap-touchspin-down {
+        margin-right: -1px;
+        border-right-color: transparent;
+        .border-radius(0)
+      }
+    }
+  }
+
+  .ilabel {
+    position: absolute;
+    z-index: 10;
+    line-height: 10px;
+    font-size: 10px;
+    text-align: center;
+    background-color: @orange;
+    color: #fff;
+    left: 15px;
+    top: -4px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+//    border: solid 1px #dfdfdf;
+//    border-bottom: none;
+    padding: 0 4px;
+
+    &.center {
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+    &.right {
+      left: auto;
+      right: 15px;
     }
   }
 }
