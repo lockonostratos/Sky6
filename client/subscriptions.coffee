@@ -13,6 +13,8 @@ Meteor.subscribe 'saleDetails'
 Meteor.subscribe 'deliveries'
 Meteor.subscribe 'returns'
 Meteor.subscribe 'returnDetails'
+Meteor.subscribe 'imports'
+Meteor.subscribe 'importDetails'
 
 Meteor.subscribe 'customers'
 Meteor.subscribe 'tests'

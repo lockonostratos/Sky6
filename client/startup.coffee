@@ -14,12 +14,11 @@ Meteor.startup ->
       Session.set "currentUser", Meteor.users.findOne(Meteor.userId())
       Session.set "availableMerchant", Schema.merchants.findOne({})
 
+  Deps.autorun ->
     if Session.get('currentUser')
       Session.set "currentMerchant", Schema.merchants.findOne(Session.get('currentUser').profile.merchant)
       Session.set "currentWarehouse", Schema.warehouses.findOne(Session.get('currentUser').profile.warehouse)
 
-#      Session.set "availableStaffSale", Meteor.users.find({'profile.merchant': Session.get('currentUser').profile.merchant}).fetch()
-#      Session.set "availableCustomerSale", Schema.customers.find({currentMerchant: Session.get('currentUser').profile.parent}).fetch()
 
   Deps.autorun ->
     if Session.get('currentMerchant')
@@ -37,6 +36,15 @@ Meteor.startup ->
   Deps.autorun ->
     if Session.get('currentWarehouse')
       Session.set 'availableDeliveries', Schema.deliveries.find({warehouse: Session.get('currentWarehouse')._id}).fetch()
+
+
+  Deps.autorun ->
+    if Session.get('currentWarehouse') and Meteor.userId()
+      Session.set 'importHistory', Schema.imports.find({warehouse: Session.get('currentWarehouse')._id, finish: false}).fetch()
+      if Session.get('importHistory')
+        Session.setDefault('currentImport', Session.get('importHistory')[0])
+      if Session.get('currentImport')
+        Session.setDefault('currentImportDetails', Schema.importDetails.find({import: Session.get('currentImport')._id}).fetch())
 
   Deps.autorun ->
     if Session.get('currentMerchant')
