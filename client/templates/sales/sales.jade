@@ -46,6 +46,8 @@ template(name="sales")
 
    //+reactiveTable(collection=orderDetails)
    .app-content
-      +iGrid(options=saleDetailOptions)
+     +iGrid(options=saleDetailOptions)
+   .app-summary(style="height: 80px")
+     | summaries...
    .app-status
-      +iTab(options=tabOptions)
+     +iTab(options=tabOptions)

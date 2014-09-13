@@ -72,7 +72,7 @@ runInitTracker = (context) ->
     currentOrderId = Session.get('currentUser')?.currentOrder
     Session.set('currentOrder', Schema.orders.findOne(currentOrderId)) if currentOrderId
 
-Sky.template.extends Template.sales,
+Sky.appTemplate.extends Template.sales,
   order: -> Session.get('currentOrder')
   fullName: -> Session.get('firstName') + ' ' + Session.get('lastName')
   firstName: -> Session.get('firstName')
