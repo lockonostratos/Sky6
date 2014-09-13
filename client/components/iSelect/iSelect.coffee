@@ -22,12 +22,12 @@ setSelection = ($element, context) ->
   val = context.data.options.reactiveValueGetter()
   $element.select2('val', val) if val
 
-makeSlimScroll = ($element, context) ->
-  maxResultHeight = context.data.maxResultHeight ? 200
-  $element.on 'select2-open', (e) ->
-    $results = $("#select2-drop ul.select2-results")
-    realResultHeight = if $results.height() > maxResultHeight then maxResultHeight else $results.height()
-    console.log realResultHeight
+#makeSlimScroll = ($element, context) ->
+#  maxResultHeight = context.data.maxResultHeight ? 200
+#  $element.on 'select2-open', (e) ->
+#    $results = $("#select2-drop ul.select2-results")
+#    realResultHeight = if $results.height() > maxResultHeight then maxResultHeight else $results.height()
+#    console.log realResultHeight
 #    $results.slimScroll({height: realResultHeight})
 #    $(@).off('select2-open')
 

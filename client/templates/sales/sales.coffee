@@ -73,7 +73,6 @@ runInitTracker = (context) ->
       Session.set 'currentProductMaxTotalPrice', calculateTotalPrice()
       Session.set 'currentProductMaxQuality', maxQuality()
       Session.set 'currentProductDiscountPercent', calculatePercentDiscount()
-#
 
 
     currentOrderId = Session.get('currentUser')?.currentOrder

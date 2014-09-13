@@ -9,16 +9,16 @@ template(name="sales")
          .col.col-auto(style="width: 100px")
            span.ilabel.center số lượng
            +iSpinEdit(options=qualityOptions)
-         .col.col-auto(style="width:150px")
+         .col.col-auto(style="width: 150px")
            span.ilabel giá bán
            +iSpinEdit(options=priceOptions)
-         .col.col-auto(style="width:150px")
+         .col.col-auto(style="width: 150px")
            span.ilabel.center giảm giá
            +iSpinEdit(options=discountCashOptions)
          .col.col-auto(style="width: 100px")
            span.ilabel.center giảm %
            +iSpinEdit(options=discountPercentOptions)
-         .col.col-auto(style="width:150px")
+         .col.col-auto(style="width: 150px")
            span.ilabel giá tổng
            input.quality(value="#{currentTotal}" disabled)
 
@@ -26,15 +26,18 @@ template(name="sales")
      +iGrid(options=saleDetailOptions)
    .app-summary(style="height: 80px")
      .row
-        .col.col-md-2
-          +iSelect(options=sellerSelectOptions width='200px' resultHeight='70px' class="field")
-        .col.col-md-2
-          +iSelect(options=customerSelectOptions width='160px' resultHeight='70px' class="field")
-        .col.col-md-2
-          +iSelect(options=paymentMethodSelectOption width='160px' resultHeight='70px' class="field")
+        .col.col-md-2.pull-right(style="width: 200px; margin-right: 5px;")
+          span.ilabel.right nhân viên
+          +iSelect(options=sellerSelectOptions class="field")
+        .col.col-md-2.pull-right(style="width: 180px")
+          span.ilabel.right khách hàng
+          +iSelect(options=customerSelectOptions class="field")
+        .col.col-auto.pull-right(style="width: 120px")
+          span.ilabel phương thức
+          +iSelect(options=paymentMethodSelectOption class="field")
 
 
-     //+iSelect(options=deliveryTypeSelectOption width='160px' resultHeight='70px' class="field")
+     //+iSelect(options=deliveryTypeSelectOption width='160px' class="field")
      button.btn.btn-default.finish(type='submit') Hoan Tat
    .app-status
      +iTab(options=tabOptions)

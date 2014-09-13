@@ -20,7 +20,7 @@ class Sky
       display: 'TIỀN MẶT'
     ,
       id: 1
-      display: 'NỢ'
+      display: 'GHI NỢ'
     ]
     @deliveryTypes: [
       id: 0

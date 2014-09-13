@@ -62,7 +62,7 @@ migrateToSky6                         LOC            2h [Done]
 Components --------------
 tabControl                                          11h [Done] +8
 selectionControl                                     4h [Done] +1
-textEditControl                                      2h [Working]
+textEditControl                                      2h [Drop]
 spinEditControl                                      3h [Done]
 dateSelectControl                                    3h [Waiting]
 gridControl                                          4h [Finalizing]           <- 3rd

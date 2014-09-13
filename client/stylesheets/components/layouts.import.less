@@ -26,6 +26,16 @@
   background-color: #f1f1f1;
   min-height: 40px;
   border-bottom: 1px solid #eeeeee;
+}
+
+.app-summary {
+  position: fixed;
+  width: 100%;
+  background-color: #fff;
+  border-top: 1px solid #DFDFDF;
+}
+
+.app-editor, .app-summary {
   .field {
     margin: 5px 0;
     width: 100%;
@@ -34,6 +44,7 @@
   .row {
     margin-left: 0;
     margin-right: 0;
+
     .col {
       padding-left: 5px;
       padding-right: 0;
@@ -53,6 +64,9 @@
     border: 1px solid #DFDFDF;
     .border-radius(3px);
     outline: none;
+    &:disabled {
+      background-color: #fff;
+    }
   }
 
   .bootstrap-touchspin {
@@ -132,13 +146,6 @@
 
 .app-content {
 
-}
-
-.app-summary {
-  position: fixed;
-  width: 100%;
-  background-color: #fff;
-  border-top: 1px solid #DFDFDF;
 }
 
 .app-status {
