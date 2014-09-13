@@ -47,6 +47,10 @@ maxQuality = ->
   qualityOrderDetail = _.findWhere(Session.get('currentOrderDetails'), {product: Session.get('currentOrder').currentProduct})?.quality ? 0
   qualityProduct - qualityOrderDetail
 
+calculateTotalPrice = -> Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality
+calculatePercentDiscount = -> Math.round(Session.get('currentOrder')?.currentDiscount*100/(Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality))
+calculateCashDiscount = (percentage)-> Math.floor(calculateTotalPrice() * (percentage / 100))
+
 Session.set('dummyMax', 5)
 Session.set('dummyQuality', 10)
 
@@ -64,8 +68,11 @@ runInitTracker = (context) ->
 
     if Session.get('currentOrder')
       Session.set('currentOrderDetails', Schema.orderDetails.find({order: Session.get('currentOrder')._id}).fetch())
-      Session.set 'currentProductMaxQuality', maxQuality()
       Session.set 'currentProductInstance', Schema.products.findOne(Session.get('currentOrder').currentProduct)
+
+      Session.set 'currentProductMaxTotalPrice', calculateTotalPrice()
+      Session.set 'currentProductMaxQuality', maxQuality()
+      Session.set 'currentProductDiscountPercent', calculatePercentDiscount()
 #
 
 
@@ -77,6 +84,8 @@ Sky.appTemplate.extends Template.sales,
   fullName: -> Session.get('firstName') + ' ' + Session.get('lastName')
   firstName: -> Session.get('firstName')
   currentCaption: -> Session.get('currentOrder')?._id
+  currentTotal: -> (Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality) - Session.get('currentOrder')?.currentDiscount
+
 
   tabOptions:
     source: 'orderHistory'
@@ -183,6 +192,7 @@ Sky.appTemplate.extends Template.sales,
 
   qualityOptions:
     reactiveSetter: (val) ->
+      console.log val
       Schema.orders.update(Session.get('currentOrder')._id, {$set: {currentQuality: val}}) if Session.get('currentOrder')
     reactiveValue: -> Session.get('currentOrder')?.currentQuality ? 1
     reactiveMax: -> Session.get('currentProductMaxQuality') ? 1
@@ -194,35 +204,29 @@ Sky.appTemplate.extends Template.sales,
       Schema.orders.update(Session.get('currentOrder')._id, {$set: {currentPrice: val}}) if Session.get('currentOrder')
     reactiveValue: -> Session.get('currentOrder')?.currentPrice ? 0
     reactiveMax: -> 999999999
-    reactiveMin: -> 1
-    reactiveStep: -> 10000
+    reactiveMin: -> Session.get('currentProductInstance')?.price ? 0
+    reactiveStep: -> 1000
 
   discountCashOptions:
     reactiveSetter: (val)->
       Schema.orders.update(Session.get('currentOrder')._id, {$set: {currentDiscount: val}}) if Session.get('currentOrder')
     reactiveValue: -> Session.get('currentOrder')?.currentDiscount ? 0
-    reactiveMax: -> (Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality)
+    reactiveMax: ->  Session.get('currentProductMaxTotalPrice') ? 0
     reactiveMin: -> 0
-    reactiveStep: -> 10000
+    reactiveStep: -> 1000
+#    others:
+#      forcestepdivisibility: 'none'
 
   discountPercentOptions:
-    reactiveSetter: (val)->
-#      Schema.orders.update(Session.get('currentOrder')._id, {$set: {currentDiscount: val}}) if Session.get('currentOrder')
-    reactiveValue: -> (Session.get('currentOrder')?.currentDiscount*100/(Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality)) ? 0
+    reactiveSetter: (val) ->
+      Schema.orders.update(Session.get('currentOrder')._id, {$set: {currentDiscount: calculateCashDiscount(val)}}) if Session.get('currentOrder')
+    reactiveValue: -> Session.get('currentProductDiscountPercent') ? 0
     reactiveMax: -> 100
     reactiveMin: -> 0
     reactiveStep: -> 1
 
-  finalPriceOptions:
-    reactiveSetter: (val)->
-#      Schema.orders.update(Session.get('currentOrder')._id, {$set: {currentDiscount: val}}) if Session.get('currentOrder')
-    reactiveValue: -> 0
-    reactiveMax: -> 0
-    reactiveMin: -> 0
-    reactiveStep: -> 1
-#
   events:
-    'input input':  (event, template)-> reloadOrderDetail(template, true)
+#    'input input':  (event, template)-> reloadOrderDetail(template, true)
 #    'input .quality':  (event, template)-> console.log event.target.valueOf().value
 #    'input .price':  (event, template)-> console.log event.target.valueOf().value
 #    'input .discountCash':  (event, template)-> console.log event.target.valueOf().value
