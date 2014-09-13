@@ -1,6 +1,32 @@
 Schema.add 'orders', class Order
 
-  addOrderDetail: (option) ->
+  addOrderDetail: (orderDetails)->
+    orderDetail =
+      order           : @id
+      product         : @data.currentProduct
+      quality         : @data.currentQuality
+      price           : @data.currentPrice
+      discountCash    : @data.currentDiscount
+      discountPercent : @data.currentDiscount/(@data.currentQuality * @data.currentPrice)*100
+      totalPrice      : @data.currentQuality * @data.currentPrice
+      finalPrice      : @data.currentQuality * @data.currentPrice - @data.currentDiscount
+
+    findProduct =_.findWhere(orderDetails, {product: @data.currentProduct})
+    findOrderDetail =_.findWhere(orderDetails,{
+      product         : orderDetail.product
+      price           : orderDetail.price
+      discountPercent : orderDetail.discountPercent
+    })
+    if findOrderDetail
+      reUpdateOrderDetail(orderDetail, findProduct)
+    else
+      Schema.orderDetails.insert orderDetail, (error, result) -> console.log result; console.log error if error
+    updateOrderWhenAddOrderDetail(orderDetail, findProduct)
+
+
+
+
+  addNewOrderDetail: (option) ->
     order = this
     newOrderDetail = checkNewOrderDetail(order, option)
     if newOrderDetail.error then return newOrderDetail.message

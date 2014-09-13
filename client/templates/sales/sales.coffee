@@ -26,6 +26,10 @@ orderCreator = (merchantId, warehouseId)->
     merchant      : Session.get('currentMerchant')._id
     warehouse     : Session.get('currentWarehouse')._id
     creator       : Meteor.userId()
+    currentProduct: "null"
+    currentQuality: 0
+    currentPrice  : 0
+    currentDiscount: 0
     orderCode     : 'asdsad'
     deliveryType  : 0
     paymentMethod : 0
@@ -38,6 +42,7 @@ orderCreator = (merchantId, warehouseId)->
     debit         : 0
     billDiscount  : false
     status        : 0
+
   newId = Schema.orders.insert newOrder
   newOrder._id = newId
   newOrder
@@ -83,7 +88,7 @@ Sky.appTemplate.extends Template.sales,
   fullName: -> Session.get('firstName') + ' ' + Session.get('lastName')
   firstName: -> Session.get('firstName')
   currentCaption: -> Session.get('currentOrder')?._id
-  currentTotal: -> (Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality) - Session.get('currentOrder')?.currentDiscount
+  currentFinalPrice: -> (Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality) - Session.get('currentOrder')?.currentDiscount
 
 
   tabOptions:
@@ -191,9 +196,8 @@ Sky.appTemplate.extends Template.sales,
 
   qualityOptions:
     reactiveSetter: (val) ->
-      console.log val
       Schema.orders.update(Session.get('currentOrder')._id, {$set: {currentQuality: val}}) if Session.get('currentOrder')
-    reactiveValue: -> Session.get('currentOrder')?.currentQuality ? 1
+    reactiveValue: -> Session.get('currentOrder')?.currentQuality ? 0
     reactiveMax: -> Session.get('currentProductMaxQuality') ? 1
     reactiveMin: -> 0
     reactiveStep: -> 1
@@ -232,11 +236,7 @@ Sky.appTemplate.extends Template.sales,
 
     'click .addOrderDetail': (event, template)->
       order = Order.findOne(Session.get('currentOrder')._id)
-      console.log order.addOrderDetail({
-        product : Session.get('currentOrder').currentProduct
-        quality : parseInt(template.find(".quality").value)
-        price   : parseInt(template.find(".price").value)
-      })
+      order.addOrderDetail(Session.get('currentOrderDetails'))
 
     'click .finish': (event, template)->
       order = Order.findOne(Session.get('currentOrder')._id)

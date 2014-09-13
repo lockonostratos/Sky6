@@ -19,10 +19,8 @@ Schema2.orderDetails = new SimpleSchema
     decimal: true
     optional: true
 
-  tempDiscountPercent:
+  totalPrice:
     type: Number
-    decimal: true
-    optional: true
 
   finalPrice:
     type: Number

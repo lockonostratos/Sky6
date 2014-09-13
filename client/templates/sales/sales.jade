@@ -1,6 +1,6 @@
 template(name="sales")
    .app-header
-      span.caption Bán hàng <small>(#{currentCaption})</small>
+      span.caption Bán hàng
    .app-editor
       .row
          .col.col-md-2
@@ -15,12 +15,14 @@ template(name="sales")
          .col.col-auto(style="width: 150px")
            span.ilabel.center giảm giá
            +iSpinEdit(options=discountCashOptions)
-         .col.col-auto(style="width: 100px")
+         .col.col-auto(style="width:100px")
            span.ilabel.center giảm %
            +iSpinEdit(options=discountPercentOptions)
          .col.col-auto(style="width: 150px")
            span.ilabel giá tổng
-           input.quality(value="#{currentTotal}" disabled)
+           input.quality(value="#{currentFinalPrice}" disabled)
+         .col.col-auto(style="width:100px")
+           button.btn.btn-default.addOrderDetail(type='submit') Add
 
    .app-content
      +iGrid(options=saleDetailOptions)
