@@ -1,5 +1,5 @@
 template(name="iGrid")
-  .igrid(class="additional")
+  .igrid(class="#{options.wrapperClasses}")
     if classicalHeader
       .igrid-header(class="#{classicalHeader.class}")
         +UI.dynamic(template=itemTemplate data=classicalHeader.columns)

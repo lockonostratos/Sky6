@@ -11,6 +11,8 @@ Schema.add 'orders', class Order
       totalPrice      : @data.currentQuality * @data.currentPrice
       finalPrice      : @data.currentQuality * @data.currentPrice - @data.currentDiscount
 
+      color           : Sky.helpers.randomColor()
+
     findProduct =_.findWhere(orderDetails, {product: @data.currentProduct})
     findOrderDetail =_.findWhere(orderDetails,{
       product         : orderDetail.product
