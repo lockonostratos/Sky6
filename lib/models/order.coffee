@@ -1,9 +1,12 @@
 Schema.add 'orders', class Order
 
-  addOrderDetail: (orderDetails)->
+  addOrderDetail: (product, orderDetails)->
+    console.log product.skulls
     orderDetail =
       order           : @id
       product         : @data.currentProduct
+      name            : product.name
+      skulls          : product.skulls
       quality         : @data.currentQuality
       price           : @data.currentPrice
       discountCash    : @data.currentDiscount
@@ -141,6 +144,7 @@ reUpdateOrderDetail = (newOrderDetail, oldOrderdetail) ->
       quality      : quality
       discountCash : discountCash
       finalPrice   : finalPrice
+      totalPrice   : totalPrice
   , (error, result) -> console.log result; console.log error if error
 
 #cập nhật Order khi thêm mới OrderDetail

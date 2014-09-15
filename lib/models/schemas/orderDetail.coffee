@@ -5,6 +5,18 @@ Schema2.orderDetails = new SimpleSchema
   product:
     type: String
 
+  name:
+    type: String
+    optional: true
+
+  skulls:
+    type: [String]
+    optional: true
+
+  color:
+    type: String
+    optional: true
+
   quality:
     type: Number
 

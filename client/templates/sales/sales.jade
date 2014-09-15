@@ -23,6 +23,8 @@ template(name="sales")
            input.quality(value="#{currentFinalPrice}" disabled)
          .col.col-auto(style="width:100px")
            button.btn.btn-default.addOrderDetail(type='submit') Add
+         .col.col-auto(style="width:100px")
+           button.btn.btn-default.addOrderDetail(type='submit') Add
 
    .app-content
      +iGrid(options=saleDetailOptions)
@@ -35,8 +37,11 @@ template(name="sales")
           span.ilabel.right khách hàng
           +iSelect(options=customerSelectOptions class="field")
         .col.col-auto.pull-right(style="width: 120px")
-          span.ilabel phương thức
+          span.ilabel thanh toán
           +iSelect(options=paymentMethodSelectOption class="field")
+        .col.col-auto.pull-right(style="width: 120px")
+          span.ilabel phương thức
+          +iSelect(options=deliveryTypeSelectOption class="field")
 
 
      //+iSelect(options=deliveryTypeSelectOption width='160px' class="field")

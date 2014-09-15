@@ -236,7 +236,7 @@ Sky.appTemplate.extends Template.sales,
 
     'click .addOrderDetail': (event, template)->
       order = Order.findOne(Session.get('currentOrder')._id)
-      order.addOrderDetail(Session.get('currentOrderDetails'))
+      order.addOrderDetail(Session.get('currentProductInstance'), Session.get('currentOrderDetails'))
 
     'click .finish': (event, template)->
       order = Order.findOne(Session.get('currentOrder')._id)
