@@ -5,3 +5,4 @@ Sky.template.extends Template.saleProductThumbnail,
   formatNumber: (number) -> accounting.formatMoney(number, { format: "%v", precision: 0 })
   pad: (number) ->
     if number < 10 then '0' + number else number
+  round: (number) -> Math.round(number)

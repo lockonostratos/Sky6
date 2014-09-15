@@ -1,25 +1,58 @@
+.thumbnails-headers {
+  &.text-title {
+    .right-caption, .left-caption {
+      font-size: 16px;
+      line-height: 30px;
+      .large-size {
+        font-size: 26px;
+      }
+    }
+  }
+}
+
 .thumbnails {
   width: 100%;
   background-color: @lime;
   float: left;
   color: #fff;
-  .border-radius(2px);
+  margin-bottom: 4px;
+//  .border-radius(2px);
+  &:hover { outline: rgba(0, 0, 0, 0.1) solid 2px; }
+
   .header {
-    .border-top-radius(2px);
+//    .border-top-radius(2px);
     background-color: darken(@lime, 2);
     height: 30px;
+
+    .right-caption {
+      float: right;
+      margin-right: 5px;
+      max-width: 70%;
+      .text-overflow;
+    }
+
+    .left-caption {
+      float: left;
+      margin-left: 5px;
+      max-width: 70%;
+      .text-overflow;
+    }
+
+    .thumbnails-headers;
   }
 
   .main {
     height: 95px;
     position: relative;
     .avatar {
+      position: absolute;
       img {
-        margin: -6px 0 0 10px;
-        height: 70px;
-        width: 70px;
+        background-color: #fff;
+        margin: -10px 0 0 10px;
+        height: 100px;
+        width: 100px;
         .border-radius(50%);
-        border: 3px solid #fff;
+        border: 5px solid #fff;
       }
     }
 
@@ -28,6 +61,11 @@
       position: absolute;
       right: 5px;
       top: 0;
+      &.quality {
+        font-size: 70px;
+        line-height: 60px;
+        font-weight: bold;
+      }
     }
 
     .full-desc {
@@ -36,10 +74,43 @@
       left: 5px;
       bottom: 0;
       font-size: 22px;
+      &.right {
+        left: auto; right: 5px;
+      }
+      &.price {
+        right: 0; left: auto;
+        background-color: rgba(255, 255, 255, 0.4);
+        border-top-left-radius: 50px;
+        padding-left: 20px;
+        padding-right: 5px;
+      }
     }
   }
 
   .footer {
     height: 80px;
   }
+}
+
+.thumbnails {
+  .makeThumbailColors(@i: length(@colors)) when (@i > 0){
+    @color: escape(extract(@colors, @i));
+    &.@{color}{
+      background-color: @@color;
+
+      & when(lightness(@@color) > 80) {
+        color: #444;
+      }
+      & when(lightness(@@color) <= 20) {
+        color: #fff;
+      }
+
+      .header {
+        background-color: lighten(@@color, 4);
+      }
+    }
+    .makeThumbailColors(@i - 1);
+  }
+
+  .makeThumbailColors();
 }

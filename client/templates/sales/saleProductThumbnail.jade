@@ -1,11 +1,13 @@
 template(name="saleProductThumbnail")
   .col.col-lg-2.col-md-3
     .thumbnails(class="#{styles}")
-      .header header
+      .header.text-title
+        .left-caption: span.large-size {{round discountPercent}}<span class="h5">%</span>
+        .right-caption {{name}}
       .main
-        .avatar: img(src="images/watch.jpg")
-        .short-desc short desc
-        .full-desc full desc
+        .avatar: img(src="images/question.png")
+        .short-desc.quality {{pad quality}}
+        .full-desc.price {{formatNumber finalPrice}} <small>VNĐ</small>
 
     //.top #{name}
     //.main
