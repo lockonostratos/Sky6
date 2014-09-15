@@ -1,0 +1,30 @@
+template(name="inventory")
+  .app-header
+    span.caption Trả Hàng
+  .app-editor
+    .row
+      .col.col-auto(style="width: 200px")
+        span.ilabel chọn phiếu bán hàng
+        +iSelect(options=saleSelectOptions class="field")
+      .col.col-auto(style="width: 150px")
+        span.ilabel ghi chu
+        input.comment
+      .col.col-auto(style="width:100px")
+        button.btn.btn-default.addReturn(type='submit') TAO
+    .row
+      .col.col-auto(style="width: 250px")
+        span.ilabel chọn phiếu trả hàng
+        +iSelect(options=returnSelectOptions class="field")
+      .col.col-auto(style="width: 400px")
+        span.ilabel chọn hàng trả
+        +iSelect(options=returnProductSelectOptions class="field")
+      .col.col-auto(style="width: 100px")
+        span.ilabel số lượng trả
+        +iSpinEdit(options=qualityOptions)
+      .col.col-auto(style="width:100px")
+        button.btn.btn-default.addReturnDetail(type='submit') Thêm
+
+
+  .app-content
+  .app-summary(style="height: 80px")
+  .app-status

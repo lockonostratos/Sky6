@@ -1,7 +1,121 @@
+#cập nhật số lượng bán OrderDetail khi tạo mới Orderdetail trùng lắp
+reUpdateOrderDetail = (newOrderDetail, oldOrderdetail) ->
+  quality      = oldOrderdetail.quality + newOrderDetail.quality
+  totalPrice   = quality * oldOrderdetail.price
+  discountCash = totalPrice * oldOrderdetail.discountPercent/100
+  finalPrice   = totalPrice - discountCash
+  Schema.orderDetails.update oldOrderdetail._id,
+    $set:
+      quality      : quality
+      discountCash : discountCash
+      finalPrice   : finalPrice
+      totalPrice   : totalPrice
+  , (error, result) -> console.log result; console.log error if error
+#cập nhật Order khi thêm mới OrderDetail
+updateOrderWhenAddOrderDetail = (newOrderDetail, product)->
+  if product then productCount = 0 else productCount = 1
+  Schema.orders.update Session.get('currentOrder')._id,
+    $inc:
+      productCount  : productCount
+      saleCount     : newOrderDetail.quality
+      discountCash  : newOrderDetail.discountCash
+      totalPrice    : (newOrderDetail.quality * newOrderDetail.price)
+      finalPrice    : (newOrderDetail.quality * newOrderDetail.price - newOrderDetail.discountCash)
+#-------------------Sale------------------------------------
+checkProductInstockQuality= (orderDetailsList, productList)->
+  orderDetails = _.chain(orderDetailsList)
+  .groupBy("product")
+  .map (group, key) ->
+    return {
+    product: key
+    quality: _.reduce(group, ((res, current) -> res + current.quality), 0)
+    }
+  .value()
+  try
+    for currentDetail in orderDetails
+      currentProduct = _.findWhere(productList, {_id: currentDetail.product})
+      if currentProduct.availableQuality < currentDetail.quality
+        throw {message: "lỗi", item: currentDetail}
+
+    return {}
+  catch e
+    return {error: e}
+createSaleAndSaleOrder= (order, currentOrderDetails)->
+  delete order.data._id
+  delete order.data.currentProduct
+  delete order.data.status
+  delete order.data.version
+  order.data.return = false
+  order.data.status = false
+  sale = Schema.sales.insert order.data #  , (e, r) -> console.log currentOrder
+  currentSale = Schema.sales.findOne(sale)
+
+  for currentOrderDetail in currentOrderDetails
+    productDetails = Schema.productDetails.find({product: currentOrderDetail.product}).fetch()
+    subtractQualityOnSales(productDetails, currentOrderDetail, currentSale)
+  if currentSale.deliveryType == 1
+    Schema.deliveries.findOne({sale: currentSale._id})
+  else
+    Schema.sales.update sale, $set: {status: true}
+  #remove Order and OrderDetail
+  Schema.orders.remove order.id
+  for detail in currentOrderDetails
+    Schema.orderDetails.remove detail._id
+subtractQualityOnSales= (stockingItems, sellingItem , currentSale) ->
+  transactionedQuality = 0
+  for product in stockingItems
+    requiredQuality = sellingItem.quality - transactionedQuality
+    if product.availableQuality > requiredQuality
+      takkenQuality = requiredQuality
+    else
+      takkenQuality = product.availableQuality
+    if currentSale.billDiscount
+      totalPrice = (takkenQuality * sellingItem.price)
+      if currentSale.discountCash == 0
+        discountPercent = 0
+      else
+        discountPercent = sale.discountCash/(currentSale.totalPrice/100)
+      discountCash = (discountPercent * totalPrice)/100
+      Schema.saleDetails.insert
+        sale: currentSale._id
+        product: sellingItem.product
+        productDetail: product._id
+        quality: takkenQuality
+        price: sellingItem.price
+        discountCash: discountCash
+        discountPercent: discountPercent
+        finalPrice: totalPrice - discountCash
+    else
+      totalPrice = (takkenQuality * sellingItem.price)
+      discountCash = (sellingItem.discountPercent * totalPrice)/100
+      Schema.saleDetails.insert
+        sale: currentSale._id
+        product: sellingItem.product
+        productDetail: product._id
+        quality: takkenQuality
+        price: sellingItem.price
+        discountCash: discountCash
+        discountPercent: sellingItem.discountPercent
+        finalPrice: totalPrice - discountCash
+
+    if currentSale.deliveryType == 0 then instockQuality = takkenQuality else instockQuality = 0
+    Schema.productDetails.update product._id,
+      $inc:
+        availableQuality: -takkenQuality
+        instockQuality: -instockQuality
+
+    Schema.products.update product.product,
+      $inc:
+        availableQuality: -takkenQuality
+        instockQuality  : -instockQuality
+
+    transactionedQuality += takkenQuality
+    if transactionedQuality == sellingItem.quality then break
+  return transactionedQuality == sellingItem.quality
+
 Schema.add 'orders', class Order
 
-  addOrderDetail: (product, orderDetails)->
-    console.log product.skulls
+  addOrderDetail: (product, orderDetails) ->
     orderDetail =
       order           : @id
       product         : @data.currentProduct
@@ -23,13 +137,10 @@ Schema.add 'orders', class Order
       discountPercent : orderDetail.discountPercent
     })
     if findOrderDetail
-      reUpdateOrderDetail(orderDetail, findProduct)
+      reUpdateOrderDetail(orderDetail, findOrderDetail)
     else
       Schema.orderDetails.insert orderDetail, (error, result) -> console.log result; console.log error if error
     updateOrderWhenAddOrderDetail(orderDetail, findProduct)
-
-
-
 
   addNewOrderDetail: (option) ->
     order = this
@@ -46,10 +157,10 @@ Schema.add 'orders', class Order
     if saleQuality.error then return saleQuality.message
 
     if orderDetails.findOrderDetail
-      reUpdateOrderDetail(option, orderDetails.findProduct)
+      reUpdateOrderDetail(saleQuality.newOrderDetail, orderDetails.findProduct)
     else
-      Schema.orderDetails.insert option, (error, result) -> console.log result; console.log error if error
-    updateOrderWhenAddOrderDetail(option, orderDetails.findProduct)
+      Schema.orderDetails.insert saleQuality.newOrderDetail, (error, result) -> console.log result; console.log error if error
+    updateOrderWhenAddOrderDetail(saleQuality.newOrderDetail, orderDetails.findProduct)
 
   addDelivery: (option) ->
     option.merchant = @data.merchant
@@ -116,7 +227,9 @@ checkAvailableQualityProduct = (order, option) ->
     if product.availableQuality < 0
       return {error: true, message: "Lỗi, Sản Phẩm Đã Hết Hàng"}
     else
-      return {error: false, product: product, message: "OK, Sản Phẩm Còn Hàng"}
+      option.name = product.name
+      option.skulls = product.skulls
+      return {error: false, product: product, newOrderDetail: option, message: "OK, Sản Phẩm Còn Hàng"}
   else
     return {error: true, message: "Lỗi, Sản Phẩm Không Tồn Tại"}
 
@@ -134,123 +247,7 @@ checkSaleQualityProduct = (product, newOrderDetail, oldOrderDetail) ->
       return {error: true, message: "Lỗi, Số Lượng Mua Phải Nhỏ Hơn #{product.availableQuality}"}
     else
       return {error: false, message: "Kho Có Đủ Hàng Để Bán"}
+#----------------------------------------------------------------------------
 
-#cập nhật số lượng bán OrderDetail khi tạo mới Orderdetail trùng lắp
-reUpdateOrderDetail = (newOrderDetail, oldOrderdetail) ->
-  quality      = oldOrderdetail.quality + newOrderDetail.quality
-  totalPrice   = quality * oldOrderdetail.price
-  discountCash = totalPrice * oldOrderdetail.discountPercent/100
-  finalPrice   = totalPrice - discountCash
-  Schema.orderDetails.update oldOrderdetail._id,
-    $set:
-      quality      : quality
-      discountCash : discountCash
-      finalPrice   : finalPrice
-      totalPrice   : totalPrice
-  , (error, result) -> console.log result; console.log error if error
-
-#cập nhật Order khi thêm mới OrderDetail
-updateOrderWhenAddOrderDetail = (newOrderDetail, product)->
-  if product then productCount = 0 else productCount = 1
-  Schema.orders.update Session.get('currentOrder')._id,
-    $inc:
-      productCount  : productCount
-      saleCount     : newOrderDetail.quality
-      discountCash  : newOrderDetail.discountCash
-      totalPrice    : (newOrderDetail.quality * newOrderDetail.price)
-      finalPrice    : (newOrderDetail.quality * newOrderDetail.price - newOrderDetail.discountCash)
-#-------------------Sale------------------------------------
-checkProductInstockQuality= (orderDetailsList, productList)->
-  orderDetails = _.chain(orderDetailsList)
-  .groupBy("product")
-  .map (group, key) ->
-    return {
-    product: key
-    quality: _.reduce(group, ((res, current) -> res + current.quality), 0)
-    }
-  .value()
-  try
-    for currentDetail in orderDetails
-      currentProduct = _.findWhere(productList, {_id: currentDetail.product})
-      if currentProduct.availableQuality < currentDetail.quality
-        throw {message: "lỗi", item: currentDetail}
-
-    return {}
-  catch e
-    return {error: e}
-
-createSaleAndSaleOrder= (order, currentOrderDetails)->
-  delete order.data._id
-  delete order.data.currentProduct
-  delete order.data.status
-  delete order.data.version
-  order.data.return = false
-  order.data.status = false
-  sale = Schema.sales.insert order.data #  , (e, r) -> console.log currentOrder
-  currentSale = Schema.sales.findOne(sale)
-
-  for currentOrderDetail in currentOrderDetails
-    productDetails = Schema.productDetails.find({product: currentOrderDetail.product}).fetch()
-    subtractQualityOnSales(productDetails, currentOrderDetail, currentSale)
-  if currentSale.deliveryType == 1
-    Schema.deliveries.findOne({sale: currentSale._id})
-  else
-    Schema.sales.update sale, $set: {status: true}
-  #remove Order and OrderDetail
-  Schema.orders.remove order.id
-  for detail in currentOrderDetails
-    Schema.orderDetails.remove detail._id
-
-subtractQualityOnSales= (stockingItems, sellingItem , currentSale) ->
-  transactionedQuality = 0
-  for product in stockingItems
-    requiredQuality = sellingItem.quality - transactionedQuality
-    if product.availableQuality > requiredQuality
-      takkenQuality = requiredQuality
-    else
-      takkenQuality = product.availableQuality
-    if currentSale.billDiscount
-      totalPrice = (takkenQuality * sellingItem.price)
-      if currentSale.discountCash == 0
-        discountPercent = 0
-      else
-        discountPercent = sale.discountCash/(currentSale.totalPrice/100)
-      discountCash = (discountPercent * totalPrice)/100
-      Schema.saleDetails.insert
-        sale: currentSale._id
-        product: sellingItem.product
-        productDetail: product._id
-        quality: takkenQuality
-        price: sellingItem.price
-        discountCash: discountCash
-        discountPercent: discountPercent
-        finalPrice: totalPrice - discountCash
-    else
-      totalPrice = (takkenQuality * sellingItem.price)
-      discountCash = (sellingItem.discountPercent * totalPrice)/100
-      Schema.saleDetails.insert
-        sale: currentSale._id
-        product: sellingItem.product
-        productDetail: product._id
-        quality: takkenQuality
-        price: sellingItem.price
-        discountCash: discountCash
-        discountPercent: sellingItem.discountPercent
-        finalPrice: totalPrice - discountCash
-
-    if currentSale.deliveryType == 0 then instockQuality = takkenQuality else instockQuality = 0
-    Schema.productDetails.update product._id,
-      $inc:
-        availableQuality: -takkenQuality
-        instockQuality: -instockQuality
-
-    Schema.products.update product.product,
-      $inc:
-        availableQuality: -takkenQuality
-        instockQuality  : -instockQuality
-
-    transactionedQuality += takkenQuality
-    if transactionedQuality == sellingItem.quality then break
-  return transactionedQuality == sellingItem.quality
 
 

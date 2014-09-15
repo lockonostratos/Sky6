@@ -4,8 +4,7 @@ Startup
         availableMerchant
         currentMerchant
             availableWarehouse
-            skullList
-            currentProviders
+            availableSkulls
             availableProducts
 
             personalNewProducts
@@ -13,6 +12,8 @@ Startup
             personalNewCustomers
             personalNewWarehouses
             personalNewSkulls
+
+            currentProviders
 
         currentWarehouse
             availableDeliveries '?

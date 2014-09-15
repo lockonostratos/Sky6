@@ -5,6 +5,12 @@ Schema2.importDetails = new SimpleSchema
   product:
     type: String
 
+  name:
+    type: String
+
+  skulls:
+    type: [String]
+
   provider:
     type: String
     optional: true
@@ -18,6 +24,13 @@ Schema2.importDetails = new SimpleSchema
   expire:
     type: Date
     optional: true
+
+  color:
+    type: String
+
+  finish:
+    type: Boolean
+
 
   version: { type: Schema.Version }
 

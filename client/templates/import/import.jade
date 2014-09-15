@@ -1,18 +1,26 @@
 template(name="import")
   .app-header
-    span.caption Nhập Kho
+    span.caption Nhập Kho (#{description})
   .app-editor
-     .row
-        .col.col-md-1: +iSelect(options=warehouseSelectOptions width='150px' resultHeight='70px' class="field")
-        .col.col-md-2: input.description(placeholder='Mô Tả' type="text" data-toggle="tooltip" title="số lượng")
-        .col.col-md-2: button.btn.btn-default.addImport(type='submit') Tạo Phiếu Nhập
-     .row
-        .col.col-md-2: +iSelect(options=productSelectOptions class="field")
+      .row
+         .col.col-md-2
+           span.ilabel sản phẩm
+           +iSelect(options=productSelectOptions class="field")
+         .col.col-md-2
+           span.ilabel nhà sản xuất
+           +iSelect(options=providerSelectOptions class="field")
+         .col.col-auto(style="width:130px")
+           span.ilabel số lượng
+           +iSpinEdit(options=qualityOptions class="field")
+         .col.col-auto(style="width:170px")
+           span.ilabel giá nhập
+           +iSpinEdit(options=importPriceOptions class="field")
+         .col.col-auto(style="width:100px")
+           button.btn.btn-default.addImportDetail(type='submit') Add
 
-
-  //+reactiveTable(collection=orderDetails)
   .app-content
-    //+iGrid(options=saleDetailOptions)
-
+    +iGrid(options=importDetailOptions)
+  .app-summary(style="height: 80px")
+    button.btn.btn-default.finishImport(type='submit') Hoan Tat
   .app-status
     +iTab(options=tabOptions)

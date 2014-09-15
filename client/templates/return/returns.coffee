@@ -66,18 +66,18 @@ _.extend Template.returns,
           finalPrice    : finalPrice
           submit        : false
         ,(e,r) ->
-            if r
-              if Schema.returnDetails.find({returns: Session.get('currentReturn')._id, product: Session.get('currentProductDetail').product}).fetch().length == 1
-                Schema.returns.update Session.get('currentReturn')._id, $inc: {
-                  productSale    : 1
-                  productQuality : parseInt(template.find(".returnQuality").value)
-                  totalPrice     : finalPrice
-                }
-              else
-                Schema.returns.update Session.get('currentReturn')._id, $inc: {
-                  productQuality : parseInt(template.find(".returnQuality").value)
-                  totalPrice     : finalPrice
-                }
+          if r
+            if Schema.returnDetails.find({returns: Session.get('currentReturn')._id, product: Session.get('currentProductDetail').product}).fetch().length == 1
+              Schema.returns.update Session.get('currentReturn')._id, $inc: {
+                productSale    : 1
+                productQuality : parseInt(template.find(".returnQuality").value)
+                totalPrice     : finalPrice
+              }
+            else
+              Schema.returns.update Session.get('currentReturn')._id, $inc: {
+                productQuality : parseInt(template.find(".returnQuality").value)
+                totalPrice     : finalPrice
+              }
 
 
 
