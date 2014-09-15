@@ -20,7 +20,10 @@ startTrackingValue = ($element, context) ->
 
 setSelection = ($element, context) ->
   val = context.data.options.reactiveValueGetter()
-  $element.select2('val', val) if val
+  if val is 'skyReset'
+    $element.select2('val', '')
+  else
+    $element.select2('val', val) if val
 
 #makeSlimScroll = ($element, context) ->
 #  maxResultHeight = context.data.maxResultHeight ? 200

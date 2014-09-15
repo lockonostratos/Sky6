@@ -1,0 +1,45 @@
+.thumbnails {
+  width: 100%;
+  background-color: @lime;
+  float: left;
+  color: #fff;
+  .border-radius(2px);
+  .header {
+    .border-top-radius(2px);
+    background-color: darken(@lime, 2);
+    height: 30px;
+  }
+
+  .main {
+    height: 95px;
+    position: relative;
+    .avatar {
+      img {
+        margin: -6px 0 0 10px;
+        height: 70px;
+        width: 70px;
+        .border-radius(50%);
+        border: 3px solid #fff;
+      }
+    }
+
+    .short-desc {
+      .text-overflow;
+      position: absolute;
+      right: 5px;
+      top: 0;
+    }
+
+    .full-desc {
+      .text-overflow;
+      position: absolute;
+      left: 5px;
+      bottom: 0;
+      font-size: 22px;
+    }
+  }
+
+  .footer {
+    height: 80px;
+  }
+}

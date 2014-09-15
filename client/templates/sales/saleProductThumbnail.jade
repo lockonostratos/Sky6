@@ -1,3 +1,17 @@
 template(name="saleProductThumbnail")
-  .tile.double.pumpkin(class="#{sizeClass}")
-     | #{price} x #{quality} - #{discountCash} = #{finalPrice}
+  .col.col-lg-2.col-md-3
+    .thumbnails(class="#{styles}")
+      .header header
+      .main
+        .avatar: img(src="images/watch.jpg")
+        .short-desc short desc
+        .full-desc full desc
+
+    //.top #{name}
+    //.main
+    //  span.h2.pull-right {{pad quality}}
+    //  span.h4.pull-left #{skulls}
+    //.bottom
+    //  | {{formatCurrency price}}
+    //  | {{formatCurrency discountCash}}
+    //.summary.right {{formatCurrency finalPrice}}

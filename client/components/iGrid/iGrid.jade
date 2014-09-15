@@ -4,8 +4,7 @@ template(name="iGrid")
       .igrid-header(class="#{classicalHeader.class}")
         +UI.dynamic(template=itemTemplate data=classicalHeader.columns)
     each dataSource
-      .igrid-details
-        +UI.dynamic(template=itemTemplate data=this)
+      +UI.dynamic(template=itemTemplate data=this)
 
 template(name="testDyn")
   | #{name}, #{price}

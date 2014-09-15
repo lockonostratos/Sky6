@@ -193,7 +193,7 @@ Sky.appTemplate.extends Template.sales,
   saleDetailOptions:
     itemTemplate: 'saleProductThumbnail'
     reactiveSourceGetter: -> Session.get('currentOrderDetails')
-    wrapperClasses: 'detail-grid'
+    wrapperClasses: 'detail-grid row'
 
   qualityOptions:
     reactiveSetter: (val) ->

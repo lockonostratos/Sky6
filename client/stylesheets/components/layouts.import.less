@@ -142,11 +142,41 @@
       right: 15px;
     }
   }
+
+  .btn {
+    margin: 5px 0;
+    padding: 4px 12px;
+    border-radius: 3px;
+  }
 }
 
 .app-content {
   .detail-grid {
-    margin: 5px 0 5px 5px;
+    margin: 5px 3px;
+    .col {
+      padding: 0 2px;
+    }
+    .tile {
+      .border-radius(2px);
+      padding: 5px;
+
+      .title {
+        font-size: 22px;
+        .text-overflow;
+      }
+
+      .details {
+
+      }
+
+      .summary {
+        position: absolute;
+        bottom: 5px;
+        font-size: 20px;
+        &.left  { left: 10px; margin: 0 }
+        &.right { right: 10px; }
+      }
+    }
   }
 }
 

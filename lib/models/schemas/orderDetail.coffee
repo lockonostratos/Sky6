@@ -37,6 +37,10 @@ Schema2.orderDetails = new SimpleSchema
   finalPrice:
     type: Number
 
+  styles:
+    type: String
+    optional: true
+
   version: { type: Schema.Version }
 
 Schema.add 'orderDetails'

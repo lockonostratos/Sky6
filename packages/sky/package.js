@@ -16,9 +16,9 @@ Package.onUse(function(api) {
     ]
   , 'client');
 
-  //api.addFiles([
-  //  'lib/uiHelpers.coffee']
-  //, ['client']);
+  api.addFiles([
+    'lib/3rds/accounting.js']
+  , ['client', 'server']);
 
   api.addFiles([
     'lib/sky.coffee',
