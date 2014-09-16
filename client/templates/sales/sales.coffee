@@ -21,7 +21,7 @@ formatSellerSearch = (item) -> "#{item.emails[0].address}" if item
 formatCustomerSearch = (item) -> "#{item.name}" if item
 formatpaymentMethodSearch = (item) -> "#{item.display}" if item
 
-orderCreator = (merchantId, warehouseId)->
+orderCreator = (merchantId, warehouseId) ->
   newOrder =
     merchant      : Session.get('currentMerchant')._id
     warehouse     : Session.get('currentWarehouse')._id
@@ -79,9 +79,8 @@ runInitTracker = (context) ->
       Session.set 'currentProductMaxQuality', maxQuality()
       Session.set 'currentProductDiscountPercent', calculatePercentDiscount()
 
-
     currentOrderId = Session.get('currentUser')?.currentOrder
-    Session.set('currentOrder', Schema.orders.findOne(currentOrderId)) if currentOrderId
+    Session.setDefault('currentOrder', Schema.orders.findOne(currentOrderId)) if currentOrderId
 
 Sky.appTemplate.extends Template.sales,
   order: -> Session.get('currentOrder')
@@ -99,7 +98,9 @@ Sky.appTemplate.extends Template.sales,
     createAction: -> orderCreator()
     destroyAction: (instance) -> Schema.orders.remove(instance._id)
     navigateAction: (instance) ->
-      Meteor.users.update(Meteor.userId(), {$set: {currentOrder: instance._id}})
+#      console.log 'navigate of sales'
+#      Meteor.call('updateAccount', {currentOrder: instance._id})
+#      Meteor.users.update(Meteor.userId(), {$set: {currentOrder: instance._id}})
 
   productSelectOptions:
     query: (query) -> query.callback

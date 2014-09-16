@@ -1,4 +1,7 @@
-Meteor.publish 'products', -> Schema.products.find {}
+Meteor.publish 'products', -> Schema.products.find {}, {fields: productCode: 1}
+Meteor.publish 'parentProducts', -> Schema.products.find {childProduct: {$exists: true}}, {fields: productCode: 0}
+Meteor.publish 'productWith', (options) -> Schema.products.find options
+
 #  Meteor.publishWithRelations
 #    handle: this
 #    collection: Schema.products
@@ -7,7 +10,6 @@ Meteor.publish 'products', -> Schema.products.find {}
 #      key: 'creator'
 #      collection: Meteor.users
 #    ]
-
 
 Schema.products.allow
   insert: -> true

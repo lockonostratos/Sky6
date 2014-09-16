@@ -23,6 +23,7 @@ class @skyRouter
       @onBeforeAction = -> AccountsEntry.signInRequired(this)
 
   onAfterAction: ->
+    console.log 'this is after Router action!'
     $('#right-side').removeClass()
      .addClass("animated fadeIn")
      .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', -> $(@).removeClass())

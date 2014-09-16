@@ -5,6 +5,7 @@ Meteor.subscribe 'products'
 Meteor.subscribe 'productDetails'
 Meteor.subscribe 'skulls'
 Meteor.subscribe 'providers'
+Meteor.subscribe 'myProfile'
 
 Meteor.subscribe 'orders'
 Meteor.subscribe 'orderDetails'

@@ -1,15 +1,3 @@
-Sky.template.extends Template.iTab,
-  allTabs: -> Session.get(@options.source)
-  getCaption: -> @[UI._templateInstance().data.options.caption ? 'caption']
-  activeClass: -> generateActiveClass(UI._templateInstance(), @)
-
-  events:
-    "click li:not(.new-button,.active)": (event, template) ->
-      Session.set(template.data.options.currentSource, @)
-      template.data.options.navigateAction(@) if template.data.options.navigateAction
-    "click li.new-button": (event, template) -> Session.set(template.data.options.currentSource, template.data.options.createAction())
-    "dblclick span.fa": (event, template) -> destroyTab(template.data, @); event.stopPropagation()
-
 destroyTab = (context, instance) ->
   allTabs = Session.get(context.options.source)
   currentSource = _.findWhere(allTabs, {_id: instance._id})
@@ -31,3 +19,17 @@ generateActiveClass = (context, instance) ->
   key = context.data.options.key
   currentSource = Session.get(context.data.options.currentSource)
   if !currentSource || instance[key] isnt currentSource[key] then '' else 'active'
+
+Sky.template.extends Template.iTab,
+  sources: -> Session.get(@options.source)
+  getCaption: -> @[UI._templateInstance().data.options.caption ? 'caption']
+  activeClass: -> generateActiveClass(UI._templateInstance(), @)
+
+  events:
+    "click li:not(.new-button):not(.active)": (event, template) ->
+      Session.set(template.data.options.currentSource, @)
+      template.data.options.navigateAction(@) if template.data.options.navigateAction
+    "click li.new-button": (event, template) ->
+      Session.set(template.data.options.currentSource, template.data.options.createAction())
+    "dblclick span.fa": (event, template) ->
+      destroyTab(template.data, @); event.stopPropagation()

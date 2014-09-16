@@ -7,7 +7,8 @@ Ban hang                                                [Done]
 Tra hang                                           3.5h [Done]
 Giao hang                                          2.5h [Done]
 Chuyen BAN HANG sang giao dien moi                   6h [80%] 1h
-Chuyen TRA HANG sang giao dien moi                      [Working] 2h
+Summary BAN HANG                                        [Working] Cloud
+Chuyen TRA HANG sang giao dien moi                      [Working-] 2h
 Chuyen GIAO HANG sang giao dien moi                     [Working] 1.5h
 
 Bao cao---------------      8h
@@ -65,7 +66,7 @@ selectionControl                                     4h [Done] +1
 textEditControl                                      2h [Drop]
 spinEditControl                                      3h [Done]
 dateSelectControl                                    3h [Waiting]
-gridControl                                          4h [Finalizing]           <- 3rd
+gridControl                                          4h [Done]           <- 3rd
 modalPopover                                            [Done]
 Aside widget                                            [Done]
 Sky.template                                         5h [Done]
@@ -77,9 +78,14 @@ twoWayBinding /reactive                                 [Done]  <- Write compone
 accountCreattionForCustomer                             [Done]
 
 chat system...                                       6h [Waiting]
-publish-with-relation                                3h [Drop]
+publish/subscribe                                    3h [Done]
 notification-region                                  2h [Done]
-notificationSystem                                   4h [...]
-form & validation                                    4h [Optional]
+notificationSystem                                   4h [Working]
+form & validation                                    4h [Done] <- Handmade
+girdSystem for SkyEngine                                [Important]
 -------------------------
 Upgrade to Sky6 (Meteor 0.9.1.1)	                 5h [Done]
+
+
+Bugs---------------------
+Tab flashed                                             [Done], refactoring users's extra data in to user userProfiles

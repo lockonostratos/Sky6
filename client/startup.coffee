@@ -1,25 +1,22 @@
 root = global ? window
-root.food = "apple"
-root.foodDep = new Deps.Dependency
-root.getFood = -> root.foodDep.depend(); root.food
-root.setFood = (val) ->
-  foodDep.changed() if val isnt root.food
-  root.food = val
-root.test = new Tracker.Dependency
-Sky.global.salesDep = new Deps.Dependency
+autorunDebug = false;
 
 Meteor.startup ->
   Deps.autorun ->
+    console.log ('userAutorunWorking..') if autorunDebug
     if Meteor.userId()
       Session.set "currentUser"       , Meteor.users.findOne(Meteor.userId())
+      Session.set "currentProfile"    , Schema.userProfiles.findOne()
       Session.set "availableMerchant" , Schema.merchants.findOne({})
 
   Deps.autorun ->
+    console.log ('warehouseAutorunWorking..') if autorunDebug
     if Session.get('currentUser')
       Session.set "currentMerchant"   , Schema.merchants.findOne(Session.get('currentUser').profile.merchant)
       Session.set "currentWarehouse"  , Schema.warehouses.findOne(Session.get('currentUser').profile.warehouse)
 
   Deps.autorun ->
+    console.log ('productAutorunWorking..') if autorunDebug
     if Session.get('currentMerchant')
       Session.set "availableWarehouses"  , Schema.warehouses.find({merchant: Session.get("currentMerchant")._id}).fetch()
       Session.set 'availableProducts'    , Schema.products.find({merchant: Session.get('currentMerchant')._id}).fetch()
@@ -35,6 +32,7 @@ Meteor.startup ->
       Session.set 'currentProviders'     , Schema.providers.find({merchant: Session.get("currentMerchant")._id, status: false}).fetch()
 
   Deps.autorun ->
+    console.log ('deliveriesAutorunWorking..') if autorunDebug
     if Session.get('currentWarehouse')
       Session.set 'availableDeliveries', Schema.deliveries.find({warehouse: Session.get('currentWarehouse')._id}).fetch()
 
@@ -42,6 +40,3 @@ Meteor.startup ->
     if Session.get('currentMerchant')
       Sky.global.sellers = Meteor.users.find({}).fetch()
       Sky.global.personalNewProducts = Schema.products.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId(), totalQuality: 0},sort: {version:{createdAt: -1}})
-
-  Deps.autorun ->
-    console.log "Your food is #{root.getFood()}"

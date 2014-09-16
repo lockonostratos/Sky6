@@ -3,7 +3,7 @@ template(name="iTab")
 		li.new-button
 			a(href="#") &nbsp;
 			span.fa.fa-plus
-		each allTabs
+		each sources
 			li(class="#{activeClass}")
 				a.hidden
 				a(href="#") #{getCaption}

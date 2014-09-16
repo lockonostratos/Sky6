@@ -6,3 +6,5 @@ Sky.template.extends Template.saleProductThumbnail,
   pad: (number) ->
     if number < 10 then '0' + number else number
   round: (number) -> Math.round(number)
+  events:
+    "dblclick .full-desc.trash": -> Schema.orderDetails.remove(@_id)

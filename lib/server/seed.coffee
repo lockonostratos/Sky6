@@ -3,6 +3,9 @@ Meteor.startup ->
   resetDatabase()
   if Schema.merchants.find().count() is 0
     creator = Accounts.createUser(email: 'lehaoson@gmail.com', password: 'Ultimate5')
+    cloudProfile = Schema.userProfiles.insert
+      user: creator
+
     ky = Accounts.createUser(email: 'nguyenhongky@gmail.com', password: 'Ultimate5')
     loc = Accounts.createUser(email: 'nguyenquocloc@gmail.com', password: 'Ultimate5')
 
@@ -27,7 +30,6 @@ Meteor.startup ->
     merchant.addCustomer({creator: creator, name: 'Nguyễn Quốc Lộc', phone: '0123456789'})
     merchant.addCustomer({creator: creator, name: 'Lê Thị Thảo Nh', phone: '0123456789'})
 
-
     seedSystemRoles()
     seedProvidersFor merchant, creator
     seedSkullsFor merchant, creator
@@ -49,6 +51,7 @@ resetDatabase = ->
   Schema.orderDetails.remove({})
   Schema.sales.remove({})
   Schema.saleDetails.remove({})
+  Schema.userProfiles.remove({})
 
 seedSystemRoles = ->
   Schema.roles.insert
@@ -105,8 +108,6 @@ seedSkullsFor = (merchant, creator) ->
   merchant.addSkull { name: skull, creator: creator } for skull in skulls
 
 seedProductsFor = (merchant, creator, warehouse) ->
-
-
   childPro = merchant.addProduct
     creator: creator
     warehouse: warehouse
@@ -169,16 +170,5 @@ seedProductsFor = (merchant, creator, warehouse) ->
     merchant: merchant.id
     warehouse: warehouse
     finish: true
-
-  tempPro = Schema.products.findOne({})
-
-  Schema.importDetails.insert
-    import: tempImprt
-    product: tempPro._id
-    importQuality: 20
-    importPrice: 5000
-
-
-
 
 

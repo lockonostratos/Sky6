@@ -2,26 +2,34 @@ Schema2.userProfiles = new SimpleSchema
   user:
     type: String
 
-  isRoot:
-    type: Boolean
+  options:
+    type: Object
+    optional: true
+    blackbox: true
 
-  parent:
-    type: Boolean
-
-  merchant:
+  att:
     type: String
+    optional: true
 
-  warehouse:
-    type: String
-
-  creator:
-    type: String
-
-  currentOrder:
-    type: String
-
-
-
-
+#  user:
+#    type: String
+#
+#  isRoot:
+#    type: Boolean
+#
+#  parent:
+#    type: Boolean
+#
+#  merchant:
+#    type: String
+#
+#  warehouse:
+#    type: String
+#
+#  creator:
+#    type: String
+#
+#  currentOrder:
+#    type: String
 
 Schema.add 'userProfiles'

@@ -11,3 +11,6 @@ Meteor.methods
     newUser = Accounts.createUser({email: email, password: password})
     console.log "the user #{creator} has created an account for his merchant: #{email}"
     #newUser.update()
+
+  updateAccount: (options) ->
+    Meteor.users.update(Meteor.userId(), {$set: options})
