@@ -3,9 +3,6 @@ Meteor.startup ->
   resetDatabase()
   if Schema.merchants.find().count() is 0
     creator = Accounts.createUser(email: 'lehaoson@gmail.com', password: 'Ultimate5')
-    cloudProfile = Schema.userProfiles.insert
-      user: creator
-
     ky = Accounts.createUser(email: 'nguyenhongky@gmail.com', password: 'Ultimate5')
     loc = Accounts.createUser(email: 'nguyenquocloc@gmail.com', password: 'Ultimate5')
 
@@ -20,15 +17,34 @@ Meteor.startup ->
     merchant2 = Merchant.findOne hanoi
     warehouse3 = merchant2.addWarehouse { name: 'Kho Chính', creator: creator }
 
-    Meteor.users.update(creator, $set:{profile: {isRoot: true, parent:huynhChauId, merchant: huynhChauId, warehouse: warehouse}})
-    Meteor.users.update(loc, $set:{profile: {isRoot: false, parent:huynhChauId, merchant: huynhChauId, warehouse: warehouse2, creator: creator}})
-    Meteor.users.update(ky, $set:{profile: {isRoot: false, parent:huynhChauId, merchant: hanoi, warehouse: warehouse3, creator: creator}})
-    Meteor.users.update(ky, $set:{'profile.isRoot': true})
+
+    cloudProfile = Schema.userProfiles.insert
+      user: creator
+      isRoot: true
+      parentMerchant: huynhChauId
+      currentMerchant: huynhChauId
+      currentWarehouse: warehouse
+
+    locProfile = Schema.userProfiles.insert
+      user: loc
+      creator: creator
+      isRoot: false
+      parentMerchant: huynhChauId
+      currentMerchant: huynhChauId
+      currentWarehouse: warehouse
+
+    kyProfile = Schema.userProfiles.insert
+      user: ky
+      creator: loc
+      isRoot: false
+      parentMerchant: huynhChauId
+      currentMerchant: huynhChauId
+      currentWarehouse: warehouse2
 
     merchant.addCustomer({creator: creator, name: 'Lê Ngọc Sơn', phone: '01223456789'})
     merchant.addCustomer({creator: creator, name: 'Nguyễn Hồng Kỳ', phone: '01123456789'})
     merchant.addCustomer({creator: creator, name: 'Nguyễn Quốc Lộc', phone: '0123456789'})
-    merchant.addCustomer({creator: creator, name: 'Lê Thị Thảo Nh', phone: '0123456789'})
+    merchant.addCustomer({creator: creator, name: 'Lê Thị Thảo Nhi', phone: '0123456789'})
 
     seedSystemRoles()
     seedProvidersFor merchant, creator

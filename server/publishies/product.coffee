@@ -1,4 +1,4 @@
-Meteor.publish 'products', -> Schema.products.find {}, {fields: productCode: 1}
+Meteor.publish 'products', -> Schema.products.find {}
 Meteor.publish 'parentProducts', -> Schema.products.find {childProduct: {$exists: true}}, {fields: productCode: 0}
 Meteor.publish 'productWith', (options) -> Schema.products.find options
 

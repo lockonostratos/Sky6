@@ -65,8 +65,8 @@ runInitTracker = (context) ->
     currentOrderId = Session.get('currentUser')?currentOrder
 
     if Session.get('currentUser')
-      Session.set "availableStaffSale", Meteor.users.find({'profile.merchant': Session.get('currentUser').profile.merchant}).fetch()
-      Session.set "availableCustomerSale", Schema.customers.find({currentMerchant: Session.get('currentUser').profile.parent}).fetch()
+      Session.set "availableStaffSale", Meteor.users.find({}).fetch()
+      Session.set "availableCustomerSale", Schema.customers.find({}).fetch()
 
     if Session.get('currentWarehouse')
       Session.set 'orderHistory', Schema.orders.find({warehouse: Session.get('currentWarehouse')._id}).fetch()
@@ -79,7 +79,7 @@ runInitTracker = (context) ->
       Session.set 'currentProductMaxQuality', maxQuality()
       Session.set 'currentProductDiscountPercent', calculatePercentDiscount()
 
-    currentOrderId = Session.get('currentUser')?.currentOrder
+    currentOrderId = Session.get("currentProfile")?.currentOrder
     Session.setDefault('currentOrder', Schema.orders.findOne(currentOrderId)) if currentOrderId
 
 Sky.appTemplate.extends Template.sales,
@@ -89,7 +89,6 @@ Sky.appTemplate.extends Template.sales,
   currentCaption: -> Session.get('currentOrder')?._id
   currentFinalPrice: -> (Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality) - Session.get('currentOrder')?.currentDiscount
 
-
   tabOptions:
     source: 'orderHistory'
     currentSource: 'currentOrder'
@@ -98,6 +97,7 @@ Sky.appTemplate.extends Template.sales,
     createAction: -> orderCreator()
     destroyAction: (instance) -> Schema.orders.remove(instance._id)
     navigateAction: (instance) ->
+      Schema.userProfiles.update(Session.get('currentProfile')._id, {$set: {currentOrder: instance._id}})
 #      console.log 'navigate of sales'
 #      Meteor.call('updateAccount', {currentOrder: instance._id})
 #      Meteor.users.update(Meteor.userId(), {$set: {currentOrder: instance._id}})

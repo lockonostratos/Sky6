@@ -5,15 +5,15 @@ Meteor.startup ->
   Deps.autorun ->
     console.log ('userAutorunWorking..') if autorunDebug
     if Meteor.userId()
-      Session.set "currentUser"       , Meteor.users.findOne(Meteor.userId())
-      Session.set "currentProfile"    , Schema.userProfiles.findOne()
+      Session.set "currentUser"       , Meteor.user()
+      Session.set "currentProfile"    , Schema.userProfiles.findOne(user: Meteor.userId())
       Session.set "availableMerchant" , Schema.merchants.findOne({})
 
   Deps.autorun ->
     console.log ('warehouseAutorunWorking..') if autorunDebug
-    if Session.get('currentUser')
-      Session.set "currentMerchant"   , Schema.merchants.findOne(Session.get('currentUser').profile.merchant)
-      Session.set "currentWarehouse"  , Schema.warehouses.findOne(Session.get('currentUser').profile.warehouse)
+    if Session.get('currentProfile')
+      Session.set "currentMerchant"   , Schema.merchants.findOne(Session.get('currentProfile').currentMerchant)
+      Session.set "currentWarehouse"  , Schema.warehouses.findOne(Session.get('currentProfile').currentWarehouse)
 
   Deps.autorun ->
     console.log ('productAutorunWorking..') if autorunDebug
@@ -38,8 +38,3 @@ Meteor.startup ->
       Session.set 'availableDeliveries', Schema.deliveries.find({warehouse: Session.get('currentWarehouse')._id}).fetch()
       Session.set 'availableSale'   , Schema.sales.find({warehouse: Session.get("currentWarehouse")._id, status: true}).fetch()
       Session.set 'availableReturns'   , Schema.returns.find({warehouse: Session.get("currentWarehouse")._id}).fetch()
-
-  Deps.autorun ->
-    if Session.get('currentMerchant')
-      Sky.global.sellers = Meteor.users.find({}).fetch()
-      Sky.global.personalNewProducts = Schema.products.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId(), totalQuality: 0},sort: {version:{createdAt: -1}})
