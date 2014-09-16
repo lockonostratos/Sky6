@@ -27,6 +27,10 @@ Schema2.sales = new SimpleSchema
     type: Boolean
     optional: true
 
+  returner:
+    type: String
+    optional: true
+
   deliveryType:
     type: Number
 
@@ -61,4 +65,3 @@ Schema2.sales = new SimpleSchema
 
   version: { type: Schema.Version }
 
-Schema.add 'sales'

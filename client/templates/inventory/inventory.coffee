@@ -81,6 +81,7 @@ Sky.appTemplate.extends Template.inventory,
 
 
   events:
+
     'click .addReturn': (event, template)->
       if template.find(".comment").value.length > 10
         currentWarehouse = Warehouse.findOne(Session.get('currentWarehouse')._id)
@@ -88,4 +89,7 @@ Sky.appTemplate.extends Template.inventory,
       else
         console.log 'thông tin quá ngắn'
 
-  rendered: -> runInitReturnsTracker()
+    'click .addReturnDetail': (event, template)->
+
+  rendered: ->
+    runInitReturnsTracker()

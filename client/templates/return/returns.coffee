@@ -16,8 +16,8 @@ _.extend Template.returns,
     'click .createReturns': (event, template) ->
       if template.find(".returnCode").value.length > 0 and template.find(".comment").value.length > 0 and Session.get 'currentSale'
         Schema.returns.insert
-          merchant      : currentMerchant._id
-          warehouse     : currentWarehouse._id
+          merchant      : Session.get('currentWarehouse').merchant
+          warehouse     : Session.get('currentWarehouse')._id
           sale          : Session.get('currentSale')._id
           creator       : Meteor.userId()
           returnCode    : template.find(".returnCode").value

@@ -20,6 +20,7 @@ Schema2.returns = new SimpleSchema
 
   productSale:
     type: Number
+    optional: true
 
   productQuality:
     type: Number

@@ -21,18 +21,6 @@ Schema.add 'warehouses', class Warehouse
     option.finish     = false
     Schema.imports.insert option, (error, result)-> console.log result; console.log error if error
 
-  addReturn:  (option) ->
-    return ('sale trống') if !option.sale
-    option.merchant       = @data.merchant
-    option.warehouse      = @id
-    option.creator        = Meteor.userId()
-    option.returnCode     = "0123456789"
-    option.productSale    = 0
-    option.productQuality = 0
-    option.totalPrice     = 0
-    option.status         = 0
-    Schema.returns.insert option, (error, result)-> console.log result; console.log error if error
-
   updateDelivery: (delivery_id, status)->
     item = Schema.deliveries.findOne(delivery._id)
     if item.status == 0 and status == 0
