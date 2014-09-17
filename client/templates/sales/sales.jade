@@ -41,9 +41,7 @@ template(name="sales")
         .col.col-auto.pull-right(style="width: 120px")
           span.ilabel phương thức
           +iSelect(options=deliveryTypeSelectOption class="field")
-
-
-     //+iSelect(options=deliveryTypeSelectOption width='160px' class="field")
-     button.btn.btn-default.finish(type='submit') Hoan Tat
+     .row
+       button.btn.btn-default.pull-right.finish(type='submit') HOÀN TẤT
    .app-status
      +iTab(options=tabOptions)

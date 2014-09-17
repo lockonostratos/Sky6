@@ -118,12 +118,14 @@ Sky.appTemplate.extends Template.sales,
 #    minimumResultsForSearch: -1
     hotkey: 'return'
     changeAction: (e) ->
-      Schema.orders.update(Session.get('currentOrder')._id, {$set: {
-        currentProduct: e.added._id
-        currentQuality: 1
-        currentPrice: e.added.price
-        currentDiscount: 0
-      }})
+      console.log e.added._id
+      Schema.orders.update Session.get('currentOrder')._id,
+        $set:
+          currentProduct: e.added._id
+          currentQuality: 1
+          currentPrice: e.added.price
+          currentDiscount: 0
+
 
     reactiveValueGetter: -> Session.get('currentOrder')?.currentProduct
 

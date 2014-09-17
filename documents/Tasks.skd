@@ -89,3 +89,5 @@ Upgrade to Sky6 (Meteor 0.9.1.1)	                 5h [Done]
 
 Bugs---------------------
 Tab flashed                                             [Done], refactoring users's extra data in to user userProfiles
+Debuging sales, after reafactored                  0.5h [Done]
+
