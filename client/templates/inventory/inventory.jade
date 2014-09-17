@@ -3,7 +3,7 @@ template(name="inventory")
     span.caption Trả Hàng
   .app-editor
     .row
-      .col.col-auto(style="width: 200px")
+      .col.col-auto(style="width: 250px")
         span.ilabel chọn phiếu bán hàng
         +iSelect(options=saleSelectOptions class="field")
       .col.col-auto(style="width: 400px")
@@ -17,6 +17,15 @@ template(name="inventory")
 
 
 
+
   .app-content
+    +iGrid(options=returnDetailOptions)
   .app-summary(style="height: 80px")
+    .row
+      .col.col-auto(style="width:150px")
+        button.btn.btn-default.finishReturn(type='submit') Xác Nhận NV
+      .col.col-auto(style="width:100px")
+        button.btn.btn-default.editReturn(type='submit') Edit
+      .col.col-auto(style="width:150px")
+        button.btn.btn-default.submitReturn(type='submit') Xác Nhận QL
   .app-status

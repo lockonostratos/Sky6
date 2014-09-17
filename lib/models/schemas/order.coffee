@@ -36,6 +36,11 @@ Schema2.orders = new SimpleSchema
   currentDiscount:
     type: Number
     optional: true
+
+  currentDeposit:
+    type: Number
+    optional: true
+
   #-----------
 
   productCount:
@@ -66,6 +71,11 @@ Schema2.orders = new SimpleSchema
     type: Number
     optional: true
 
+  discountPercent:
+    type: Number
+    decimal: true
+    optional: true
+
   totalPrice:
     type: Number
     optional: true
@@ -73,6 +83,7 @@ Schema2.orders = new SimpleSchema
   finalPrice:
     type: Number
     optional: true
+
 
   deposit:
     type: Number

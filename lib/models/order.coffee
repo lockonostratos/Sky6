@@ -2,7 +2,7 @@
 reUpdateOrderDetail = (newOrderDetail, oldOrderdetail) ->
   quality      = oldOrderdetail.quality + newOrderDetail.quality
   totalPrice   = quality * oldOrderdetail.price
-  discountCash = totalPrice * oldOrderdetail.discountPercent/100
+  discountCash = Math.round(totalPrice * oldOrderdetail.discountPercent/100)
   finalPrice   = totalPrice - discountCash
   Schema.orderDetails.update oldOrderdetail._id,
     $set:
@@ -11,16 +11,53 @@ reUpdateOrderDetail = (newOrderDetail, oldOrderdetail) ->
       finalPrice   : finalPrice
       totalPrice   : totalPrice
   , (error, result) -> console.log result; console.log error if error
+
 #cập nhật Order khi thêm mới OrderDetail
-updateOrderWhenAddOrderDetail = (newOrderDetail, product)->
-  if product then productCount = 0 else productCount = 1
-  Schema.orders.update Session.get('currentOrder')._id,
-    $inc:
-      productCount  : productCount
-      saleCount     : newOrderDetail.quality
-      discountCash  : newOrderDetail.discountCash
-      totalPrice    : (newOrderDetail.quality * newOrderDetail.price)
-      finalPrice    : (newOrderDetail.quality * newOrderDetail.price - newOrderDetail.discountCash)
+Sky.global.reCalculateOrder = (order_id)->
+  order = Schema.orders.findOne(order_id)
+  orderDetails = Schema.orderDetails.find({order: order._id}).fetch()
+  if orderDetails.length > 0
+    temp=
+      saleCount       :0
+      discountCash    :0
+      discountPercent :0
+      totalPrice      :0
+    for detail in orderDetails
+      temp.totalPrice += detail.quality * detail.price
+      temp.saleCount += detail.quality
+      if order.billDiscount
+        temp.discountCash = order.discountCash
+      else
+        temp.discountCash += detail.discountCash
+    temp.discountPercent = temp.discountCash/temp.totalPrice*100
+
+    option =
+      saleCount       : temp.saleCount
+      discountCash    : temp.discountCash
+      discountPercent : temp.discountPercent
+      totalPrice      : temp.totalPrice
+      finalPrice      : temp.totalPrice - temp.discountCash
+    if order.currentDeposit > option.finalPrice
+      option.paymentMethod = 0
+      option.deposit = option.finalPrice
+      option.debit = 0
+    else
+      option.paymentMethod = 1
+      option.deposit = order.currentDeposit
+      option.debit = option.finalPrice - order.currentDeposit
+
+    Schema.orders.update order._id, $set: option
+  else
+    option =
+      saleCount       : 0
+      discountCash    : 0
+      discountPercent : 0
+      totalPrice      : 0
+      finalPrice      : 0
+      paymentMethod   : 0
+    Schema.orders.update order._id, $set: option
+
+
 #-------------------Sale------------------------------------
 checkProductInstockQuality= (orderDetailsList, productList)->
   orderDetails = _.chain(orderDetailsList)
@@ -140,7 +177,7 @@ Schema.add 'orders', class Order
       reUpdateOrderDetail(orderDetail, findOrderDetail)
     else
       Schema.orderDetails.insert orderDetail, (error, result) -> console.log result; console.log error if error
-    updateOrderWhenAddOrderDetail(orderDetail, findProduct)
+    Sky.global.reCalculateOrder(@id)
 
   addNewOrderDetail: (option) ->
     order = this

@@ -62,6 +62,20 @@ Schema2.sales = new SimpleSchema
   status:
     type: Boolean
     optional: true
+#----------------------------------------
+  currentReturn:
+    type: String
+    optional: true
+
+  currentProductDetail:
+    type: String
+    optional: true
+
+  currentQuality:
+    type: Number
+    optional: true
+
+#----------------------------------------
 
   version: { type: Schema.Version }
 

@@ -22,6 +22,10 @@ Schema2.userProfiles = new SimpleSchema
     type: String
     optional: true
 
+  currentSale:
+    type: String
+    optional: true
+
   roles:
     type: [String]
     optional: true

@@ -8,6 +8,22 @@ Schema2.returnDetails  = new SimpleSchema
   productDetail:
     type: String
 
+  name:
+    type: String
+    optional: true
+
+  skulls:
+    type: [String]
+    optional: true
+
+  color:
+    type: String
+    optional: true
+
+  styles:
+    type: String
+    optional: true
+
   returnQuality:
     type: Number
 
@@ -16,6 +32,11 @@ Schema2.returnDetails  = new SimpleSchema
 
   discountCash:
     type: Number
+
+  discountPercent:
+    type: Number
+    decimal: true
+    optional: true
 
   finalPrice:
     type: Number

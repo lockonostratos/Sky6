@@ -8,6 +8,18 @@ Schema2.saleDetails = new SimpleSchema
   productDetail:
     type: String
 
+  name:
+    type: String
+    optional: true
+
+  skulls:
+    type: [String]
+    optional: true
+
+  color:
+    type: String
+    optional: true
+
   quality:
     type: Number
 
@@ -28,6 +40,10 @@ Schema2.saleDetails = new SimpleSchema
 
   finalPrice:
     type: Number
+
+  styles:
+    type: String
+    optional: true
 
 
 

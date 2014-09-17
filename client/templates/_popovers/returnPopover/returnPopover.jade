@@ -1,0 +1,19 @@
+template(name="returnPopover")
+  #returnPopover.popover.fade(style='width: 300px')
+    .arrow
+    h3.popover-title THÊM MỚI TRẢ HÀNG
+    .popover-content.modalable
+      .wrapper.bottom
+        if error
+            |#{error}
+
+        +iSelect(options=productSelectOptions class="field")
+        input.form-control.comment(type='text' placeholder='Thông Tin')
+        div(align="right"):  a.btn.btn-danger.createReturn Tạo mới
+      ul.grid
+      each returnList
+        li
+          | #{_id}
+          a.btn.btn-danger.removeReturn xóa
+
+

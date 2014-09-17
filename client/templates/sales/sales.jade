@@ -41,10 +41,29 @@ template(name="sales")
         .col.col-auto.pull-right(style="width: 120px")
           span.ilabel phương thức
           +iSelect(options=deliveryTypeSelectOption class="field")
+        .col.col-auto.pull-right(style="width: 200px")
+          span.ilabel phương thức giảm giá
+          +iSelect(options=billDiscountSelectOption class="field")
+
+
      .row
-        .col.col-md-8 asdasd
-        .col.col-md-4
+        .col.col-auto.pull-right(style="width: 200px")
           button.btn.btn-default.pull-right.finish(type='submit' style="margin-right: 5px;") HOÀN TẤT
+        .col.col-auto.pull-right(style="width: 150px")
+          span.ilabel giá tổng Bill
+          input.quality(value="#{order.finalPrice}" disabled)
+        .col.col-auto.pull-right(style="width: 150px")
+          span.ilabel.center giảm giá
+          input.quality(value="#{order.discountCash}" disabled)
+        .col.col-auto.pull-right(style="width:100px")
+          span.ilabel.center giảm %
+          input.quality(value="#{currentOrderPercentDiscount}" disabled)
+        .col.col-auto.pull-right(style="width: 150px")
+          span.ilabel giá tạm tính
+          input.quality(value="#{order.totalPrice}" disabled)
+        .col.col-auto.pull-right(style="width: 150px")
+          span.ilabel tiền nhận vao
+          +iSpinEdit(options=depositOptions)
 
    .app-status
      +iTab(options=tabOptions)

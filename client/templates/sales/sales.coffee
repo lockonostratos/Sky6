@@ -23,25 +23,28 @@ formatpaymentMethodSearch = (item) -> "#{item.display}" if item
 
 orderCreator = (merchantId, warehouseId) ->
   newOrder =
-    merchant      : Session.get('currentMerchant')._id
-    warehouse     : Session.get('currentWarehouse')._id
-    creator       : Meteor.userId()
-    currentProduct: "null"
-    currentQuality: 0
-    currentPrice  : 0
-    currentDiscount: 0
-    orderCode     : 'asdsad'
-    deliveryType  : 0
-    paymentMethod : 0
-    discountCash  : 0
-    productCount  : 0
-    saleCount     : 0
-    totalPrice    : 0
-    finalPrice    : 0
-    deposit       : 0
-    debit         : 0
-    billDiscount  : false
-    status        : 0
+    merchant        : Session.get('currentMerchant')._id
+    warehouse       : Session.get('currentWarehouse')._id
+    creator         : Meteor.userId()
+    seller          : Meteor.userId()
+    currentProduct  : "null"
+    currentQuality  : 0
+    currentPrice    : 0
+    currentDiscount : 0
+    orderCode       : 'asdsad'
+    deliveryType    : 0
+    paymentMethod   : 0
+    discountCash    : 0
+    discountPercent : 0
+    productCount    : 0
+    saleCount       : 0
+    totalPrice      : 0
+    finalPrice      : 0
+    deposit         : 0
+    debit           : 0
+    billDiscount    : false
+    status          : 0
+    currentDeposit  : 0
 
   newId = Schema.orders.insert newOrder
   newOrder._id = newId
@@ -62,8 +65,6 @@ Session.set('dummyQuality', 10)
 runInitTracker = (context) ->
   return if Sky.global.saleTracker
   Sky.global.saleTracker = Tracker.autorun ->
-    currentOrderId = Session.get('currentUser')?currentOrder
-
     if Session.get('currentUser')
       Session.set "availableStaffSale", Meteor.users.find({}).fetch()
       Session.set "availableCustomerSale", Schema.customers.find({}).fetch()
@@ -79,15 +80,18 @@ runInitTracker = (context) ->
       Session.set 'currentProductMaxQuality', maxQuality()
       Session.set 'currentProductDiscountPercent', calculatePercentDiscount()
 
-    currentOrderId = Session.get("currentProfile")?.currentOrder
-    Session.setDefault('currentOrder', Schema.orders.findOne(currentOrderId)) if currentOrderId
+    currentOrderId = Session.get('currentProfile')?.currentOrder
+    Session.set('currentOrder', Schema.orders.findOne(currentOrderId)) if currentOrderId
 
 Sky.appTemplate.extends Template.sales,
   order: -> Session.get('currentOrder')
-  fullName: -> Session.get('firstName') + ' ' + Session.get('lastName')
-  firstName: -> Session.get('firstName')
-  currentCaption: -> Session.get('currentOrder')?._id
+  currentOrderPercentDiscount: ->
+    if Session.get('currentOrder')?.discountCash == 0
+      return 0
+    else
+      return Math.round(Session.get('currentOrder')?.discountCash/Session.get('currentOrder')?.totalPrice*100)
   currentFinalPrice: -> (Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality) - Session.get('currentOrder')?.currentDiscount
+
 
   tabOptions:
     source: 'orderHistory'
@@ -95,7 +99,7 @@ Sky.appTemplate.extends Template.sales,
     caption: '_id'
     key: '_id'
     createAction: -> orderCreator()
-    destroyAction: (instance) -> Schema.orders.remove(instance._id)
+    destroyAction: (instance) -> Order.remove(instance._id)
     navigateAction: (instance) ->
       Schema.userProfiles.update(Session.get('currentProfile')._id, {$set: {currentOrder: instance._id}})
 #      console.log 'navigate of sales'
@@ -193,6 +197,25 @@ Sky.appTemplate.extends Template.sales,
       Schema.orders.update(Session.get('currentOrder')._id, {$set: {deliveryType: e.added.id}})
     reactiveValueGetter: -> _.findWhere(Sky.system.deliveryTypes, {id: Session.get('currentOrder')?.deliveryType})
 
+  billDiscountSelectOption:
+    query: (query) -> query.callback
+      results: Sky.system.billDiscounts
+      text: 'id'
+    initSelection: (element, callback) -> callback _.findWhere(Sky.system.billDiscounts, {id: Session.get('currentOrder')?.billDiscount})
+    formatSelection: formatpaymentMethodSearch
+    formatResult: formatpaymentMethodSearch
+    placeholder: 'CHỌN SẢN PTGD'
+    minimumResultsForSearch: -1
+    changeAction: (e) ->
+      order = Order.findOne(Session.get('currentOrder')._id)
+      option = {billDiscount: e.added.id}
+      option.discountCash = 0 if option.billDiscount
+      option.discountPercent = 0 if option.billDiscount
+      Schema.orders.update(Session.get('currentOrder')._id, {$set: option})
+      Sky.global.reCalculateOrder(Session.get('currentOrder')._id)
+
+    reactiveValueGetter: -> _.findWhere(Sky.system.billDiscounts, {id: Session.get('currentOrder')?.billDiscount})
+
   saleDetailOptions:
     itemTemplate: 'saleProductThumbnail'
     reactiveSourceGetter: -> Session.get('currentOrderDetails')
@@ -221,8 +244,8 @@ Sky.appTemplate.extends Template.sales,
     reactiveMax: ->  Session.get('currentProductMaxTotalPrice') ? 0
     reactiveMin: -> 0
     reactiveStep: -> 1000
-#    others:
-#      forcestepdivisibility: 'none'
+    others:
+      forcestepdivisibility: 'none'
 
   discountPercentOptions:
     reactiveSetter: (val) ->
@@ -232,12 +255,29 @@ Sky.appTemplate.extends Template.sales,
     reactiveMin: -> 0
     reactiveStep: -> 1
 
-  events:
-#    'input input':  (event, template)-> reloadOrderDetail(template, true)
-#    'input .quality':  (event, template)-> console.log event.target.valueOf().value
-#    'input .price':  (event, template)-> console.log event.target.valueOf().value
-#    'input .discountCash':  (event, template)-> console.log event.target.valueOf().value
+  depositOptions:
+    reactiveSetter: (val) ->
+      if val > Session.get('currentOrder').finalPrice
+        option=
+          paymentMethod: 0
+          deposit: Session.get('currentOrder').finalPrice
+          debit: 0
 
+        Schema.orders.update(Session.get('currentOrder')._id, {$set: option}) if Session.get('currentOrder')
+      else
+        option=
+          paymentMethod: 1
+          deposit: val
+          debit: Session.get('currentOrder').finalPrice - val
+        Schema.orders.update(Session.get('currentOrder')._id, {$set: option}) if Session.get('currentOrder')
+    reactiveValue: -> Session.get('currentOrder')?.currentDeposit ? 0
+    reactiveMax: -> 999999990
+    reactiveMin: -> 0
+    reactiveStep: -> 10000
+
+
+
+  events:
     'click .addOrderDetail': (event, template)->
       order = Order.findOne(Session.get('currentOrder')._id)
       order.addOrderDetail(Session.get('currentProductInstance'), Session.get('currentOrderDetails'))

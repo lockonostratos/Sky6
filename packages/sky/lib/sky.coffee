@@ -29,6 +29,13 @@ class Sky
       id: 1
       display: 'GIAO HÀNG'
     ]
+    @billDiscounts: [
+      id: false
+      display: 'GIẢM GIÁ THEO SP'
+    ,
+      id: true
+      display: 'GIẢM GIÁ THEO BILL'
+    ]
 
   class @helpers
     @removeVnSigns: (source) ->

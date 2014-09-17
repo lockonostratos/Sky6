@@ -1,4 +1,4 @@
-Sky.template.extends Template.saleProductThumbnail,
+Sky.template.extends Template.returnProductThumbnail,
   colorClasses: 'none'
   formatCurrency: (number) ->
     accounting.formatMoney(number, { symbol: 'VNĐ',  format: "%v %s", precision: 0 })
@@ -7,7 +7,4 @@ Sky.template.extends Template.saleProductThumbnail,
     if number < 10 then '0' + number else number
   round: (number) -> Math.round(number)
   events:
-    "dblclick .full-desc.trash": ->
-      Schema.orderDetails.remove(@_id)
-      console.log @
-      Sky.global.reCalculateOrder(@order)
+    "dblclick .full-desc.trash": -> Schema.returnDetails.remove(@_id)

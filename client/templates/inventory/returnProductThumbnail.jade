@@ -1,0 +1,19 @@
+template(name="returnProductThumbnail")
+  .col.col-lg-2.col-md-3
+    .thumbnails(class="#{styles}")
+      .header.text-title
+        .left-caption: span.large-size {{round discountPercent}}<span class="h5">%</span>
+        .right-caption {{name}}
+      .main
+        .avatar: img(src="images/question.png")
+        .short-desc.quality {{pad returnQuality}}
+        .full-desc.price {{formatNumber finalPrice}} <small>VNĐ</small>
+        .full-desc.trash: a(href="#"): i.fa.fa-trash-o
+    //.top #{name}
+    //.main
+    //  span.h2.pull-right {{pad quality}}
+    //  span.h4.pull-left #{skulls}
+    //.bottom
+    //  | {{formatCurrency price}}
+    //  | {{formatCurrency discountCash}}
+    //.summary.right {{formatCurrency finalPrice}}
