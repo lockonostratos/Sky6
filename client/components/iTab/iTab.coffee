@@ -8,13 +8,14 @@ destroyTab = (context, instance) ->
     context.options.destroyAction(instance)
     nextIndex = if currentIndex == currentLength - 1 then currentIndex - 1 else currentIndex + 1
     Session.set(context.options.currentSource, allTabs[nextIndex])
-    context.options.navigateAction(@) if context.options.navigateAction
+    context.options.navigateAction(allTabs[nextIndex]) if context.options.navigateAction
   else
     console.log 'cannot delete'; return if instance.brandNew
     context.options.destroyAction(instance)
     newTab = context.options.createAction()
     newTab.brandNew = true
     Session.set(context.options.currentSource, newTab)
+    context.options.navigateAction(newTab) if context.options.navigateAction
 
 generateActiveClass = (context, instance) ->
   key = context.data.options.key
