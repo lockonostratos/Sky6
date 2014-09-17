@@ -14,4 +14,4 @@ Schema2.messages = new SimpleSchema
 
   version: { type: Schema.Version }
 
-Schema.add 'messages'
+#Schema.add 'messages'

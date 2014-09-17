@@ -1,0 +1,8 @@
+template(name="unreadMessagePopover")
+  #unreadMessagePopover.popover.fade
+    .arrow
+    h3.popover-title TIN NHẮN CHƯA ĐỌC
+    .popover-content.modalable
+      ul.grid
+        each unreadMessages
+          li {{message}}

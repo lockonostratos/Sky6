@@ -6,8 +6,8 @@ template(name="navigation")
         //  input.form-control(type="text" maxlength="30" placeholder="tìm kiếm nhanh")
 
       ul.nav.navbar-nav.navbar-right.iconic
-        li.iconic: a(href="#")
-          span.count 10
+        li.iconic: a#unreadMessageHandler(href="#")
+          span.count(class="{{messageClass}}") {{unreadMessageCount}}
           i.fa.fa-comments-o
         li.iconic: a(href="#")
           span.count 3
@@ -36,3 +36,5 @@ template(name="navigation")
         //    li: a(href="#") Another action
         //    li: a(href="#") Something else here
         //    li: a(href="#") Separated link
+
+  +unreadMessagePopover

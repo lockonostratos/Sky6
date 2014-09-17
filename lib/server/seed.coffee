@@ -68,6 +68,7 @@ resetDatabase = ->
   Schema.sales.remove({})
   Schema.saleDetails.remove({})
   Schema.userProfiles.remove({})
+  Schema.messages.remove({})
 
 seedSystemRoles = ->
   Schema.roles.insert
