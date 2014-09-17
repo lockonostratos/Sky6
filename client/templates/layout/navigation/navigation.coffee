@@ -4,7 +4,7 @@ _.extend Template.navigation,
       placement: 'right'
       container: 'body'
       title: 'mở rộng/thu nhỏ'
-  events:
-    'focus .branding input': ->
-      Session.set('collapse', '') if Session.get('collapse') is 'collapsed'
-      console.log Session.get('collapse')
+#  events:
+#    'focus .branding input': ->
+#      Session.set('collapse', '') if Session.get('collapse') is 'collapsed'
+#      console.log Session.get('collapse')

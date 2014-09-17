@@ -201,21 +201,28 @@
 }
 
 .sidebar-handle {
+  .collapse-transition;
   display: block;
   position: absolute;
   width: 20px;
   height: 45px;
-  margin-top: 7px;
+  bottom: 250px;
   background-color: @left-pane-background;
-  .border-radius(3px);
+  .border-right-radius(3px);
+
+  i {
+    color: #fff;
+    line-height: 45px;
+    margin-left: 5px;
+  }
 
   &.left  {
-    right: -16px;
-    background: url("images/left-handle.png") no-repeat;
+    right: -5px;
+//    background: url("images/left-handle.png") no-repeat;
   }
   &.right {
-    left: -16px;
-    background: url("images/right-handle.png") no-repeat;
+    left: -5px;
+//    background: url("images/right-handle.png") no-repeat;
   }
 }
 
