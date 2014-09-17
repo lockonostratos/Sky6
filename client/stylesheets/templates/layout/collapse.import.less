@@ -5,5 +5,8 @@
   &.collapsed {
     margin-left: -@left-pane-size + @left-pane-collapse-size;
     nav.main { margin-left: -@left-pane-size + @left-pane-collapse-size; }
+    .app-status, .app-summary {
+      padding-right: @left-pane-collapse-size;
+    }
   }
 }

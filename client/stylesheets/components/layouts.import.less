@@ -28,13 +28,6 @@
   border-bottom: 1px solid #eeeeee;
 }
 
-.app-summary {
-  position: fixed;
-  width: 100%;
-  background-color: #fff;
-  border-top: 1px solid #DFDFDF;
-}
-
 .app-editor, .app-summary {
   .field {
     margin: 5px 0;
@@ -129,8 +122,8 @@
     top: -4px;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
-//    border: solid 1px #dfdfdf;
-//    border-bottom: none;
+    //    border: solid 1px #dfdfdf;
+    //    border-bottom: none;
     padding: 0 4px;
 
     &.center {
@@ -155,6 +148,15 @@
     margin: 5px 3px;
     .col {
       padding: 0 2px;
+      float: left;
+        @media (max-width: 1024px) {width: 33.3%}
+        @media (min-width: 1025px) and (max-width: 1350px) {width: 25%}
+        @media (min-width: 1351px) and (max-width: 1650px) {width: 20%}
+        @media (min-width: 1651px) and (max-width: 1921px) {width: 16.66%}
+        @media (min-width: 1922px) {width: 14.28%}
+//      @media (min-width: 1400px) { width: 20%}
+//      @media (max-width: 1024px) { width: 33.33%; }
+//      @media (max-width: 1000px) { width: 25%; }
     }
     .tile {
       .border-radius(2px);
@@ -180,10 +182,22 @@
   }
 }
 
+.app-summary {
+  position: fixed;
+  width: 100%;
+  background-color: #fff;
+  border-top: 1px solid #DFDFDF;
+}
+
 .app-status {
   width: 100%;
   position: fixed;
   bottom: 0;
+}
+
+.app-summary, .app-status {
+  .collapse-transition;
+  padding-right: @left-pane-size;
 }
 
 .sidebar-handle {

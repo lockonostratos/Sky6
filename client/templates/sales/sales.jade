@@ -29,10 +29,10 @@ template(name="sales")
 
    .app-summary(style="height: 80px")
      .row
-        .col.col-md-2.pull-right(style="width: 200px; margin-right: 5px;")
+        .col.col-auto.pull-right(style="width: 200px; margin-right: 5px;")
           span.ilabel.right nhân viên
           +iSelect(options=sellerSelectOptions class="field")
-        .col.col-md-2.pull-right(style="width: 180px")
+        .col.col-auto.pull-right(style="width: 180px")
           span.ilabel.right khách hàng
           +iSelect(options=customerSelectOptions class="field")
         .col.col-auto.pull-right(style="width: 120px")
@@ -42,6 +42,9 @@ template(name="sales")
           span.ilabel phương thức
           +iSelect(options=deliveryTypeSelectOption class="field")
      .row
-       button.btn.btn-default.pull-right.finish(type='submit') HOÀN TẤT
+        .col.col-md-8 asdasd
+        .col.col-md-4
+          button.btn.btn-default.pull-right.finish(type='submit' style="margin-right: 5px;") HOÀN TẤT
+
    .app-status
      +iTab(options=tabOptions)
