@@ -8,6 +8,7 @@ destroyTab = (context, instance) ->
     context.options.destroyAction(instance)
     nextIndex = if currentIndex == currentLength - 1 then currentIndex - 1 else currentIndex + 1
     Session.set(context.options.currentSource, allTabs[nextIndex])
+    context.options.navigateAction(@) if context.options.navigateAction
   else
     console.log 'cannot delete'; return if instance.brandNew
     context.options.destroyAction(instance)

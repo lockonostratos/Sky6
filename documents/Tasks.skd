@@ -77,7 +77,7 @@ Options                                              3h [40%]
 twoWayBinding /reactive                                 [Done]  <- Write components
 accountCreattionForCustomer                             [Done]
 
-chat system...                                       6h [Waiting]
+chat system...                                       6h [Working]
 publish/subscribe                                    3h [Done]
 notification-region                                  2h [Done]
 notificationSystem                                   4h [Working]
