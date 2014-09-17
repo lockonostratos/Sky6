@@ -2,17 +2,18 @@ header {
   nav.main {
 //    margin-left: @left-pane-size;
 //      box-shadow: 0 0 4px 0 rgba(0,0,0,0.6);
-      background-color: #393939;
-      padding-right: 50px;
-      border: none;
-      z-index: 999;
+    background-color: #393939;
+    padding-right: 5px;
+    min-height: 40px;
+    border: none;
+    z-index: 999;
 
     .branding {
       width: @left-pane-size;
       background-color: @left-pane-background;
       position: relative;
       float: left;
-      height: 50px;
+      height: 40px;
 
       .navbar-form {
         margin-top: 11px;
@@ -41,12 +42,12 @@ header {
     li {
       &.home {
 //        margin-left: 6px;
-        a { font-size: 40px; padding: 5px 10px 5px 10px; }
+        a { font-size: 40px; padding: 0 10px; }
       }
 
       &.iconic {
         a {
-          padding: 22px 10px 0px 10px;
+          padding: 18px 10px 0px 10px;
 
           i {
             color: #888;
@@ -76,7 +77,7 @@ header {
         }
       }
 
-      a { color: #fff; }
+      a { color: #fff; padding: 10px 15px; }
       a:hover {
         background-color: #333 !important;
         color: #ddd;

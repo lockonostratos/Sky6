@@ -1,2 +1,3 @@
 Sky.template.extends Template.unreadMessagePopover,
-  unreadMessages: -> Session.get('unreadMessages') ? []
+  incommingMessages: -> Session.get('incommingMessages') ? []
+  senderEmail: -> Meteor.users.findOne(@sender)?.emails[0]?.address ? 'Not found'

@@ -1,12 +1,14 @@
 root = global ? window
 
 extendObject = (source, destination) ->
-  destination[name] = value for name, value of source
+  exceptions = ['helpers']
+  destination[name] = value for name, value of source when !_(exceptions).contains(name)
   destination.prototype[name] = value for name, value of source.prototype
 
 root.Schema =
   add: (name, extensionObj = null) ->
     Schema[name] = new Meteor.Collection name
+    Schema[name].helpers(extensionObj.helpers) if extensionObj?.helpers
     Schema[name].attachSchema Schema2[name]
     return if !Model.Base
 
@@ -16,15 +18,13 @@ root.Schema =
     root[singularName].schema = Schema[name]
     root[singularName].prototype.schema = Schema[name]
 
-root.Schema2 = {}
-
-root.Model =
-  add: (name, schema, extensionObj) ->
-    class root[name] extends Model.Base
-    root[name].schema = schema
-    extendObject extensionObj, root[name]
-
 root.System = {}
+root.Schema2 = {}
+root.Model = {}
+#  add: (name, schema, extensionObj) ->
+#    class root[name] extends Model.Base
+#    root[name].schema = schema
+#    extendObject extensionObj, root[name]
 
 Schema.Version = new SimpleSchema
   createdAt:

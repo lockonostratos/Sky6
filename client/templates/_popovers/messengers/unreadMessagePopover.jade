@@ -4,5 +4,5 @@ template(name="unreadMessagePopover")
     h3.popover-title TIN NHẮN CHƯA ĐỌC
     .popover-content.modalable
       ul.grid
-        each unreadMessages
-          li {{message}}
+        each incommingMessages
+          li {{senderEmail}} say: {{message}}

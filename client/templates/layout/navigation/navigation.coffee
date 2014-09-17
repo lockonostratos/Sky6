@@ -14,5 +14,5 @@ Sky.appTemplate.extends Template.navigation,
 
   events:
     "click #unreadMessageHandler": (event, template) ->
-      console.log 'Showing..'
+      Messenger.read(message._id) for message in Session.get('unreadMessages')
       $(template.ui.unreadMessagePopover).modalPopover('show')

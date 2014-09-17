@@ -40,3 +40,4 @@ Meteor.startup ->
 
   messengerTracker = Tracker.autorun ->
     Session.set 'unreadMessages', Messenger.unreads().fetch()
+    Session.set 'incommingMessages', Messenger.incommings().fetch()

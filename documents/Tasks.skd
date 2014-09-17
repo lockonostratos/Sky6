@@ -83,6 +83,7 @@ notification-region                                  2h [Done]
 notificationSystem                                   4h [Working]
 form & validation                                    4h [Done] <- Handmade
 girdSystem for SkyEngine                                [Done]
+install collection-helpers                              [Done]
 -------------------------
 Upgrade to Sky6 (Meteor 0.9.1.1)	                 5h [Done]
 
