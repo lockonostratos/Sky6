@@ -11,10 +11,10 @@ Schema2.transactionDetails = new SimpleSchema
   totalCash:
     type: Number
 
-  debtCash:
+  depositCash:
     type: Number
 
-  debtCash:
+  debitCash:
     type: Number
 
   description:

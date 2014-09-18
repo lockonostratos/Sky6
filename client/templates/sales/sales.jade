@@ -53,14 +53,18 @@ template(name="sales")
           span.ilabel giá tổng Bill
           input.quality(value="#{order.finalPrice}" disabled)
         .col.col-auto.pull-right(style="width: 150px")
+          span.ilabel giá tạm tính
+          input.quality(value="#{order.totalPrice}" disabled)
+        .col.col-auto.pull-right(style="width: 150px")
           span.ilabel.center giảm giá
           input.quality(value="#{order.discountCash}" disabled)
         .col.col-auto.pull-right(style="width:100px")
           span.ilabel.center giảm %
           input.quality(value="#{currentOrderPercentDiscount}" disabled)
+
         .col.col-auto.pull-right(style="width: 150px")
-          span.ilabel giá tạm tính
-          input.quality(value="#{order.totalPrice}" disabled)
+          span.ilabel tiền thối lại
+          input.debit(value="#{currentDebit}" disabled)
         .col.col-auto.pull-right(style="width: 150px")
           span.ilabel tiền nhận vao
           +iSpinEdit(options=depositOptions)

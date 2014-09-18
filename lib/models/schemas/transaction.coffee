@@ -18,13 +18,23 @@ Schema2.transactions = new SimpleSchema
     type: String
 
   receivable:
-    type: String
+    type: Boolean
 
   dueDay:
     type: Date
+    optional: true
+
+  totalCash:
+      type: Number
+
+  depositCash:
+    type: Number
+
+  debitCash:
+    type: Number
 
   status:
-    type: Number
+    type: String
 
   version: {type: Schema.Version}
 

@@ -15,6 +15,7 @@ class Sky
       createCustomer:     { key: 'createCustomer',      description: 'tạo khách hàng' }
       accountManagement:  { key: 'accountManagement',   description: 'quản lý nhân viên' }
       customerManagement: { key: 'customerManagement',  description: 'quản lý khách hàng' }
+
     @paymentMethods: [
       id: 0
       display: 'TIỀN MẶT'

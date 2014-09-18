@@ -9,5 +9,4 @@ Sky.template.extends Template.saleProductThumbnail,
   events:
     "dblclick .full-desc.trash": ->
       Schema.orderDetails.remove(@_id)
-      console.log @
       Sky.global.reCalculateOrder(@order)

@@ -85,13 +85,16 @@ runInitTracker = (context) ->
 
 Sky.appTemplate.extends Template.sales,
   order: -> Session.get('currentOrder')
+  currentFinalPrice: -> (Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality) - Session.get('currentOrder')?.currentDiscount
   currentOrderPercentDiscount: ->
     if Session.get('currentOrder')?.discountCash == 0
       return 0
     else
       return Math.round(Session.get('currentOrder')?.discountCash/Session.get('currentOrder')?.totalPrice*100)
-  currentFinalPrice: -> (Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality) - Session.get('currentOrder')?.currentDiscount
-
+  currentDebit: ->
+    return 0 if Session.get('currentOrder')?.paymentMethod == 1
+    if Session.get('currentOrder')?.paymentMethod == 0
+      return Session.get('currentOrder')?.currentDeposit - Session.get('currentOrder')?.finalPrice
 
   tabOptions:
     source: 'orderHistory'
@@ -99,7 +102,7 @@ Sky.appTemplate.extends Template.sales,
     caption: '_id'
     key: '_id'
     createAction: -> orderCreator()
-    destroyAction: (instance) -> Order.remove(instance._id)
+    destroyAction: (instance) -> Order.removeAll(instance._id)
     navigateAction: (instance) ->
       Schema.userProfiles.update(Session.get('currentProfile')._id, {$set: {currentOrder: instance._id}})
 #      console.log 'navigate of sales'
@@ -122,7 +125,6 @@ Sky.appTemplate.extends Template.sales,
 #    minimumResultsForSearch: -1
     hotkey: 'return'
     changeAction: (e) ->
-      console.log e.added._id
       Schema.orders.update Session.get('currentOrder')._id,
         $set:
           currentProduct: e.added._id
@@ -181,7 +183,19 @@ Sky.appTemplate.extends Template.sales,
     placeholder: 'CHỌN SẢN PTGD'
     minimumResultsForSearch: -1
     changeAction: (e) ->
-      Schema.orders.update(Session.get('currentOrder')._id, {$set: {paymentMethod: e.added.id}})
+      if e.added.id == 0
+        option =
+          paymentMethod  : e.added.id
+          currentDeposit : Session.get('currentOrder').finalPrice
+          deposit        : Session.get('currentOrder').finalPrice
+          debit          : 0
+      if e.added.id == 1
+        option =
+          paymentMethod  : e.added.id
+          currentDeposit : 0
+          deposit        : 0
+          debit          : Session.get('currentOrder').finalPrice
+      Schema.orders.update(Session.get('currentOrder')._id, {$set: option})
     reactiveValueGetter: -> _.findWhere(Sky.system.paymentMethods, {id: Session.get('currentOrder')?.paymentMethod})
 
   deliveryTypeSelectOption:
@@ -257,34 +271,33 @@ Sky.appTemplate.extends Template.sales,
 
   depositOptions:
     reactiveSetter: (val) ->
-      if val > Session.get('currentOrder').finalPrice
+      if val >= Session.get('currentOrder').finalPrice
         option=
-          paymentMethod: 0
-          deposit: Session.get('currentOrder').finalPrice
-          debit: 0
+          currentDeposit  : val
+          paymentMethod   : 0
+          deposit         : Session.get('currentOrder').finalPrice
+          debit           : 0
 
         Schema.orders.update(Session.get('currentOrder')._id, {$set: option}) if Session.get('currentOrder')
       else
         option=
-          paymentMethod: 1
-          deposit: val
-          debit: Session.get('currentOrder').finalPrice - val
+          currentDeposit  : val
+          paymentMethod   : 1
+          deposit         : val
+          debit           : Session.get('currentOrder').finalPrice - val
         Schema.orders.update(Session.get('currentOrder')._id, {$set: option}) if Session.get('currentOrder')
     reactiveValue: -> Session.get('currentOrder')?.currentDeposit ? 0
     reactiveMax: -> 999999990
     reactiveMin: -> 0
-    reactiveStep: -> 10000
+    reactiveStep: -> 1000
+    others:
+      forcestepdivisibility: 'none'
 
 
 
   events:
-    'click .addOrderDetail': (event, template)->
-      order = Order.findOne(Session.get('currentOrder')._id)
-      order.addOrderDetail(Session.get('currentProductInstance'), Session.get('currentOrderDetails'))
-
-    'click .finish': (event, template)->
-      order = Order.findOne(Session.get('currentOrder')._id)
-      console.log order.finishOrder()
+    'click .addOrderDetail': (event, template)-> Order.addOrderDetail(Session.get('currentOrder')._id)
+    'click .finish': (event, template)-> Order.findOne(Session.get('currentOrder')._id).finishOrder()
 
   rendered: ->
     runInitTracker()
