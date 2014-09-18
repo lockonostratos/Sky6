@@ -1,23 +1,4 @@
 template(name="sidebar")
-	a.collapse-toggle.sidebar-handle.left: i.fa(class="#{leftCollapseIcon}")
-	//div.sidebar-dump-dash
-	//ul.sidebar-nav
-	//	li: a: i.fa.fa-th-list
-	//	li.active: a: i.fa.fa-comments
-	//	li: a: i.fa.fa-pencil
-	//.sidebar-caption: span Thảo luận
-
-
-	//nav.sidebar
-	//	ul
-	//		li.title main menu
-	//		li.active: a(href="#"): i.icon-home Dashboard
-	//		li.stick.gb-red: a(href="#"): i.icon-cog Layouts
-	//		li.stick.background-lime: a.dropdown-toggle(href="#"): i.icon-tree-view Sub menu
-	//			ul.dropdown-menu(data-role="dropdown")
-	//				li: a(href="#") Sub item 1
-	//				li: a(href="#") Sub item 2
-	//				li: a(href="#") Sub item 3
-	//				li.divider
-	//				li: a(href="#") Sub item 4
-	//				li.disabled: a(href="#") Disabled
+  a.collapse-toggle.sidebar-handle.left
+    i.fa(class="#{leftCollapseIcon}")
+  +messenger

@@ -49,4 +49,90 @@
   .user-info {
 
   }
+
+  #messenger {
+    position: absolute;
+    right: -250px;
+    width: 250px;
+    background-color: #f4f4f4;
+    border: solid 1px #ddd;
+    bottom: 100px;
+    z-index: 1;
+
+    .header {
+      margin: -1px;
+      color: #fff;
+      background-color: @lime;
+      height: 25px;
+      .text-overflow;
+
+      .close-btn {
+        float: right;
+        margin-right: 3px;
+        color: #fff;
+      }
+    }
+
+    ul.messages {
+      height: 245px;
+      margin: 0; padding: 0 5px;
+
+      li {
+        list-style: none;
+        width: 100%;
+        padding: 5px 0;
+
+        span {
+          border: solid 1px #dedede;
+          .border-radius(3px);
+          padding: 0 3px;
+        }
+
+        &.friend-message {
+
+        }
+
+        &.my-message {
+          text-align: right;
+        }
+      }
+    }
+
+    input {
+      width: 100%;
+      border: none;
+      border-top: solid 1px #DDDDDD;
+      background: #FFFFFF;
+      font-size: 12px;
+      height: 28px;
+      line-height: 28px;
+    }
+  }
+
+  .sidebar-handle {
+    .collapse-transition;
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 45px;
+    bottom: 405px;
+    background-color: @left-pane-background;
+    .border-right-radius(3px);
+    z-index: 2;
+
+    i {
+      color: #fff;
+      line-height: 45px;
+      margin-left: 5px;
+    }
+
+    &.left  {
+      right: -5px;
+      //    background: url("images/left-handle.png") no-repeat;
+    }
+    &.right {
+      left: -5px;
+      //    background: url("images/right-handle.png") no-repeat;
+    }
+  }
 }

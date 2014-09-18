@@ -1,7 +1,17 @@
 root = global ? window
 autorunDebug = false;
 
+registerSounds = ->
+  createjs.Sound.registerSound({src:"/sounds/incoming.mp3", id: "sound"})
+
 Meteor.startup ->
+  registerSounds()
+  Session.set('messengerVisibility', true)
+  Session.set('collapse', '');
+  Session.set('currentChatTarget', 'QsvgXdzKPzJxCMD9N')
+  Sky.global.allMessages = Messenger.allMessages()
+  Sky.global.currentMessages = Messenger.currentMessages()
+
   Tracker.autorun ->
     console.log ('userAutorunWorking..') if autorunDebug
     if Meteor.userId()

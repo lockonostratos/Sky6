@@ -8,6 +8,7 @@ Package.onUse(function(api) {
   api.versionsFrom('METEOR@0.9.1.1');
 
   api.addFiles([
+    'lib/3rds/soundjs.js',
     'lib/3rds/animate.css',
     'lib/3rds/slimscroll.js',
     'lib/3rds/jquery.hotkeys.js',

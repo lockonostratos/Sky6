@@ -2,6 +2,7 @@ template(name="navigation")
   nav(role="navigation").navbar.main.navbar-fixed-top
     .wrapper
       .branding
+        span.logo GERA
         //form.navbar-form.navbar-left
         //  input.form-control(type="text" maxlength="30" placeholder="tìm kiếm nhanh")
 
@@ -23,12 +24,13 @@ template(name="navigation")
         li(class="{{isActiveRoute 'import'}}"): a(href="{{pathFor 'import'}}") Import
         li(class="{{isActiveRoute 'delivery'}}"): a(href="{{pathFor 'delivery'}}") Delivery
         li(class="{{isActiveRoute 'returns'}}"): a(href="{{pathFor 'returns'}}") Returns
+        li: a(href="/sign-out") ĐĂNG XUẤT
         //form(role="search").navbar-form.navbar-left
         //  .form-group
         //    input(type="text", placeholder="Search").form-control
         //  button(type="submit").btn.btn-default Submit
-      ul.nav.navbar-nav.navbar-right
-        li: a(href="/sign-out") ĐĂNG XUẤT
+      //ul.nav.navbar-nav.navbar-right
+      //  li: a(href="/sign-out") ĐĂNG XUẤT
         //li.dropdown
         //  a(href="#", data-toggle="dropdown").dropdown-toggle Dropdown <b class="caret"></b>
         //  ul.dropdown-menu
