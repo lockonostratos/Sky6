@@ -32,10 +32,10 @@ class Sky
     ]
     @billDiscounts: [
       id: false
-      display: 'GIẢM GIÁ THEO SP'
+      display: 'GIẢM GIÁ TÙY CHỌN'
     ,
       id: true
-      display: 'GIẢM GIÁ THEO BILL'
+      display: 'GIẢM GIÁ THEO PHIẾU'
     ]
 
   class @helpers

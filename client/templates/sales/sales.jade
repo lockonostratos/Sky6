@@ -45,30 +45,49 @@ template(name="sales")
         span.ilabel phương thức giảm giá
         +iSelect(options=billDiscountSelectOption class="field")
     .row
-      .col.col-auto.pull-right(style="width: 200px")
+      .col.col-auto.pull-right(style="width: 120px")
         button.btn.btn-default.pull-right.finish(type='submit' style="margin-right: 5px;") HOÀN TẤT
-      .col.col-auto.pull-right(style="width: 150px")
+      .col.col-auto.pull-right(style="width: 120px")
         span.ilabel giá tổng Bill
         input.quality(value="#{order.finalPrice}" disabled)
-      .col.col-auto.pull-right(style="width: 150px")
+      .col.col-auto.pull-right(style="width: 120px")
         span.ilabel giá tạm tính
         input.quality(value="#{order.totalPrice}" disabled)
-      .col.col-auto.pull-right(style="width: 150px")
+      .col.col-auto.pull-right(style="width: 160px")
         span.ilabel.center giảm giá
-        input.quality(value="#{order.discountCash}" disabled)
-      .col.col-auto.pull-right(style="width:100px")
+        +iSpinEdit(options=billCashDiscountOptions)
+        //input.quality(value="#{order.discountCash}" disabled)
+      .col.col-auto.pull-right(style="width:150px")
         span.ilabel.center giảm %
-        input.quality(value="#{currentOrderPercentDiscount}" disabled)
-
-      .col.col-auto.pull-right(style="width: 150px")
+        +iSpinEdit(options=billPercentDiscountOptions)
+        //input.quality(value="#{currentOrderPercentDiscount}" disabled)
+      .col.col-auto.pull-right(style="width: 120px")
         span.ilabel tiền thối lại
         input.debit(value="#{currentDebit}" disabled)
-      .col.col-auto.pull-right(style="width: 150px")
+      .col.col-auto.pull-right(style="width: 160px")
         span.ilabel tiền nhận vao
         +iSpinEdit(options=depositOptions)
-    .row.extra(name="delivery" visibility="true"): span.pull-right this is extra delivery
-    .row.extra(name="e2"): span.pull-right this is extra row 2
-    .row.extra(name="e3"): span.pull-right this is extra row 3
+
+    .row.extra(name='delivery')
+      .col.col-auto.pull-right(style="width:200px")
+        span.ilabel ghi chú
+        input.comment(value="#{delivery.comment}")
+      .col.col-auto.pull-right(style="width:100px")
+        span.ilabel ngày giao hàng
+        input.deliveryDate(value="#{delivery.deliveryDate}")
+      .col.col-auto.pull-right(style="width:350px")
+        span.ilabel địa chỉ giao hàng
+        input.deliveryAddress(value="#{delivery.deliveryAddress}")
+      .col.col-auto.pull-right(style="width:130px")
+        span.ilabel số điện thoại
+        input.contactPhone(value="#{delivery.contactPhone}")
+      .col.col-auto.pull-right(style="width:170px")
+        span.ilabel tên người nhận
+        input.contactName(value="#{delivery.contactName}")
+
+
+
+
 
   .app-status
    +iTab(options=tabOptions)
