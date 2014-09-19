@@ -49,4 +49,3 @@ Schema2.saleDetails = new SimpleSchema
 
   version: { type: Schema.Version }
 
-Schema.add 'saleDetails'

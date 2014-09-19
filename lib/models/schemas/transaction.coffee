@@ -38,7 +38,7 @@ Schema2.transactions = new SimpleSchema
 
   version: {type: Schema.Version}
 
-Schema.add 'transactions'
+
 
 
 

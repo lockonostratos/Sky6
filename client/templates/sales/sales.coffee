@@ -1,3 +1,8 @@
+formatProductSearch = (item) -> "#{item.name} [#{item.skulls}]" if item
+formatSellerSearch = (item) -> "#{item.emails[0].address}" if item
+formatCustomerSearch = (item) -> "#{item.name}" if item
+formatpaymentMethodSearch = (item) -> "#{item.display}" if item
+
 reloadOrderDetail = (template, disCash)->
   quality         = template.find(".quality").value         = calculationValueNumber(template.find(".quality").value, 1, 100)
   price           = template.find(".price").value           = calculationValueNumber(template.find(".price").value, 0)
@@ -15,40 +20,6 @@ calculationValueNumber= (value, min, max)->
   return min if !temp || !temp || temp < min || max == min
   return max if max and temp > max
   return temp
-
-formatProductSearch = (item) -> "#{item.name} [#{item.skulls}]" if item
-formatSellerSearch = (item) -> "#{item.emails[0].address}" if item
-formatCustomerSearch = (item) -> "#{item.name}" if item
-formatpaymentMethodSearch = (item) -> "#{item.display}" if item
-
-orderCreator = (merchantId, warehouseId) ->
-  newOrder =
-    merchant        : Session.get('currentMerchant')._id
-    warehouse       : Session.get('currentWarehouse')._id
-    creator         : Meteor.userId()
-    seller          : Meteor.userId()
-    currentProduct  : "null"
-    currentQuality  : 0
-    currentPrice    : 0
-    currentDiscount : 0
-    orderCode       : 'asdsad'
-    deliveryType    : 0
-    paymentMethod   : 0
-    discountCash    : 0
-    discountPercent : 0
-    productCount    : 0
-    saleCount       : 0
-    totalPrice      : 0
-    finalPrice      : 0
-    deposit         : 0
-    debit           : 0
-    billDiscount    : false
-    status          : 0
-    currentDeposit  : 0
-
-  newId = Schema.orders.insert newOrder
-  newOrder._id = newId
-  newOrder
 
 maxQuality = ->
   qualityProduct = Session.get('currentProductInstance')?.availableQuality if Session.get('currentProductInstance')
@@ -101,10 +72,11 @@ Sky.appTemplate.extends Template.sales,
     currentSource: 'currentOrder'
     caption: '_id'
     key: '_id'
-    createAction: -> orderCreator()
+    createAction: -> Order.createOrderAndSelect()
     destroyAction: (instance) -> Order.removeAll(instance._id)
-    navigateAction: (instance) ->
-      Schema.userProfiles.update(Session.get('currentProfile')._id, {$set: {currentOrder: instance._id}})
+    navigateAction: (instance) -> UserProfile.update {currentOrder: instance._id}
+
+#      Schema.orders.findOne({},{sort: {'version.createdAt':-1}})._id
 #      console.log 'navigate of sales'
 #      Meteor.call('updateAccount', {currentOrder: instance._id})
 #      Meteor.users.update(Meteor.userId(), {$set: {currentOrder: instance._id}})
@@ -297,7 +269,7 @@ Sky.appTemplate.extends Template.sales,
 
   events:
     'click .addOrderDetail': (event, template)-> Order.addOrderDetail(Session.get('currentOrder')._id)
-    'click .finish': (event, template)-> Order.findOne(Session.get('currentOrder')._id).finishOrder()
+    'click .finish': (event, template)-> console.log Order.finishOrder(Session.get('currentOrder')._id)
 
   rendered: ->
     runInitTracker()

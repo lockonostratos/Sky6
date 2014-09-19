@@ -3,6 +3,17 @@ reUpdateImportDetail = (newImportDetail, oldImportDetail) ->
     console.log result; console.log error if error
 
 Schema.add 'imports', class Import
+  @createdByWarehouseAndSelect: (warehouseID, option)->
+    return ('Kho không chính xác') if !warehouse = Schema.warehouses.findOne(warehouseID)
+    return ('Mô Tả Không Được Đễ Trống') if !option.description
+    option.merchant   = warehouse.merchant
+    option.warehouse  = warehouse._id
+    option.creator    = Meteor.userId()
+    option.finish     = false
+    option._id = Schema.imports.insert option, (error, result)-> console.log result; console.log error if error
+    UserProfile.update {currentImport: option._id}
+
+
   addImportDetail: (product, importDetails)->
     importDetail =
       import        : @id

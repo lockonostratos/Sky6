@@ -48,4 +48,3 @@ Schema2.orderDetails = new SimpleSchema
 
   version: { type: Schema.Version }
 
-Schema.add 'orderDetails'

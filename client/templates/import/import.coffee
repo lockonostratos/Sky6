@@ -19,11 +19,13 @@ runInitImportTracker = (context) ->
   Sky.global.importTracker = Tracker.autorun ->
     if Session.get('currentWarehouse')
       Session.set 'importHistory', Schema.imports.find({warehouse: Session.get('currentWarehouse')._id, finish: false}).fetch()
-    if Session.get('importHistory')
-      Session.set('currentImport', Session.get('importHistory')[0])
+
     if Session.get('currentImport')
       Session.set('currentImportDetails', Schema.importDetails.find({import: Session.get('currentImport')._id}).fetch())
       Session.set 'currentProductInstance', Schema.products.findOne(Session.get('currentImport').currentProduct)
+
+    currentImportId = Session.get('currentProfile')?.currentImport
+    Session.set('currentImport', Schema.imports.findOne(currentImportId)) if currentImportId
 
 
 Sky.appTemplate.extends Template.import,
@@ -34,8 +36,9 @@ Sky.appTemplate.extends Template.import,
     currentSource: 'currentImport'
     caption: 'description'
     key: '_id'
-    createAction: -> importCreator()
-    destroyAction: (instance) -> Schema.imports.remove(instance._id)
+    createAction  : -> Import.createdByWarehouseAndSelect(Session.get('currentWarehouse')._id, {description: 'new'})
+    destroyAction : (instance) -> Schema.imports.remove(instance._id)
+#    navigateAction:
 
   productSelectOptions:
     query: (query) -> query.callback
