@@ -18,9 +18,20 @@
   float: left;
   position: relative;
 //  box-shadow: 0px 0px 1px #FFC inset;
+
+  &:not([data-app]), &.locked {
+    background-color: gray !important;
+    * { color: #B4B4B4; }
+
+    &:hover {
+      * { display: none; }
+      background: url("/images/lockedx64.png") no-repeat center;
+    }
+  }
+
   &.app-navigator {cursor: pointer; }
   &:hover {
-    outline: rgba(0, 0, 0, 0.1) solid 2px;
+    outline: rgba(255, 255, 255, 0.1) solid 2px;
   }
 
   &.menu {

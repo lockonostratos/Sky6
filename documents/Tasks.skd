@@ -78,6 +78,7 @@ notificationSystem                                   4h [Working]
 form & validation                                    4h [Done] <- Handmade
 girdSystem for SkyEngine                                [Done]
 install collection-helpers                              [Done]
+extraRow for app-summary                                [Done]
 -------------------------
 Upgrade to Sky6 (Meteor 0.9.1.1)	                 5h [Done]
 Makeup metroHome, connect links                         [Working]
@@ -97,4 +98,6 @@ Debuging sales, after reafactored                  0.5h [Done]
 Css----------------------
 Resonsive design for grid-detail                        [Done]
 Remake sidebar                                          [Done]
+Upgrade to fontAwesome 4.2 (from 4.1)                   [Done]
+Dark theme for metroHome                                [Done]
 
