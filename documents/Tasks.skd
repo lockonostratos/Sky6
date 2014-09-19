@@ -6,10 +6,9 @@ Kiem kho                                             2h [...] 4th
 Ban hang                                                [Done]
 Tra hang                                           3.5h [Done]
 Giao hang                                          2.5h [Done]
-Chuyen BAN HANG sang giao dien moi                   6h [80%] 1h
-Summary BAN HANG                                        [Working] Cloud
-Chuyen TRA HANG sang giao dien moi                      [Working-] 2h
-    Giao
+Chuyen BAN HANG sang giao dien moi                   6h [Done] 1h
+Summary BAN HANG                                        [Done] Loc
+Chuyen TRA HANG sang giao dien moi                      [Working] 2h
 Chuyen GIAO HANG sang giao dien moi                     [Working] 1.5h
 
 
@@ -45,14 +44,7 @@ Transaction-------------    6h
 Register & create Merchant                          3h  [...]
 roleManagement                                      5h  [...]
 Thông tin Customer
------------------------
-Product REST                                         2h [...]
-Customer REST                                        2h [...]
-Staff REST                                           2h [...]
-Warehouse REST                                       2h [...]
-Skull REST                                           2h [...]
-Provider REST                                        2h [...]
-Role REST                                            2h [...]
+
 -------modalPopervers ---
 brandNewProducts                      LOC          1.5h [Done]
 brandNewCustomer                      LOC          1.5h [Done]
@@ -88,7 +80,15 @@ girdSystem for SkyEngine                                [Done]
 install collection-helpers                              [Done]
 -------------------------
 Upgrade to Sky6 (Meteor 0.9.1.1)	                 5h [Done]
-
+Makeup metroHome, connect links                         [Working]
+-----------------------
+Product REST                                         2h [...]
+Customer REST                                        2h [...]
+Staff REST                                           2h [...]
+Warehouse REST                                       2h [...]
+Skull REST                                           2h [...]
+Provider REST                                        2h [...]
+Role REST                                            2h [...]
 
 Bugs---------------------
 Tab flashed                                             [Done], refactoring users's extra data in to user userProfiles

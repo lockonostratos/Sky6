@@ -6,9 +6,9 @@ registerSounds = ->
 
 Meteor.startup ->
   registerSounds()
-  Session.set('messengerVisibility', true)
+#  Session.set('messengerVisibility', true)
+#  Session.set('currentChatTarget', 'QsvgXdzKPzJxCMD9N')
   Session.set('collapse', '');
-  Session.set('currentChatTarget', 'QsvgXdzKPzJxCMD9N')
   Sky.global.allMessages = Messenger.allMessages()
   Sky.global.currentMessages = Messenger.currentMessages()
 
