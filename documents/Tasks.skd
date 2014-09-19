@@ -57,7 +57,7 @@ migrateToSky6                         LOC            2h [Done]
 Components --------------
 tabControl                                          11h [Done] +8
 selectionControl                                     4h [Done] +1
-textEditControl                                      2h [Drop]
+textEditControl                                      2h [Done] <- Dùng cách truyền thống binding UI (từ Sky.appTemplate.extends)
 spinEditControl                                      3h [Done]
 dateSelectControl                                    3h [Waiting]
 gridControl                                          4h [Done]           <- 3rd
@@ -101,3 +101,4 @@ Remake sidebar                                          [Done]
 Upgrade to fontAwesome 4.2 (from 4.1)                   [Done]
 Dark theme for metroHome                                [Done]
 
+export MONGO_URL=mongodb://127.0.0.1:27017/eds

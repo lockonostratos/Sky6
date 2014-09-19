@@ -13,7 +13,7 @@ check@1.0.0
 coffeescript@1.0.2
 ctl-helper@1.0.3
 ctl@1.0.1
-dburles:collection-helpers@1.0.0
+dburles:collection-helpers@0.3.2
 ddp@1.0.8
 deps@1.0.3
 ejson@1.0.1
