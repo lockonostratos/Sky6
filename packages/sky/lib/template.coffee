@@ -16,9 +16,11 @@ class Sky.appTemplate
     source[name] = value for name, value of destination when !_(exceptions).contains(name)
 
     rendered = ->
-      if destination.ui
-        @ui = {}
-        @ui[name] = @find(value) for name, value of destination.ui when typeof value is 'string'
+      @ui = {}
+      @ui[name] = @find(value) for name, value of destination.ui when typeof value is 'string'
+
+      @ui.extras = @find(".row.extra")
+      @ui.showExtra = (name) -> console.log 'asd'
 
       @$("[data-toggle='tooltip']").tooltip()
       marginHandler(@)

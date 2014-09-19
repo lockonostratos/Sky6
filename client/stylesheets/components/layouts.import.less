@@ -187,6 +187,17 @@
   width: 100%;
   background-color: #fff;
   border-top: 1px solid #DFDFDF;
+
+  .row.extra {
+    position: absolute;
+    top: -41px;
+    height: 40px; width: 100%;
+    background-color: #fff;
+    border-top: solid 1px #dfdfdf;
+//    display: none;
+    &.e2 { top: -81px; }
+    &.e3 { top: -121px; }
+  }
 }
 
 .app-status {
@@ -195,7 +206,7 @@
   bottom: 0;
 }
 
-.app-summary, .app-status {
+.app-summary, .app-summary > .row.extra, .app-status  {
   .collapse-transition;
   padding-right: @left-pane-size;
 }

@@ -1,73 +1,72 @@
 template(name="sales")
-   .app-header
-      span.caption Bán hàng {{myProfile.data.creator}}, {{sProfile.data.creator}}
-   .app-editor
-      .row
-         .col.col-md-2
-           span.ilabel sản phẩm
-           +iSelect(options=productSelectOptions class="field")
-         .col.col-auto(style="width: 100px")
-           span.ilabel.center số lượng
-           +iSpinEdit(options=qualityOptions)
-         .col.col-auto(style="width: 150px")
-           span.ilabel.center giá bán
-           +iSpinEdit(options=priceOptions)
-         .col.col-auto(style="width: 150px")
-           span.ilabel.center giảm giá
-           +iSpinEdit(options=discountCashOptions)
-         .col.col-auto(style="width:100px")
-           span.ilabel.center giảm %
-           +iSpinEdit(options=discountPercentOptions)
-         .col.col-auto(style="width: 150px")
-           span.ilabel giá tổng
-           input.quality(value="#{currentFinalPrice}" disabled)
-         .col.col-auto(style="width:100px")
-           button.btn.btn-default.addOrderDetail(type='submit') THÊM
+  .app-header
+    span.caption Bán hàng {{myProfile.data.creator}}, {{sProfile.data.creator}}
+  .app-editor
+    .row
+      .col.col-md-2
+        span.ilabel sản phẩm
+        +iSelect(options=productSelectOptions class="field")
+      .col.col-auto(style="width: 100px")
+        span.ilabel.center số lượng
+        +iSpinEdit(options=qualityOptions)
+      .col.col-auto(style="width: 150px")
+        span.ilabel.center giá bán
+        +iSpinEdit(options=priceOptions)
+      .col.col-auto(style="width: 150px")
+        span.ilabel.center giảm giá
+        +iSpinEdit(options=discountCashOptions)
+      .col.col-auto(style="width:100px")
+        span.ilabel.center giảm %
+        +iSpinEdit(options=discountPercentOptions)
+      .col.col-auto(style="width: 150px")
+        span.ilabel giá tổng
+        input.quality(value="#{currentFinalPrice}" disabled)
+      .col.col-auto(style="width:100px")
+        button.btn.btn-default.addOrderDetail(type='submit') THÊM
 
-   .app-content
-     +iGrid(options=saleDetailOptions)
+  .app-content
+   +iGrid(options=saleDetailOptions)
 
-   .app-summary(style="height: 80px")
-     .row
-        .col.col-auto.pull-right(style="width: 200px; margin-right: 5px;")
-          span.ilabel.right nhân viên
-          +iSelect(options=sellerSelectOptions class="field")
-        .col.col-auto.pull-right(style="width: 180px")
-          span.ilabel.right khách hàng
-          +iSelect(options=customerSelectOptions class="field")
-        .col.col-auto.pull-right(style="width: 120px")
-          span.ilabel thanh toán
-          +iSelect(options=paymentMethodSelectOption class="field")
-        .col.col-auto.pull-right(style="width: 120px")
-          span.ilabel phương thức
-          +iSelect(options=deliveryTypeSelectOption class="field")
-        .col.col-auto.pull-right(style="width: 200px")
-          span.ilabel phương thức giảm giá
-          +iSelect(options=billDiscountSelectOption class="field")
+  .app-summary(style="height: 80px")
+    .row
+      .col.col-auto.pull-right(style="width: 200px; margin-right: 5px;")
+        span.ilabel.right nhân viên
+        +iSelect(options=sellerSelectOptions class="field")
+      .col.col-auto.pull-right(style="width: 180px")
+        span.ilabel.right khách hàng
+        +iSelect(options=customerSelectOptions class="field")
+      .col.col-auto.pull-right(style="width: 120px")
+        span.ilabel thanh toán
+        +iSelect(options=paymentMethodSelectOption class="field")
+      .col.col-auto.pull-right(style="width: 120px")
+        span.ilabel phương thức
+        +iSelect(options=deliveryTypeSelectOption class="field")
+      .col.col-auto.pull-right(style="width: 200px")
+        span.ilabel phương thức giảm giá
+        +iSelect(options=billDiscountSelectOption class="field")
+    .row
+      .col.col-auto.pull-right(style="width: 200px")
+        button.btn.btn-default.pull-right.finish(type='submit' style="margin-right: 5px;") HOÀN TẤT
+      .col.col-auto.pull-right(style="width: 150px")
+        span.ilabel giá tổng Bill
+        input.quality(value="#{order.finalPrice}" disabled)
+      .col.col-auto.pull-right(style="width: 150px")
+        span.ilabel giá tạm tính
+        input.quality(value="#{order.totalPrice}" disabled)
+      .col.col-auto.pull-right(style="width: 150px")
+        span.ilabel.center giảm giá
+        input.quality(value="#{order.discountCash}" disabled)
+      .col.col-auto.pull-right(style="width:100px")
+        span.ilabel.center giảm %
+        input.quality(value="#{currentOrderPercentDiscount}" disabled)
 
+      .col.col-auto.pull-right(style="width: 150px")
+        span.ilabel tiền thối lại
+        input.debit(value="#{currentDebit}" disabled)
+      .col.col-auto.pull-right(style="width: 150px")
+        span.ilabel tiền nhận vao
+        +iSpinEdit(options=depositOptions)
+    .row.extra: span.pull-right this is extra row
 
-     .row
-        .col.col-auto.pull-right(style="width: 200px")
-          button.btn.btn-default.pull-right.finish(type='submit' style="margin-right: 5px;") HOÀN TẤT
-        .col.col-auto.pull-right(style="width: 150px")
-          span.ilabel giá tổng Bill
-          input.quality(value="#{order.finalPrice}" disabled)
-        .col.col-auto.pull-right(style="width: 150px")
-          span.ilabel giá tạm tính
-          input.quality(value="#{order.totalPrice}" disabled)
-        .col.col-auto.pull-right(style="width: 150px")
-          span.ilabel.center giảm giá
-          input.quality(value="#{order.discountCash}" disabled)
-        .col.col-auto.pull-right(style="width:100px")
-          span.ilabel.center giảm %
-          input.quality(value="#{currentOrderPercentDiscount}" disabled)
-
-        .col.col-auto.pull-right(style="width: 150px")
-          span.ilabel tiền thối lại
-          input.debit(value="#{currentDebit}" disabled)
-        .col.col-auto.pull-right(style="width: 150px")
-          span.ilabel tiền nhận vao
-          +iSpinEdit(options=depositOptions)
-
-   .app-status
-     +iTab(options=tabOptions)
+  .app-status
+   +iTab(options=tabOptions)
