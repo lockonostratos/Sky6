@@ -6,7 +6,6 @@ Sky.appTemplate.extends Template.navigation,
     unreadMessagePopover: "#unreadMessagePopover"
 
   rendered: ->
-    console.log @ui.unreadMessagePopover
     $(@ui.unreadMessagePopover).modalPopover
       target: '#unreadMessageHandler'
       backdrop: true

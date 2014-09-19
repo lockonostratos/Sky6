@@ -66,7 +66,9 @@ template(name="sales")
       .col.col-auto.pull-right(style="width: 150px")
         span.ilabel tiền nhận vao
         +iSpinEdit(options=depositOptions)
-    .row.extra: span.pull-right this is extra row
+    .row.extra(name="delivery" visibility="true"): span.pull-right this is extra delivery
+    .row.extra(name="e2"): span.pull-right this is extra row 2
+    .row.extra(name="e3"): span.pull-right this is extra row 3
 
   .app-status
    +iTab(options=tabOptions)
