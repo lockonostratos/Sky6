@@ -18,18 +18,20 @@ Router.configure
 #    return
 
 class @skyRouter
-  constructor: (@path, authRequired = true) ->
+  constructor: (@path, authRequired = true, onBeforeAction = null) ->
     if authRequired
       @onBeforeAction = -> AccountsEntry.signInRequired(this)
+    @onBeforeAction = onBeforeAction if onBeforeAction
 
   onAfterAction: ->
     console.log 'this is after Router action!'
+    $("body").removeClass() if @path isnt '/'
     $('#right-side').removeClass()
      .addClass("animated fadeIn")
      .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', -> $(@).removeClass())
 
 Router.map ->
-  @route 'metroHome', new skyRouter('/')
+  @route 'metroHome', new skyRouter('/', false, -> $("body").addClass("dark"))
   @route 'home', new skyRouter('home')
   @route 'warehouse', new skyRouter('warehouse')
   @route 'sales', new skyRouter('sales')

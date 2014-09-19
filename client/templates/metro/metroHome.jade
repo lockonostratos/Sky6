@@ -1,61 +1,69 @@
 template(name="metroHome")
-  .app-header
-    span.caption TỔNG QUAN
-  .app-content
-    .metro
-      .tile-group-1
-        .tile.lime.app-navigator(data-app="roleManager")
-          span.center.middle.caption: span.table: i.fa.fa-eye-slash.fa-3x
-          span.bottom.middle.caption PHÂN QUYỀN
-        .tile.pumpkin
-          span.s7.top.middle.caption NHÂN VIÊN
-          span.center.middle.caption: span.table: i.fa.fa-share-alt.fa-3x
-          span.bottom.middle.caption TÀI KHOẢN
-        .tile.amethyst
-        .tile.blue
-      .tile-group-3
-        .tile.quatro.lime.app-navigator(data-app="sales")
-          span.top.right.caption BÁN HÀNG
-          span.center.middle.caption: span.table: i.fa.fa-tags.fa-5x
-          span.bottom.left.caption: h3 1024 <tiny5>SẢN PHẨM ĐÃ BÁN</tiny5>
-        .tile.pumpkin
-          span.s7.top.middle.caption HỒ SƠ MACKAY
-          span.center.middle.caption: span.table: i.fa.fa-heart.fa-3x
-          span.bottom.middle.caption KHÁCH HÀNG
-        .tile.amethyst
-          span.center.middle.caption: span.table: i.fa.fa-file-text-o.fa-3x
-          span.bottom.middle.caption ĐƠN HÀNG
-        .tile.double.orange
-          span.top.left.caption: h3 134,315,000 <tiny5>PHẢI THU</tiny5>
-          span.center.left.caption: span.table: i.fa.fa-credit-card.fa-3x
-          span.bottom.left.caption CÔNG NỢ
-        .tile
-      .tile-group-3
-        .tile.lime
-          span.center.middle.caption: span.table: i.fa.fa-building-o.fa-3x
-          span.bottom.middle.caption QUẢN LÝ KHO
-        .tile.pumpkin.double.double-vertical.app-navigator(data-app="import")
-          span.center.left.caption: span.table: i.fa.fa-cubes.fa-3x
-          span.bottom.left.caption NHẬP KHO
-          span.top.left.caption
-            h3 2013 <tiny5>TỔNG NHẬP</tiny5>
-          span.bottom.right.caption
-            h3 1245<br /> <tiny5>TỒN KHO</tiny5>
-        .tile.quadro.amethyst
-        .tile.carrot
-          span.s7.top.middle.caption ĐIỀU CHỈNH GIÁ BÁN
-          span.center.middle.caption: span.table: i.fa.fa-eye.fa-3x
-          span.bottom.middle.caption XEM TỒN KHO
-        .tile.sun-flower
-          span.center.middle.caption: span.table: i.fa.fa-history.fa-3x
-          span.bottom.middle.caption KIỂM KHO
-        .tile.double.lime
-          span.center.left.caption: span.table: i.fa.fa-cubes.fa-3x
-          span.bottom.left.caption BÁO CÁO DOANH SỐ
-      .tile-group-1
-        .tile.belize-hole
-          span.center.middle.caption: span.table: i.fa.fa-home.fa-3x
-          span.bottom.middle.caption CHI NHÁNH
-        .tile.gray
-          span.center.middle.caption: span.table: i.fa.fa-film.fa-3x
-          span.bottom.middle.caption NHẬT KÝ
+  .metro: .metro-wrapper
+    .tile-group-1
+      .tile.lime.app-navigator(data-app="roleManager")
+        span.center.middle.caption: span.table: i.fa.fa-eye-slash.fa-3x
+        span.bottom.middle.caption PHÂN QUYỀN
+      .tile.pumpkin
+        span.s7.top.middle.caption NHÂN VIÊN
+        span.center.middle.caption: span.table: i.fa.fa-share-alt.fa-3x
+        span.bottom.middle.caption TÀI KHOẢN
+      .tile.amethyst
+      .tile.blue
+    .tile-group-3
+      .tile.quatro.lime.app-navigator(data-app="sales")
+        span.top.right.caption BÁN HÀNG
+        span.center.middle.caption: span.table: i.fa.fa-tags.fa-5x
+        span.bottom.left.caption: h3 1024 <tiny5>SẢN PHẨM ĐÃ BÁN</tiny5>
+      .tile.pumpkin
+        span.s7.top.middle.caption HỒ SƠ MACKAY
+        span.center.middle.caption: span.table: i.fa.fa-heart.fa-3x
+        span.bottom.middle.caption KHÁCH HÀNG
+      .tile.amethyst
+        span.center.middle.caption: span.table: i.fa.fa-file-text-o.fa-3x
+        span.bottom.middle.caption ĐƠN HÀNG
+      .tile.double.orange
+        span.top.left.caption: h3 134,315,000 <tiny5>PHẢI THU</tiny5>
+        span.center.left.caption: span.table: i.fa.fa-credit-card.fa-3x
+        span.bottom.left.caption CÔNG NỢ
+      .tile
+    .tile-group-3
+      .tile.lime
+        span.center.middle.caption: span.table
+          i.fa.fa-building.fa-1x
+          i.fa.fa-building-o.fa-3x
+          i.fa.fa-building-o.fa-2x
+        span.bottom.middle.caption KHO HÀNG
+      .tile.pumpkin.double.double-vertical.app-navigator(data-app="import")
+        span.center.left.caption: span.table: i.fa.fa-cubes.fa-3x
+        span.bottom.left.caption NHẬP KHO
+        span.top.left.caption
+          h3 2013 <tiny5>TỔNG NHẬP</tiny5>
+        span.bottom.right.caption
+          h3 1245<br /> <tiny5>TỒN KHO</tiny5>
+      .tile.quadro.amethyst
+      .tile.carrot
+        span.s7.top.middle.caption ĐIỀU CHỈNH GIÁ BÁN
+        span.center.middle.caption: span.table: i.fa.fa-eye.fa-3x
+        span.bottom.middle.caption XEM TỒN KHO
+      .tile.sun-flower
+        span.center.middle.caption: span.table: i.fa.fa-history.fa-3x
+        span.bottom.middle.caption KIỂM KHO
+      .tile.double.lime
+        span.center.left.caption: span.table
+          i.fa.fa-area-chart.fa-1x
+          i.fa.fa-line-chart.fa-1x
+          i.fa.fa-pie-chart.fa-4x
+          i.fa.fa-bar-chart.fa-2x
+        span.bottom.left.caption BÁO CÁO DOANH SỐ
+    .tile-group-1
+      .tile.belize-hole
+        span.center.middle.caption: span.table
+          i.fa.fa-home.fa-2x
+          i.fa.fa-home.fa-3x
+          i.fa.fa-home.fa-1x
+        span.bottom.middle.caption CHI NHÁNH
+      .tile.gray
+        span.center.middle.caption: span.table: i.fa.fa-newspaper-o.fa-3x
+
+        span.bottom.middle.caption NHẬT KÝ
