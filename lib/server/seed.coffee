@@ -41,10 +41,33 @@ Meteor.startup ->
       currentMerchant: huynhChauId
       currentWarehouse: warehouse2
 
-    merchant.addCustomer({creator: creator, name: 'Lê Ngọc Sơn', phone: '01223456789'})
-    merchant.addCustomer({creator: creator, name: 'Nguyễn Hồng Kỳ', phone: '01123456789'})
-    merchant.addCustomer({creator: creator, name: 'Nguyễn Quốc Lộc', phone: '0123456789'})
-    merchant.addCustomer({creator: creator, name: 'Lê Thị Thảo Nhi', phone: '0123456789'})
+    merchant.addCustomer({
+      creator: creator
+      name: 'Lê Ngọc Sơn'
+      phone: '0123456789012'
+      address: '141334 - Lê Thị Riêng, P.13, Q.4, Tp.HCM'
+    })
+
+    merchant.addCustomer({
+      creator: creator
+      name: 'Nguyễn Hồng Kỳ'
+      phone: '01123456789'
+      address: '42334 - Lê Thị Riêng, P.13, Q.4, Tp.HCM'
+    })
+
+    merchant.addCustomer({
+      creator: creator
+      name: 'Nguyễn Quốc Lộc'
+      phone: '0123456789'
+      address: '45324 - Lê Thị Riêng, P.13, Q.4, Tp.HCM'
+    })
+
+    merchant.addCustomer({
+      creator: creator
+      name: 'Lê Thị Thảo Nhi'
+      phone: '0123456789'
+      address: '1234 - Lê Thị Riêng, P.13, Q.4, Tp.HCM'
+    })
 
     seedSystemRoles()
     seedProvidersFor merchant, creator

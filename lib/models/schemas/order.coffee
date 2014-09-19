@@ -20,29 +20,6 @@ Schema2.orders = new SimpleSchema
     type: String
     optional: true
 
-  #-----------
-  currentProduct:
-    type: String
-    optional: true
-
-  currentQuality:
-    type: Number
-    optional: true
-
-  currentPrice:
-    type: Number
-    optional: true
-
-  currentDiscount:
-    type: Number
-    optional: true
-
-  currentDeposit:
-    type: Number
-    optional: true
-
-  #-----------
-
   productCount:
     type: Number
     optional: true
@@ -97,3 +74,50 @@ Schema2.orders = new SimpleSchema
     type: Number
 
   version: { type: Schema.Version }
+
+#----------------------
+  currentProduct:
+    type: String
+    optional: true
+
+  currentQuality:
+    type: Number
+    optional: true
+
+  currentPrice:
+    type: Number
+    optional: true
+
+  currentDiscountCash:
+    type: Number
+    optional: true
+
+  currentDiscountPercent:
+    type: Number
+    decimal: true
+    optional: true
+
+  currentDeposit:
+    type: Number
+    optional: true
+#----------------------
+  contactName:
+    type: String
+    optional: true
+
+  contactPhone:
+    type: String
+    optional: true
+
+  deliveryAddress:
+    type: String
+    optional: true
+
+  deliveryDate:
+    type: Date
+    optional: true
+
+  comment:
+    type: String
+    optional: true
+#----------------------

@@ -25,7 +25,7 @@ createSaleAndSaleOrder= (order, currentOrderDetails)->
       productDetails = Schema.productDetails.find({product: currentOrderDetail.product}).fetch()
       subtractQualityOnSales(productDetails, currentOrderDetail, currentSale)
     if currentSale.deliveryType == 1
-      Schema.deliveries.findOne({sale: currentSale._id})
+      Delivery.createdNewBySale(currentSale._id, order._id)
     else
       Schema.sales.update currentSale._id, $set: {status: true}
 
@@ -80,28 +80,30 @@ Schema.add 'orders', class Order
   @createOrder: ->
     userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     option =
-      merchant        : userProfile.currentMerchant
-      warehouse       : userProfile.currentWarehouse
-      creator         : userProfile.user
-      seller          : userProfile.user
-      currentProduct  : "null"
-      currentQuality  : 0
-      currentPrice    : 0
-      currentDiscount : 0
-      orderCode       : 'asdsad'
-      deliveryType    : 0
-      paymentMethod   : 0
-      discountCash    : 0
-      discountPercent : 0
-      productCount    : 0
-      saleCount       : 0
-      totalPrice      : 0
-      finalPrice      : 0
-      deposit         : 0
-      debit           : 0
-      billDiscount    : false
-      status          : 0
-      currentDeposit  : 0
+      merchant               : userProfile.currentMerchant
+      warehouse              : userProfile.currentWarehouse
+      creator                : userProfile.user
+      seller                 : userProfile.user
+      buyer                  : "null"
+      currentProduct         : "null"
+      currentQuality         : 0
+      currentPrice           : 0
+      currentDiscountCash    : 0
+      currentDiscountPercent : 0
+      orderCode              : 'asdsad'
+      deliveryType           : 0
+      paymentMethod          : 0
+      discountCash           : 0
+      discountPercent        : 0
+      productCount           : 0
+      saleCount              : 0
+      totalPrice             : 0
+      finalPrice             : 0
+      deposit                : 0
+      debit                  : 0
+      billDiscount           : false
+      status                 : 0
+      currentDeposit         : 0
 
     option._id = Schema.orders.insert option
     option
@@ -150,8 +152,13 @@ Schema.add 'orders', class Order
   @finishOrder: (orderId)->
     return 'Order Không Tồn Tại' if !order = Schema.orders.findOne(orderId)
     return 'Chưa chọn người mua' if !order.buyer
-    return 'Chưa có thông tin giao hàng' if !order.delivery and order.deliveryType == 1
     return 'Order Không Có Dữ Liệu' if (orderDetails = Schema.orderDetails.find({order: order._id}).fetch()).length < 1
+    if order.deliveryType == 1
+      return 'Thông tin giao hàng chưa đầy đủ (Name)'    if !order.contactName || order.contactName.length < 1
+      return 'Thông tin giao hàng chưa đầy đủ (Phone)'   if !order.contactPhone || order.contactPhone.length < 1
+      return 'Thông tin giao hàng chưa đầy đủ (Address)' if !order.deliveryAddress || order.deliveryAddress.length < 1
+      return 'Thông tin giao hàng chưa đầy đủ (comment)' if !order.comment || order.comment < 1
+#      return 'Thông tin giao hàng chưa đầy đủ (deliveryDate)' if order.deliveryDate.length > 1
 
     product_ids = _.union(_.pluck(orderDetails, 'product'))
     products = Schema.products.find({_id: {$in: product_ids}}).fetch()

@@ -55,4 +55,4 @@ Schema2.deliveries = new SimpleSchema
 
   version: { type: Schema.Version }
 
-Schema.add 'deliveries'
+
