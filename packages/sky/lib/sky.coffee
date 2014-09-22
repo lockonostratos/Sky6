@@ -15,26 +15,25 @@ class Sky
       createCustomer:     { key: 'createCustomer',      description: 'tạo khách hàng' }
       accountManagement:  { key: 'accountManagement',   description: 'quản lý nhân viên' }
       customerManagement: { key: 'customerManagement',  description: 'quản lý khách hàng' }
-
     @paymentMethods: [
-      id: 0
+      _id: 0
       display: 'TIỀN MẶT'
     ,
-      id: 1
+      _id: 1
       display: 'GHI NỢ'
     ]
     @deliveryTypes: [
-      id: 0
+      _id: 0
       display: 'TRỰC TIẾP'
     ,
-      id: 1
+      _id: 1
       display: 'GIAO HÀNG'
     ]
     @billDiscounts: [
-      id: false
+      _id: false
       display: 'GIẢM GIÁ TÙY CHỌN'
     ,
-      id: true
+      _id: true
       display: 'GIẢM GIÁ THEO PHIẾU'
     ]
 

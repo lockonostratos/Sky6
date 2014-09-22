@@ -49,6 +49,8 @@ runInitTracker = (context) ->
       Session.set "availableStaffSale", Meteor.users.find({}).fetch()
       Session.set "availableCustomerSale", Schema.customers.find({}).fetch()
 
+
+
     if Session.get('currentWarehouse')
       Session.set('orderHistory', Schema.orders.find({warehouse: Session.get('currentWarehouse')._id}).fetch())
 
@@ -175,57 +177,57 @@ Sky.appTemplate.extends Template.sales,
     query: (query) -> query.callback
       results: Sky.system.paymentMethods
       text: 'id'
-    initSelection: (element, callback) -> callback _.findWhere(Sky.system.paymentMethods, {id: Session.get('currentOrder')?.paymentMethod})
+    initSelection: (element, callback) -> callback _.findWhere(Sky.system.paymentMethods, {_id: Session.get('currentOrder')?.paymentMethod})
     formatSelection: formatpaymentMethodSearch
     formatResult: formatpaymentMethodSearch
     placeholder: 'CHỌN SẢN PTGD'
     minimumResultsForSearch: -1
     changeAction: (e) ->
-      if e.added.id == 0
+      if e.added._id == 0
         option =
-          paymentMethod  : e.added.id
+          paymentMethod  : e.added._id
           currentDeposit : Session.get('currentOrder').finalPrice
           deposit        : Session.get('currentOrder').finalPrice
           debit          : 0
-      if e.added.id == 1
+      if e.added._id == 1
         option =
-          paymentMethod  : e.added.id
+          paymentMethod  : e.added._id
           currentDeposit : 0
           deposit        : 0
           debit          : Session.get('currentOrder').finalPrice
       Schema.orders.update(Session.get('currentOrder')._id, {$set: option})
-    reactiveValueGetter: -> _.findWhere(Sky.system.paymentMethods, {id: Session.get('currentOrder')?.paymentMethod})
+    reactiveValueGetter: -> _.findWhere(Sky.system.paymentMethods, {_id: Session.get('currentOrder')?.paymentMethod})
 
   deliveryTypeSelectOption:
     query: (query) -> query.callback
       results: Sky.system.deliveryTypes
       text: 'id'
-    initSelection: (element, callback) -> callback _.findWhere(Sky.system.deliveryTypes, {id: Session.get('currentOrder')?.deliveryType})
+    initSelection: (element, callback) -> callback _.findWhere(Sky.system.deliveryTypes, {_id: Session.get('currentOrder')?.deliveryType})
     formatSelection: formatpaymentMethodSearch
     formatResult: formatpaymentMethodSearch
     placeholder: 'CHỌN SẢN PTGD'
     minimumResultsForSearch: -1
-    changeAction: (e) -> Schema.orders.update(Session.get('currentOrder')._id, {$set: {deliveryType: e.added.id}})
-    reactiveValueGetter: -> _.findWhere(Sky.system.deliveryTypes, {id: Session.get('currentOrder')?.deliveryType})
+    changeAction: (e) -> Schema.orders.update(Session.get('currentOrder')._id, {$set: {deliveryType: e.added._id}})
+    reactiveValueGetter: -> _.findWhere(Sky.system.deliveryTypes, {_id: Session.get('currentOrder')?.deliveryType})
 
   billDiscountSelectOption:
     query: (query) -> query.callback
       results: Sky.system.billDiscounts
       text: 'id'
-    initSelection: (element, callback) -> callback _.findWhere(Sky.system.billDiscounts, {id: Session.get('currentOrder')?.billDiscount})
+    initSelection: (element, callback) -> callback _.findWhere(Sky.system.billDiscounts, {_id: Session.get('currentOrder')?.billDiscount})
     formatSelection: formatpaymentMethodSearch
     formatResult: formatpaymentMethodSearch
     placeholder: 'CHỌN SẢN PTGD'
     minimumResultsForSearch: -1
     changeAction: (e) ->
       order = Order.findOne(Session.get('currentOrder')._id)
-      option = {billDiscount: e.added.id}
+      option = {billDiscount: e.added._id}
       option.discountCash = 0 if option.billDiscount
       option.discountPercent = 0 if option.billDiscount
       Schema.orders.update(Session.get('currentOrder')._id, {$set: option})
       Sky.global.reCalculateOrder(Session.get('currentOrder')._id)
 
-    reactiveValueGetter: -> _.findWhere(Sky.system.billDiscounts, {id: Session.get('currentOrder')?.billDiscount})
+    reactiveValueGetter: -> _.findWhere(Sky.system.billDiscounts, {_id: Session.get('currentOrder')?.billDiscount})
 
   saleDetailOptions:
     itemTemplate: 'saleProductThumbnail'
@@ -417,5 +419,7 @@ Sky.appTemplate.extends Template.sales,
   rendered: ->
     Sky.global.salesTemplateInstance = @
     runInitTracker()
+
+
 
 

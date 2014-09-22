@@ -198,16 +198,12 @@ seedProductsFor = (merchant, creator, warehouse) ->
 
   imprt = merchant.import {
     creator: creator
+    emailCreator: Meteor.users.findOne(creator).emails[0].address
     description: "Nhập tồn đầu kỳ 2014"
     warehouse: warehouse
     finish: true
+    submited: true
   }, importDetails
 
-  tempImprt = Schema.imports.insert
-    creator: creator
-    description: "Nhập tạm 2014"
-    merchant: merchant.id
-    warehouse: warehouse
-    finish: true
 
 

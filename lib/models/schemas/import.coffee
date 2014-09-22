@@ -2,6 +2,10 @@ Schema2.imports = new SimpleSchema
   creator:
     type: String
 
+  emailCreator:
+    type: String
+    optional: true
+
   merchant:
     type: String
 
@@ -13,7 +17,12 @@ Schema2.imports = new SimpleSchema
 
   totalPrice:
     type: Number
-    optional: true
+
+  deposit:
+    type: Number
+
+  debit:
+    type: Number
 
   finish:
     type: Boolean

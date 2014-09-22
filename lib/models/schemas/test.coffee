@@ -1,10 +1,15 @@
 Schema2.tests = new SimpleSchema
-  status:
-    type: Number
-    unique: true
+  provider:
+    type: [String]
+    optional: true
+
+  providerStar:
+    type: [Number]
+    optional: true
+
+
 
 Schema.add 'tests'
-
 
 
 

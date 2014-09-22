@@ -45,10 +45,10 @@ Sky.appTemplate.extends Template.import,
     hotkey: 'return'
     changeAction: (e) ->
       Schema.imports.update(Session.get('currentImport')._id, {$set: {
-        currentProduct: e.added._id
-        currentProvider: 'skyReset'
-        currentQuality: 1
-        currentPrice  : 1000
+        currentProduct  : e.added._id
+        currentProvider : e.added.provider ? 'skyReset'
+        currentQuality  : 1
+        currentPrice    : e.added.importPrice ? 0
       }})
     reactiveValueGetter: -> Session.get('currentImport')?.currentProduct
 
