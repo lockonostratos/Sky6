@@ -2,10 +2,14 @@ template(name="saleProductThumbnail")
   .col
     .thumbnails(class="#{styles}")
       .right-caption {{name}}
-      .discount: span.large-size {{round discountPercent}}<span class="h5">%</span>
       .avatar(style="background-image: url('images/missing.jpg')")
       .short-desc.quality {{pad quality}}
       .full-desc.price {{formatNumber finalPrice}} <small>VNĐ</small>
+      .discount
+        if false
+          span.s4 -{{round discountPercent}}<span class="h5">%</span>
+
+      .single-price {{formatNumber price}}
       .full-desc.trash: a(href="#"): i.fa.fa-trash-o
     //.top #{name}
     //.main

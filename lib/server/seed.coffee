@@ -17,7 +17,6 @@ Meteor.startup ->
     merchant2 = Merchant.findOne hanoi
     warehouse3 = merchant2.addWarehouse { name: 'Kho Chính', creator: creator }
 
-
     cloudProfile = Schema.userProfiles.insert
       user: creator
       isRoot: true
