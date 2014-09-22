@@ -37,7 +37,7 @@ Schema2.productDetails = new SimpleSchema
 
   version: { type: Schema.Version }
 
-Schema.add 'productDetails'
+
 
 #Schema.ProductDetail.after.insert (userId, doc)->
 #  product = Schema.Product.findOne doc.product

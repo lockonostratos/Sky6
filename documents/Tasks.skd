@@ -10,6 +10,7 @@ Chuyen BAN HANG sang giao dien moi                   6h [Done] 1h
 Summary BAN HANG                                        [Done] Loc
 Chuyen TRA HANG sang giao dien moi                      [Working] 2h
 Chuyen GIAO HANG sang giao dien moi                     [Working] 1.5h
+Chuyen Nhap Kho sang giao dien moi                      [Working] 2h
 
 
 Bao cao---------------      8h
@@ -102,3 +103,7 @@ Upgrade to fontAwesome 4.2 (from 4.1)                   [Done]
 Dark theme for metroHome                                [Done]
 
 export MONGO_URL=mongodb://127.0.0.1:27017/eds
+
+
+Bug TabControl------------------------------------
+Nhấn createAction() nhiều lần,  đôi khi sẽ chạy thêm hàm destroyAction()

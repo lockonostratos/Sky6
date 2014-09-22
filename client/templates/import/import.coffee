@@ -3,22 +3,11 @@ formatImportSearch = (item) -> "#{item.description}" if item
 formatImportProductSearch = (item) -> "#{item.name} [#{item.skulls}]" if item
 formatImportProviderSearch = (item) -> "#{item.name}" if item
 
-importCreator= ->
-  currentWarehouse = Warehouse.findOne(Session.get('currentWarehouse')._id) if Session.get('currentWarehouse')
-  currentWarehouse.addImport({description: 'new'})
-importDetailCreator= ->
-  currentImport = Import.findOne(Session.get('currentImport')._id) if Session.get('currentImport')
-  currentImport.addImportDetail(Session.get('currentProductInstance'), Session.get('currentImportDetails'))
-finishImport = ->
-  currentImport = Import.findOne(Session.get('currentImport')._id) if Session.get('currentImport')
-  currentImport.finishImport(Session.get('currentImportDetails'))
-
-
 runInitImportTracker = (context) ->
   return if Sky.global.importTracker
   Sky.global.importTracker = Tracker.autorun ->
     if Session.get('currentWarehouse')
-      Session.set 'importHistory', Schema.imports.find({warehouse: Session.get('currentWarehouse')._id, finish: false}).fetch()
+      Session.set 'importHistory', Schema.imports.find({warehouse: Session.get('currentWarehouse')._id, submited: false}).fetch()
 
     if Session.get('currentImport')
       Session.set('currentImportDetails', Schema.importDetails.find({import: Session.get('currentImport')._id}).fetch())
@@ -27,9 +16,8 @@ runInitImportTracker = (context) ->
     currentImportId = Session.get('currentProfile')?.currentImport
     Session.set('currentImport', Schema.imports.findOne(currentImportId)) if currentImportId
 
-
 Sky.appTemplate.extends Template.import,
-  description: -> Session.get('currentImport')?.description
+  warehouseImport: -> Session.get 'currentImport'
 
   tabOptions:
     source: 'importHistory'
@@ -37,8 +25,8 @@ Sky.appTemplate.extends Template.import,
     caption: 'description'
     key: '_id'
     createAction  : -> Import.createdByWarehouseAndSelect(Session.get('currentWarehouse')._id, {description: 'new'})
-    destroyAction : (instance) -> Schema.imports.remove(instance._id)
-#    navigateAction:
+    destroyAction : (instance) -> console.log Import.removeAll(instance._id)
+    navigateAction: (instance) -> UserProfile.update {currentImport: instance._id}
 
   productSelectOptions:
     query: (query) -> query.callback
@@ -83,7 +71,7 @@ Sky.appTemplate.extends Template.import,
   qualityOptions:
     reactiveSetter: (val) -> Schema.imports.update(Session.get('currentImport')._id, {$set: { currentQuality: val }})
     reactiveValue: -> Session.get('currentImport')?.currentQuality ? 0
-    reactiveMax: -> 99999
+    reactiveMax: -> 9999
     reactiveMin: -> 0
     reactiveStep: -> 1
 
@@ -99,10 +87,19 @@ Sky.appTemplate.extends Template.import,
   importDetailOptions:
     itemTemplate: 'importProductThumbnail'
     reactiveSourceGetter: -> Session.get('currentImportDetails')
-    wrapperClasses: 'detail-grid'
+    wrapperClasses: 'detail-grid row'
 
   events:
-    'click .addImportDetail': (event, template)-> importDetailCreator()
-    'click .finishImport': (event, template)-> console.log finishImport()
+    'click .addImportDetail': (event, template)-> console.log ImportDetail.createByImport Session.get('currentImport')._id
+    'click .editImport': (event, template)-> console.log Import.editImport Session.get('currentImport')._id
+    'click .finishImport': (event, template)-> console.log Import.finishImport Session.get('currentImport')._id
+    'click .submitImport': (event, template)-> console.log Import.submitedImport Session.get('currentImport')._id
+    'blur .description': (event, template)->
+      if template.find(".description").value.length > 1
+        Schema.imports.update(Session.get('currentImport')._id, {$set: {description: template.find(".description").value}})
+      else
+        template.find(".description").value = Session.get('currentImport').description
+
+
 
   rendered: -> runInitImportTracker()

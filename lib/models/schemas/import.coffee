@@ -11,7 +11,14 @@ Schema2.imports = new SimpleSchema
   description:
     type: String
 
+  totalPrice:
+    type: Number
+    optional: true
+
   finish:
+    type: Boolean
+
+  submited:
     type: Boolean
 
   systemTransaction:
@@ -27,11 +34,11 @@ Schema2.imports = new SimpleSchema
     optional: true
 
   currentQuality:
-    type: String
+    type: Number
     optional: true
 
   currentPrice:
-    type: String
+    type: Number
     optional: true
 
   currentExpire:

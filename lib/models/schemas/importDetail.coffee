@@ -27,6 +27,11 @@ Schema2.importDetails = new SimpleSchema
 
   color:
     type: String
+    optional: true
+
+  styles:
+    type: String
+    optional: true
 
   finish:
     type: Boolean
@@ -34,4 +39,3 @@ Schema2.importDetails = new SimpleSchema
 
   version: { type: Schema.Version }
 
-Schema.add 'importDetails'

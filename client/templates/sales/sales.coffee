@@ -25,7 +25,6 @@ maxQuality = ->
   qualityProduct = Session.get('currentProductInstance')?.availableQuality if Session.get('currentProductInstance')
   qualityOrderDetail = _.findWhere(Session.get('currentOrderDetails'), {product: Session.get('currentOrder').currentProduct})?.quality ? 0
   max = qualityProduct - qualityOrderDetail
-  console.log qualityOrderDetail
   max
 
 newDeliver = ->

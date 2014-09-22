@@ -171,8 +171,8 @@ Schema.add 'orders', class Order
     createTransactionAndTransactionDetail(saleId)
 
 #-----------------------------------------------------
-Sky.global.reCalculateOrder = (order_id)->
-  order = Schema.orders.findOne(order_id)
+Sky.global.reCalculateOrder = (orderId)->
+  order = Schema.orders.findOne(orderId)
   orderDetails = Schema.orderDetails.find({order: order._id}).fetch()
   if orderDetails.length > 0
     temp=
@@ -227,5 +227,8 @@ Sky.global.reCalculateOrder = (order_id)->
       deposit         : 0
       debit           : 0
     Schema.orders.update order._id, $set: option
+
+Sky.global.userProfile = -> Schema.userProfiles.findOne({user: Meteor.userId()})
+
 
 

@@ -9,10 +9,10 @@ template(name="import")
          .col.col-md-2
            span.ilabel nhà sản xuất
            +iSelect(options=providerSelectOptions class="field")
-         .col.col-auto(style="width:130px")
+         .col.col-auto(style="width:100px")
            span.ilabel số lượng
            +iSpinEdit(options=qualityOptions class="field")
-         .col.col-auto(style="width:170px")
+         .col.col-auto(style="width:150px")
            span.ilabel giá nhập
            +iSpinEdit(options=importPriceOptions class="field")
          .col.col-auto(style="width:100px")
@@ -20,7 +20,22 @@ template(name="import")
 
   .app-content
     +iGrid(options=importDetailOptions)
-  .app-summary(style="height: 80px")
-    button.btn.btn-default.finishImport(type='submit') Hoan Tat
+
+  .app-summary(style="height: 40px")
+    .row
+      .col.col-auto.pull-right(style="width: 100px")
+        button.btn.btn-default.pull-right.submitImport(type='submit' style="margin-right: 5px;") XAC NHAN
+      .col.col-auto.pull-right(style="width: 130px")
+        button.btn.btn-default.pull-right.finishImport(type='submit' style="margin-right: 5px;") CHỜ XAC NHAN
+      .col.col-auto.pull-right(style="width: 120px")
+        button.btn.btn-default.pull-right.editImport(type='submit' style="margin-right: 5px;") EDIT
+      .col.col-auto.pull-right(style="width: 120px")
+        span.ilabel tổng tiền
+        input.totalPrice(value="#{warehouseImport.totalPrice}" disabled)
+      .col.col-auto.pull-right(style="width: 300px")
+        span.ilabel description
+        input.description(value="#{warehouseImport.description}" )
+
+
   .app-status
     +iTab(options=tabOptions)
