@@ -36,7 +36,7 @@ Schema.add 'imports', class Import
     return('Bạn chưa đăng nhập') if !userProfile = Sky.global.userProfile()
     return('Phiếu nhập kho không tồn tại') if !imports = Schema.imports.findOne({_id: importId})
     return ("Phiếu nhập kho đã duyệt, không thể chờ duyệt") if imports.submited == true && imports.finish == true
-    return ("Phiếu nhập kho đang chờ duyệt") if imports.submited == false && imports.finish == true
+    return ("Phiếu nhập kho đã đang chờ duyệt") if imports.submited == false && imports.finish == true
     importDetails = Schema.importDetails.find({import: importId}).fetch()
     return('Phiếu nhập kho rỗng, hay thêm sản phẩm') if importDetails.length < 1
 
@@ -87,6 +87,9 @@ Schema.add 'imports', class Import
             totalQuality    : importDetail.importQuality
             availableQuality: importDetail.importQuality
             instockQuality  : importDetail.importQuality
+
+        Schema.importDetails.update importDetail._id, $set: {finish: true}
+      Schema.imports.update importId, $set:{finish: true, submited: true}
       return ('Phiếu nhập kho đã được duyệt')
     else
       return ('Đã có lỗi trong quá trình xác nhận')
@@ -100,3 +103,46 @@ Schema.add 'imports', class Import
 #          totalQuality    : -productDetail.importQuality
 #          availableQuality: -productDetail.importQuality
 #          instockQuality  : -productDetail.importQuality
+
+
+
+#
+#try
+##      importDetails = Schema.importDetails.find({import:@id}).fetch()
+#  if importDetails.length < 1 then throw 'Import rỗng'
+#  for importDetail in importDetails
+#    product = Schema.products.findOne importDetail.product
+#    if !product then throw 'Không tìm thấy Product'
+#  for importDetail in importDetails
+#    productDetail={}
+#    productDetail.import = @id
+#    productDetail.merchant = @data.merchant
+#    productDetail.warehouse = @data.warehouse
+#    productDetail.product = importDetail.product
+#    productDetail.importQuality = importDetail.importQuality
+#    productDetail.availableQuality = importDetail.importQuality
+#    productDetail.instockQuality = importDetail.importQuality
+#    productDetail.importPrice = importDetail.importPrice
+#
+#    Schema.productDetails.insert productDetail, (error, result) ->
+#      if error then throw 'Sai thong Tin San Pham'
+#
+#    Schema.products.update importDetail.product,
+#      $inc:
+#        totalQuality    : importDetail.importQuality
+#        availableQuality: importDetail.importQuality
+#        instockQuality  : importDetail.importQuality
+#
+#  for importDetail in importDetails
+#    Schema.importDetails.update importDetail._id, $set: {status: true}
+#  Schema.imports.update @id, $set:{finish: true}
+#catch e
+#  console.log e
+#  importProductFalse =Schema.productDetails.find(import: @id)
+#  for importProduct in importProductFalse
+#    productDetail = Schema.productDetails.remove(importProduct._id)
+#    Schema.products.update productDetail.product,
+#      $inc:
+#        totalQuality    : -productDetail.importQuality
+#        availableQuality: -productDetail.importQuality
+#        instockQuality  : -productDetail.importQuality
