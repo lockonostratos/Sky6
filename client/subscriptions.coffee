@@ -6,7 +6,7 @@ Meteor.subscribe 'productDetails'
 Meteor.subscribe 'skulls'
 Meteor.subscribe 'providers'
 Meteor.subscribe 'myProfile'
-Meteor.subscribe('myMessages')
+Meteor.subscribe 'myMessages'
 
 Meteor.subscribe 'orders'
 Meteor.subscribe 'orderDetails'

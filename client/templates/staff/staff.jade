@@ -1,0 +1,20 @@
+template(name="staffManager")
+  .app-header
+    span.caption NHÂN VIÊN <small>TÀI KHOẢN</small>
+  .app-editor: .row
+    .col.col-auto(style="width: 200px")
+      span.ilabel tên đăng nhập
+      input
+    .col.col-auto(style="width: 120px")
+      span.ilabel.center mật khẩu
+      input(type="password")
+    .col.col-auto(style="width: 120px")
+      span.ilabel.center xác nhận
+      input(type="password")
+    .col.col-auto(style="width: 200px")
+      span.ilabel phân quyền
+      +iSelect(options=roleSelectOptions class="field")
+    .col.col-auto
+      button.btn.btn-default.addOrderDetail(type='submit') TẠO MỚI
+  .app-content
+    //+iGrid(options=staffManagerDetailOptions)

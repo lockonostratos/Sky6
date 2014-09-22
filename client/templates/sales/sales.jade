@@ -1,6 +1,7 @@
 template(name="sales")
   .app-header
     span.caption Bán hàng {{myProfile.data.creator}}, {{sProfile.data.creator}}
+
   .app-editor
     .row
       .col.col-md-2
@@ -27,7 +28,7 @@ template(name="sales")
   .app-content
    +iGrid(options=saleDetailOptions)
 
-  .app-summary(style="height: 80px")
+  .app-summary(style="height: 90px")
     .row
       .col.col-auto.pull-right(style="width: 200px; margin-right: 5px;")
         span.ilabel.right nhân viên
@@ -84,10 +85,6 @@ template(name="sales")
       .col.col-auto.pull-right(style="width:170px")
         span.ilabel tên người nhận
         input.contactName(value="#{delivery.contactName}")
-
-
-
-
 
   .app-status
    +iTab(options=tabOptions)

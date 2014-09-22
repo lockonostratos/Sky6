@@ -6,7 +6,7 @@ registerSelection = ($element, context) ->
   selectOptions.formatResult    = (item) -> options.formatResult(item)
   selectOptions.initSelection   = options.initSelection
 
-  selectOptions.id              = options.id if options.id
+  selectOptions.id              = options.id ? '_id'
   selectOptions.placeholder     = options.placeholder if options.placeholder
   selectOptions.minimumResultsForSearch = options.minimumResultsForSearch if options.minimumResultsForSearch
   $element.select2(selectOptions).on 'change', (e) -> options.changeAction(e)
