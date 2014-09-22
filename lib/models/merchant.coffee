@@ -48,7 +48,7 @@ Schema.add 'merchants', class Merchant
       option.merchant = @id
       option.systemTransaction = transaction.id
       newImport = Schema.imports.insert option
-
+      providers = Schema.providers.find({merchant: @id}).fetch()
       for productDetail in productDetails
         product = Schema.products.findOne productDetail.product
         if !product then throw 'Không tìm thấy Product'
@@ -58,18 +58,23 @@ Schema.add 'merchants', class Merchant
         productDetail.merchant = @id
         productDetail.warehouse = option.warehouse
         productDetail.creator = option.creator
+        productDetail.provider = providers[Math.floor(Math.random() * providers.length)]._id
+
         productDetail.availableQuality = productDetail.importQuality
         productDetail.instockQuality = productDetail.importQuality
         productDetail.systemTransaction = transaction.id
 
         Schema.productDetails.insert productDetail, (error, result) ->
           if error then throw 'Sai thông tin sản phẩm'
-#        console.log productDetail.importQuality
+
         Schema.products.update productDetail.product,
           $inc:
             totalQuality    : productDetail.importQuality
             availableQuality: productDetail.importQuality
             instockQuality  : productDetail.importQuality
+          $set:
+            provider: productDetail.provider
+            importPrice: productDetail.importPrice
     catch e
       transaction.rollBack()
       console.log e

@@ -29,6 +29,10 @@ Schema.add 'imports', class Import
     option.creator    = Meteor.userId()
     option.finish     = false
     option.submited   = false
+    option.totalPrice = 0
+    option.deposit    = 0
+    option.debit      = 0
+    option.emailCreator = Meteor.user().emails[0].address
     option._id = Schema.imports.insert option, (error, result)-> console.log error if error
     UserProfile.update {currentImport: option._id}
 

@@ -43,4 +43,12 @@ Schema2.products = new SimpleSchema
 
   version: { type: Schema.Version }
 
+  provider:
+    type: String
+    optional: true
+
+  importPrice:
+    type: Number
+    optional: true
+
 Schema.add 'products'

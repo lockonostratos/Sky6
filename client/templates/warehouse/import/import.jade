@@ -15,6 +15,9 @@ template(name="import")
          .col.col-auto(style="width:150px")
            span.ilabel giá nhập
            +iSpinEdit(options=importPriceOptions class="field")
+         //.col.col-auto(style="width:150px")
+         //  span.ilabel giá bán
+         //  +iSpinEdit(options=importPriceOptions class="field")
          .col.col-auto(style="width:100px")
            button.btn.btn-default.addImportDetail(type='submit') Add
 
@@ -30,11 +33,20 @@ template(name="import")
       .col.col-auto.pull-right(style="width: 120px")
         button.btn.btn-default.pull-right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
       .col.col-auto.pull-right(style="width: 120px")
+        span.ilabel tiền còn nợ
+        input.totalPrice(value="#{warehouseImport.debit}" disabled)
+      .col.col-auto.pull-right(style="width: 120px")
+        span.ilabel tiền đã trả
+        input.totalPrice(value="#{warehouseImport.deposit}")
+      .col.col-auto.pull-right(style="width: 120px")
         span.ilabel tổng tiền
         input.totalPrice(value="#{warehouseImport.totalPrice}" disabled)
       .col.col-auto.pull-right(style="width: 300px")
         span.ilabel description
         input.description(value="#{warehouseImport.description}" )
+      .col.col-auto.pull-right(style="width: 200px")
+        span.ilabel người tạo
+        input.emailCreator(value="#{warehouseImport.emailCreator}" disabled)
 
 
   .app-status
