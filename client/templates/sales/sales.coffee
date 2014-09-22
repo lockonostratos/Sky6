@@ -124,10 +124,10 @@ Sky.appTemplate.extends Template.sales,
     changeAction: (e) ->
       Schema.orders.update Session.get('currentOrder')._id,
         $set:
-          currentProduct: e.added._id
-          currentQuality: 1
-          currentPrice: e.added.price
-          currentDiscount: 0
+          currentProduct  : e.added._id
+          currentQuality  : Number(1)
+          currentPrice    : e.added.price
+          currentDiscount : Number(0)
     reactiveValueGetter: -> Session.get('currentOrder')?.currentProduct
 
   customerSelectOptions:
@@ -238,7 +238,7 @@ Sky.appTemplate.extends Template.sales,
     reactiveSetter: (val) ->
       option = {}
       option.currentQuality = val
-      if val > 0
+      if val > 0 && Session.get('currentOrder').currentPrice > 0
         option.currentDiscountPercent = Math.round(Session.get('currentOrder').currentDiscountCash/(val * Session.get('currentOrder').currentPrice)*100)
       else
         option.currentDiscountCash    = 0

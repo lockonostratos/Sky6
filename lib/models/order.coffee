@@ -59,10 +59,10 @@ checkProductInstockQuality= (orderDetailsList, productList)->
   catch e
     return {error: e}
 
-createTransactionAndTransactionDetail= (saleID)->
+createTransactionAndDetailByOrder = (saleID)->
   sale = Schema.sales.findOne(saleID)
-  transaction = Transaction.newTransactionBySale(sale)
-  transactionDetail = TransactionDetail.newTransactionDetailsByTransaction(transaction)
+  transaction = Transaction.newBySale(sale)
+  transactionDetail = TransactionDetail.newByTransaction(transaction)
 
 removeOrderAndOrderDetailAfterCreateSale= (orderId)->
   allTabs = Schema.orders.find({creator: Meteor.userId()}).fetch()
@@ -134,6 +134,8 @@ Schema.add 'orders', class Order
     if order
       return console.log 'Chưa chọn sản phẩm' if !product = Schema.products.findOne(order.currentProduct)
       return console.log 'Số lượng phải lớn hơn 0' if order.currentQuality == 0
+      return console.log 'Giá sản phẩm phải lớn hơn 0' if order.currentPrice == 0
+      return console.log 'Giá sản phẩm phải lớn hơn giá nhập' if order.currentPrice < product.price
       orderDetail = OrderDetail.newByOrder(product, order)
       orderDetails = Schema.orderDetails.find({order: order._id}).fetch()
       findOrderDetail =_.findWhere(orderDetails,{
@@ -168,7 +170,7 @@ Schema.add 'orders', class Order
 
     saleId = createSaleAndSaleOrder(order, orderDetails)
     removeOrderAndOrderDetailAfterCreateSale(order._id)
-    createTransactionAndTransactionDetail(saleId)
+    createTransactionAndDetailByOrder(saleId)
 
 #-----------------------------------------------------
 Sky.global.reCalculateOrder = (orderId)->

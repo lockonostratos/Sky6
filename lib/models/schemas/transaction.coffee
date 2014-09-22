@@ -13,6 +13,7 @@ Schema2.transactions = new SimpleSchema
 
   owner:
     type: String
+    optional: true
 
   group:
     type: String

@@ -7,9 +7,9 @@ template(name="import")
            span.ilabel sản phẩm
            +iSelect(options=productSelectOptions class="field")
          .col.col-md-2
-           span.ilabel nhà sản xuất
+           span.ilabel nhà phân phối
            +iSelect(options=providerSelectOptions class="field")
-         .col.col-auto(style="width:100px")
+         .col.col-auto(style="width:120px")
            span.ilabel số lượng
            +iSpinEdit(options=qualityOptions class="field")
          .col.col-auto(style="width:150px")
@@ -34,20 +34,19 @@ template(name="import")
         button.btn.btn-default.pull-right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
       .col.col-auto.pull-right(style="width: 120px")
         span.ilabel tiền còn nợ
-        input.totalPrice(value="#{warehouseImport.debit}" disabled)
+        input.debit(value="#{warehouseImport.debit}" disabled)
       .col.col-auto.pull-right(style="width: 120px")
         span.ilabel tiền đã trả
-        input.totalPrice(value="#{warehouseImport.deposit}")
+        input.deposit(value="#{warehouseImport.deposit}")
       .col.col-auto.pull-right(style="width: 120px")
         span.ilabel tổng tiền
         input.totalPrice(value="#{warehouseImport.totalPrice}" disabled)
       .col.col-auto.pull-right(style="width: 300px")
         span.ilabel description
         input.description(value="#{warehouseImport.description}" )
-      .col.col-auto.pull-right(style="width: 200px")
+      .col.col-auto.pull-right(style="width: 180px")
         span.ilabel người tạo
         input.emailCreator(value="#{warehouseImport.emailCreator}" disabled)
-
 
   .app-status
     +iTab(options=tabOptions)

@@ -51,4 +51,3 @@ Schema2.products = new SimpleSchema
     type: Number
     optional: true
 
-Schema.add 'products'

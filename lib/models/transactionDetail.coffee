@@ -1,5 +1,5 @@
 Schema.add 'transactionDetails', class TransactionDetail
-  @newTransactionDetailsByTransaction: (transaction)->
+  @newByTransaction: (transaction)->
     option=
       merchant    : transaction.merchant
       warehouse   : transaction.warehouse
@@ -9,4 +9,3 @@ Schema.add 'transactionDetails', class TransactionDetail
       debitCash   : transaction.debitCash
     option._id = Schema.transactionDetails.insert option
     option
-

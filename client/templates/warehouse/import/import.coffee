@@ -65,7 +65,9 @@ Sky.appTemplate.extends Template.import,
     id: '_id'
     placeholder: 'CHỌN NHÀ CUNG CẤP'
 #    minimumResultsForSearch: -1
-    changeAction: (e) -> Schema.imports.update(Session.get('currentImport')._id, {$set: {currentProvider: e.added._id }})
+    changeAction: (e) ->
+      Schema.imports.update(Session.get('currentImport')._id, {$set: {currentProvider: e.added._id }})
+      Schema.products.update(Session.get('currentProductInstance')._id, {$set:{provider: e.added._id}})
     reactiveValueGetter: -> Session.get('currentImport')?.currentProvider
 
   qualityOptions:
@@ -76,7 +78,9 @@ Sky.appTemplate.extends Template.import,
     reactiveStep: -> 1
 
   importPriceOptions:
-    reactiveSetter: (val) -> Schema.imports.update(Session.get('currentImport')._id, {$set: { currentPrice: val }})
+    reactiveSetter: (val) ->
+      Schema.imports.update(Session.get('currentImport')._id, {$set: { currentPrice: val }})
+      Schema.products.update(Session.get('currentProductInstance')._id, {$set:{importPrice: val}})
     reactiveValue: -> Session.get('currentImport')?.currentPrice ? 0
     reactiveMax: -> 999999999
     reactiveMin: -> 0
@@ -99,6 +103,25 @@ Sky.appTemplate.extends Template.import,
         Schema.imports.update(Session.get('currentImport')._id, {$set: {description: template.find(".description").value}})
       else
         template.find(".description").value = Session.get('currentImport').description
+    'blur .deposit': (event, template)->
+      if parseInt(template.find(".deposit").value) > 0
+        if parseInt(template.find(".deposit").value) < Session.get('currentImport').totalPrice
+          Schema.imports.update(Session.get('currentImport')._id, {$set: {
+            deposit: parseInt(template.find(".deposit").value)
+            debit: Session.get('currentImport').totalPrice - parseInt(template.find(".deposit").value)
+          }})
+        else
+          Schema.imports.update(Session.get('currentImport')._id, {$set: {
+            deposit: Session.get('currentImport').totalPrice
+            debit: 0
+          }})
+          template.find(".deposit").value = Session.get('currentImport').totalPrice
+      else
+        Schema.imports.update(Session.get('currentImport')._id, {$set: {
+          deposit: 0
+          debit: Session.get('currentImport').totalPrice
+        }})
+        template.find(".deposit").value = 0
 
 
 
