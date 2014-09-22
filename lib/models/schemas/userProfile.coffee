@@ -6,6 +6,18 @@ Schema2.userProfiles = new SimpleSchema
   user:
     type: String
 
+  fullName:
+    type: String
+    optional: true
+
+  dateOfBirth:
+    type: Date
+    optional: true
+
+  startWorkingDate:
+    type: Date
+    optional: true
+
   isRoot:
     type: Boolean
 

@@ -49,7 +49,7 @@ Thông tin Customer
 -------modalPopervers ---
 brandNewProducts                      LOC          1.5h [Done]
 brandNewCustomer                      LOC          1.5h [Done]
-brandNewStaff                         LOC            2h [???] 1h                                   Can he thong account.
+brandNewStaff                         SON            2h [Done] Removed, unecessary!
 brandNewWarehouse                     LOC            1h [Done]
 brandNewSkull                         LOC          0.5h [Done]
 brandNewProvider                      LOC          1.5h [Done]
@@ -60,7 +60,7 @@ tabControl                                          11h [Done] +8
 selectionControl                                     4h [Done] +1
 textEditControl                                      2h [Done] <- Dùng cách truyền thống binding UI (từ Sky.appTemplate.extends)
 spinEditControl                                      3h [Done]
-dateSelectControl                                    3h [Waiting]
+dateSelectControl                                    3h [Done]
 gridControl                                          4h [Done]           <- 3rd
 modalPopover                                            [Done]
 Aside widget                                            [Done]
@@ -72,10 +72,10 @@ Options                                              3h [40%]
 twoWayBinding /reactive                                 [Done]  <- Write components
 accountCreattionForCustomer                             [Done]
 
-chat system...                                       6h [Working]
+chat system...                                       6h [Done]
 publish/subscribe                                    3h [Done]
 notification-region                                  2h [Done]
-notificationSystem                                   4h [Working]
+notificationSystem                                   4h [Done]
 form & validation                                    4h [Done] <- Handmade
 girdSystem for SkyEngine                                [Done]
 install collection-helpers                              [Done]

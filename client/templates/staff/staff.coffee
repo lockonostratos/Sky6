@@ -28,17 +28,26 @@ Sky.appTemplate.extends Template.staffManager,
 
   events:
     "click #createStaffAccount": (event, template) ->
-      newStaffAccount =
-        email: template.ui.$email.val()
-        password: template.ui.$password.val()
-      console.log newStaffAccount
+      dateOfBirth = template.ui.$dateOfBirth.val()
+      startWorkingDate = template.ui.$startWorkingDate.val()
+      email = template.ui.$email.val()
+      password = template.ui.$password.val()
 
-      roles = ""
-      roles += role.name + "," for role in Session.get('currentRoleSelection')
-      newStaffProfile =
-        roles: roles
+      roles = []
+      if Session.get('currentRoleSelection')?.length > 0
+        roles.push role.name for role in Session.get('currentRoleSelection')
+      newProfile =
+        parentMerchant: Session.get("currentProfile").parentMerchant
+        currentMerchant: Session.get("createStaffBranchSelection")._id
+        currentWarehouse: Session.get("createStaffWarehouseSelection")._id
 
-      console.log newStaffProfile
+      newProfile.roles = roles if roles.length > 0
+      newProfile.dateOfBirth = dateOfBirth if dateOfBirth
+      newProfile.startWorkingDate = startWorkingDate if startWorkingDate
+
+      console.log newProfile
+
+      Meteor.call "createMerchantAccount", email, password, newProfile
 #      Meteor.call "createMerchantAccount",
 #        email: template.ui.$email.val()
 #        password: template.ui.$password.val()

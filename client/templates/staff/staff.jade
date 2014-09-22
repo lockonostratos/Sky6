@@ -29,10 +29,11 @@ template(name="staffManager")
       .col.col-auto(style="width: 120px")
         span.ilabel.center.optional gia nhập
         input(name="startWorkingDate" data-toggle="tooltip" data-container="body" data-placement="left" title="ngày tính lương")
-      .col.col-auto(style="width: 200px")
+
+      .col.col-auto.pull-right(style="width: 200px")
         span.ilabel.optional nơi làm việc
         +iSelect(options=branchSelectOptions class="field")
-      .col.col-auto(style="width: 200px")
+      .col.col-auto.pull-right(style="width: 200px")
         span.ilabel.optional kho mặc định
         +iSelect(options=warehouseSelectOptions class="field")
   .app-content
