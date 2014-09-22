@@ -16,5 +16,5 @@ Schema.userProfiles.allow
   update: -> true
   remove: -> true
 
-Meteor.publish "availableRoles", (owner) ->
-  Schema.roles.find {$or: [{$exist: {owner: false}}, {owner: owner}]}
+Meteor.publish "merchantRoles", (merchant) ->
+  Schema.roles.find {$or: [{owner: {$exists: false}}, {parentMerchant: merchant}]}

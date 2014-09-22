@@ -5,10 +5,11 @@ registerSelection = ($element, context) ->
   selectOptions.formatSelection = (item) -> options.formatSelection(item)
   selectOptions.formatResult    = (item) -> options.formatResult(item)
   selectOptions.initSelection   = options.initSelection
-
   selectOptions.id              = options.id ? '_id'
   selectOptions.placeholder     = options.placeholder if options.placeholder
   selectOptions.minimumResultsForSearch = options.minimumResultsForSearch if options.minimumResultsForSearch
+  _.extend(selectOptions, context.data.options.others) if context.data.options.others
+
   $element.select2(selectOptions).on 'change', (e) -> options.changeAction(e)
 
 registerHotkey = ($element, context) ->

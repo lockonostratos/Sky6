@@ -2,7 +2,7 @@ Schema2.roles = new SimpleSchema
   group:
     type: String
 
-  owner:
+  parentMerchant:
     type: String
     optional: true
 
@@ -16,6 +16,10 @@ Schema2.roles = new SimpleSchema
 
   description:
     type: String
+
+  roles:
+    type: String
+    optional: true
 
   permissions:
     type: [String]

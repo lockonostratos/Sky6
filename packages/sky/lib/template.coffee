@@ -46,6 +46,12 @@ class Sky.appTemplate
       @ui = {}; self = @
       @ui[name] = @find(value) for name, value of destination.ui when typeof value is 'string'
 
+      for item in @findAll("[name]")
+        $item = $(item)
+        alias = $item.attr('name')
+        @ui[alias] = item
+        @ui["$#{alias}"] = $item
+
       extras = @findAll(".row.extra")
       @ui.extras = { extrasCount: 0, visibleCount: 0 }
       for extra in extras

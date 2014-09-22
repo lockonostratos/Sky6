@@ -30,6 +30,34 @@
   .box-shadow(none) !important;
 }
 
+.select2-container-multi .select2-choices .select2-search-field input {
+  padding: 0 5px; line-height: 26px;
+}
+
+.app-editor .select2-container-multi .select2-choices {
+  border: solid 1px #DFDFDF;
+  .border-radius(3px);
+
+  .select2-search-choice {
+    margin: 0 0 0 -1px;
+    .border-radius(0);
+    padding: 0 5px 0 15px;
+    border-top: none;
+    border-bottom: none;
+    border-color: #dfdfdf;
+    line-height: 28px;
+
+    div {
+      max-width: 100px;
+      .text-overflow;
+    }
+  }
+}
+
+.select2-container-multi .select2-search-choice-close {
+  top: 8px;
+}
+
 sky-select {
   .btn-group {
     &.open .dropdown-toggle.btn{
@@ -76,3 +104,4 @@ sky-select {
     }
   }
 }
+

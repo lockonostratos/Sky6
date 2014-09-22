@@ -21,14 +21,14 @@ template(name="import")
   .app-content
     +iGrid(options=importDetailOptions)
 
-  .app-summary(style="height: 40px")
+  .app-summary(style="height: 50px")
     .row
       .col.col-auto.pull-right(style="width: 100px")
-        button.btn.btn-default.pull-right.submitImport(type='submit' style="margin-right: 5px;") XAC NHAN
+        button.btn.btn-default.pull-right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN
       .col.col-auto.pull-right(style="width: 130px")
-        button.btn.btn-default.pull-right.finishImport(type='submit' style="margin-right: 5px;") CHỜ XAC NHAN
+        button.btn.btn-default.pull-right.finishImport(type='submit' style="margin-right: 5px;") CHỜ XÁC NHẬN
       .col.col-auto.pull-right(style="width: 120px")
-        button.btn.btn-default.pull-right.editImport(type='submit' style="margin-right: 5px;") EDIT
+        button.btn.btn-default.pull-right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
       .col.col-auto.pull-right(style="width: 120px")
         span.ilabel tổng tiền
         input.totalPrice(value="#{warehouseImport.totalPrice}" disabled)

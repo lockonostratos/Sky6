@@ -1,23 +1,24 @@
 Schema.add 'roles', class Role
-  @addRolesFor: (userId, roles) ->
-    Meteor.users.update userId, {$set: {roles: roles}}
+  @addRolesFor: (profileId, roles) ->
+    Schema.userProfiles.update profileId, {$set: {roles: roles}}
+
   @isInRole: (userId, name) ->
-  @permissionsOf: (user) ->
-    if typeof user isnt 'string'
-      currentUser = user
+  @permissionsOf: (profile) ->
+    if typeof profile isnt 'string'
+      currentProfile = profile
     else
-      currentUser = Meteor.users.findOne user
-      return [] if !currentUser
+      currentProfile = Schema.userProfiles.findOne profile
+      return [] if !currentProfile
 
     permissions = []
-    for name in currentUser.roles
+    for name in currentProfile.roles
       currentRole = @schema.findOne {name: name}
       permissions = _.union permissions, currentRole.permissions if currentRole
     permissions
 
-  @hasPermission: (userId, name) ->
-    currentUser = Meteor.users.findOne userId
-    return [] if !currentUser
+  @hasPermission: (profileId, name) ->
+    currentProfile = Schema.userProfiles.findOne profileId
+    return [] if !currentProfile
 
-    permissions = @permissionsOf currentUser
-    return _.contains(currentUser.roles, 'admin') || _.contains(permissions, name)
+    permissions = @permissionsOf currentProfile
+    return _.contains(currentProfile.roles, 'admin') || _.contains(permissions, name)
