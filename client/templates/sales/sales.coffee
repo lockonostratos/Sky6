@@ -96,6 +96,7 @@ Sky.appTemplate.extends Template.sales,
     return 0 if Session.get('currentOrder')?.paymentMethod == 1
     if Session.get('currentOrder')?.paymentMethod == 0
       return Session.get('currentOrder')?.currentDeposit - Session.get('currentOrder')?.finalPrice
+  formatNumber: (number) -> accounting.formatNumber(number)
 
   tabOptions:
     source: 'orderHistory'

@@ -1,7 +1,10 @@
 .app-header {
   padding: 10px 0 0 5px;
-  background-color: #f1f1f1;
-  border-bottom: 1px solid #eeeeee;
+  background-color: #fff;
+  position: relative;
+  z-index: 10;
+//  border-bottom: 1px solid #eeeeee;
+
   .caption {
     font-family: inherit;
     font-size: 20px;
@@ -25,13 +28,17 @@
 }
 
 .app-editor {
-  background-color: #f1f1f1;
+  background-color: #F7F7F7;
   min-height: 40px;
-  border-bottom: 1px solid #eeeeee;
+//  border-bottom: 1px solid #eeeeee;
+  border-top: solid 1px #EEEEEE;
+  box-shadow: 0 0 6px 0 rgba(0,0,0,0.1);
   padding-right: 5px;
 }
 
+@editorFontSize: 12px;
 .app-editor, .app-summary {
+  font-size: @editorFontSize;
   .field {
     margin: 5px 0;
     width: 100%;
@@ -61,6 +68,7 @@
     border: 1px solid #DFDFDF;
     .border-radius(3px);
     outline: none;
+    font-size: @editorFontSize;
     &:disabled {
       background-color: #fff;
     }
@@ -192,7 +200,9 @@
   position: fixed;
   width: 100%;
   background-color: #fff;
-  border-top: 1px solid #DFDFDF;
+//  border-top: 1px solid #DFDFDF;
+  padding-top: 5px;
+  box-shadow: 0 0 6px 0 rgba(0,0,0,0.1);
 
   .row.extra {
     position: absolute;

@@ -61,8 +61,8 @@
       mousewheel: true,
       buttondown_class: 'btn btn-default',
       buttonup_class: 'btn btn-default',
-	  buttondown_txt: '-',
-	  buttonup_txt: '+'
+	  buttondown_txt: "<i class='fa fa-angle-left'></i>",
+	  buttonup_txt: "<i class='fa fa-angle-right'></i>"
     };
 
     var attributeMap = {
@@ -137,7 +137,8 @@
 
       function _setInitval() {
         if (settings.initval !== '' && originalinput.val() === '') {
-          originalinput.val(settings.initval);
+          //SKY:Org originalinput.val(settings.initval);
+          originalinput.val(accounting.formatNumber(settings.initval));
         }
       }
 
@@ -148,8 +149,10 @@
         var value = elements.input.val();
 
         if (value !== '') {
-          value = Number(elements.input.val());
-          elements.input.val(value.toFixed(settings.decimals));
+          //SKY:Org value = Number(elements.input.val());
+          value = accounting.parse(value);
+          var formatted = accounting.formatNumber(value.toFixed(settings.decimals));
+          elements.input.val(formatted);
         }
       }
 
@@ -180,7 +183,7 @@
           initval = Number(initval).toFixed(settings.decimals);
         }
 
-        originalinput.data('initvalue', initval).val(initval);
+        originalinput.data('initvalue', initval).val(accounting.formatNumber(initval));
         originalinput.addClass('form-control');
 
         if (parentelement.hasClass('input-group')) {
@@ -516,7 +519,8 @@
       function _checkValue() {
         var val, parsedval, returnval;
 
-        val = originalinput.val();
+        //SKY:Org: val = originalinput.val();
+        val = accounting.parse(originalinput.val());
 
         if (val === '') {
           return;
@@ -549,7 +553,7 @@
         returnval = _forcestepdivisibility(returnval);
 
         if (Number(val).toString() !== returnval.toString()) {
-          originalinput.val(returnval);
+          originalinput.val(accounting.formatNumber(returnval));
           originalinput.trigger('change');
         }
       }
@@ -575,7 +579,11 @@
       function upOnce() {
         _checkValue();
 
-        value = parseFloat(elements.input.val());
+
+        var parsed = accounting.parse(elements.input.val()); //SKY:Added
+        //SKY:Org value = parseFloat(elements.input.val());
+        value = parseFloat(parsed);
+
         if (isNaN(value)) {
           value = 0;
         }
@@ -591,7 +599,9 @@
           stopSpin();
         }
 
-        elements.input.val(Number(value).toFixed(settings.decimals));
+        //SKY:Org elements.input.val(Number(value).toFixed(settings.decimals));
+        var formatted = accounting.formatNumber(Number(value).toFixed(settings.decimals)) //Sky:Added
+        elements.input.val(formatted);
 
         if (initvalue !== value) {
           originalinput.trigger('change');
@@ -601,7 +611,10 @@
       function downOnce() {
         _checkValue();
 
-        value = parseFloat(elements.input.val());
+        var parsed = accounting.parse(elements.input.val()); //SKY:Added
+        //SKY:Org value = parseFloat(elements.input.val());
+        value = parseFloat(parsed);
+
         if (isNaN(value)) {
           value = 0;
         }
@@ -617,7 +630,9 @@
           stopSpin();
         }
 
-        elements.input.val(value.toFixed(settings.decimals));
+        var formatted = accounting.formatNumber(value.toFixed(settings.decimals)) //Sky:Added
+        //SKY:Org elements.input.val(value.toFixed(settings.decimals));
+        elements.input.val(formatted);
 
         if (initvalue !== value) {
           originalinput.trigger('change');

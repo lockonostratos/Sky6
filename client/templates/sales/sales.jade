@@ -24,12 +24,12 @@ template(name="sales")
         +iSpinEdit(options=discountPercentOptions)
       .col.col-auto.pull-right(style="width: 150px")
         span.ilabel.optional giá tổng
-        input.quality(value="#{currentFinalPrice}" disabled)
+        input.quality(value="{{formatNumber currentFinalPrice}}" disabled)
 
   .app-content
    +iGrid(options=saleDetailOptions)
 
-  .app-summary(style="height: 90px")
+  .app-summary(style="height: 95px")
     .row
       .col.col-auto.pull-right(style="width: 200px; margin-right: 5px;")
         span.ilabel.right.optional nhân viên
@@ -51,10 +51,10 @@ template(name="sales")
         button.btn.btn-default.pull-right.finish(type='submit' style="margin-right: 5px;") HOÀN TẤT
       .col.col-auto.pull-right(style="width: 120px")
         span.ilabel.center thực thu
-        input.quality(value="#{order.finalPrice}" disabled)
+        input.quality(value="{{formatNumber order.finalPrice}}" disabled)
       .col.col-auto.pull-right(style="width: 120px")
         span.ilabel số dư
-        input.debit(value="#{currentDebit}" disabled)
+        input.debit(value="{{formatNumber currentDebit}}" disabled)
       .col.col-auto.pull-right(style="width: 160px")
         span.ilabel tiền nhận vào
         +iSpinEdit(options=depositOptions)
