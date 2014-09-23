@@ -200,9 +200,12 @@ seedProductsFor = (merchant, creator, warehouse) ->
     creator: creator
     emailCreator: Meteor.users.findOne(creator).emails[0].address
     description: "Nhập tồn đầu kỳ 2014"
-    warehouse: warehouse
-    finish: true
-    submited: true
+    warehouse : warehouse
+    totalPrice:0
+    deposit   : 0
+    debit     :0
+    finish    : true
+    submited  : true
   }, importDetails
 
 
