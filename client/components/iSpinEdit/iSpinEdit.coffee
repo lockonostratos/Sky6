@@ -24,7 +24,7 @@ startTrackingValue = ($element, context) ->
       context.data.options.reactiveSetter(Number(e.target.value))
 
 isValueValid = (context, value) ->
-  numValue = Number(value)
+  numValue = accounting.parse(value)
   !isNaN(value) &&
     numValue >= context.data.options.reactiveMin() &&
     numValue <= context.data.options.reactiveMax()
