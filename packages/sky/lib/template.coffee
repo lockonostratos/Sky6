@@ -1,10 +1,23 @@
 extraHeight = 40;
+navbarHeight = 40;
+
+remarginAppHeader = (context) ->
+  $header = $(context.find('.app-header'))
+  $editor = $(context.find('.app-editor'))
+  headerHeight = $header.outerHeight() ? 0
+  editorHeight = $editor.outerHeight() ? 0
+
+  rightSideTopMargin = headerHeight + editorHeight;
+
+  $header.css('top', "#{navbarHeight}px")
+  $editor.css('top', "#{navbarHeight + headerHeight}px")
+  $('#right-side').css('margin-top', "#{rightSideTopMargin}px")
 
 reMarginAppFooter = (context) ->
   $summary = $(context.find('.app-summary'))
   $status = $(context.find('.app-status'))
-  summaryHeight = $summary.height() ? 0
-  statusHeight  = $status.height() ? 0
+  summaryHeight = $summary.outerHeight() ? 0
+  statusHeight  = $status.outerHeight() ? 0
 
   rightSideBottomMargin = summaryHeight + statusHeight + ((context.ui.extras.visibleCount * extraHeight) + 1)
 
@@ -68,7 +81,9 @@ class Sky.appTemplate
       @ui.extras.hide = (name) -> hideExtra(name, self)
 
       @$("[data-toggle='tooltip']").tooltip()
+
       reMarginAppFooter(@)
+      remarginAppHeader(@)
 
       destination.rendered.apply(@, arguments) if destination.rendered
 

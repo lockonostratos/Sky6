@@ -1,7 +1,7 @@
 .app-header {
   padding: 10px 0 0 5px;
   background-color: #fff;
-  position: relative;
+  position: fixed; width: 100%;
   z-index: 10;
 //  border-bottom: 1px solid #eeeeee;
 
@@ -30,6 +30,8 @@
 .app-editor {
   background-color: #F7F7F7;
   min-height: 40px;
+  position: fixed; width: 100%;
+  z-index: 11;
 //  border-bottom: 1px solid #eeeeee;
   border-top: solid 1px #EEEEEE;
   box-shadow: 0 0 6px 0 rgba(0,0,0,0.1);
@@ -198,6 +200,7 @@
 
 .app-summary {
   position: fixed;
+  z-index: 999;
   width: 100%;
   background-color: #fff;
 //  border-top: 1px solid #DFDFDF;
@@ -220,9 +223,10 @@
   width: 100%;
   position: fixed;
   bottom: 0;
+  z-index: 998;
 }
 
-.app-summary, .app-summary > .row.extra, .app-status  {
+.app-summary, .app-summary > .row.extra, .app-status, .app-header, .app-editor  {
   .collapse-transition;
   padding-right: @left-pane-size;
 }

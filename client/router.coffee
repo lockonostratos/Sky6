@@ -26,6 +26,7 @@ class @skyRouter
   onAfterAction: ->
     console.log 'this is after Router action!'
     $("body").removeClass() if @path isnt '/'
+    $('#right-side').removeAttr('style')
     $('#right-side').removeClass()
      .addClass("animated fadeIn")
      .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', -> $(@).removeClass())
