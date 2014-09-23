@@ -11,8 +11,8 @@ Schema.add 'roles', class Role
       return [] if !currentProfile
 
     permissions = []
-    for name in currentProfile.roles
-      currentRole = @schema.findOne {name: name}
+    for role in currentProfile.roles
+      currentRole = @schema.findOne(role)
       permissions = _.union permissions, currentRole.permissions if currentRole
     permissions
 

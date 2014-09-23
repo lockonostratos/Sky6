@@ -12,10 +12,10 @@ Schema2.roles = new SimpleSchema
 
   name:
     type: String
-    optional: true
 
   description:
     type: String
+    optional: true
 
   roles:
     type: String

@@ -96,19 +96,19 @@ seedSystemRoles = ->
   Schema.roles.insert
     group: 'merchant'
     name: 'admin'
-    description: 'admin'
+    description: 'ADMIN'
     permissions: [Sky.system.merchantPermissions.su.key]
 
   Schema.roles.insert
     group: 'merchant'
     name: 'salesBasic'
-    description: 'bán hàng'
+    description: 'BÁN HÀNG'
     permissions: [Sky.system.merchantPermissions.sales.key]
 
   Schema.roles.insert
     group: 'merchant'
     name: 'salesManager'
-    description: 'quản lý bán hàng'
+    description: 'QUẢN LÝ BÁN HÀNG'
     permissions: [
       Sky.system.merchantPermissions.sales.key
       Sky.system.merchantPermissions.returns.key

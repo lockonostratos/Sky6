@@ -16,5 +16,11 @@ Schema.userProfiles.allow
   update: -> true
   remove: -> true
 
+
 Meteor.publish "merchantRoles", (merchant) ->
   Schema.roles.find {$or: [{owner: {$exists: false}}, {parentMerchant: merchant}]}
+
+Schema.roles.allow
+  insert: -> true
+  update: -> true
+  remove: -> true

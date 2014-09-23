@@ -1,4 +1,23 @@
 template(name="roleManager")
-	.app-header
-		span.caption Role <small>manager</small>
-	//+reactiveTable(collection=roleCollection settings=roleTableSetting)
+  .app-header
+    span.caption PHÂN QUYỀN <small>NHÓM NGƯỜI DÙNG</small>
+  .app-editor
+    .row
+      .col.col-auto(style="width: 200px")
+        span.ilabel tên nhóm
+        +iSelect(options=roleSelectOptions class="field")
+      .col.col-auto
+        .btn.btn-default#updateButton ÁP DỤNG
+
+      .col.col-auto.pull-right(style="display")
+        .btn#newGroupButton(class="{{allowCreate}}") TẠO MỚI
+      .col.col-auto.pull-right(style="width: 200px")
+        span.ilabel.optional tên nhóm
+        input(name="newGroupName")
+
+  .app-content.role-manager
+    ul
+      each permissions
+        li.permission-item
+          input.js-switch(type="checkbox" key="{{key}}")
+          .role-label {{description}}

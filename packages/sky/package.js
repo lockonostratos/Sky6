@@ -13,7 +13,9 @@ Package.onUse(function(api) {
     'lib/3rds/slimscroll.js',
     'lib/3rds/jquery.hotkeys.js',
     'lib/3rds/jquery.bootstrap-touchspin.css',
-    'lib/3rds/jquery.bootstrap-touchspin.js'
+    'lib/3rds/jquery.bootstrap-touchspin.js',
+    'lib/3rds/switchery.css',
+    'lib/3rds/switchery.js'
     ]
   , 'client');
 

@@ -3,16 +3,19 @@ runInitTracker = (context) ->
   Sky.global.staffManagerTracker = Tracker.autorun ->
 
     if Session.get('currentProfile')
-      console.log 'subscribing..'
       Meteor.subscribe 'merchantRoles', Session.get('currentProfile')?.parentMerchant
       Meteor.subscribe 'merchantProfiles', Session.get('currentProfile')?.parentMerchant
 
     Session.setDefault 'createStaffBranchSelection', Session.get('currentMerchant')
     Session.setDefault 'createStaffWarehouseSelection', Session.get('currentWarehouse')
 
-formatRoleSelect = (item) -> "#{item.description}" if item
+formatRoleSelect = (item) -> "#{item.name}" if item
 formatBranchSelect = (item) -> "#{item.name}" if item
 formatWarehouseSelect = (item) -> "#{item.name}" if item
+
+resetForm = (context) ->
+  $(item).val('') for item in context.findAll("[name]")
+  Session.set('currentRoleSelection', [])
 
 Sky.appTemplate.extends Template.staffManager,
   created: ->
@@ -28,10 +31,11 @@ Sky.appTemplate.extends Template.staffManager,
 
   events:
     "click #createStaffAccount": (event, template) ->
-      dateOfBirth = template.ui.$dateOfBirth.val()
-      startWorkingDate = template.ui.$startWorkingDate.val()
+      dateOfBirth = template.ui.$dateOfBirth.data('datepicker').dates[0]
+      startWorkingDate = template.ui.$startWorkingDate.data('datepicker').dates[0]
       email = template.ui.$email.val()
       password = template.ui.$password.val()
+      fullName = template.ui.$fullName.val()
 
       roles = []
       if Session.get('currentRoleSelection')?.length > 0
@@ -40,17 +44,18 @@ Sky.appTemplate.extends Template.staffManager,
         parentMerchant: Session.get("currentProfile").parentMerchant
         currentMerchant: Session.get("createStaffBranchSelection")._id
         currentWarehouse: Session.get("createStaffWarehouseSelection")._id
+        fullName: fullName
 
       newProfile.roles = roles if roles.length > 0
       newProfile.dateOfBirth = dateOfBirth if dateOfBirth
       newProfile.startWorkingDate = startWorkingDate if startWorkingDate
 
-      console.log newProfile
-
       Meteor.call "createMerchantAccount", email, password, newProfile
 #      Meteor.call "createMerchantAccount",
 #        email: template.ui.$email.val()
 #        password: template.ui.$password.val()
+
+      resetForm(template)
 
   roleSelectOptions:
     query: (query) -> query.callback
