@@ -20,14 +20,13 @@ stopTrackingOptions = (context) -> context.optionsTracker.stop()
 
 startTrackingValue = ($element, context) ->
   $element.on 'change', (e) ->
-    if context.data.options.reactiveSetter && isValueValid(context, e.target.value)
-      context.data.options.reactiveSetter(Number(e.target.value))
+    parsedValue = accounting.parse(e.target.value)
+    if context.data.options.reactiveSetter && isValueValid(context, parsedValue)
+      context.data.options.reactiveSetter(Number(parsedValue))
 
 isValueValid = (context, value) ->
-  numValue = accounting.parse(value)
-  !isNaN(value) &&
-    numValue >= context.data.options.reactiveMin() &&
-    numValue <= context.data.options.reactiveMax()
+    value >= context.data.options.reactiveMin() &&
+    value <= context.data.options.reactiveMax()
 
 Sky.template.extends Template.iSpinEdit,
   reactiveValue: -> UI._templateInstance().data.options.reactiveValue()
