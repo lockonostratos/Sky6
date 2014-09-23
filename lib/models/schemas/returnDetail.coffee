@@ -48,4 +48,3 @@ Schema2.returnDetails  = new SimpleSchema
 
   version: { type: Schema.Version }
 
-Schema.add 'returnDetails'

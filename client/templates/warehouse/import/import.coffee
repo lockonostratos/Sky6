@@ -11,13 +11,20 @@ runInitImportTracker = (context) ->
 
     if Session.get('currentImport')
       Session.set('currentImportDetails', Schema.importDetails.find({import: Session.get('currentImport')._id}).fetch())
-      Session.set 'currentProductInstance', Schema.products.findOne(Session.get('currentImport').currentProduct)
+      Session.setDefault 'currentProductInstance', Schema.products.findOne(Session.get('currentImport').currentProduct)
 
     currentImportId = Session.get('currentProfile')?.currentImport
     Session.set('currentImport', Schema.imports.findOne(currentImportId)) if currentImportId
 
 Sky.appTemplate.extends Template.import,
   warehouseImport: -> Session.get 'currentImport'
+  hideAddImportDetail: -> return "display: none" if Session.get('currentImport')?.finish == true
+  hidePrice: -> return "display: none" if !Session.get('currentImport')?.currentPrice
+  hideFinishImport: -> return "display: none" if Session.get('currentImport')?.finish == true || !(Session.get('currentImportDetails')?.length > 0)
+  hideEditImport: -> return "display: none" if Session.get('currentImport')?.finish == false
+  hideSubmitImport: -> return "display: none" if Session.get('currentImport')?.submited == true
+
+
 
   tabOptions:
     source: 'importHistory'
@@ -44,12 +51,17 @@ Sky.appTemplate.extends Template.import,
 #    minimumResultsForSearch: -1
     hotkey: 'return'
     changeAction: (e) ->
-      Schema.imports.update(Session.get('currentImport')._id, {$set: {
-        currentProduct  : e.added._id
-        currentProvider : e.added.provider ? 'skyReset'
-        currentQuality  : 1
-        currentPrice    : e.added.importPrice ? 0
-      }})
+      option =
+        currentProduct     : e.added._id
+        currentProvider    : e.added.provider ? 'skyReset'
+        currentQuality     : 1
+        currentImportPrice : e.added.importPrice ? 0
+      if e.added.price > 0
+        Schema.imports.update(Session.get('currentImport')._id, $set: option, $unset: {currentPrice: ""})
+      else
+        option.currentPrice = e.added.importPrice ? 0
+        Schema.imports.update(Session.get('currentImport')._id, {$set: option})
+      Session.set 'currentProductInstance', Schema.products.findOne(e.added._id)
     reactiveValueGetter: -> Session.get('currentImport')?.currentProduct
 
   providerSelectOptions:
@@ -79,11 +91,27 @@ Sky.appTemplate.extends Template.import,
 
   importPriceOptions:
     reactiveSetter: (val) ->
-      Schema.imports.update(Session.get('currentImport')._id, {$set: { currentPrice: val }})
-      Schema.products.update(Session.get('currentProductInstance')._id, {$set:{importPrice: val}})
-    reactiveValue: -> Session.get('currentImport')?.currentPrice ? 0
+      Schema.imports.update(Session.get('currentImport')._id, {$set: { currentImportPrice: val }})
+      Schema.products.update(Session.get('currentImport').currentProduct, {$set:{importPrice: val}})
+    reactiveValue: -> Session.get('currentImport')?.currentImportPrice ? 0
     reactiveMax: -> 999999999
     reactiveMin: -> 0
+    reactiveStep: -> 1000
+    others:
+      forcestepdivisibility: 'none'
+
+  priceOptions:
+    reactiveSetter: (val) ->
+      if Session.get('currentImport').currentPrice
+        Schema.imports.update(Session.get('currentImport')._id, {$set: { currentPrice: val }})
+    reactiveValue: -> Session.get('currentImport')?.currentPrice ? 0
+    reactiveMax: -> 999999999
+    reactiveMin: ->
+      if Session.get('currentImport')?.currentPrice
+        return Session.get('currentImport')?.currentImportPrice
+      else
+        Number(0)
+
     reactiveStep: -> 1000
     others:
       forcestepdivisibility: 'none'

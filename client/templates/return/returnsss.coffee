@@ -5,7 +5,7 @@ Deps.autorun ->
     Template.returns.returnDetailList = Schema.returnDetails.find({returns: Session.get('currentReturn')._id}).fetch()
   Template.returns.returnsList = Schema.returns.find({}).fetch()
 
-_.extend Template.returns,
+_.extend Template.returnss,
   returnCollection: Schema.returns.find()
   returnDetailCollection: Schema.returnDetails.find()
   formatSearchSale: (item) -> "#{item.orderCode}"

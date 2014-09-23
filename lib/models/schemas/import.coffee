@@ -46,6 +46,10 @@ Schema2.imports = new SimpleSchema
     type: Number
     optional: true
 
+  currentImportPrice:
+    type: Number
+    optional: true
+
   currentPrice:
     type: Number
     optional: true

@@ -4,9 +4,12 @@ Schema.add 'saleDetails', class SaleDetail
       sale          : currentSale._id
       product       : sellingItem.product
       productDetail : product._id
+      name          : sellingItem.name
+      skulls        : sellingItem.skulls
       quality       : takkenQuality
       price         : sellingItem.price
       totalPrice    : (takkenQuality * sellingItem.price)
+      returnQuality : 0
 
     if currentSale.billDiscount
       if currentSale.discountCash == 0

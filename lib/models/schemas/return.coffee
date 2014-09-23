@@ -36,4 +36,4 @@ Schema2.returns = new SimpleSchema
 
   version: { type: Schema.Version }
 
-Schema.add 'returns'
+

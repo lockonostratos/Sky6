@@ -3,6 +3,18 @@ createTransactionAndDetailByImport = (importId)->
   transaction = Transaction.newByImport(warehouseImport)
   transactionDetail = TransactionDetail.newByTransaction(transaction)
 
+removeOrderAndOrderDetailAfterCreateSale= (orderId)->
+  allTabs = Schema.orders.find({creator: Meteor.userId()}).fetch()
+  currentSource = _.findWhere(allTabs, {_id: orderId})
+  currentIndex = allTabs.indexOf(currentSource)
+  currentLength = allTabs.length
+  if currentLength == 1
+    Order.createOrderAndSelect()
+    Order.removeAll(orderId)
+  if currentLength > 1
+    UserProfile.update {currentOrder: allTabs[currentIndex-1]._id}
+    Order.removeAll(orderId)
+
 Sky.global.reCalculateImport = (importId)->
   if !warehouseImport = Schema.imports.findOne(importId) then console.log('Sai Import'); return
   if !importDetails = Schema.importDetails.find({import: importId}).fetch() then console.log('Sai Import'); return
@@ -93,7 +105,6 @@ Schema.add 'imports', class Import
           if error then return 'Sai thông tin sản phẩm nhập kho'
 
         product = Schema.products.findOne importDetail.product
-
         option1=
           totalQuality    : importDetail.importQuality
           availableQuality: importDetail.importQuality
@@ -102,7 +113,7 @@ Schema.add 'imports', class Import
         option2=
           provider    : importDetail.provider
           importPrice : importDetail.importPrice
-        option2.price = option2.importPrice if product.price == 0
+        option2.price = importDetail.salePrice if importDetail.salePrice
 
         Schema.products.update product._id, $inc: option1, $set: option2, (error, result) ->
           if error then return 'Sai thông tin sản phẩm nhập kho'

@@ -171,6 +171,7 @@ Schema.add 'orders', class Order
     saleId = createSaleAndSaleOrder(order, orderDetails)
     removeOrderAndOrderDetailAfterCreateSale(order._id)
     createTransactionAndDetailByOrder(saleId)
+    return("Tạo phiếu bán hàng thành công")
 
 #-----------------------------------------------------
 Sky.global.reCalculateOrder = (orderId)->

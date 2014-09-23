@@ -1,0 +1,37 @@
+template(name="returns")
+  .app-header
+    span.caption Trả Hàng
+  .app-editor
+    .row
+      .col.col-auto(style="width: 250px")
+        span.ilabel chọn phiếu bán hàng
+        +iSelect(options=saleSelectOptions class="field")
+      .col.col-auto(style="width: 400px")
+        span.ilabel chọn hàng trả
+        +iSelect(options=returnProductSelectOptions class="field")
+      .col.col-auto(style="width: 100px")
+        span.ilabel số lượng trả
+        +iSpinEdit(options=returnQualityOptions)
+      .col.col-auto(style="width:150px")
+        button.btn.btn-default.addReturnDetail(type='submit') THÊM
+
+
+
+
+  .app-content
+    +iGrid(options=returnDetailOptions)
+  .app-summary
+    .row
+      .col.col-auto.pull-right(style="width:100px; {{hideSubmitReturn}}")
+        button.btn.btn-default.submitReturn(type='submit') ĐÃ DUYỆT
+
+      .col.col-auto.pull-right(style="width:110px; {{hideEditReturn}}")
+        button.btn.btn-default.editReturn(type='submit') CHỈNH SỬA
+
+      .col.col-auto.pull-right(style="width:190px; {{hideFinishReturn}}")
+        button.btn.btn-default.finishReturn(type='submit') XÁC NHẬN, CHỜ DUYỆT
+
+      .col.col-auto.pull-right(style="width: 300px")
+        span.ilabel ghi chú
+        input.comment(value="{{return.comment}}" )
+  .app-status

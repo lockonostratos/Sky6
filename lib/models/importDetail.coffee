@@ -11,12 +11,12 @@ Schema.add 'importDetails', class ImportDetail
       name          : product.name
       skulls        : product.skulls
       importQuality : Number(imports.currentQuality)
-      importPrice   : Number(imports.currentPrice)
+      importPrice   : Number(imports.currentImportPrice)
       finish        : false
-
       styles        : Sky.helpers.randomColor()
-    option.provider = imports.currentProvider if imports.currentProvider
-    option.expire = imports.currentExpire if imports.currentExpire
+    option.provider  = imports.currentProvider  if imports.currentProvider
+    option.expire    = imports.currentExpire    if imports.currentExpire
+    option.salePrice = imports.currentPrice    if imports.currentPrice
     option
 
 

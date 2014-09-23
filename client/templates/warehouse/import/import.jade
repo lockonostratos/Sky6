@@ -15,22 +15,22 @@ template(name="import")
          .col.col-auto(style="width:150px")
            span.ilabel giá nhập
            +iSpinEdit(options=importPriceOptions class="field")
-         //.col.col-auto(style="width:150px")
-         //  span.ilabel giá bán
-         //  +iSpinEdit(options=importPriceOptions class="field")
+         .col.col-auto(style="width:150px; {{hidePrice}}")
+           span.ilabel giá bán
+           +iSpinEdit(options=priceOptions class="field")
          .col.col-auto(style="width:100px")
-           button.btn.btn-default.addImportDetail(type='submit') Add
+           button.btn.btn-default.addImportDetail(type='submit' style="{{hideAddImportDetail}}") Add
 
   .app-content
     +iGrid(options=importDetailOptions)
 
-  .app-summary(style="height: 50px")
+  .app-summary
     .row
-      .col.col-auto.pull-right(style="width: 100px")
-        button.btn.btn-default.pull-right.submitImport(type='submit' style="margin-right: 5px;") XÁC NHẬN
-      .col.col-auto.pull-right(style="width: 130px")
-        button.btn.btn-default.pull-right.finishImport(type='submit' style="margin-right: 5px;") CHỜ XÁC NHẬN
-      .col.col-auto.pull-right(style="width: 120px")
+      .col.col-auto.pull-right(style="width: 100px; {{hideSubmitImport}}")
+        button.btn.btn-default.pull-right.submitImport(type='submit' style="margin-right: 5px;") ĐÃ DUYỆT
+      .col.col-auto.pull-right(style="width: 200px; {{hideFinishImport}}")
+        button.btn.btn-default.pull-right.finishImport(type='submit' style="margin-right: 5px;") XÁC NHẬN CHỜ DUYỆT
+      .col.col-auto.pull-right(style="width: 120px; {{hideEditImport}}")
         button.btn.btn-default.pull-right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
       .col.col-auto.pull-right(style="width: 120px")
         span.ilabel tiền còn nợ
