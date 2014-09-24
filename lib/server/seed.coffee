@@ -202,7 +202,7 @@ seedProductsFor = (merchant, creator, warehouse) ->
     description: "Nhập tồn đầu kỳ 2014"
     warehouse: warehouse
     totalPrice: 0
-    deposit:0
+    deposit: 0
     debit: 0
     finish: true
     submited: true
