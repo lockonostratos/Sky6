@@ -43,3 +43,5 @@ Router.map ->
   @route 'report', new skyRouter('report')
   @route 'roleManager', new skyRouter('roleManager')
   @route 'staffManager', new skyRouter('staffManager')
+  @route 'customerManager', new skyRouter('customerManager')
+  @route 'branchManager', new skyRouter('branchManager')

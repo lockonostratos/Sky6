@@ -81,7 +81,15 @@ class Sky.appTemplate
       @ui.extras.hide = (name) -> hideExtra(name, self)
 
       @$("[data-toggle='tooltip']").tooltip()
+      for item in @findAll("[binding='datePicker']")
+        $item = $(item)
+        options = {}
+        options.language = "vi"
+        options.todayHighlight = true if $item.attr('todayHighlight') is "true"
 
+        $(item).datepicker options
+
+      $(item).attr('maxlength', 120) for item in @findAll("input:not([maxlength])")
       reMarginAppFooter(@)
       remarginAppHeader(@)
 

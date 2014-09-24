@@ -2,19 +2,27 @@ class Sky
   class @global
   class @system
     @merchantPermissions:
-      su:                 { key: 'su',                  description: 'tất cả' }
-      sales:              { key: 'sales',               description: 'bán hàng' }
-      returns:            { key: 'returns',             description: 'trả hàng' }
-      detroySalesBill:    { key: 'destroySalesBill',    description: 'xóa hóa đơn' }
-      delivery:           { key: 'delivery',            description: 'chuyển hàng' }
-      deliveryConfirm:    { key: 'deliveryConfirm',     description: 'xác nhận giao hàng' }
-      export:             { key: 'export',              description: 'xuất kho' }
-      import:             { key: 'import',              description: 'nhập kho' }
-      destroyImport:      { key: 'destroyImport',       description: 'xóa phiếu nhập kho' }
+      su:                     { group: 'special',   key: 'su',                  description: 'tất cả' }
+      sales:                  { group: 'sales',     key: 'sales',               description: 'bán hàng' }
+      returns:                { group: 'sales',     key: 'returns',             description: 'trả hàng' }
+      detroySalesBill:        { group: 'sales',     key: 'destroySalesBill',    description: 'xóa hóa đơn' }
+      delivery:               { group: 'sales',     key: 'delivery',            description: 'giao hàng' }
+      deliveryConfirm:        { group: 'sales',     key: 'deliveryConfirm',     description: 'xác nhận giao hàng' }
+      deliveryDestroy:        { group: 'sales',     key: 'deliveryDestroy',     description: 'hủy giao hàng' }
+      export:                 { group: 'warehouse', key: 'export',              description: 'xuất kho' }
+      exportDestroy:          { group: 'warehouse', key: 'exportDestroy',       description: 'hủy xuất kho' }
+      import:                 { group: 'warehouse', key: 'import',              description: 'nhập kho' }
+      importDestroy:          { group: 'warehouse', key: 'importDestroy',       description: 'hủy nhập kho' }
+      destroyImport:          { group: 'warehouse', key: 'destroyImport',       description: 'xóa phiếu nhập kho' }
 
-      createCustomer:     { key: 'createCustomer',      description: 'tạo khách hàng' }
-      accountManagement:  { key: 'accountManagement',   description: 'quản lý nhân viên' }
-      customerManagement: { key: 'customerManagement',  description: 'quản lý khách hàng' }
+      accountManagement:      { group: 'human',     key: 'accountManagement',   description: 'quản lý nhân viên' }
+      createCustomer:         { group: 'crm',       key: 'createCustomer',      description: 'tạo khách hàng' }
+      customerShow:           { group: 'crm',       key: 'customerShow',        description: 'quản lý khách hàng' }
+      customerManagement:     { group: 'crm',       key: 'customerManagement',  description: 'quản lý khách hàng' }
+
+      transactionShow:        { group: 'finance',   key: 'transactionShow',     description: 'xem thu chi' }
+      transactionManagement:  { group: 'finance',   key: 'transactionShow',     description: 'q.lý thu chi' }
+
     @paymentMethods: [
       _id: 0
       display: 'TIỀN MẶT'
