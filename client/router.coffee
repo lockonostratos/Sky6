@@ -24,7 +24,7 @@ class @skyRouter
     @onBeforeAction = onBeforeAction if onBeforeAction
 
   onAfterAction: ->
-    console.log 'this is after Router action!'
+#    console.log 'this is after Router action!'
     $("body").removeClass() if @path isnt '/'
     $('#right-side').removeAttr('style')
     $('#right-side').removeClass()
@@ -36,6 +36,7 @@ Router.map ->
   @route 'home', new skyRouter('home')
   @route 'warehouse', new skyRouter('warehouse')
   @route 'sales', new skyRouter('sales')
+  @route 'billManager', new skyRouter('billManager')
   @route 'import', new skyRouter('import')
   @route 'delivery', new skyRouter('delivery')
   @route 'returns', new skyRouter('returns')
@@ -43,3 +44,5 @@ Router.map ->
   @route 'report', new skyRouter('report')
   @route 'roleManager', new skyRouter('roleManager')
   @route 'staffManager', new skyRouter('staffManager')
+  @route 'customerManager', new skyRouter('customerManager')
+  @route 'branchManager', new skyRouter('branchManager')

@@ -8,7 +8,7 @@ template(name="metroHome")
         span.s7.top.middle.caption NHÂN VIÊN
         span.center.middle.caption: span.table: i.fa.fa-share-alt.fa-3x
         span.bottom.middle.caption TÀI KHOẢN
-      .tile.amethyst
+      .tile.amethyst.app-navigator(data-app="customerManager")
         span.s7.top.middle.caption HỒ SƠ MACKAY
         span.center.middle.caption: span.table: i.fa.fa-heart.fa-3x
         span.bottom.middle.caption KHÁCH HÀNG
@@ -21,7 +21,7 @@ template(name="metroHome")
       .tile.pumpkin.app-navigator(data-app="returns")
         span.center.middle.caption: span.table: i.fa.fa-reply-all.fa-3x
         span.bottom.middle.caption TRẢ HÀNG
-      .tile.amethyst
+      .tile.amethyst.app-navigator(data-app="billManager")
         span.center.middle.caption: span.table: i.fa.fa-file-text-o.fa-3x
         span.bottom.middle.caption ĐƠN HÀNG
       .tile.double.orange
@@ -29,16 +29,10 @@ template(name="metroHome")
         span.center.left.caption: span.table: i.fa.fa-credit-card.fa-3x
         span.bottom.left.caption CÔNG NỢ
       .tile.amethyst.orange.app-navigator(data-app="delivery")
-        span.center.middle.caption: span.table: i.fa.fa-file-text-o.fa-3x
+        span.center.middle.caption: span.table: i.fa.fa-truck.fa-3x
         span.bottom.middle.caption GIAO HÀNG
     .tile-group-3
       .tile.lime
-        span.s7.top.middle.caption GIÁ BÁN
-        span.center.middle.caption: span.table
-          i.fa.fa-building.fa-1x
-          i.fa.fa-building-o.fa-3x
-          i.fa.fa-building-o.fa-2x
-        span.bottom.middle.caption KHO HÀNG
       .tile.pumpkin.double.double-vertical.app-navigator(data-app="import")
         span.center.left.caption: span.table: i.fa.fa-cubes.fa-3x
         span.bottom.left.caption NHẬP KHO
@@ -62,13 +56,18 @@ template(name="metroHome")
           i.fa.fa-bar-chart.fa-2x
         span.bottom.left.caption BÁO CÁO DOANH SỐ
     .tile-group-1
-      .tile.belize-hole
+      .tile.belize-hole.app-navigator(data-app="branchManager")
         span.center.middle.caption: span.table
           i.fa.fa-home.fa-2x
           i.fa.fa-home.fa-3x
           i.fa.fa-home.fa-1x
         span.bottom.middle.caption CHI NHÁNH
+      .tile.lime
+        span.center.middle.caption: span.table
+          i.fa.fa-building.fa-1x
+          i.fa.fa-building-o.fa-3x
+          i.fa.fa-building-o.fa-2x
+        span.bottom.middle.caption KHO HÀNG
       .tile.gray
         span.center.middle.caption: span.table: i.fa.fa-newspaper-o.fa-3x
-
         span.bottom.middle.caption NHẬT KÝ

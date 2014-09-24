@@ -60,3 +60,6 @@ Schema.add 'sales', class Sale
     if returns.status == 0 then console.log 'Loi, Phieu Chua Xac Nhan'
     if returns.status == 2 then console.log 'Loi, Phieu Da Hoan Thanh'
 
+  @destroy: (saleId) ->
+    Schema.saleDetails
+    @schema.remove(saleId)
