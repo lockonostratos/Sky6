@@ -1,5 +1,11 @@
 Schema2.returnDetails  = new SimpleSchema
-  returns:
+  return:
+    type: String
+
+  sale:
+    type: String
+
+  saleDetail:
     type: String
 
   product:

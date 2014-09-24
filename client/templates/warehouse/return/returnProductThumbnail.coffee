@@ -7,4 +7,5 @@ Sky.template.extends Template.returnProductThumbnail,
     if number < 10 then '0' + number else number
   round: (number) -> Math.round(number)
   events:
-    "dblclick .full-desc.trash": -> Schema.returnDetails.remove(@_id)
+    "dblclick .full-desc.trash": ->
+      ReturnDetail.removeReturnDetail(@_id)

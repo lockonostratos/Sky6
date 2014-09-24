@@ -1,0 +1,18 @@
+template(name="delivery")
+  .app-header
+    span.caption Trả Hàng
+  .app-editor
+    .row
+      .col.col-auto(style="width: 250px")
+        span.ilabel chọn phiếu giao hàng
+        +iSelect(options=deliverySelectOptions class="field")
+
+  .app-content
+  .app-summary
+  .app-status
+
+template(name="removeItem")
+    button.btn.btn-default.checkingDelivery(type='submit') Nhan
+    button.btn.btn-default.trueDelivery(type='submit') ThanhCong
+    button.btn.btn-default.falesDelivery(type='submit') ThatBai
+    button.btn.btn-default.resetDelivery(type='submit') reset
