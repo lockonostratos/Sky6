@@ -3,9 +3,15 @@ template(name="delivery")
     span.caption Trả Hàng
   .app-editor
     .row
-      .col.col-auto(style="width: 250px")
-        span.ilabel chọn phiếu giao hàng
-        +iSelect(options=deliverySelectOptions class="field")
+      .col.col-auto(style="width: 200px")
+        span.ilabel chi nhánh
+        +iSelect(options=merchantSelectOptions class="field")
+      .col.col-auto(style="width: 200px")
+        span.ilabel kho
+        +iSelect(options=merchantSelectOptions class="field")
+      .col.col-auto(style="width: 120px")
+        span.ilabel bộ lọc
+        +iSelect(options=filterDeliverySelectOption class="field")
 
   .app-content
   .app-summary

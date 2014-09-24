@@ -36,6 +36,16 @@ class Sky
       _id: true
       display: 'GIẢM GIÁ THEO PHIẾU'
     ]
+    @filterDeliveries:[
+      _id: 0
+      display: 'TẤT CẢ'
+    ,
+      _id: 1
+      display: 'CHƯA NHẬN'
+    ,
+      _id: 2
+      display: 'ĐÃ NHẬN'
+    ]
 
   class @helpers
     @removeVnSigns: (source) ->

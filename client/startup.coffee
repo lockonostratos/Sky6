@@ -17,7 +17,7 @@ Meteor.startup ->
     if Meteor.userId()
       Session.set "currentUser"       , Meteor.user()
       Session.set "currentProfile"    , Schema.userProfiles.findOne(user: Meteor.userId())
-      Session.set "availableMerchant" , Schema.merchants.findOne({})
+      Session.set "availableMerchant" , Schema.merchants.find({}).fetch()
 
   Tracker.autorun ->
     console.log ('warehouseAutorunWorking..') if autorunDebug

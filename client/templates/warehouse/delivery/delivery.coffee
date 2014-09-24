@@ -42,37 +42,67 @@ updateDeliveryFalse= (item) ->
   Schema.deliveries.update item._id, $set:{status: 9}
 #chưa cập nhật vào bảng MetroSummary
 
-formatDeliverySearch = (item) -> "#{item._id}" if item
+formatMerchantSearch = (item) -> "#{item.name}" if item
+formatWarehouseSearch = (item) -> "#{item.name}" if item
+formatfilterDeliverySearch = (item) -> "#{item.display}" if item
 
 runInitDeliveryTracker = (context) ->
   return if Sky.global.deliveryTracker
   Sky.global.deliveryTracker = Tracker.autorun ->
-    if Session.get('currentMerchant')
-      Session.set "availableDelivery", Schema.deliveries.find({warehouse: Session.get('currentWarehouse')._id}).fetch()
+    if Session.get('currentProfile')
+      Session.set "availableDeliveryMerchant", Schema.merchants.find({}).fetch()
 
-    if Session.get('currentProfile')?.currentSale
-      Session.set 'currentDelivery', Schema.deliveries.findOne(Session.get('currentProfile')?.currentDelivery)
+    if Session.get('availableDeliveryMerchant')
+      Session.set "availableDeliveryWarehouse", Schema.warehouses.find({}).fetch()
+      Session.set "currentDeliveryMerchant", Session.get('availableMerchantDelivery')[0]
+
+    if Session.get('availableDeliveryWarehouse')
+      Session.set "currentDeliveryWarehouse", Session.get('availableMerchantDelivery')[0]
+
 
 Sky.appTemplate.extends Template.delivery,
   deliverry: ->
 
-  deliverySelectOptions:
+  merchantSelectOptions:
     query: (query) -> query.callback
-      results: _.filter Session.get('availableDelivery'), (item) ->
+      results: _.filter Session.get('availableMerchant'), (item) ->
         unsignedTerm = Sky.helpers.removeVnSigns query.term
-        unsignedName = Sky.helpers.removeVnSigns item._id
+        unsignedName = Sky.helpers.removeVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1
       text: 'orderCode'
-    initSelection: (element, callback) -> callback(Session.get 'currentDelivery')
-    formatSelection: formatDeliverySearch
-    formatResult: formatDeliverySearch
-    id: '_id'
-    placeholder: 'CHỌN PHIẾU BÁN HÀNG'
-  #    minimumResultsForSearch: -1
+    initSelection: (element, callback) -> callback()
+    formatSelection: formatMerchantSearch
+    formatResult: formatMerchantSearch
+    placeholder: 'CHỌN CHI NHÁNH'
     changeAction: (e) ->
-      Schema.userProfiles.update(Session.get('currentProfile')._id, {$set: {currentDelivery: e.added._id}})
+    reactiveValueGetter: ->
 
-    reactiveValueGetter: -> Session.get('currentProfile')?.currentDelivery
+  warehouseSelectOptions:
+    query: (query) -> query.callback
+      results: _.filter Session.get('availableMerchant'), (item) ->
+        unsignedTerm = Sky.helpers.removeVnSigns query.term
+        unsignedName = Sky.helpers.removeVnSigns item.name
+        unsignedName.indexOf(unsignedTerm) > -1
+      text: 'orderCode'
+    initSelection: (element, callback) -> callback()
+    formatSelection: formatWarehouseSearch
+    formatResult: formatWarehouseSearch
+    placeholder: 'CHỌN CHI NHÁNH'
+    changeAction: (e) ->
+    reactiveValueGetter: ->
+
+  filterDeliverySelectOption:
+    query: (query) -> query.callback
+      results: Sky.system.filterDeliveries
+      text: 'id'
+    initSelection: (element, callback) -> callback _.findWhere(Sky.system.filterDeliveries, {_id: Session.get('currentOrder')?.billDiscount})
+    formatSelection: formatfilterDeliverySearch
+    formatResult: formatfilterDeliverySearch
+    placeholder: 'BỘ LỌC'
+    minimumResultsForSearch: -1
+    changeAction: (e) ->
+    reactiveValueGetter: -> _.findWhere(Sky.system.filterDeliveries, {_id: Session.get('currentOrder')?.billDiscount})
+
 
 #  events:
 #    'click .createDelivery':  (event, template)-> console.log 'create Delyverty'

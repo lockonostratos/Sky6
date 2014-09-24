@@ -153,7 +153,7 @@ Schema.add 'orders', class Order
 
   @finishOrder: (orderId)->
     return 'Order Không Tồn Tại' if !order = Schema.orders.findOne(orderId)
-    return 'Chưa chọn người mua' if !order.buyer
+    return 'Chưa chọn người mua' if !buyer = Schema.customers.findOne(order.buyer)
     return 'Order Không Có Dữ Liệu' if (orderDetails = Schema.orderDetails.find({order: order._id}).fetch()).length < 1
     if order.deliveryType == 1
       return 'Thông tin giao hàng chưa đầy đủ (Name)'    if !order.contactName || order.contactName.length < 1

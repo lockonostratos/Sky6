@@ -21,6 +21,10 @@ Schema2.userProfiles = new SimpleSchema
   isRoot:
     type: Boolean
 
+  roles:
+    type: [String]
+    optional: true
+
   parentMerchant:
     type: String
 
@@ -46,8 +50,19 @@ Schema2.userProfiles = new SimpleSchema
     type: String
     optional: true
 
-  roles:
-    type: [String]
+#------------------------
+  currentDeliveryMerchant:
+    type: String
     optional: true
+
+  currentDeliveryWarehouse:
+    type: String
+    optional: true
+
+  currentDeliveryFilter:
+    type: Number
+    optional: true
+#------------------------
+
 
 #Schema.add 'userProfiles'
