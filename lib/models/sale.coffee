@@ -10,6 +10,8 @@ Schema.add 'sales', class Sale
       productCount : order.productCount
       saleCount    : order.saleCount
       return       : false
+      returnCount  : 0
+      returnQuality: 0
       deliveryType : order.deliveryType
       paymentMethod: order.paymentMethod
       billDiscount : order.billDiscount

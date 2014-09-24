@@ -27,9 +27,11 @@ Schema2.sales = new SimpleSchema
     type: Boolean
     optional: true
 
-  returner:
-    type: String
-    optional: true
+  returnCount:
+    type: Number
+
+  returnQuality:
+    type: Number
 
   deliveryType:
     type: Number

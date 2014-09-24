@@ -125,10 +125,11 @@ Sky.appTemplate.extends Template.sales,
     changeAction: (e) ->
       Schema.orders.update Session.get('currentOrder')._id,
         $set:
-          currentProduct  : e.added._id
-          currentQuality  : Number(1)
-          currentPrice    : e.added.price
-          currentDiscount : Number(0)
+          currentProduct        : e.added._id
+          currentQuality        : Number(1)
+          currentPrice          : e.added.price
+          currentDiscountCash   : Number(0)
+          currentDiscountPercent: Number(0)
     reactiveValueGetter: -> Session.get('currentOrder')?.currentProduct
 
   customerSelectOptions:

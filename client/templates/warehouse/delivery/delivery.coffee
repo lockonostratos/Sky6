@@ -42,32 +42,43 @@ updateDeliveryFalse= (item) ->
   Schema.deliveries.update item._id, $set:{status: 9}
 #chưa cập nhật vào bảng MetroSummary
 
-formatwarehouseSearch = (item) -> "#{item.name}" if item
-_.extend Template.delivery,
-  warehouseSelectOptions:
+formatDeliverySearch = (item) -> "#{item._id}" if item
+
+runInitDeliveryTracker = (context) ->
+  return if Sky.global.deliveryTracker
+  Sky.global.deliveryTracker = Tracker.autorun ->
+    if Session.get('currentMerchant')
+      Session.set "availableDelivery", Schema.deliveries.find({warehouse: Session.get('currentWarehouse')._id}).fetch()
+
+    if Session.get('currentProfile')?.currentSale
+      Session.set 'currentDelivery', Schema.deliveries.findOne(Session.get('currentProfile')?.currentDelivery)
+
+Sky.appTemplate.extends Template.delivery,
+  deliverry: ->
+
+  deliverySelectOptions:
     query: (query) -> query.callback
-      results: _.filter Session.get("availableWarehouses"), (item) ->
+      results: _.filter Session.get('availableDelivery'), (item) ->
         unsignedTerm = Sky.helpers.removeVnSigns query.term
-        unsignedName = Sky.helpers.removeVnSigns item.name
-
-        unsignedName.indexOf(unsignedTerm) > -1 || item.name.indexOf(unsignedTerm) > -1
-      text: 'name'
-    initSelection: (element, callback) -> callback(Session.get('currentWarehouse'))
-    formatSelection: formatwarehouseSearch
-    formatResult: formatwarehouseSearch
+        unsignedName = Sky.helpers.removeVnSigns item._id
+        unsignedName.indexOf(unsignedTerm) > -1
+      text: 'orderCode'
+    initSelection: (element, callback) -> callback(Session.get 'currentDelivery')
+    formatSelection: formatDeliverySearch
+    formatResult: formatDeliverySearch
     id: '_id'
-    placeholder: 'CHỌN NGƯỜI MUA'
-    hotkey: 'return'
+    placeholder: 'CHỌN PHIẾU BÁN HÀNG'
+  #    minimumResultsForSearch: -1
     changeAction: (e) ->
-      console.log Schema.warehouses.findOne(e.added._id)
-#      Schema.orders.update(Session.get('currentWarehouse')._id, {$set: {seller: e.added._id}})
-      Session.set 'currentWarehouse', Schema.warehouses.findOne(e.added._id)
-    reactiveValueGetter: -> Session.get('currentWarehouse')
+      Schema.userProfiles.update(Session.get('currentProfile')._id, {$set: {currentDelivery: e.added._id}})
 
+    reactiveValueGetter: -> Session.get('currentProfile')?.currentDelivery
 
-  events:
-    'click .createDelivery':  (event, template)-> console.log 'create Delyverty'
-    'click .reactive-table .checkingDelivery': -> updateDelyvery @, 0
-    'click .reactive-table .trueDelivery': -> updateDelyvery @, 1
-    'click .reactive-table .falesDelivery': -> updateDelyvery @, 2
-    'click .reactive-table .resetDelivery': -> Schema.deliveries.update @_id, $set:{status: 0, shipper: undefined }
+#  events:
+#    'click .createDelivery':  (event, template)-> console.log 'create Delyverty'
+#    'click .reactive-table .checkingDelivery': -> updateDelyvery @, 0
+#    'click .reactive-table .trueDelivery': -> updateDelyvery @, 1
+#    'click .reactive-table .falesDelivery': -> updateDelyvery @, 2
+#    'click .reactive-table .resetDelivery': -> Schema.deliveries.update @_id, $set:{status: 0, shipper: undefined }
+  rendered: ->
+    runInitDeliveryTracker()

@@ -12,11 +12,8 @@ template(name="returns")
       .col.col-auto(style="width: 100px")
         span.ilabel số lượng trả
         +iSpinEdit(options=returnQualityOptions)
-      .col.col-auto(style="width:150px")
+      .col.col-auto(style="width:150px; {{hideAddReturnDetail}}")
         button.btn.btn-default.addReturnDetail(type='submit') THÊM
-
-
-
 
   .app-content
     +iGrid(options=returnDetailOptions)
@@ -33,5 +30,13 @@ template(name="returns")
 
       .col.col-auto.pull-right(style="width: 300px")
         span.ilabel ghi chú
-        input.comment(value="{{return.comment}}" )
+        input.comment(value="{{saleReturn.comment}}" )
+
+      .col.col-auto.pull-right(style="width: 100px")
+        span.ilabel tỗng tiền
+        input.totalPrice(value="{{saleReturn.totalPrice}}" disabled)
+
+      .col.col-auto.pull-right(style="width: 150px")
+        span.ilabel người tạo
+        input.totalPrice(value="{{saleReturn.creatorName}}" disabled)
   .app-status

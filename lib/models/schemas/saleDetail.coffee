@@ -24,7 +24,7 @@ Schema2.saleDetails = new SimpleSchema
     type: Number
 
   returnQuality:
-    type: String
+    type: Number
     optional: true
 
   price:
