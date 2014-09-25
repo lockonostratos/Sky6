@@ -50,14 +50,45 @@ runInitDeliveryTracker = (context) ->
   return if Sky.global.deliveryTracker
   Sky.global.deliveryTracker = Tracker.autorun ->
     if Session.get('currentProfile')
-      Session.set "availableDeliveryMerchant", Schema.merchants.find({}).fetch()
+      Session.set "availableDeliveryMerchants", Schema.merchants.find({}).fetch()
 
-    if Session.get('availableDeliveryMerchant')
-      Session.set "availableDeliveryWarehouse", Schema.warehouses.find({}).fetch()
-      Session.set "currentDeliveryMerchant", Session.get('availableMerchantDelivery')[0]
+    if Session.get('availableDeliveryMerchants')
+      Session.set "currentDeliveryMerchant", Schema.merchants.findOne(Session.get('currentProfile').currentDeliveryMerchant)
 
-    if Session.get('availableDeliveryWarehouse')
-      Session.set "currentDeliveryWarehouse", Session.get('availableMerchantDelivery')[0]
+    if Session.get('currentDeliveryMerchant')
+      Session.set "availableDeliveryWarehouses", Schema.warehouses.find({merchant: Session.get('currentDeliveryMerchant')._id}).fetch()
+
+    if Session.get('availableDeliveryWarehouses')
+      Session.set "currentDeliveryWarehouse", Schema.warehouses.findOne(Session.get('currentProfile').currentDeliveryWarehouse) ? 'skyReset'
+
+    if Session.get("currentDeliveryWarehouse") and Session.get("currentDeliveryWarehouse") != "skyReset"
+      if Session.get('currentProfile')?.currentDeliveryFilter == 0
+        Session.set "availableDeliveries", Schema.deliveries.find(
+          warehouse: Session.get("currentDeliveryWarehouse")._id
+          $or: [ {status: 0}, {shipper: Meteor.userId()} ]
+        ).fetch()
+
+      if Session.get('currentProfile')?.currentDeliveryFilter == 1
+        Session.set "availableDeliveries", Schema.deliveries.find({
+          warehouse: Session.get("currentDeliveryWarehouse")._id
+          status: 0
+        }).fetch()
+
+      if Session.get('currentProfile')?.currentDeliveryFilter == 2
+        Session.set "availableDeliveries", Schema.deliveries.find({
+          warehouse: Session.get("currentDeliveryWarehouse")._id
+          shipper: Meteor.userId()
+          status: {$in:[1,2,3,4,5,7,8]}
+        }).fetch()
+
+      if Session.get('currentProfile')?.currentDeliveryFilter == 3
+        Session.set "availableDeliveries", Schema.deliveries.find({
+          warehouse: Session.get("currentDeliveryWarehouse")._id
+          shipper: Meteor.userId()
+          status: {$in:[6,9]}
+        }).fetch()
+    else
+      Session.set "availableDeliveries", []
 
 
 Sky.appTemplate.extends Template.delivery,
@@ -65,50 +96,54 @@ Sky.appTemplate.extends Template.delivery,
 
   merchantSelectOptions:
     query: (query) -> query.callback
-      results: _.filter Session.get('availableMerchant'), (item) ->
+      results: _.filter Session.get('availableDeliveryMerchants'), (item) ->
         unsignedTerm = Sky.helpers.removeVnSigns query.term
         unsignedName = Sky.helpers.removeVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1
-      text: 'orderCode'
-    initSelection: (element, callback) -> callback()
+    initSelection: (element, callback) -> callback(Session.get('currentDeliveryMerchant'))
     formatSelection: formatMerchantSearch
     formatResult: formatMerchantSearch
     placeholder: 'CHỌN CHI NHÁNH'
     changeAction: (e) ->
-    reactiveValueGetter: ->
+      Schema.userProfiles.update Session.get('currentProfile')._id, $set:
+        currentDeliveryMerchant : e.added._id
+        currentDeliveryWarehouse: Schema.warehouses.findOne(merchant: e.added._id)?._id  ? 'skyReset'
+        currentDeliveryFilter   : 1
+    reactiveValueGetter: -> Session.get('currentDeliveryMerchant')
 
   warehouseSelectOptions:
     query: (query) -> query.callback
-      results: _.filter Session.get('availableMerchant'), (item) ->
+      results: _.filter Session.get('availableDeliveryWarehouses'), (item) ->
         unsignedTerm = Sky.helpers.removeVnSigns query.term
         unsignedName = Sky.helpers.removeVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1
-      text: 'orderCode'
-    initSelection: (element, callback) -> callback()
+    initSelection: (element, callback) -> callback(Session.get('currentDeliveryWarehouse'))
     formatSelection: formatWarehouseSearch
     formatResult: formatWarehouseSearch
     placeholder: 'CHỌN CHI NHÁNH'
     changeAction: (e) ->
-    reactiveValueGetter: ->
+      Schema.userProfiles.update Session.get('currentProfile')._id, $set:
+        currentDeliveryWarehouse: e.added._id
+        currentDeliveryFilter   : 1
+    reactiveValueGetter: -> Session.get('currentDeliveryWarehouse')
 
   filterDeliverySelectOption:
     query: (query) -> query.callback
       results: Sky.system.filterDeliveries
       text: 'id'
-    initSelection: (element, callback) -> callback _.findWhere(Sky.system.filterDeliveries, {_id: Session.get('currentOrder')?.billDiscount})
+    initSelection: (element, callback) -> callback _.findWhere(Sky.system.filterDeliveries, {_id: Session.get('currentProfile')?.currentDeliveryFilter})
     formatSelection: formatfilterDeliverySearch
     formatResult: formatfilterDeliverySearch
     placeholder: 'BỘ LỌC'
     minimumResultsForSearch: -1
     changeAction: (e) ->
-    reactiveValueGetter: -> _.findWhere(Sky.system.filterDeliveries, {_id: Session.get('currentOrder')?.billDiscount})
+      Schema.userProfiles.update Session.get('currentProfile')._id, $set:{currentDeliveryFilter: e.added._id}
+    reactiveValueGetter: -> _.findWhere(Sky.system.filterDeliveries, {_id: Session.get('currentProfile')?.currentDeliveryFilter})
 
+  deliveryDetailOptions:
+    itemTemplate: 'deliveryThumbnail'
+    reactiveSourceGetter: -> Session.get('availableDeliveries')
+    wrapperClasses: 'detail-grid row'
 
-#  events:
-#    'click .createDelivery':  (event, template)-> console.log 'create Delyverty'
-#    'click .reactive-table .checkingDelivery': -> updateDelyvery @, 0
-#    'click .reactive-table .trueDelivery': -> updateDelyvery @, 1
-#    'click .reactive-table .falesDelivery': -> updateDelyvery @, 2
-#    'click .reactive-table .resetDelivery': -> Schema.deliveries.update @_id, $set:{status: 0, shipper: undefined }
   rendered: ->
     runInitDeliveryTracker()

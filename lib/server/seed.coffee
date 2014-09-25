@@ -10,12 +10,12 @@ Meteor.startup ->
 
     huynhChauId = Merchant.create { name: 'Huynh Chau', creator: creator }
     merchant = Merchant.findOne huynhChauId
-    warehouse = merchant.addWarehouse { name: 'Kho Chính', creator: creator }
-    warehouse2 = merchant.addWarehouse { name: 'Kho Phu', creator: creator }
+    warehouse = merchant.addWarehouse { name: 'Kho Chính', creator: creator, isRoot : true}
+    warehouse2 = merchant.addWarehouse { name: 'Kho Phu', creator: creator, isRoot : false}
 
     hanoi = merchant.addBranch { name: 'Huynh Chau HA NOI', creator: creator }
     merchant2 = Merchant.findOne hanoi
-    warehouse3 = merchant2.addWarehouse { name: 'Kho Chính', creator: creator }
+    warehouse3 = merchant2.addWarehouse { name: 'Kho Chính', creator: creator, isRoot : true}
 
     cloudProfile = Schema.userProfiles.insert
       user: creator

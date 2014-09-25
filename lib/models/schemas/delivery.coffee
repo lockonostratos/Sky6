@@ -11,7 +11,7 @@ Schema2.deliveries = new SimpleSchema
   sale:
     type: String
     optional: true
-
+#------------------------
   deliveryAddress:
     type: String
 
@@ -34,6 +34,9 @@ Schema2.deliveries = new SimpleSchema
     type: Number
     optional: true
 
+  status:
+    type: Number
+#----------------------------
   shipper:
     type: String
     optional: true
@@ -50,8 +53,6 @@ Schema2.deliveries = new SimpleSchema
     type: String
     optional: true
 
-  status:
-    type: Number
 
   version: { type: Schema.Version }
 

@@ -46,13 +46,28 @@ class Sky
     ]
     @filterDeliveries:[
       _id: 0
-      display: 'TẤT CẢ'
+      display: 'ĐƠN HÀNG CHƯA ĐƯỢC NHẬN'
     ,
       _id: 1
-      display: 'CHƯA NHẬN'
+      display: 'ĐƠN HÀNG CHƯA XUẤT KHO'
     ,
       _id: 2
-      display: 'ĐÃ NHẬN'
+      display: 'ĐƠN HÀNG ĐÃ XUẤT KHO'
+    ,
+      _id: 3
+      display: 'ĐƠN HÀNG ĐANG ĐI GIAO'
+    ,
+      _id: 4
+      display: 'XÁC NHẬN TRẠNG THÁI'
+    ,
+      _id: 5
+      display: 'THÀNH CÔNG, NHẬN TIỀN'
+    ,
+      _id: 6
+      display: 'THẤT BẠI, TRẢ HÀNG'
+    ,
+      _id: 7
+      display: 'XÁC NHẬN KẾT THÚC ĐƠN HÀNG'
     ]
 
   class @helpers

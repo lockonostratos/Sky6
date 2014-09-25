@@ -7,6 +7,7 @@ Sky.template.extends Template.warehousePopover,
         merchant         : Session.get('currentMerchant')._id
         creator          : Meteor.userId()
         name             : template.find(".name").value
+        isRoot         : false
         location         : {address: [template.find(".address").value]}
 
       Schema.warehouses.insert warehouse, (e,r)->

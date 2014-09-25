@@ -1,0 +1,13 @@
+template(name="deliveryThumbnail")
+  .col
+    .thumbnails(class="#{styles}")
+      .right-caption {{showStatus status}}
+      .avatar(style="background-image: url('images/missing.jpg')")
+      .short-desc.quality
+        button.btn.btn-default.unSuccessDelivery(style="{{hideButtonUnSuccess status}}") {{buttonUnSuccessText status}}
+      .full-desc.price
+
+      .single-price
+        button.btn.btn-default.successDelivery(style="{{hideButtonSuccess status}}") {{buttonSuccessText status}}
+      //  button.btn.btn-default.resetDelivery(type='submit') reset
+      .full-desc.trash: a(href="#"): i.fa.fa-trash-o

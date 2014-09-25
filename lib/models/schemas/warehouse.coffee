@@ -13,6 +13,9 @@ Schema2.warehouses = new SimpleSchema
   name:
     type: String
 
+  isRoot:
+    type: Boolean
+
   location: { type: Schema.Location, optional: true }
   version: { type: Schema.Version }
 

@@ -73,7 +73,11 @@ removeOrderAndOrderDetailAfterCreateSale= (orderId)->
     Order.createOrderAndSelect()
     Order.removeAll(orderId)
   if currentLength > 1
-    UserProfile.update {currentOrder: allTabs[currentIndex-1]._id}
+    console.log currentIndex
+    if currentIndex > 0
+      UserProfile.update {currentOrder: allTabs[currentIndex-1]._id}
+    else
+      UserProfile.update {currentOrder: allTabs[currentIndex+1]._id}
     Order.removeAll(orderId)
 #-----------------------------------------------------------------------------------------------------------------------
 Schema.add 'orders', class Order

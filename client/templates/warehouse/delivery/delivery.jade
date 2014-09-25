@@ -8,17 +8,13 @@ template(name="delivery")
         +iSelect(options=merchantSelectOptions class="field")
       .col.col-auto(style="width: 200px")
         span.ilabel kho
-        +iSelect(options=merchantSelectOptions class="field")
-      .col.col-auto(style="width: 120px")
+        +iSelect(options=warehouseSelectOptions class="field")
+      .col.col-auto(style="width: 250px")
         span.ilabel bộ lọc
         +iSelect(options=filterDeliverySelectOption class="field")
-
   .app-content
+    +iGrid(options=deliveryDetailOptions)
   .app-summary
   .app-status
 
-template(name="removeItem")
-    button.btn.btn-default.checkingDelivery(type='submit') Nhan
-    button.btn.btn-default.trueDelivery(type='submit') ThanhCong
-    button.btn.btn-default.falesDelivery(type='submit') ThatBai
-    button.btn.btn-default.resetDelivery(type='submit') reset
+
