@@ -103,7 +103,7 @@ Upgrade to fontAwesome 4.2 (from 4.1)                   [Done]
 Dark theme for metroHome                                [Done]
 
 export MONGO_URL=mongodb://127.0.0.1:27017/eds
-
+export MONGO_URL=mongodb://gera.vn:27017/edsBeta
 
 Bug TabControl------------------------------------
 Nhấn createAction() nhiều lần,  đôi khi sẽ chạy thêm hàm destroyAction()
