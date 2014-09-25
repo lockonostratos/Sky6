@@ -63,7 +63,9 @@ Schema2.sales = new SimpleSchema
 
   status:
     type: Boolean
-    optional: true
+
+  success:
+    type: Boolean
 #----------------------------------------
   currentReturn:
     type: String

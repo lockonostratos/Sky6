@@ -52,43 +52,25 @@ runInitDeliveryTracker = (context) ->
     if Session.get('currentProfile')
       Session.set "availableDeliveryMerchants", Schema.merchants.find({}).fetch()
 
-    if Session.get('availableDeliveryMerchants')
+    if Session.get('availableDeliveryMerchants') and Session.get('currentProfile')
       Session.set "currentDeliveryMerchant", Schema.merchants.findOne(Session.get('currentProfile').currentDeliveryMerchant)
 
     if Session.get('currentDeliveryMerchant')
       Session.set "availableDeliveryWarehouses", Schema.warehouses.find({merchant: Session.get('currentDeliveryMerchant')._id}).fetch()
 
-    if Session.get('availableDeliveryWarehouses')
+    if Session.get('availableDeliveryWarehouses') and Session.get('currentProfile')
       Session.set "currentDeliveryWarehouse", Schema.warehouses.findOne(Session.get('currentProfile').currentDeliveryWarehouse) ? 'skyReset'
 
-    if Session.get("currentDeliveryWarehouse") and Session.get("currentDeliveryWarehouse") != "skyReset"
-      if Session.get('currentProfile')?.currentDeliveryFilter == 0
-        Session.set "availableDeliveries", Schema.deliveries.find(
-          warehouse: Session.get("currentDeliveryWarehouse")._id
-          $or: [ {status: 0}, {shipper: Meteor.userId()} ]
-        ).fetch()
+    if Session.get("currentDeliveryWarehouse")
+      option =
+        merchant: Session.get('currentDeliveryMerchant')._id
+        warehouse: Session.get('currentDeliveryWarehouse')._id
+        status: {$in: [Session.get('currentProfile')?.currentDeliveryFilter]}
+      (option.status = {$in: [7]}) if Session.get('currentProfile')?.currentDeliveryFilter == 5
+      (option.status = {$in: [5,8]}) if Session.get('currentProfile')?.currentDeliveryFilter == 6
+      (option.status = {$in: [6,9]}) if Session.get('currentProfile')?.currentDeliveryFilter == 7
+      Session.set "availableDeliveries", Schema.deliveries.find(option).fetch()
 
-      if Session.get('currentProfile')?.currentDeliveryFilter == 1
-        Session.set "availableDeliveries", Schema.deliveries.find({
-          warehouse: Session.get("currentDeliveryWarehouse")._id
-          status: 0
-        }).fetch()
-
-      if Session.get('currentProfile')?.currentDeliveryFilter == 2
-        Session.set "availableDeliveries", Schema.deliveries.find({
-          warehouse: Session.get("currentDeliveryWarehouse")._id
-          shipper: Meteor.userId()
-          status: {$in:[1,2,3,4,5,7,8]}
-        }).fetch()
-
-      if Session.get('currentProfile')?.currentDeliveryFilter == 3
-        Session.set "availableDeliveries", Schema.deliveries.find({
-          warehouse: Session.get("currentDeliveryWarehouse")._id
-          shipper: Meteor.userId()
-          status: {$in:[6,9]}
-        }).fetch()
-    else
-      Session.set "availableDeliveries", []
 
 
 Sky.appTemplate.extends Template.delivery,
@@ -100,7 +82,7 @@ Sky.appTemplate.extends Template.delivery,
         unsignedTerm = Sky.helpers.removeVnSigns query.term
         unsignedName = Sky.helpers.removeVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1
-    initSelection: (element, callback) -> callback(Session.get('currentDeliveryMerchant'))
+    initSelection: (element, callback) -> callback(Session.get('currentDeliveryMerchant') ? 0)
     formatSelection: formatMerchantSearch
     formatResult: formatMerchantSearch
     placeholder: 'CHỌN CHI NHÁNH'
@@ -108,8 +90,8 @@ Sky.appTemplate.extends Template.delivery,
       Schema.userProfiles.update Session.get('currentProfile')._id, $set:
         currentDeliveryMerchant : e.added._id
         currentDeliveryWarehouse: Schema.warehouses.findOne(merchant: e.added._id)?._id  ? 'skyReset'
-        currentDeliveryFilter   : 1
-    reactiveValueGetter: -> Session.get('currentDeliveryMerchant')
+        currentDeliveryFilter   : 0
+    reactiveValueGetter: -> Session.get('currentDeliveryMerchant') ? 0
 
   warehouseSelectOptions:
     query: (query) -> query.callback
@@ -124,7 +106,7 @@ Sky.appTemplate.extends Template.delivery,
     changeAction: (e) ->
       Schema.userProfiles.update Session.get('currentProfile')._id, $set:
         currentDeliveryWarehouse: e.added._id
-        currentDeliveryFilter   : 1
+        currentDeliveryFilter   : 0
     reactiveValueGetter: -> Session.get('currentDeliveryWarehouse')
 
   filterDeliverySelectOption:
@@ -142,7 +124,7 @@ Sky.appTemplate.extends Template.delivery,
 
   deliveryDetailOptions:
     itemTemplate: 'deliveryThumbnail'
-    reactiveSourceGetter: -> Session.get('availableDeliveries')
+    reactiveSourceGetter: -> Session.get('availableDeliveries') ? []
     wrapperClasses: 'detail-grid row'
 
   rendered: ->

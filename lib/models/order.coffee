@@ -25,9 +25,10 @@ createSaleAndSaleOrder= (order, currentOrderDetails)->
       productDetails = Schema.productDetails.find({product: currentOrderDetail.product}).fetch()
       subtractQualityOnSales(productDetails, currentOrderDetail, currentSale)
     if currentSale.deliveryType == 1
-      Delivery.createdNewBySale(currentSale._id, order._id)
+      delivery = Delivery.createdNewBySale(currentSale._id, order._id)
+      Schema.sales.update currentSale._id, $set: {delivery: delivery._id}
     else
-      Schema.sales.update currentSale._id, $set: {status: true}
+      Schema.sales.update currentSale._id, $set: {status: true, success: true}
 
   return currentSale._id if currentSale
 
@@ -73,7 +74,6 @@ removeOrderAndOrderDetailAfterCreateSale= (orderId)->
     Order.createOrderAndSelect()
     Order.removeAll(orderId)
   if currentLength > 1
-    console.log currentIndex
     if currentIndex > 0
       UserProfile.update {currentOrder: allTabs[currentIndex-1]._id}
     else

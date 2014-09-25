@@ -6,9 +6,15 @@ class Sky
       sales:                  { group: 'sales',     key: 'sales',               description: 'bán hàng' }
       returns:                { group: 'sales',     key: 'returns',             description: 'trả hàng' }
       detroySalesBill:        { group: 'sales',     key: 'destroySalesBill',    description: 'xóa hóa đơn' }
+
       delivery:               { group: 'sales',     key: 'delivery',            description: 'giao hàng' }
       deliveryConfirm:        { group: 'sales',     key: 'deliveryConfirm',     description: 'xác nhận giao hàng' }
       deliveryDestroy:        { group: 'sales',     key: 'deliveryDestroy',     description: 'hủy giao hàng' }
+
+      exportDelivery:         { group: 'sales',     key: 'exportDelivery',      description: 'xác nhận xuất kho giao hàng' }
+      importDestroy:          { group: 'sales',     key: 'deliveryDestroy',     description: 'xác nhận nhập kho giao hàng' }
+      cashDestroy:            { group: 'sales',     key: 'importDestroy',       description: 'xác nhận thu tiền giap hàng' }
+
       export:                 { group: 'warehouse', key: 'export',              description: 'xuất kho' }
       exportDestroy:          { group: 'warehouse', key: 'exportDestroy',       description: 'hủy xuất kho' }
       import:                 { group: 'warehouse', key: 'import',              description: 'nhập kho' }
@@ -22,6 +28,8 @@ class Sky
 
       transactionShow:        { group: 'finance',   key: 'transactionShow',     description: 'xem thu chi' }
       transactionManagement:  { group: 'finance',   key: 'transactionShow',     description: 'q.lý thu chi' }
+
+
 
     @paymentMethods: [
       _id: 0
@@ -44,6 +52,7 @@ class Sky
       _id: true
       display: 'GIẢM GIÁ THEO PHIẾU'
     ]
+
     @filterDeliveries:[
       _id: 0
       display: 'ĐƠN HÀNG CHƯA ĐƯỢC NHẬN'
@@ -55,19 +64,19 @@ class Sky
       display: 'ĐƠN HÀNG ĐÃ XUẤT KHO'
     ,
       _id: 3
-      display: 'ĐƠN HÀNG ĐANG ĐI GIAO'
-    ,
-      _id: 4
       display: 'XÁC NHẬN TRẠNG THÁI'
     ,
+      _id: 4
+      display: 'XÁC NHẬN ĐÃ NHẬN TIỀN'
+    ,
       _id: 5
-      display: 'THÀNH CÔNG, NHẬN TIỀN'
+      display: 'XÁC NHẬN ĐÃ TRẢ HÀNG'
     ,
       _id: 6
-      display: 'THẤT BẠI, TRẢ HÀNG'
+      display: 'XÁC NHẬN KẾT THÚC ĐƠN HÀNG'
     ,
       _id: 7
-      display: 'XÁC NHẬN KẾT THÚC ĐƠN HÀNG'
+      display: 'ĐƠN HÀNG ĐÃ HOÀN THÀNH'
     ]
 
   class @helpers

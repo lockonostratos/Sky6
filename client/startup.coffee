@@ -44,7 +44,6 @@ Meteor.startup ->
   Tracker.autorun ->
     console.log ('deliveriesAutorunWorking..') if autorunDebug
     if Session.get('currentWarehouse')
-      Session.set 'availableDeliveries', Schema.deliveries.find({warehouse: Session.get('currentWarehouse')._id}).fetch()
       Session.set 'availableSale'   , Schema.sales.find({warehouse: Session.get("currentWarehouse")._id, status: true}).fetch()
       Session.set 'availableReturns'   , Schema.returns.find({warehouse: Session.get("currentWarehouse")._id}).fetch()
 
