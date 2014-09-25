@@ -3,8 +3,8 @@ runInitTracker = (context) ->
   Sky.global.staffManagerTracker = Tracker.autorun ->
 
     if Session.get('currentProfile')
-      Meteor.subscribe 'merchantRoles', Session.get('currentProfile')?.parentMerchant
-      Meteor.subscribe 'merchantProfiles', Session.get('currentProfile')?.parentMerchant
+      Meteor.subscribe 'merchantRoles', Session.get('currentProfile').parentMerchant
+      Meteor.subscribe 'merchantProfiles', Session.get('currentProfile').parentMerchant
 
     Session.setDefault 'createStaffBranchSelection', Session.get('currentMerchant')
     Session.setDefault 'createStaffWarehouseSelection', Session.get('currentWarehouse')

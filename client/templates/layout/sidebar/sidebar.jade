@@ -1,4 +1,13 @@
 template(name="sidebar")
   a.collapse-toggle.sidebar-handle.left
     i.fa(class="#{leftCollapseIcon}")
+
+  ul.messenger-list
+    each friends
+      li.chat-avatar
+        a(href="#" class="{{myAvatar}}")
+          if avatar
+            img(src="images/avatars/{{avatar}}.jpg")
+          else
+            span {{avatarLetter}}
   +messenger
