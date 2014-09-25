@@ -32,7 +32,10 @@ class @skyRouter
      .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', -> $(@).removeClass())
 
 Router.map ->
-  @route 'metroHome', new skyRouter('/', false, -> $("body").addClass("dark"))
+  @route 'metroHome', new skyRouter('/', false, ->
+    AccountsEntry.signInRequired(this)
+    $("body").addClass("dark")
+  )
   @route 'home', new skyRouter('home')
   @route 'warehouse', new skyRouter('warehouse')
   @route 'sales', new skyRouter('sales')

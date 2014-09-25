@@ -9,6 +9,8 @@ template(name="billManager")
       .col.col-auto(style="width: 100px")
         span.ilabel đến ngày
         input(name="toDate" binding="datePicker" todayHighlight="true" maxlength="20")
+      .col.col-auto
+        button.btn.btn-success#filterBills ÁP DỤNG
 
   .app-content
     +iGrid(options=billDetailOptions)
