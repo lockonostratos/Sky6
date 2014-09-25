@@ -1,11 +1,10 @@
 Sky.template.extends Template.deliveryThumbnail,
   colorClasses: 'none'
-
   showStatus: (status) ->
     switch status
       when 0 then 'Chưa được nhận '
       when 1 then 'Chờ xuất kho'
-      when 2 then 'Chờ đi giao hàng'
+      when 2 then 'Đã xác nhận xuất kho'
       when 3 then 'Đang Giao Hàng'
       when 4 then 'Giao Thàng Công'
       when 5 then 'Đã Nhận Tiền'
@@ -29,7 +28,6 @@ Sky.template.extends Template.deliveryThumbnail,
   hideButtonSuccess: (status)-> return "display: none" if  status == 6 || status == 9
   hideButtonUnSuccess: (status)-> return "display: none" if status != 3
 
-
   events:
     "dblclick .full-desc.trash": ->
       ReturnDetail.removeReturnDetail(@_id)
@@ -39,16 +37,3 @@ Sky.template.extends Template.deliveryThumbnail,
 
     "click .unSuccessDelivery": ->
       Delivery.updateDelivery(@_id, false)
-
-#  hideChekingDelivery
-#1 Nhan Don giao hang (NV)
-#2 Xuat Kho (Kho)
-#3 Di Giao Hang (NV)
-
-#4 Giao Thanh Cong (NV)
-#5 Nhan tien (Ban Hang)
-#6 Xac nhan ket thuc (NV)
-
-#7 Giao That bai (NV)
-#8 Kho nhan sp (Kho)
-#9 Xac nhan ket thuc (NV)
