@@ -101,4 +101,5 @@ class Sky
               'amethyst', 'wisteria', 'wet-asphalt', 'midnight-blue', 'sun-flower', 'carrot', 'pumpkin', 'alizarin',
               'pomegranate', 'clouds', 'sky', 'silver', 'concrete', 'asbestos']
     @randomColor: => @colors[Math.floor(Math.random() * @colors.length)]
+
 @Sky = Sky
