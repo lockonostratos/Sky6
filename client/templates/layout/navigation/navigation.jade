@@ -6,18 +6,22 @@ template(name="navigation")
         //form.navbar-form.navbar-left
         //  input.form-control(type="text" maxlength="30" placeholder="tìm kiếm nhanh")
 
-      ul.nav.navbar-nav.navbar-right.iconic
-        li.iconic: a#unreadMessageHandler(href="#")
-          span.count(class="{{messageClass}}") {{unreadMessageCount}}
-          i.fa.fa-comments-o
-        li.iconic: a(href="#")
-          span.count 3
-          i.fa.fa-calendar
-        li.iconic: a#systemNotificationHandler(href="#")
-          span.count 20
-          i.fa.fa-gears
+      ul.nav.navbar-nav.navbar-right.notifications
+        li.inav#unreadMessageHandler
+          .notification-counts(class="{{messageClass}}") {{unreadMessageCount}}
+          span: i.fa.fa-comments
+        li.inav
+          .notification-counts 3
+          span: i.fa.fa-gear
+        li.inav#systemNotificationHandler
+          .notification-counts 20
+          span: i.fa.fa-bomb
+        li.inav
+          .notification-counts 20
+          span: i.fa.fa-gift
 
       ul.nav.navbar-nav
+        li.inav.collapse-toggle: span: i.collapse.fa.fa-th-list
         li.home(class="{{isActiveRoute 'metroHome'}}"): a(href="{{pathFor 'metroHome'}}"): i.fa.fa-home
         li(class="{{isActiveRoute 'sales'}}"): a(href="{{pathFor 'sales'}}") Sales
         li(class="{{isActiveRoute 'warehouse'}}"): a(href="{{pathFor 'warehouse'}}") Warehouse

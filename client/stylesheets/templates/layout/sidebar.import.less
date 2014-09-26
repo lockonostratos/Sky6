@@ -4,6 +4,7 @@
   min-height: 100%;
   background-color: @left-pane-background;
   z-index: 9999;
+  padding-top: @nav-bottom-border-size;
 
   .sidebar-dump-dash {
     height: 7px;
@@ -155,33 +156,6 @@
       &:nth-child(even) {
         a > img, a > span { background-color: #9c9c9c; }
       }
-    }
-  }
-
-  .sidebar-handle {
-    .collapse-transition;
-    display: block;
-    position: absolute;
-    width: 20px;
-    height: 45px;
-    bottom: 200px;
-    background-color: @left-pane-background;
-    .border-right-radius(3px);
-    z-index: 2;
-
-    i {
-      color: #fff;
-      line-height: 45px;
-      margin-left: 5px;
-    }
-
-    &.left  {
-      right: -5px;
-      //    background: url("images/left-handle.png") no-repeat;
-    }
-    &.right {
-      left: -5px;
-      //    background: url("images/right-handle.png") no-repeat;
     }
   }
 }

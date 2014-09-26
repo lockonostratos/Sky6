@@ -1,5 +1,23 @@
 body.dark {
   background-color: #464646;
+  nav.main {
+    background-color: #2E2E2E;
+    border-bottom-color: transparent;
+    li {
+      border-color: #404040;
+      &.collapse-toggle:before { background-color: #2E2E2E; }
+
+      &.home {
+        a { background-color: transparent; color: #fff; }
+      }
+
+      a { color: #ddd; }
+      a:hover {
+        color: #fff;
+        background-color: #2E2E2E !important;
+      }
+    }
+  }
 }
 
 .metro {
