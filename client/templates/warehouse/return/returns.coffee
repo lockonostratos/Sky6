@@ -62,8 +62,9 @@ Sky.appTemplate.extends Template.returns,
       sale = Schema.sales.findOne(e.added._id)
       if !sale.currentProductDetail
         saleDetail = Schema.saleDetails.findOne({sale: e.added._id})
-        Schema.sales.update(e.added._id, $set:{currentProductDetail: saleDetail._id})
+        Schema.sales.update(e.added._id, $set:{currentProductDetail: saleDetail._id, currentQuality: 1})
         sale.currentProductDetail = saleDetail._id
+        sale.currentQuality       = 1
       Session.set 'currentSale', sale
     reactiveValueGetter: -> Session.get('currentProfile')?.currentSale
 
@@ -76,14 +77,17 @@ Sky.appTemplate.extends Template.returns,
     placeholder: 'CHỌN SẢN PHẨM'
 #    minimumResultsForSearch: -1
     hotkey: 'return'
-    changeAction: (e) -> Schema.sales.update(Session.get('currentSale')._id, {$set: {
-      currentProductDetail: e.added._id
-      currentQuality: 1
-    }})
+    changeAction: (e) ->
+      Schema.sales.update(Session.get('currentSale')._id, {$set: {
+          currentProductDetail: e.added._id
+          currentQuality: 1
+        }})
     reactiveValueGetter: -> Session.get('currentSale')?.currentProductDetail
 
   returnQualityOptions:
-    reactiveSetter: (val) -> Schema.sales.update(Session.get('currentSale')._id, {$set: {currentQuality: val}})
+    reactiveSetter: (val) ->
+      console.log 'value:'+val
+      Schema.sales.update(Session.get('currentSale')._id, {$set: {currentQuality: val}})
     reactiveValue: -> Session.get('currentSale')?.currentQuality ? 0
     reactiveMax: -> Session.get('currentMaxQualityReturn') ? 0
     reactiveMin: -> 0

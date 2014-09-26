@@ -22,6 +22,7 @@ Schema.add 'sales', class Sale
       debit        : order.debit
       status       : false
       success      : false
+      paymentsDelivery :0
     option
 
   @destroy: (saleId) ->

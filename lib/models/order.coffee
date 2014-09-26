@@ -16,7 +16,15 @@ subtractQualityOnSales= (stockingItems, sellingItem , currentSale) ->
     if transactionedQuality == sellingItem.quality then break
   return transactionedQuality == sellingItem.quality
 
-createSaleAndSaleOrder= (order, currentOrderDetails)->
+createSaleAndSaleOrder= (orderId)->
+  return Console.log 'Bạn Chưa Đăng Nhập' if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+  return Console.log 'Order Không Tồn Tại' if !order = Schema.orders.findOne({
+    _id       : orderId
+    creator   : Meteor.userId()
+    merchant  : userProfile.currentMerchant
+    warehouse : userProfile.currentWarehouse
+  })
+  currentOrderDetails = Schema.orderDetails.find({order: orderId}).fetch()
   sale = Sale.newByOrder(order)
   sale._id = Schema.sales.insert sale, (error, result) -> console.log error if error
   currentSale = Schema.sales.findOne(sale)
@@ -41,8 +49,19 @@ reUpdateOrderDetail = (newOrderDetail, oldOrderDetail) ->
 
   Schema.orderDetails.update oldOrderDetail._id, $set: option , (error, result) -> console.log error if error
 
-checkProductInstockQuality= (orderDetailsList, productList)->
-  orderDetails = _.chain(orderDetailsList)
+checkProductInstockQuality= (orderId)->
+  return Console.log 'Bạn Chưa Đăng Nhập' if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+  return Console.log 'Order Không Tồn Tại' if !order = Schema.orders.findOne({
+    _id       : orderId
+    creator   : Meteor.userId()
+    merchant  : userProfile.currentMerchant
+    warehouse : userProfile.currentWarehouse
+  })
+  orderDetails = Schema.orderDetails.find({order: orderId}).fetch()
+  product_ids = _.union(_.pluck(orderDetails, 'product'))
+  products = Schema.products.find({_id: {$in: product_ids}}).fetch()
+
+  orderDetails = _.chain(orderDetails)
   .groupBy("product")
   .map (group, key) ->
     return {
@@ -52,7 +71,7 @@ checkProductInstockQuality= (orderDetailsList, productList)->
   .value()
   try
     for currentDetail in orderDetails
-      currentProduct = _.findWhere(productList, {_id: currentDetail.product})
+      currentProduct = _.findWhere(products, {_id: currentDetail.product})
       if currentProduct.availableQuality < currentDetail.quality
         throw {message: "lỗi", item: currentDetail}
 
@@ -66,7 +85,19 @@ createTransactionAndDetailByOrder = (saleID)->
   transactionDetail = TransactionDetail.newByTransaction(transaction)
 
 removeOrderAndOrderDetailAfterCreateSale= (orderId)->
-  allTabs = Schema.orders.find({creator: Meteor.userId()}).fetch()
+  return Console.log('Bạn Chưa Đăng Nhập') if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+  return Console.log 'Order Không Tồn Tại' if !order = Schema.orders.findOne({
+    _id       : orderId
+    creator   : Meteor.userId()
+    merchant  : userProfile.currentMerchant
+    warehouse : userProfile.currentWarehouse
+  })
+  allTabs = Schema.orders.find({
+    _id       : orderId
+    creator   : Meteor.userId()
+    merchant  : userProfile.currentMerchant
+    warehouse : userProfile.currentWarehouse
+  }).fetch()
   currentSource = _.findWhere(allTabs, {_id: orderId})
   currentIndex = allTabs.indexOf(currentSource)
   currentLength = allTabs.length
@@ -79,6 +110,9 @@ removeOrderAndOrderDetailAfterCreateSale= (orderId)->
     else
       UserProfile.update {currentOrder: allTabs[currentIndex+1]._id}
     Order.removeAll(orderId)
+  else
+
+
 #-----------------------------------------------------------------------------------------------------------------------
 Schema.add 'orders', class Order
   @createOrder: ->
@@ -156,9 +190,18 @@ Schema.add 'orders', class Order
       return console.log 'Mã phiếu không đúng'
 
   @finishOrder: (orderId)->
-    return 'Order Không Tồn Tại' if !order = Schema.orders.findOne(orderId)
-    return 'Chưa chọn người mua' if !buyer = Schema.customers.findOne(order.buyer)
-    return 'Order Không Có Dữ Liệu' if (orderDetails = Schema.orderDetails.find({order: order._id}).fetch()).length < 1
+    return 'Bạn Chưa Đăng Nhập' if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    return 'Order Không Tồn Tại' if !order = Schema.orders.findOne({
+      _id       : orderId
+      merchant  : userProfile.currentMerchant
+      warehouse : userProfile.currentWarehouse
+    })
+    return 'Chưa chọn người mua' if !buyer = Schema.customers.findOne({
+      _id           : order.buyer
+      parentMerchant: userProfile.parentMerchant
+    })
+    return 'Order Không Có Dữ Liệu' if !orderDetail = Schema.orderDetails.findOne({order: order._id})
+
     if order.deliveryType == 1
       return 'Thông tin giao hàng chưa đầy đủ (Name)'    if !order.contactName || order.contactName.length < 1
       return 'Thông tin giao hàng chưa đầy đủ (Phone)'   if !order.contactPhone || order.contactPhone.length < 1
@@ -166,14 +209,12 @@ Schema.add 'orders', class Order
       return 'Thông tin giao hàng chưa đầy đủ (comment)' if !order.comment || order.comment < 1
 #      return 'Thông tin giao hàng chưa đầy đủ (deliveryDate)' if order.deliveryDate.length > 1
 
-    product_ids = _.union(_.pluck(orderDetails, 'product'))
-    products = Schema.products.find({_id: {$in: product_ids}}).fetch()
 
-    result = checkProductInstockQuality(orderDetails, products)
+    result = checkProductInstockQuality(orderId)
     if result.error then console.log result.error; return
 
-    saleId = createSaleAndSaleOrder(order, orderDetails)
-    removeOrderAndOrderDetailAfterCreateSale(order._id)
+    saleId = createSaleAndSaleOrder(orderId)
+    removeOrderAndOrderDetailAfterCreateSale(orderId)
     createTransactionAndDetailByOrder(saleId)
     return("Tạo phiếu bán hàng thành công")
 

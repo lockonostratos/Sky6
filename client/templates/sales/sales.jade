@@ -76,7 +76,7 @@ template(name="sales")
         input.comment(value="#{delivery.comment}")
       .col.col-auto.pull-right(style="width:100px")
         span.ilabel ngày giao hàng
-        input.deliveryDate(value="#{delivery.deliveryDate}")
+        input.deliveryDate(name="deliveryDate" value="#{delivery.deliveryDate}")
       .col.col-auto.pull-right(style="width:350px")
         span.ilabel địa chỉ giao hàng
         input.deliveryAddress(value="#{delivery.deliveryAddress}")

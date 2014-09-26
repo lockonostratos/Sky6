@@ -40,9 +40,11 @@ Schema.add 'deliveries', class Delivery
           Schema.deliveries.update deliveryId, $set:{status: 7, shipper: Meteor.userId()}
       when 4
         Schema.deliveries.update deliveryId, $set:{status: 5, cashier: Meteor.userId()}
+        Schema.sales.update sale._id, $set:{status: true, success: true, paymentsDelivery: sale.debit, debit: 0}
       when 5
         Schema.deliveries.update deliveryId, $set:{status: 6, shipper: Meteor.userId()}
         Schema.sales.update sale._id, $set:{status: true, success: true}
+
       when 7
         saleDetails = Schema.saleDetails.find(sale: sale._id).fetch()
         for detail in saleDetails
@@ -54,5 +56,4 @@ Schema.add 'deliveries', class Delivery
         Schema.deliveries.update deliveryId, $set:{status: 8, importer: Meteor.userId()}
       when 8
         Schema.deliveries.update deliveryId, $set:{status: 9, shipper: Meteor.userId()}
-        sa
         Schema.sales.update sale._id, $set:{status: true, success: false}

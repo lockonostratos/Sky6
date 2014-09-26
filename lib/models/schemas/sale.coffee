@@ -58,6 +58,9 @@ Schema2.sales = new SimpleSchema
   deposit:
     type: Number
 
+  paymentsDelivery:
+    type: Number
+
   debit:
     type: Number
 

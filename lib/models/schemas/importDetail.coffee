@@ -21,6 +21,9 @@ Schema2.importDetails = new SimpleSchema
   importPrice:
     type: Number
 
+  totalPrice:
+    type: Number
+
   salePrice:
     type: Number
     optional: true

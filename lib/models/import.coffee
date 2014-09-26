@@ -24,7 +24,7 @@ Sky.global.reCalculateImport = (importId)->
       totalPrice += (detail.importQuality * detail.importPrice)
     Schema.imports.update importId, $set: {totalPrice: totalPrice, deposit: totalPrice, debit: 0}
   else
-    Schema.imports.update importId, $set: {totalPrice: 0}
+    Schema.imports.update importId, $set: {totalPrice: 0, deposit: 0, debit: 0}
 
 Schema.add 'imports', class Import
   @removeAll: (importId)->
@@ -52,6 +52,7 @@ Schema.add 'imports', class Import
     option.emailCreator = Meteor.user().emails[0].address
     option._id = Schema.imports.insert option, (error, result)-> console.log error if error
     UserProfile.update {currentImport: option._id}
+    option
 
   @finishImport: (importId)->
     return('Bạn chưa đăng nhập') if !userProfile = Sky.global.userProfile()

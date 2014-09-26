@@ -18,11 +18,12 @@ Schema.add 'returnDetails', class ReturnDetail
       finalPrice      : Math.round(saleDetail.price * sale.currentQuality * (100 - saleDetail.discountPercent)/100)
     option
 
+
   @addReturnDetail: (saleId)->
     return console.log('Phiếu bán hàng không tồn tại') if !sale = Schema.sales.findOne({_id: saleId})
     return console.log("Chưa chọn sản phẩm trả hàng") if !sale.currentProductDetail
     return console.log("Sản phẩm trả hàng không tồn tại") if !saleDetail = Schema.saleDetails.findOne({_id: sale.currentProductDetail})
-    return console.log("Số lượng sản phẩm phải lớn hơn 0") if sale.currentQuality <= 0
+    return console.log("Số lượng sản phẩm phải lớn hơn 0") if !sale.currentQuality || sale.currentQuality < 1
     return console.log("Số lần trả vượt quá 3 lần, không thể trả tiếp.") if sale.returnCount > 3
 
 

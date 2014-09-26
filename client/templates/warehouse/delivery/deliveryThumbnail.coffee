@@ -29,9 +29,6 @@ Sky.template.extends Template.deliveryThumbnail,
   hideButtonUnSuccess: (status)-> return "display: none" if status != 3
 
   events:
-    "dblclick .full-desc.trash": ->
-      ReturnDetail.removeReturnDetail(@_id)
-
     "click .successDelivery": ->
       Delivery.updateDelivery(@_id, true)
 

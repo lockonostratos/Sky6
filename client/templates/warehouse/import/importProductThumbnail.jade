@@ -1,11 +1,13 @@
 template(name="importProductThumbnail")
-  .tile.double.pumpkin(class="#{sizeClass}")
-    | #{name}  - Quality: #{importQuality} - Price: #{importPrice}
-  //col
-  //  .thumbnails(class="#{styles}")
-  //    .right-caption {{name}}
-  //    .discount: span.large-size {{round discountPercent}}<span class="h5">%</span>
-  //    .avatar(style="background-image: url('images/missing.jpg')")
-  //    .short-desc.quality {{pad quality}}
-  //    .full-desc.price {{formatNumber finalPrice}} <small>VNĐ</small>
-  //    .full-desc.trash: a(href="#"): i.fa.fa-trash-o
+  .col
+    .thumbnails(class="#{styles}")
+      .right-caption {{name}}
+      .avatar(style="background-image: url('images/missing.jpg')")
+      .short-desc.quality {{pad importQuality}}
+      .full-desc.price {{formatNumber totalPrice}} <small>VNĐ</small>
+      .single-price {{formatNumber importPrice}} VNĐ
+      .full-desc.trash: a(href="#"): i.fa.fa-trash-o
+
+  //.tile.double.pumpkin(class="#{sizeClass}")
+  //  | #{name}  - Quality: #{importQuality} - Price: #{importPrice}
+
