@@ -4,6 +4,6 @@ template(name="messenger")
       span.right {{targetDisplayAlias}}
       a.close-btn(href="#"): i.fa.fa-times
     ul.messages
-      each currentConversation
+      each currentMessages
         li(class="{{messageClass}}"): span {{message}}
     input(type="text")

@@ -16,6 +16,6 @@ Sky.template.extends Template.sidebar,
   friends: -> Schema.userProfiles.find().fetch()
 
   events:
-    "click .chat-avatar > a:not(a.me)": ->
+    "click .chat-avatar > a:not(a.me)": (event, template)->
       Session.set('currentChatTarget', @user)
       Session.set('messengerVisibility', true)
