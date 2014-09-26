@@ -1,18 +1,32 @@
 scrollDownIfNecessary = ($element, instance, timeHook) ->
   if instance.version?.createdAt > timeHook and instance.sender is Session.get('currentChatTarget')
-    $element.slimScroll({ scrollBy: '99999px' })
+    $element.slimScroll({ scrollBy: '999999px' })
 playSoundIfNecessary = (instance, timeHook) ->
   if instance.version?.createdAt > timeHook
     createjs.Sound.play("sound")
 
+messengerDeps = new Tracker.Dependency
+getCurrentMessages = ->
+  messengerDeps.depend()
+  Sky.global.currentMessages
+
+initTracker = ->
+  return if Sky.global.messengerTracker
+  Sky.global.messengerTracker = Tracker.autorun ->
+    if Session.get('currentProfile') and Session.get('currentChatTarget')
+      messengerDeps.changed()
+      Sky.global.currentMessages = Messenger.currentMessages(Session.get('currentChatTarget'))
 
 Sky.template.extends Template.messenger,
-  currentConversation: -> Sky.global.currentMessages
+  currentMessages: -> getCurrentMessages()
   visibilityClass: -> if Session.get('messengerVisibility') then 'show' else 'hide'
   messageClass: -> if @sender is Meteor.userId() then 'my-message' else 'friend-message'
+  targetDisplayAlias: -> Meteor.users.findOne(Session.get('currentChatTarget'))?.emails[0].address
 
   ui:
     messages: "ul.messages"
+
+  created: -> initTracker()
 
   rendered: ->
     $messages = $(@ui.messages)
@@ -27,7 +41,6 @@ Sky.template.extends Template.messenger,
         scrollDownIfNecessary($messages, instance, thisTime)
         playSoundIfNecessary(instance, thisTime)
 
-
   destroyed: -> Sky.global.incomingObserver.stop()
 
   events:
@@ -39,4 +52,4 @@ Sky.template.extends Template.messenger,
       if event.which is 13 and message.length > 0 and Session.get('currentChatTarget')
         Messenger.say message, Session.get('currentChatTarget')
         $element.val('')
-        $messages.slimScroll({ scrollBy: '99999px' })
+        $messages.slimScroll({ scrollBy: '999999px' })

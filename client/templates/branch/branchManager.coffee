@@ -29,10 +29,5 @@ Sky.appTemplate.extends Template.branchManager,
 
   branchDetailOptions:
     itemTemplate: 'merchantThumbnail'
-    reactiveSourceGetter: -> Schema.merchants.find(
-      $or: [
-        { _id: Session.get('currentProfile').parentMerchant }
-        { parent: Session.get('currentProfile').parentMerchant }
-      ]
-    ).fetch()
+    reactiveSourceGetter: -> Schema.merchants.find({ parent: Session.get('currentProfile').parentMerchant }).fetch()
     wrapperClasses: 'detail-grid row'

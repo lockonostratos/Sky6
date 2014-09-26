@@ -21,10 +21,8 @@ Schema.add 'messages', class Messenger
   @unreads: -> @schema.find({reads: {$ne: Meteor.userId()}, sender: {$ne: Meteor.userId()}})
 
   @allMessages: -> @schema.find({$or: [{sender: Meteor.userId()}, {receiver: Meteor.userId()}]})
-  @currentMessages: ->
-    return [] if !Session.get('currentChatTarget')
-    console.log 'hasTarget!'
-    chatters = [Meteor.userId(), Session.get('currentChatTarget')]
-    @schema.find {$or: [{sender: {$in: chatters}}, {receiver: {$in: chatters}}] }
-
-#    Schema.messages.update(currentMessage._id, {$set: {}})
+  @currentMessages: (target)->
+    console.log 'updated'
+    sentByTarget = {sender: target}
+    sentToTarget = {receiver: target}
+    @schema.find {$or: [sentByTarget, sentToTarget]}

@@ -3,7 +3,7 @@
   width: @left-pane-size;
   min-height: 100%;
   background-color: @left-pane-background;
-  z-index: 999;
+  z-index: 9999;
 
   .sidebar-dump-dash {
     height: 7px;
@@ -56,7 +56,7 @@
     width: 250px;
     background-color: #f4f4f4;
     border: solid 1px #ddd;
-    bottom: 100px;
+    top: 2px/Sky6;
     z-index: 1;
 
     .header {
@@ -76,6 +76,7 @@
     ul.messages {
       height: 245px;
       margin: 0; padding: 0 5px;
+      padding-bottom: 30px;
 
       li {
         list-style: none;
@@ -109,13 +110,48 @@
     }
   }
 
+  ul.messenger-list {
+    padding: 0; margin: 0;
+    color: #fff;
+    .chat-avatar {
+      list-style: none;
+      a {
+        img, span {
+          width: 60px;
+          height: 40px;
+          background-color: #575757;
+        }
+
+        span {
+          display: block;
+          text-align: center;
+          line-height: 40px;
+          color: #fff;
+          font-size: 20px;
+          font-weight: bold;
+        }
+
+        &.me {
+          img, span {
+            line-height: 60px;
+            height: 60px;
+          }
+        }
+      }
+
+      &:nth-child(even) {
+        a > img, a > span { background-color: #9c9c9c; }
+      }
+    }
+  }
+
   .sidebar-handle {
     .collapse-transition;
     display: block;
     position: absolute;
     width: 20px;
     height: 45px;
-    bottom: 405px;
+    bottom: 200px;
     background-color: @left-pane-background;
     .border-right-radius(3px);
     z-index: 2;
