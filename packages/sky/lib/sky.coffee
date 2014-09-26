@@ -1,3 +1,5 @@
+colorGenerateHistory = []
+
 class Sky
   class @global
   class @system
@@ -96,10 +98,29 @@ class Sky
       str = str.replace /-+-/g, "-" #thay thế 2- thành 1-
       str = str.replace /^\-+|\-+$/g, "" #cắt bỏ ký tự - ở đầu và cuối chuỗi
       str
+
     @colors: ['green', 'light-green', 'yellow', 'orange', 'blue', 'dark-blue', 'lime', 'pink', 'red', 'purple', 'dark',
               'gray', 'magenta', 'teal', 'turquoise', 'green-sea', 'emeral', 'nephritis', 'peter-river', 'belize-hole',
               'amethyst', 'wisteria', 'wet-asphalt', 'midnight-blue', 'sun-flower', 'carrot', 'pumpkin', 'alizarin',
               'pomegranate', 'clouds', 'sky', 'silver', 'concrete', 'asbestos']
-    @randomColor: => @colors[Math.floor(Math.random() * @colors.length)]
+    @monoColors: ['green', 'light-green', 'yellow', 'orange', 'blue', 'dark-blue', 'lime', 'pink', 'red', 'purple', 'dark',
+                  'gray', 'magenta', 'teal', 'turquoise', 'green-sea', 'emeral', 'nephritis', 'peter-river', 'belize-hole',
+                  'amethyst', 'wisteria', 'wet-asphalt', 'midnight-blue', 'sun-flower', 'carrot', 'pumpkin', 'alizarin',
+                  'pomegranate', 'clouds', 'sky', 'silver', 'concrete', 'asbestos']
+    @randomColor: ->
+      if colorGenerateHistory.length >= @monoColors.length
+        colorGenerateHistory = []
+
+      while true
+        randomIndex = generateRandomIndex()
+        colorExisted = _.contains(colorGenerateHistory, randomIndex)
+        console.log colorGenerateHistory
+        break unless colorExisted
+
+      colorGenerateHistory.push randomIndex
+      @monoColors[randomIndex]
+
 
 @Sky = Sky
+
+generateRandomIndex = -> Math.floor(Math.random() * Sky.helpers.monoColors.length)
