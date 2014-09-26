@@ -12,6 +12,7 @@ Schema.add 'warehouses', class Warehouse
     option.deposit      = 0
     option.debit        = 0
     option.status       = 0
+    option.checkingInventory  = false
     Schema.orders.insert option, (error, result)->
       console.log result; console.log error if error
 

@@ -34,6 +34,7 @@ Schema2.userProfiles = new SimpleSchema
   currentWarehouse:
     type: String
 
+#--------------------------
   currentOrder:
     type: String
     optional: true
@@ -46,11 +47,7 @@ Schema2.userProfiles = new SimpleSchema
     type: String
     optional: true
 
-  currentDelivery:
-    type: String
-    optional: true
-
-#------------------------
+#--------------------------
   currentDeliveryMerchant:
     type: String
     optional: true
@@ -62,7 +59,20 @@ Schema2.userProfiles = new SimpleSchema
   currentDeliveryFilter:
     type: Number
     optional: true
-#------------------------
 
+  currentDelivery:
+    type: String
+    optional: true
+#---------------------------
+  currentInventoryMerchant:
+    type: String
+    optional: true
 
-#Schema.add 'userProfiles'
+  currentInventoryWarehouse:
+    type: String
+    optional: true
+
+  currentInventory:
+    type: Number
+    optional: true
+#---------------------------

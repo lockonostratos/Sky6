@@ -1,0 +1,25 @@
+template(name="inventory")
+  .app-header
+    span.caption Kiểm Kho
+  .app-editor
+    .row
+      .col.col-auto(style="width: 200px")
+        span.ilabel chi nhánh
+        +iSelect(options=merchantSelectOptions class="field")
+      .col.col-auto(style="width: 200px")
+        span.ilabel kho
+        +iSelect(options=warehouseSelectOptions class="field")
+      .col.col-auto(style="width: 200px;")
+        span.ilabel lý do kiểm kho
+        input.description(value="{{inventory.description}}")
+      .col.col-auto(style="width:100px")
+        button.btn.btn-default.creatInventory(type='submit' style="{{hideAddImportDetail}}") Tạo
+
+
+
+  .app-content
+    +iGrid(options=productDetailOptions)
+  .app-summary
+
+  .app-status
+

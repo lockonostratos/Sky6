@@ -17,6 +17,8 @@ Meteor.subscribe 'returns'
 Meteor.subscribe 'returnDetails'
 Meteor.subscribe 'imports'
 Meteor.subscribe 'importDetails'
+Meteor.subscribe 'inventories'
+Meteor.subscribe 'inventoryDetails'
 
 Meteor.subscribe 'customers'
 Meteor.subscribe 'tests'

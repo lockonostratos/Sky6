@@ -19,6 +19,12 @@ Schema2.productDetails = new SimpleSchema
     type: String
     optional: true
 
+  name:
+    type: String
+
+  skulls:
+    type: [String]
+
   importQuality:
     type: Number
     optional: true
@@ -42,6 +48,15 @@ Schema2.productDetails = new SimpleSchema
   systemTransaction:
     type: String
     optional: true
+
+  checkingInventory:
+    type: Boolean
+
+  inventory:
+    type: String
+    optional: true
+
+
 
   version: { type: Schema.Version }
 

@@ -54,3 +54,15 @@ Schema.providers.allow
   update: -> true
   remove: -> true
 
+Meteor.publish 'inventories', -> Schema.inventories.find({})
+Schema.inventories.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
+Meteor.publish 'inventoryDetails', -> Schema.inventoryDetails.find({})
+Schema.inventoryDetails.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+

@@ -9,6 +9,9 @@ Schema.add 'productDetails', class ProductDetail
       availableQuality : importDetail.importQuality
       instockQuality   : importDetail.importQuality
       importPrice      : importDetail.importPrice
+      name             : importDetail.name
+      skulls           : importDetail.skulls
+      checkingInventory: false
     option
 
 
