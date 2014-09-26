@@ -1,6 +1,8 @@
 template(name="sales")
   .app-header
     span.caption Bán hàng
+    .switches.right
+      input(binding="switch" type="checkbox" name="advancedMode")
 
   .app-editor
     .row
@@ -17,40 +19,50 @@ template(name="sales")
         button.btn.btn-default.addOrderDetail(type='submit') THÊM
 
       .col.col-auto.pull-right(style="width: 150px")
+        span.ilabel.optional giá tổng
+        input.quality(value="{{formatNumber currentFinalPrice}}" disabled)
+      .col.col-auto.pull-right(style="width: 150px")
         span.ilabel.center.optional giảm giá
         +iSpinEdit(options=discountCashOptions)
       .col.col-auto.pull-right(style="width:100px")
         span.ilabel.center.optional giảm %
         +iSpinEdit(options=discountPercentOptions)
-      .col.col-auto.pull-right(style="width: 150px")
-        span.ilabel.optional giá tổng
-        input.quality(value="{{formatNumber currentFinalPrice}}" disabled)
 
   .app-content
    +iGrid(options=saleDetailOptions)
 
   .app-summary
+    if advancedMode
+      .row
+        .col.col-auto(style="width: 120px")
+          span.ilabel.optional thanh toán
+          +iSelect(options=paymentMethodSelectOption class="field")
+        .col.col-auto(style="width: 120px")
+          span.ilabel.optional giao hàng
+          +iSelect(options=deliveryTypeSelectOption class="field")
+
+        .col.col-auto.pull-right(style="width: 195px")
+          span.ilabel.optional phương thức giảm giá
+          +iSelect(options=billDiscountSelectOption class="field")
+        .col.col-auto.pull-right(style="width: 160px")
+          span.ilabel.center.optional giảm giá
+          +iSpinEdit(options=billCashDiscountOptions)
+          //input.quality(value="#{order.discountCash}" disabled)
+        .col.col-auto.pull-right(style="width:150px")
+          span.ilabel.center.optional giảm %
+          +iSpinEdit(options=billPercentDiscountOptions)
+
     .row
-      .col.col-auto.pull-right(style="width: 200px; margin-right: 5px;")
+      .col.col-auto(style="width: 200px; margin-right: 5px;")
         span.ilabel.right.optional nhân viên
         +iSelect(options=sellerSelectOptions class="field")
-      .col.col-auto.pull-right(style="width: 180px")
+      .col.col-auto(style="width: 180px")
         span.ilabel.right.optional khách hàng
         +iSelect(options=customerSelectOptions class="field")
-      .col.col-auto(style="width: 120px")
-        span.ilabel.optional thanh toán
-        +iSelect(options=paymentMethodSelectOption class="field")
-      .col.col-auto(style="width: 120px")
-        span.ilabel.optional giao hàng
-        +iSelect(options=deliveryTypeSelectOption class="field")
-      .col.col-auto(style="width: 200px")
-        span.ilabel.optional phương thức giảm giá
-        +iSelect(options=billDiscountSelectOption class="field")
-    .row
       .col.col-auto.pull-right
         button.btn.btn-default.pull-right.finish(type='submit' style="margin-right: 5px;") HOÀN TẤT
       .col.col-auto.pull-right(style="width: 120px")
-        span.ilabel.center thực thu
+        span.ilabel.optional.center thực thu
         input.quality(value="{{formatNumber order.finalPrice}}" disabled)
       .col.col-auto.pull-right(style="width: 120px")
         span.ilabel số dư
@@ -61,14 +73,6 @@ template(name="sales")
       //.col.col-auto.pull-right(style="width: 120px")
       //  span.ilabel.center.optional tạm tính
       //  input.quality(value="#{order.totalPrice}" disabled)
-
-      .col.col-auto(style="width: 160px")
-        span.ilabel.center.optional giảm giá
-        +iSpinEdit(options=billCashDiscountOptions)
-        //input.quality(value="#{order.discountCash}" disabled)
-      .col.col-auto(style="width:150px")
-        span.ilabel.center.optional giảm %
-        +iSpinEdit(options=billPercentDiscountOptions)
 
     .row.extra(name='delivery')
       .col.col-auto.pull-right(style="width:200px")

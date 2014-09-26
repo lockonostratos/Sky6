@@ -94,6 +94,8 @@ runInitTracker = (context) ->
 
 Sky.appTemplate.extends Template.sales,
   order: -> Session.get('currentOrder')
+  advancedMode: -> Session.get('enableAdvancedMode')
+
   delivery: ->
     if Session.get('currentOrder')?.deliveryType == 1
       return {
@@ -437,6 +439,8 @@ Sky.appTemplate.extends Template.sales,
       else
         template.find(".comment").value = Session.get('currentOrder').comment
 
+    "change [name='advancedMode']": (event, template)->
+      Session.set('enableAdvancedMode', event.target.checked)
 
   rendered: ->
     Sky.global.salesTemplateInstance = @
