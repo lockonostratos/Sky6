@@ -115,6 +115,19 @@
     color: #fff;
     .chat-avatar {
       list-style: none;
+      position: relative;
+
+      .online-status-orb {
+        width: 8px; height: 8px;
+        .border-radius(50%);
+        position: absolute;
+        top: 5px; left: 5px;
+        background-color: gray;
+        &.online {
+          background-color: @lime;
+        }
+      }
+
       a {
         img, span {
           width: 60px;

@@ -14,7 +14,7 @@ Sky.template.extends Template.sidebar,
     fullLetters.substring(0,1).toUpperCase()
 
   friends: -> Schema.userProfiles.find().fetch()
-
+  isOnline: -> if Meteor.users.findOne(@user)?.status?.online then 'online' else ''
   events:
     "click .chat-avatar > a:not(a.me)": (event, template)->
       Session.set('currentChatTarget', @user)
