@@ -19,6 +19,9 @@ Meteor.startup ->
       Session.set "currentProfile"    , Schema.userProfiles.findOne(user: Meteor.userId())
       Session.set "availableMerchant" , Schema.merchants.find({}).fetch()
 
+    if Session.get('currentProfile') #Temporaries SUBSCRUBIBE
+      Meteor.subscribe 'merchantProfiles', Session.get('currentProfile').parentMerchant
+
   Tracker.autorun ->
     console.log ('warehouseAutorunWorking..') if autorunDebug
     if Session.get('currentProfile')
