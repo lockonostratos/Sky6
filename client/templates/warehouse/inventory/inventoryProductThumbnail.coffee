@@ -67,17 +67,15 @@ Sky.template.extends Template.inventoryProductThumbnail,
     if @lock != @submit == false then return 'Locked'
     if @lock == @submit != false then return 'Submited'
 
-
-
   realQualityOptions: -> {
-  parentContext: @
-  reactiveSetter: (val, context) ->
-    if context.lock != context.submit == false
-      Schema.inventoryDetails.update context._id, $set: {realQuality : val}
-  reactiveValue: (context) -> @parentContext.realQuality ? 0
-  reactiveMax: ->  1000
-  reactiveMin: -> 0
-  reactiveStep: -> 1
+    parentContext: @
+    reactiveSetter: (val) ->
+      if @parentContext.lock != @parentContext.submit == false
+        Schema.inventoryDetails.update @parentContext._id, $set: {realQuality : val}
+    reactiveValue: -> @parentContext.realQuality ? 0
+    reactiveMax: ->  1000
+    reactiveMin: -> 0
+    reactiveStep: -> 1
   }
 
   events:
