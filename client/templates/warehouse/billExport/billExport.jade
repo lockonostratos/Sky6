@@ -1,0 +1,16 @@
+template(name="billExport")
+  .app-header
+    span.caption ĐƠN HÀNG
+  .app-editor
+    .row
+      .col.col-auto(style="width: 100px")
+        span.ilabel.right xem từ ngày
+        input(name="fromDate" binding="datePicker" todayHighlight="true" maxlength="20")
+      .col.col-auto(style="width: 100px")
+        span.ilabel đến ngày
+        input(name="toDate" binding="datePicker" todayHighlight="true" maxlength="20")
+      .col.col-auto
+        button.btn.btn-success#filterBills ÁP DỤNG
+
+  .app-content
+    +iGrid(options=billDetailOptions)

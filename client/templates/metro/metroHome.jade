@@ -32,7 +32,9 @@ template(name="metroHome")
         span.center.middle.caption: span.table: i.fa.fa-truck.fa-3x
         span.bottom.middle.caption GIAO HÀNG
     .tile-group-3
-      .tile.lime
+      .tile.carrot.app-navigator(data-app="billExport")
+        span.center.middle.caption: span.table: i.fa.fa-eye.fa-3x
+        span.bottom.middle.caption XUẤT KHO
       .tile.pumpkin.double.double-vertical.app-navigator(data-app="import")
         span.center.left.caption: span.table: i.fa.fa-cubes.fa-3x
         span.bottom.left.caption NHẬP KHO
@@ -62,7 +64,7 @@ template(name="metroHome")
           i.fa.fa-home.fa-3x
           i.fa.fa-home.fa-1x
         span.bottom.middle.caption CHI NHÁNH
-      .tile.lime
+      .tile.lime.app-navigator(data-app="warehouseManager")
         span.center.middle.caption: span.table
           i.fa.fa-building.fa-1x
           i.fa.fa-building-o.fa-3x

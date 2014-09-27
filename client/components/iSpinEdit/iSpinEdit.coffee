@@ -1,9 +1,10 @@
 registerSpinEdit = ($element, context) ->
   options = {}
-  options.initVal = context.data.options.reactiveValue()
-  options.min = context.data.options.reactiveMin()
-  options.max = context.data.options.reactiveMax()
-  options.step= context.data.options.reactiveStep()
+  parentContext = context.data.options.parentContext
+  options.initVal = context.data.options.reactiveValue(parentContext)
+  options.min = context.data.options.reactiveMin(parentContext)
+  options.max = context.data.options.reactiveMax(parentContext)
+  options.step = context.data.options.reactiveStep(parentContext)
   _.extend(options, context.data.options.others) if context.data.options.others
 
   $element.TouchSpin(options)
@@ -21,8 +22,9 @@ stopTrackingOptions = (context) -> context.optionsTracker.stop()
 startTrackingValue = ($element, context) ->
   $element.on 'change', (e) ->
     parsedValue = accounting.parse(e.target.value)
+    parentContext = context.data.options.parentContext
     if context.data.options.reactiveSetter && isValueValid(context, parsedValue)
-      context.data.options.reactiveSetter(Number(parsedValue))
+      context.data.options.reactiveSetter(Number(parsedValue), parentContext)
 
 isValueValid = (context, value) ->
     value >= context.data.options.reactiveMin() &&

@@ -8,7 +8,10 @@ subtractQualityOnSales= (stockingItems, sellingItem , currentSale) ->
       takkenQuality = product.availableQuality
 
     SaleDetail.createSaleDetailByOrder(currentSale, sellingItem, product, takkenQuality)
-    if currentSale.deliveryType == 0 then instockQuality = takkenQuality else instockQuality = 0
+#    Schema.productDetails.update product._id, $inc:{availableQuality: -takkenQuality}
+#    Schema.products.update product.product,   $inc:{availableQuality: -takkenQuality}
+
+    if currentSale.paymentsDelivery == 2 then instockQuality = takkenQuality else instockQuality = 0
     Schema.productDetails.update product._id, $inc:{availableQuality: -takkenQuality, instockQuality: -instockQuality}
     Schema.products.update product.product,   $inc:{availableQuality: -takkenQuality, instockQuality: -instockQuality}
 
@@ -32,11 +35,14 @@ createSaleAndSaleOrder= (orderId)->
     for currentOrderDetail in currentOrderDetails
       productDetails = Schema.productDetails.find({product: currentOrderDetail.product}).fetch()
       subtractQualityOnSales(productDetails, currentOrderDetail, currentSale)
-    if currentSale.deliveryType == 1
+    if currentSale.paymentsDelivery == 0
+      Schema.sales.update currentSale._id, $set: {status: true, success: false}
+    if currentSale.paymentsDelivery == 1
       delivery = Delivery.createdNewBySale(currentSale._id, order._id)
       Schema.sales.update currentSale._id, $set: {delivery: delivery._id}
-    else
+    if currentSale.paymentsDelivery == 2
       Schema.sales.update currentSale._id, $set: {status: true, success: true}
+
 
   return currentSale._id if currentSale
 
@@ -129,7 +135,7 @@ Schema.add 'orders', class Order
       currentDiscountCash    : 0
       currentDiscountPercent : 0
       orderCode              : 'asdsad'
-      deliveryType           : 0
+      paymentsDelivery       : 0
       paymentMethod          : 0
       discountCash           : 0
       discountPercent        : 0
@@ -202,7 +208,7 @@ Schema.add 'orders', class Order
     })
     return 'Order Không Có Dữ Liệu' if !orderDetail = Schema.orderDetails.findOne({order: order._id})
 
-    if order.deliveryType == 1
+    if order.paymentsDelivery == 1
       return 'Thông tin giao hàng chưa đầy đủ (Name)'    if !order.contactName || order.contactName.length < 1
       return 'Thông tin giao hàng chưa đầy đủ (Phone)'   if !order.contactPhone || order.contactPhone.length < 1
       return 'Thông tin giao hàng chưa đầy đủ (Address)' if !order.deliveryAddress || order.deliveryAddress.length < 1
@@ -214,6 +220,7 @@ Schema.add 'orders', class Order
     if result.error then console.log result.error; return
 
     saleId = createSaleAndSaleOrder(orderId)
+#    Sale.findOne(saleId).createSaleExport()
     removeOrderAndOrderDetailAfterCreateSale(orderId)
     createTransactionAndDetailByOrder(saleId)
     return("Tạo phiếu bán hàng thành công")

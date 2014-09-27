@@ -17,6 +17,7 @@ Schema2.inventoryDetails = new SimpleSchema
 #so luong trong kho
   originalQuality:
     type: Number
+    optional: true
 
 #so luong kiem tra
   realQuality:
@@ -25,24 +26,39 @@ Schema2.inventoryDetails = new SimpleSchema
 #so luong ban khi kiem kho
   saleQuality:
     type: Number
+    optional: true
 
 #so luong mat tiem lai dc
   lostQuality:
     type: Number
+    optional: true
 
   resolved:
     type: Boolean
+
+  lock:
+    type: Boolean
+
+  lockDate:
+    type: Date
+    optional: true
 
   submit:
     type: Boolean
 
   submitDate:
     type: Date
-    denyInsert: true
     optional: true
 
   success:
     type: Boolean
+
+  successDate:
+    type: Date
+    optional: true
+
+
+
 
   version: { type: Schema.Version }
 

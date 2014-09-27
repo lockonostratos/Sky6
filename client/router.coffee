@@ -40,6 +40,7 @@ Router.map ->
   @route 'warehouse', new skyRouter('warehouse')
   @route 'sales', new skyRouter('sales')
   @route 'billManager', new skyRouter('billManager')
+  @route 'billExport', new skyRouter('billExport')
   @route 'import', new skyRouter('import')
   @route 'delivery', new skyRouter('delivery')
   @route 'returns', new skyRouter('returns')
@@ -49,3 +50,4 @@ Router.map ->
   @route 'staffManager', new skyRouter('staffManager')
   @route 'customerManager', new skyRouter('customerManager')
   @route 'branchManager', new skyRouter('branchManager')
+  @route 'warehouseManager', new skyRouter('warehouseManager')

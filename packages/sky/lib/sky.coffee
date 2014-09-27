@@ -40,12 +40,15 @@ class Sky
       _id: 1
       display: 'GHI NỢ'
     ]
-    @deliveryTypes: [
+    @paymentsDeliveries: [
       _id: 0
       display: 'TRỰC TIẾP'
     ,
       _id: 1
       display: 'GIAO HÀNG'
+    ,
+      _id: 2
+      display: 'Mua Ko Lay Hang'
     ]
     @billDiscounts: [
       _id: false

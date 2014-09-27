@@ -85,7 +85,7 @@ runInitTracker = (context) ->
       (Session.set 'currentCustomerSale', buyer) if buyer
 
     if Sky.global.salesTemplateInstance
-      if Session.get('currentOrder')?.deliveryType == 0
+      if Session.get('currentOrder')?.paymentsDelivery == 0 || Session.get('currentOrder')?.paymentsDelivery == 2
         Sky.global.salesTemplateInstance.ui.extras.hide 'delivery'
       else
         Sky.global.salesTemplateInstance.ui.extras.show 'delivery'
@@ -97,7 +97,7 @@ Sky.appTemplate.extends Template.sales,
   advancedMode: -> Session.get('enableAdvancedMode')
 
   delivery: ->
-    if Session.get('currentOrder')?.deliveryType == 1
+    if Session.get('currentOrder')?.paymentsDelivery == 1
       return {
         contactName:     Session.get('currentOrder').contactName
         contactPhone:    Session.get('currentOrder').contactPhone
@@ -221,17 +221,17 @@ Sky.appTemplate.extends Template.sales,
       Schema.orders.update(Session.get('currentOrder')._id, {$set: option})
     reactiveValueGetter: -> _.findWhere(Sky.system.paymentMethods, {_id: Session.get('currentOrder')?.paymentMethod})
 
-  deliveryTypeSelectOption:
+  paymentsDeliverySelectOption:
     query: (query) -> query.callback
-      results: Sky.system.deliveryTypes
+      results: Sky.system.paymentsDeliveries
       text: 'id'
-    initSelection: (element, callback) -> callback _.findWhere(Sky.system.deliveryTypes, {_id: Session.get('currentOrder')?.deliveryType})
+    initSelection: (element, callback) -> callback _.findWhere(Sky.system.paymentsDeliveries, {_id: Session.get('currentOrder')?.paymentsDelivery})
     formatSelection: formatpaymentMethodSearch
     formatResult: formatpaymentMethodSearch
     placeholder: 'CHỌN SẢN PTGD'
     minimumResultsForSearch: -1
-    changeAction: (e) -> Schema.orders.update(Session.get('currentOrder')._id, {$set: {deliveryType: e.added._id}})
-    reactiveValueGetter: -> _.findWhere(Sky.system.deliveryTypes, {_id: Session.get('currentOrder')?.deliveryType})
+    changeAction: (e) -> Schema.orders.update(Session.get('currentOrder')._id, {$set: {paymentsDelivery: e.added._id}})
+    reactiveValueGetter: -> _.findWhere(Sky.system.paymentsDeliveries, {_id: Session.get('currentOrder')?.paymentsDelivery})
 
   billDiscountSelectOption:
     query: (query) -> query.callback

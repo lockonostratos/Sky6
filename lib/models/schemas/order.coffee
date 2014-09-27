@@ -28,7 +28,7 @@ Schema2.orders = new SimpleSchema
     type: Number
     optional: true
 
-  deliveryType:
+  paymentsDelivery:
     type: Number
     optional: true
 

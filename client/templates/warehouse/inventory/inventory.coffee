@@ -64,7 +64,7 @@ Sky.appTemplate.extends Template.inventory,
     reactiveValueGetter: -> Session.get('currentInventoryWarehouse')
 
   productDetailOptions:
-    itemTemplate: 'saleProductThumbnail'
+    itemTemplate: 'inventoryProductThumbnail'
     reactiveSourceGetter: -> Session.get('availableProductDetails') ? []
     wrapperClasses: 'detail-grid row'
 

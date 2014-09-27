@@ -22,10 +22,11 @@ Schema.add 'inventoryDetails', class InventoryDetail
         saleQuality     : 0
         lostQuality     : 0
         resolved        : false
+        lock            : false
         submit          : false
         success         : false
 
-      console.log Schema.inventoryDetails.insert option, (error, result) -> console.log error if error
+      option._id = Schema.inventoryDetails.insert option, (error, result) -> console.log error if error
     Schema.inventories.update warehouse.inventory, $set: {detail: true}, (error, result) -> console.log error if error
     console.log 'Tao Chi Tiet Kiem Kho Thanh Cong'
 

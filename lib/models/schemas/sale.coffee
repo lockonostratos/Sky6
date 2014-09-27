@@ -33,9 +33,6 @@ Schema2.sales = new SimpleSchema
   returnQuality:
     type: Number
 
-  deliveryType:
-    type: Number
-
   delivery:
     type: String
     optional: true

@@ -23,6 +23,12 @@ Schema.saleDetails.allow
   update: -> true
   remove: -> true
 
+Meteor.publish 'saleExports', -> Schema.saleExports.find({})
+Schema.saleExports.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
 Meteor.publish 'deliveries', -> Schema.deliveries.find({})
 Schema.deliveries.allow
   insert: -> true
