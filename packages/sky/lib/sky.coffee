@@ -102,7 +102,7 @@ class Sky
       return undefined if !fullName
       splited = fullName?.split(' ')
       name = splited[splited.length - 1]
-      middle = splited[splited.length - 2]?.substring(0,1) if name.length < 5
+      middle = splited[splited.length - 2]?.substring(0,1) if name.length < 6
       "#{if middle then middle + '.' else ''} #{name}"
 
 
