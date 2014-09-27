@@ -20,6 +20,7 @@ Meteor.startup ->
     cloudProfile = Schema.userProfiles.insert
       user: creator
       isRoot: true
+      fullName: "Lê Ngọc Sơn"
       parentMerchant: huynhChauId
       currentMerchant: huynhChauId
       currentWarehouse: warehouse
@@ -28,6 +29,7 @@ Meteor.startup ->
       user: loc
       creator: creator
       isRoot: false
+      fullName: "Nguyễn Quốc Lộc"
       parentMerchant: huynhChauId
       currentMerchant: huynhChauId
       currentWarehouse: warehouse
@@ -36,6 +38,7 @@ Meteor.startup ->
       user: ky
       creator: loc
       isRoot: false
+      fullName: "Nguyễn Hồng Kỳ"
       parentMerchant: huynhChauId
       currentMerchant: huynhChauId
       currentWarehouse: warehouse2

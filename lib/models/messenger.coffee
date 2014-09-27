@@ -22,7 +22,6 @@ Schema.add 'messages', class Messenger
 
   @allMessages: -> @schema.find({$or: [{sender: Meteor.userId()}, {receiver: Meteor.userId()}]})
   @currentMessages: (target)->
-    console.log 'updated'
     sentByTarget = {sender: target}
     sentToTarget = {receiver: target}
     @schema.find {$or: [sentByTarget, sentToTarget]}

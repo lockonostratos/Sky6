@@ -1,0 +1,8 @@
+template(name="chatAvatarItem")
+  li.chat-avatar(class="{{myAvatar}}")
+    .online-status-orb(class="{{isOnline}}")
+    .alias {{fullAlias}}
+    if avatar
+      img(src="images/avatars/{{avatar}}.jpg")
+    else
+      span {{avatarLetter}}

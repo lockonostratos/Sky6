@@ -101,6 +101,13 @@ class Sky
       str = str.replace /-+-/g, "-" #thay thế 2- thành 1-
       str = str.replace /^\-+|\-+$/g, "" #cắt bỏ ký tự - ở đầu và cuối chuỗi
       str
+    @shortName: (fullName) ->
+      return undefined if !fullName
+      splited = fullName?.split(' ')
+      name = splited[splited.length - 1]
+      middle = splited[splited.length - 2]?.substring(0,1) if name.length < 6
+      "#{if middle then middle + '.' else ''} #{name}"
+
 
     @colors: ['green', 'light-green', 'yellow', 'orange', 'blue', 'dark-blue', 'lime', 'pink', 'red', 'purple', 'dark',
               'gray', 'magenta', 'teal', 'turquoise', 'green-sea', 'emeral', 'nephritis', 'peter-river', 'belize-hole',

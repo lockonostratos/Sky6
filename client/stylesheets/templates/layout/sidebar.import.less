@@ -114,9 +114,13 @@
   ul.messenger-list {
     padding: 0; margin: 0;
     color: #fff;
+
+    &:hover .alias { left: 40px !important; }
     .chat-avatar {
       list-style: none;
       position: relative;
+      background-color: #575757;
+      cursor: pointer;
 
       .online-status-orb {
         width: 8px; height: 8px;
@@ -129,32 +133,44 @@
         }
       }
 
-      a {
-        img, span {
-          width: 60px;
-          height: 40px;
-          background-color: #575757;
-        }
+      .alias {
+        .transition(left 0.15s ease);
+        position: absolute;
+        top: 23px; left: 25px;
+        .rotate(90deg);
+        transform: rotate(90deg);
+        width: 54px;
+        font-size: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 0 2px;
+        pointer-events: none;
+        background-color: rgba(0,0,0, 0.8);
+//        display: none;
+        .border-top-radius(2px);
+        z-index: -1;
+      }
 
-        span {
-          display: block;
-          text-align: center;
-          line-height: 40px;
-          color: #fff;
-          font-size: 20px;
-          font-weight: bold;
-        }
+      img, span {
+        width: 60px;
+        height: 60px;
+      }
 
-        &.me {
-          img, span {
-            line-height: 60px;
-            height: 60px;
-          }
-        }
+      span {
+        display: block;
+        text-align: center;
+        line-height: 60px;
+        color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+        text-transform: uppercase;
       }
 
       &:nth-child(even) {
-        a > img, a > span { background-color: #9c9c9c; }
+        background-color: #9c9c9c;
       }
     }
   }

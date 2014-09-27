@@ -1,21 +1,17 @@
+messengerHeight = 298;
+
 Sky.template.extends Template.sidebar,
-  leftCollapseIcon: ->
-    if Session.get('collapse') is 'collapsed'
-      'fa fa-angle-double-right'
-    else
-      'fa fa-angle-double-left'
-  myAvatar: -> if @user is Meteor.userId() then 'me' else ''
-  avatar: ->
-    if Meteor.userId() is @user then 'avatar'
-    else @avatar
+  myProfile: -> Schema.userProfiles.findOne({user: Meteor.userId()})
+  friends: -> Schema.userProfiles.find({user: {$not : Meteor.userId()}}).fetch()
 
-  avatarLetter: ->
-    fullLetters = @fullName ? Meteor.users.findOne(@user).emails[0].address
-    fullLetters.substring(0,1).toUpperCase()
-
-  friends: -> Schema.userProfiles.find().fetch()
-  isOnline: -> if Meteor.users.findOne(@user)?.status?.online then 'online' else ''
   events:
-    "click .chat-avatar > a:not(a.me)": (event, template)->
+    "click .chat-avatar:not(.me)": (event, template)->
       Session.set('currentChatTarget', @user)
       Session.set('messengerVisibility', true)
+
+      $target = $(event.target)
+      $messenger = $(template.find("#messenger"))
+      bottomAnchor = $target.offset().top + $target.outerHeight() - 40
+      nextPosition = bottomAnchor - messengerHeight
+      nextPosition = -43 if nextPosition < -43
+      $messenger.css('top', "#{nextPosition}px")
