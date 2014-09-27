@@ -1,5 +1,6 @@
 registerSpinEdit = ($element, context) ->
   options = {}
+  options.parentContext = context.data.options.parentContext
   options.initVal = context.data.options.reactiveValue()
   options.min = context.data.options.reactiveMin()
   options.max = context.data.options.reactiveMax()

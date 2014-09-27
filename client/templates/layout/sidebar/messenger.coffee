@@ -21,7 +21,10 @@ Sky.template.extends Template.messenger,
   currentMessages: -> getCurrentMessages()
   visibilityClass: -> if Session.get('messengerVisibility') then 'show' else 'hide'
   messageClass: -> if @sender is Meteor.userId() then 'my-message' else 'friend-message'
-  targetDisplayAlias: -> Meteor.users.findOne(Session.get('currentChatTarget'))?.emails[0].address
+  targetAlias: ->
+    fullName = Schema.userProfiles.findOne({user: Session.get('currentChatTarget')})?.fullName
+    email = Meteor.users.findOne(Session.get('currentChatTarget'))?.emails[0]?.address
+    fullName ? email
 
   ui:
     messages: "ul.messages"

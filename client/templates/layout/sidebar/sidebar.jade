@@ -1,11 +1,9 @@
 template(name="sidebar")
   ul.messenger-list
+    +chatAvatarItem myProfile
     each friends
-      li.chat-avatar
-        .online-status-orb(class="{{isOnline}}")
-        a(href="#" class="{{myAvatar}}")
-          if avatar
-            img(src="images/avatars/{{avatar}}.jpg")
-          else
-            span {{avatarLetter}}
+      +chatAvatarItem
+
   +messenger
+
+
