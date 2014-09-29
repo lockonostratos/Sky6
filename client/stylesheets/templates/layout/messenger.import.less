@@ -1,4 +1,6 @@
 @messenger-width: 250px;
+@my-message-background: #CEEEE6;
+
 #messenger {
   position: absolute;
   left: @left-pane-size + 1;
@@ -44,7 +46,7 @@
   .all-messages {
     max-height: 245px;
     margin: 0;
-    padding: 5px 10px 30px 5px;
+    padding: 5px 7px 30px 5px;
     overflow: scroll;
 
     .message-wrapper {
@@ -88,6 +90,7 @@
 
         &.me {
           float: right;
+//          .gradient(lighten(@my-message-background, 5), @my-message-background);
           &:after {
             content: '';
             background-color: #c7c7c7;

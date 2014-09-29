@@ -68,8 +68,17 @@
         position: absolute;
         top: 5px; left: 5px;
         background-color: gray;
-        &.online {
-          background-color: @lime;
+        &.active { background-color: @lime; }
+      }
+
+      .has-message-status {
+        position: absolute;
+        top: 7px; right: 5px;
+        line-height: 5px;
+        visibility: hidden;
+        font-size: 8px;
+        &.active {
+          visibility: visible;
         }
       }
 

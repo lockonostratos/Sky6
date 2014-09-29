@@ -65,3 +65,6 @@ Sky.template.extends Template.messenger,
         $messages.slimScroll({ scrollBy: '999999px' })
     "keyup input": (event, template) ->
       if event.which is 27 then Session.set('messengerVisibility', false)
+    "focus input": ->
+      console.log 'reading...'
+      Messenger.read(message._id) for message in Session.get('unreadMessages') when message.sender is Session.get('currentChatTarget')
