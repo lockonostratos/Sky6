@@ -1,0 +1,15 @@
+template(name="logManager")
+  .app-header
+    span.caption NHẬT KÝ HỆ THỐNG
+  .app-editor
+    .row
+      .col.col-auto(style="width: 100px")
+        span.ilabel.right xem từ ngày
+        input(name="fromDate" binding="datePicker" todayHighlight="true" maxlength="20")
+      .col.col-auto(style="width: 100px")
+        span.ilabel đến ngày
+        input(name="toDate" binding="datePicker" todayHighlight="true" maxlength="20")
+      .col.col-auto
+        button.btn.btn-success#filterLogs ÁP DỤNG
+
+  .app-content CHỨC NĂNG ĐANG ĐƯỢC XÂY DỰNG, QUAY LẠI SAU!

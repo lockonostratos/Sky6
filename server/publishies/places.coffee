@@ -35,15 +35,3 @@ Schema.tests.allow
   insert: -> true
   update: -> true
   remove: -> true
-
-Meteor.publish 'transactions', -> Schema.transactions.find({})
-Schema.transactions.allow
-  insert: -> true
-  update: -> true
-  remove: -> true
-
-Meteor.publish 'transactionDetails', -> Schema.transactionDetails.find({})
-Schema.transactionDetails.allow
-  insert: -> true
-  update: -> true
-  remove: -> true

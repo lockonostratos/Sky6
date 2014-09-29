@@ -5,7 +5,11 @@ Sky.template.extends Template.sidebar,
   friends: -> Schema.userProfiles.find({user: {$not : Meteor.userId()}}).fetch()
 
   events:
-    "click .chat-avatar:not(.me)": (event, template)->
+    "click .chat-avatar:not(.me)": (event, template) ->
+      if Session.get('messengerVisibility') and @user is Session.get('currentChatTarget')
+        Session.set('messengerVisibility', false)
+        return
+
       $target = $(event.target)
       $messenger = $("#messenger")
       Session.set('currentChatTarget', @user)

@@ -1,0 +1,12 @@
+template(name="stockManager")
+  .app-header
+    span.caption XEM TỒN KHO <small>QUẢN LÝ GIÁ BÁN</small>
+
+  //.app-editor
+  //  .row
+  //    .col.col-auto(style="width: 200px")
+  //      span.ilabel tên đăng nhập
+  //      input(name="email")
+
+  .app-content
+    +iGrid(options=stockDetailOptions)
