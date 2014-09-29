@@ -75,4 +75,12 @@ Schema2.userProfiles = new SimpleSchema
   currentInventory:
     type: Number
     optional: true
+
+  currentInventoryView:
+    type: Number
+    optional: true
+
+  currentUnSuccessInventory:
+    type: String
+    optional: true
 #---------------------------

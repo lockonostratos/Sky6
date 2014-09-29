@@ -41,7 +41,13 @@ createSaleAndSaleOrder= (orderId)->
       delivery = Delivery.createdNewBySale(currentSale._id, order._id)
       Schema.sales.update currentSale._id, $set: {delivery: delivery._id}
     if currentSale.paymentsDelivery == 2
+      for detail in Schema.saleDetails.find({sale: currentSale._id})
+        if detail.status == false and detail.export == false
+          Schema.saleDetails.update detail._id, $set:{exportDate: new Date, status: true}
+          Schema.productDetails.update detail.productDetail , $inc:{instockQuality: -detail.quality}
+          Schema.products.update detail.product,   $inc:{instockQuality: -detail.quality}
       Schema.sales.update currentSale._id, $set: {status: true, success: true}
+
 
 
   return currentSale._id if currentSale

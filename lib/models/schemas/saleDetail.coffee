@@ -52,5 +52,8 @@ Schema2.saleDetails = new SimpleSchema
     type: Date
     optional: true
 
+  status:
+    type: Boolean
+
   version: { type: Schema.Version }
 

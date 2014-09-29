@@ -83,6 +83,16 @@ class Sky
       _id: 7
       display: 'ĐƠN HÀNG ĐÃ HOÀN THÀNH'
     ]
+    @viewInventories: [
+      _id: 0
+      display: 'KIỂM KHO'
+    ,
+      _id: 1
+      display: 'LỊCH SỬ KIỂM KHO'
+    ,
+      _id: 2
+      display: 'XỬ LÝ KIỂM KHO'
+    ]
 
   class @helpers
     @removeVnSigns: (source) ->

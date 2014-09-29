@@ -9,21 +9,35 @@ template(name="inventory")
       .col.col-auto(style="width: 200px")
         span.ilabel kho
         +iSelect(options=warehouseSelectOptions class="field")
-      .col.col-auto(style="width: 200px;")
+
+      .col.col-auto(style="width: 200px; {{showDescription}}")
         span.ilabel lý do kiểm kho
         input(name="description" maxlength="200" value="{{inventory.description}}")
-      .col.col-auto.pull-right(style="width:100px")
-        button.btn.btn-default.pull-right.submitInventory(type='submit' style="{{showSubmit}}") Xác Nhận
-      .col.col-auto.pull-right(style="width:100px")
-        button.btn.btn-default.pull-right.destroyInventory(type='submit' style="{{showDestroy}}") Hủy
-      .col.col-auto.pull-right(style="width:100px")
-        button.btn.btn-default.pull-right.creatInventory(type='submit' style="{{showCreate}}") Tạo
+      .col.col-auto(style="width:100px; {{showCreate}}")
+        button.btn.btn-default.creatInventory(class="{{allowCreate}}") Tạo
+      .col.col-auto(style="width:100px; {{showDestroy}}")
+        button.btn.btn-default.destroyInventory() Hủy
+      .col.col-auto(style="width:100px; {{showSubmit}}")
+        button.btn.btn-default.submitInventory() Xác Nhận
+
+      .col.col-auto(style="width: 200px; {{showDestroy}}")
+        span.ilabel chọn phiếu xử lý
+        +iSelect(options=warehouseSelectOptions class="field")
+
+      .col.col-auto.pull-right(style="width: 200px")
+        span.ilabel Vai Trò
+        +iSelect(options=viewInventorySelectOption class="field")
+
+
 
 
 
 
   .app-content
-    +iGrid(options=productDetailOptions)
+    if showInventoryDetail
+      +iGrid(options=productDetailOptions)
+    if showHistoryInventories
+      +iGrid(options=inventoryOptions)
   .app-summary
 
   .app-status
