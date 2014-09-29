@@ -20,14 +20,15 @@ initTracker = ->
 Sky.template.extends Template.messenger,
   currentMessages: -> getCurrentMessages()
   visibilityClass: -> if Session.get('messengerVisibility') then 'active' else ''
-  messageClass: -> if @sender is Meteor.userId() then 'my-message' else 'friend-message'
+  messageClass: -> if @sender is Meteor.userId() then 'me' else 'friend'
+  friendMessage: -> @sender isnt Meteor.userId()
   targetAlias: ->
     fullName = Schema.userProfiles.findOne({user: Session.get('currentChatTarget')})?.fullName
     email = Meteor.users.findOne(Session.get('currentChatTarget'))?.emails[0]?.address
     fullName ? email
 
   ui:
-    messages: "ul.messages"
+    messages: ".all-messages"
     messenger: "#messenger"
 
   created: -> initTracker()
@@ -41,13 +42,10 @@ Sky.template.extends Template.messenger,
         scrollDownIfNecessary($messages, instance, thisTime)
         playSoundIfNecessary(instance, thisTime)
 
-    $(@ui.messages).slimScroll
-      height: '145px'
-      start: 'bottom'
     $(@ui.messenger).bind('dragstart', (event) -> $(event.target).is('.header'))
     .bind('drag', (event) ->
       maxOffset = $(document).height() - $(@).outerHeight() + 15
-      $(@).css({top: event.clientY - 15}) if 15 < event.clientY < maxOffset
+      $(@).css({top: event.clientY - 15}) if 58 < event.clientY < maxOffset
     )
 
   destroyed: -> Sky.global.incomingObserver.stop()

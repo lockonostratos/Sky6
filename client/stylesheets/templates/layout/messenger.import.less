@@ -1,19 +1,21 @@
-@messenger-width: 350px;
+@messenger-width: 250px;
 #messenger {
   position: absolute;
-  left: @left-pane-size + 3;
+  left: @left-pane-size + 1;
   width: @messenger-width - 2px;
-  background-color: #f4f4f4;
+  background-color: #EEEEEE;
   border: solid 1px #ddd;
+  .border-radius(2px);
   visibility: hidden;
-  z-index: 99999;
 
+  z-index: 99999;
+  .slimScrollBar { width: 3px !important; }
   &.active { visibility: visible; }
 
   &:before {
     content: '';
-    background-color: #fff;
-    width: 10px; height: 10px; left: -5px; top: 92px;
+    background-color: #EEEEEE;
+    width: 10px; height: 10px; left: -5px; top: 30px;
     .rotate(45deg);
     position: absolute;
   }
@@ -21,42 +23,71 @@
   .header {
     margin: -1px;
     color: #fff;
-    background-color: @lime;
+    background-color: #FF5C00;
     height: 25px;
+    .border-top-radius(2px);
     .text-overflow;
-
+    margin-bottom: 1px;
     span {
+      line-height: 25px;
+      padding-left: 5px;
       pointer-events: none;
     }
     .close-btn {
-      float: right;
-      margin-right: 3px;
+      cursor: pointer;
+      position: absolute;
+      top: 0; right: 0; padding: 1px 7px;
       color: #fff;
     }
   }
 
-  ul.messages {
-    height: 145px;
-    margin: 0; padding: 0 5px;
-    padding-bottom: 30px;
+  .all-messages {
+    max-height: 245px;
+    margin: 0;
+    padding: 5px 10px 30px 5px;
+    overflow: scroll;
 
-    li {
-      list-style: none;
+    .message-wrapper {
+      .clearfix;
+      position: relative;
       width: 100%;
-      padding: 5px 0;
+      padding: 2px 0;
 
-      span {
-        border: solid 1px #dedede;
+      .message {
+        border: solid 1px #C7C7C7;
         .border-radius(3px);
-        padding: 0 3px;
-      }
+        padding: 2px 5px;
+        background-color: #fff;
 
-      &.friend-message {
+        &.friend {
+          float: left;
+          &:before {
+            content: '';
+            background-color: #c7c7c7;
+            width: 6px;
+            height: 6px;
+            left: -3px;
+            top: 12px;
+            .rotate(45deg);
+            position: absolute;
+            z-index: -1;
+          }
+        }
 
-      }
-
-      &.my-message {
-        text-align: right;
+        &.me {
+          float: right;
+          &:after {
+            content: '';
+            background-color: #c7c7c7;
+            width: 6px;
+            height: 6px;
+            right: -3px;
+            top: 12px;
+            .rotate(45deg);
+            position: absolute;
+            z-index: -1;
+          }
+        }
       }
     }
   }
@@ -69,5 +100,6 @@
     font-size: 12px;
     height: 28px;
     line-height: 28px;
+    padding: 0 5px;
   }
 }

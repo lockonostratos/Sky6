@@ -4,15 +4,17 @@ Sky.template.extends Template.sidebar,
 
   events:
     "click .chat-avatar:not(.me)": (event, template)->
-      console.log 'activating chat'
-      Session.set('currentChatTarget', @user)
-      Session.set('messengerVisibility', true)
-      $("#messenger input").focus()
-
       $target = $(event.target)
       $messenger = $("#messenger")
+      Session.set('currentChatTarget', @user)
+      Session.set('messengerVisibility', true)
+
+      $messenger.addClass('active')
+      $messenger.find('input').focus()
+
       messengerHeight = $messenger.outerHeight()
       bottomAnchor = $target.offset().top + ($target.outerHeight()/2)
-      nextPosition = bottomAnchor - messengerHeight/2
-      nextPosition = 43 if nextPosition < 43
+      console.log 'bottomAnchor ', bottomAnchor
+      nextPosition = bottomAnchor - $target.outerHeight()/2
+      console.log 'nextPosition ', nextPosition
       $messenger.css('top', "#{nextPosition}px")
