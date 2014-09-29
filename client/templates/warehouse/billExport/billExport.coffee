@@ -31,5 +31,7 @@ Sky.appTemplate.extends Template.billExport,
       Schema.sales.find({$and: [
         {'version.createdAt': {$gt: Session.get('billFilterStartDate')}}
         {'version.createdAt': {$lt: Session.get('billFilterToDate')}}
+        {status: true}
+        {success: false}
       ]}).fetch()
     wrapperClasses: 'detail-grid row'

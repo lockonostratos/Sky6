@@ -11,9 +11,14 @@ template(name="inventory")
         +iSelect(options=warehouseSelectOptions class="field")
       .col.col-auto(style="width: 200px;")
         span.ilabel lý do kiểm kho
-        input.description(value="{{inventory.description}}")
-      .col.col-auto(style="width:100px")
-        button.btn.btn-default.creatInventory(type='submit' style="{{hideAddImportDetail}}") Tạo
+        input(name="description" maxlength="200" value="{{inventory.description}}")
+      .col.col-auto.pull-right(style="width:100px")
+        button.btn.btn-default.pull-right.submitInventory(type='submit' style="{{showSubmit}}") Xác Nhận
+      .col.col-auto.pull-right(style="width:100px")
+        button.btn.btn-default.pull-right.destroyInventory(type='submit' style="{{showDestroy}}") Hủy
+      .col.col-auto.pull-right(style="width:100px")
+        button.btn.btn-default.pull-right.creatInventory(type='submit' style="{{showCreate}}") Tạo
+
 
 
 

@@ -12,19 +12,19 @@ Schema.add 'inventoryDetails', class InventoryDetail
 
     for productDetail in Schema.productDetails.find({warehouse: warehouseId}).fetch()
       option =
-        inventory       : warehouse.inventory
-        product         : productDetail.product
-        productDetail   : productDetail._id
-        name            : productDetail.name
-        skulls          : productDetail.skulls
-        originalQuality : productDetail.instockQuality
-        realQuality     : 0
-        saleQuality     : 0
-        lostQuality     : 0
-        resolved        : false
-        lock            : false
-        submit          : false
-        success         : false
+        inventory           : warehouse.inventory
+        product             : productDetail.product
+        productDetail       : productDetail._id
+        name                : productDetail.name
+        skulls              : productDetail.skulls
+        originalQuality     : productDetail.instockQuality
+        realQuality         : 0
+        saleQuality         : 0
+        lostQuality         : 0
+        resolved            : false
+        lock                : false
+        submit              : false
+        success             : false
 
       option._id = Schema.inventoryDetails.insert option, (error, result) -> console.log error if error
     Schema.inventories.update warehouse.inventory, $set: {detail: true}, (error, result) -> console.log error if error
