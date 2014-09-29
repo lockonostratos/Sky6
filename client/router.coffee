@@ -45,6 +45,7 @@ Router.map ->
   @route 'delivery', new skyRouter('delivery')
   @route 'returns', new skyRouter('returns')
   @route 'inventory', new skyRouter('inventory')
+  @route 'inventoryReview', new skyRouter('inventoryReview')
   @route 'report', new skyRouter('report')
   @route 'roleManager', new skyRouter('roleManager')
   @route 'staffManager', new skyRouter('staffManager')

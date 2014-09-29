@@ -37,12 +37,20 @@ Schema.add 'inventories', class Inventory
 
   inventorySuccess: ->
     for detail in Schema.inventoryDetails.find({inventory: @id}).fetch()
-      if detail.submit == false || detail.submit == false
+      if detail.lock == false || detail.submit == false
         return console.log 'Xác Nhận Lỗi, Chưa Submited hết các sp'
 
+    temp = false
     for detail in Schema.inventoryDetails.find({inventory: @id}).fetch()
       Schema.inventoryDetails.update detail._id, $set:{success: true}
-    Schema.inventories.update @id, $set:{submit: true}
+      if detail.lostQuality != 0
+        temp = true
+
+    if temp
+      Schema.inventories.update @id, $set:{submit: true}
+    else
+      Schema.inventories.update @id, $set:{submit: true, success: true}
+
     Schema.warehouses.update @data.warehouse,
       $set:{checkingInventory: false}
       $unset:{inventory: ""}
