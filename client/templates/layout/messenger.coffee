@@ -1,6 +1,7 @@
 scrollDownIfNecessary = ($element, instance, timeHook) ->
   if instance.version?.createdAt > timeHook and instance.sender is Session.get('currentChatTarget')
 #    $element.slimScroll({ scrollBy: '999999px' })
+    $element.scrollTop($element[0].scrollHeight)
     console.log 'missing function, we must implement scroll to bottom here!'
 
 playSoundIfNecessary = (instance, timeHook) ->
