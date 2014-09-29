@@ -21,6 +21,10 @@ Schema2.userProfiles = new SimpleSchema
   isRoot:
     type: Boolean
 
+  roles:
+    type: [String]
+    optional: true
+
   parentMerchant:
     type: String
 
@@ -30,6 +34,7 @@ Schema2.userProfiles = new SimpleSchema
   currentWarehouse:
     type: String
 
+#--------------------------
   currentOrder:
     type: String
     optional: true
@@ -42,8 +47,40 @@ Schema2.userProfiles = new SimpleSchema
     type: String
     optional: true
 
-  roles:
-    type: [String]
+#--------------------------
+  currentDeliveryMerchant:
+    type: String
     optional: true
 
-#Schema.add 'userProfiles'
+  currentDeliveryWarehouse:
+    type: String
+    optional: true
+
+  currentDeliveryFilter:
+    type: Number
+    optional: true
+
+  currentDelivery:
+    type: String
+    optional: true
+#---------------------------
+  currentInventoryMerchant:
+    type: String
+    optional: true
+
+  currentInventoryWarehouse:
+    type: String
+    optional: true
+
+  currentInventory:
+    type: Number
+    optional: true
+
+  currentInventoryView:
+    type: Number
+    optional: true
+
+  currentUnSuccessInventory:
+    type: String
+    optional: true
+#---------------------------

@@ -27,11 +27,10 @@ Schema2.sales = new SimpleSchema
     type: Boolean
     optional: true
 
-  returner:
-    type: String
-    optional: true
+  returnCount:
+    type: Number
 
-  deliveryType:
+  returnQuality:
     type: Number
 
   delivery:
@@ -56,12 +55,17 @@ Schema2.sales = new SimpleSchema
   deposit:
     type: Number
 
+  paymentsDelivery:
+    type: Number
+
   debit:
     type: Number
 
   status:
     type: Boolean
-    optional: true
+
+  success:
+    type: Boolean
 #----------------------------------------
   currentReturn:
     type: String

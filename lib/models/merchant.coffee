@@ -54,15 +54,20 @@ Schema.add 'merchants', class Merchant
         if !product then throw 'Không tìm thấy Product'
 
 
-        productDetail.import = newImport
-        productDetail.merchant = @id
+        productDetail.import    = newImport
+        productDetail.merchant  = @id
         productDetail.warehouse = option.warehouse
-        productDetail.creator = option.creator
-        productDetail.provider = providers[Math.floor(Math.random() * providers.length)]._id
+        productDetail.creator   = option.creator
+        productDetail.provider  = providers[Math.floor(Math.random() * providers.length)]._id
+        productDetail.name      = product.name
+        productDetail.skulls    = product.skulls
 
-        productDetail.availableQuality = productDetail.importQuality
-        productDetail.instockQuality = productDetail.importQuality
+
+        productDetail.availableQuality  = productDetail.importQuality
+        productDetail.instockQuality    = productDetail.importQuality
         productDetail.systemTransaction = transaction.id
+        productDetail.checkingInventory = false
+
 
         Schema.productDetails.insert productDetail, (error, result) ->
           if error then throw 'Sai thông tin sản phẩm'
@@ -72,6 +77,7 @@ Schema.add 'merchants', class Merchant
             totalQuality    : productDetail.importQuality
             availableQuality: productDetail.importQuality
             instockQuality  : productDetail.importQuality
+
           $set:
             provider: productDetail.provider
             importPrice: productDetail.importPrice

@@ -1,9 +1,0 @@
-template(name="messenger")
-  #messenger(class="{{visibilityClass}}")
-    .header
-      span.right Name
-      a.close-btn(href="#"): i.fa.fa-times
-    ul.messages
-      each currentConversation
-        li(class="{{messageClass}}"): span {{message}}
-    input(type="text")

@@ -17,14 +17,14 @@ Schema.add 'messages', class Messenger
   @readAll: ->
     @schema.update({receiver: Meteor.userId()}, {$push: {reads: Meteor.userId()}})
 
+  @readMessagesOf: (sender) ->
+    @schema.update({$and: [{receiver: Meteor.userId()}, {sender: sender}]}, {$push: {reads: Meteor.userId()}})
+
   @incommings: -> @schema.find({receiver: Meteor.userId()}, {limit: 10})
   @unreads: -> @schema.find({reads: {$ne: Meteor.userId()}, sender: {$ne: Meteor.userId()}})
 
   @allMessages: -> @schema.find({$or: [{sender: Meteor.userId()}, {receiver: Meteor.userId()}]})
-  @currentMessages: ->
-    return [] if !Session.get('currentChatTarget')
-    console.log 'hasTarget!'
-    chatters = [Meteor.userId(), Session.get('currentChatTarget')]
-    @schema.find {$or: [{sender: {$in: chatters}}, {receiver: {$in: chatters}}] }
-
-#    Schema.messages.update(currentMessage._id, {$set: {}})
+  @currentMessages: (target)->
+    sentByTarget = {sender: target}
+    sentToTarget = {receiver: target}
+    @schema.find {$or: [sentByTarget, sentToTarget]}

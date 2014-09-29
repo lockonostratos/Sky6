@@ -45,38 +45,59 @@ Session.set('dummyQuality', 10)
 runInitTracker = (context) ->
   return if Sky.global.saleTracker
   Sky.global.saleTracker = Tracker.autorun ->
-    if Session.get('currentUser')
+    if Session.get('currentMerchant')
       Session.set "availableStaffSale", Meteor.users.find({}).fetch()
-      Session.set "availableCustomerSale", Schema.customers.find({}).fetch()
+      if Session.get('currentMerchant').parent
+        merchant = Session.get('currentMerchant').parent
+      else
+        merchant = Session.get('currentMerchant')._id
+      Session.set "availableCustomerSale", Schema.customers.find({parentMerchant: merchant}).fetch()
 
-
-
-    if Session.get('currentWarehouse')
-      Session.set('orderHistory', Schema.orders.find({warehouse: Session.get('currentWarehouse')._id}).fetch())
+    if Session.get('currentWarehouse') and Session.get('currentProfile')?.currentOrder
+      orderHistory =  Schema.orders.find({
+        merchant: Session.get('currentMerchant')._id
+        warehouse: Session.get('currentWarehouse')._id
+        creator: Meteor.userId()
+      }).fetch()
+      Session.set 'orderHistory', orderHistory
+      if orderHistory.length > 0
+        order = _.findWhere(orderHistory, {_id: Session.get('currentProfile').currentOrder})
+        if order
+          Session.set 'currentOrder', order
+        else
+          Session.set 'currentOrder', orderHistory[0]
+      else
+        Order.createOrderAndSelect()
 
     if Session.get('currentOrder')
       Session.set 'currentOrderDetails', Schema.orderDetails.find({order: Session.get('currentOrder')._id}).fetch()
       Session.set 'currentProductInstance', Schema.products.findOne(Session.get('currentOrder').currentProduct)
+
       Session.set 'currentProductMaxTotalPrice', calculateTotalPrice()
       Session.set 'currentProductMaxQuality', maxQuality()
       Session.set 'currentProductDiscountPercent', calculatePercentDiscount()
 
-    if Session.get('currentOrder')?.buyer
-      Session.set 'currentCustomerSale', Schema.customers.findOne(Session.get('currentOrder').buyer)
+    if Session.get('currentOrder')?.buyer and Session.get('currentMerchant')?.parentMerchant
+      buyer = Schema.customers.findOne({
+        _id: Session.get('currentOrder').buyer
+        parentMerchant: Session.get('currentMerchant').parentMerchant
+      })
+      (Session.set 'currentCustomerSale', buyer) if buyer
 
     if Sky.global.salesTemplateInstance
-      if Session.get('currentOrder')?.deliveryType == 0
+      if Session.get('currentOrder')?.paymentsDelivery == 0 || Session.get('currentOrder')?.paymentsDelivery == 2
         Sky.global.salesTemplateInstance.ui.extras.hide 'delivery'
       else
         Sky.global.salesTemplateInstance.ui.extras.show 'delivery'
 
-    currentOrderId = Session.get('currentProfile')?.currentOrder
-    Session.set('currentOrder', Schema.orders.findOne(currentOrderId)) if currentOrderId
+
 
 Sky.appTemplate.extends Template.sales,
   order: -> Session.get('currentOrder')
+  advancedMode: -> Session.get('enableAdvancedMode')
+
   delivery: ->
-    if Session.get('currentOrder')?.deliveryType == 1
+    if Session.get('currentOrder')?.paymentsDelivery == 1
       return {
         contactName:     Session.get('currentOrder').contactName
         contactPhone:    Session.get('currentOrder').contactPhone
@@ -125,10 +146,11 @@ Sky.appTemplate.extends Template.sales,
     changeAction: (e) ->
       Schema.orders.update Session.get('currentOrder')._id,
         $set:
-          currentProduct  : e.added._id
-          currentQuality  : Number(1)
-          currentPrice    : e.added.price
-          currentDiscount : Number(0)
+          currentProduct        : e.added._id
+          currentQuality        : Number(1)
+          currentPrice          : e.added.price
+          currentDiscountCash   : Number(0)
+          currentDiscountPercent: Number(0)
     reactiveValueGetter: -> Session.get('currentOrder')?.currentProduct
 
   customerSelectOptions:
@@ -199,17 +221,17 @@ Sky.appTemplate.extends Template.sales,
       Schema.orders.update(Session.get('currentOrder')._id, {$set: option})
     reactiveValueGetter: -> _.findWhere(Sky.system.paymentMethods, {_id: Session.get('currentOrder')?.paymentMethod})
 
-  deliveryTypeSelectOption:
+  paymentsDeliverySelectOption:
     query: (query) -> query.callback
-      results: Sky.system.deliveryTypes
+      results: Sky.system.paymentsDeliveries
       text: 'id'
-    initSelection: (element, callback) -> callback _.findWhere(Sky.system.deliveryTypes, {_id: Session.get('currentOrder')?.deliveryType})
+    initSelection: (element, callback) -> callback _.findWhere(Sky.system.paymentsDeliveries, {_id: Session.get('currentOrder')?.paymentsDelivery})
     formatSelection: formatpaymentMethodSearch
     formatResult: formatpaymentMethodSearch
     placeholder: 'CHỌN SẢN PTGD'
     minimumResultsForSearch: -1
-    changeAction: (e) -> Schema.orders.update(Session.get('currentOrder')._id, {$set: {deliveryType: e.added._id}})
-    reactiveValueGetter: -> _.findWhere(Sky.system.deliveryTypes, {_id: Session.get('currentOrder')?.deliveryType})
+    changeAction: (e) -> Schema.orders.update(Session.get('currentOrder')._id, {$set: {paymentsDelivery: e.added._id}})
+    reactiveValueGetter: -> _.findWhere(Sky.system.paymentsDeliveries, {_id: Session.get('currentOrder')?.paymentsDelivery})
 
   billDiscountSelectOption:
     query: (query) -> query.callback
@@ -400,13 +422,14 @@ Sky.appTemplate.extends Template.sales,
       else
         template.find(".deliveryAddress").value = Session.get('currentOrder').deliveryAddress
 
-    'blur .deliveryDate': (event, template)->
-      if template.find(".deliveryDate").value.length > 1
-        Schema.orders.update(Session.get('currentOrder')._id, {$set: {
-          deliveryDate: template.find(".deliveryDate").value
-        }})
-      else
-        console.log 'Name is null'
+#    'blur .deliveryDate': (event, template)->
+#      deliveryDate = template.ui.$deliveryDate.data('datepicker').dates[0]
+#      if template.find(".deliveryDate").value.length > 1
+#        Schema.orders.update(Session.get('currentOrder')._id, {$set: {
+#          deliveryDate: template.find(".deliveryDate").value
+#        }})
+#      else
+#        console.log 'Name is null'
 
     'blur .comment': (event, template)->
       if template.find(".comment").value.length > 1
@@ -416,10 +439,14 @@ Sky.appTemplate.extends Template.sales,
       else
         template.find(".comment").value = Session.get('currentOrder').comment
 
+    "change [name='advancedMode']": (event, template)->
+      Session.set('enableAdvancedMode', event.target.checked)
 
   rendered: ->
     Sky.global.salesTemplateInstance = @
     runInitTracker()
+    @ui.$deliveryDate.datepicker
+      language: "vi"
 
 
 

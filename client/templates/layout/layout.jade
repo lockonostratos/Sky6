@@ -1,13 +1,14 @@
 template(name="layout")
-	.application(class="#{collapse}")
-		header
-			+navigation
-		if currentUser
-			.content.wrapper
-				#left-side
-					+sidebar
-				#right-side
-					+yield
-		else
-			.wrapper
-				.left-side: +yield
+  +messenger
+  .application(class="#{collapse}")
+    header
+      +navigation
+    if currentUser
+      .content.wrapper
+        #left-side
+          +sidebar
+        #right-side
+          +yield
+    else
+      .wrapper
+        .left-side: +yield

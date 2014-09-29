@@ -17,7 +17,10 @@ Meteor.startup ->
     if Meteor.userId()
       Session.set "currentUser"       , Meteor.user()
       Session.set "currentProfile"    , Schema.userProfiles.findOne(user: Meteor.userId())
-      Session.set "availableMerchant" , Schema.merchants.findOne({})
+      Session.set "availableMerchant" , Schema.merchants.find({}).fetch()
+
+    if Session.get('currentProfile') #Temporaries SUBSCRUBIBE
+      Meteor.subscribe 'merchantProfiles', Session.get('currentProfile').parentMerchant
 
   Tracker.autorun ->
     console.log ('warehouseAutorunWorking..') if autorunDebug
@@ -44,7 +47,6 @@ Meteor.startup ->
   Tracker.autorun ->
     console.log ('deliveriesAutorunWorking..') if autorunDebug
     if Session.get('currentWarehouse')
-      Session.set 'availableDeliveries', Schema.deliveries.find({warehouse: Session.get('currentWarehouse')._id}).fetch()
       Session.set 'availableSale'   , Schema.sales.find({warehouse: Session.get("currentWarehouse")._id, status: true}).fetch()
       Session.set 'availableReturns'   , Schema.returns.find({warehouse: Session.get("currentWarehouse")._id}).fetch()
 

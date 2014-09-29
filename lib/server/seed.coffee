@@ -10,16 +10,17 @@ Meteor.startup ->
 
     huynhChauId = Merchant.create { name: 'Huynh Chau', creator: creator }
     merchant = Merchant.findOne huynhChauId
-    warehouse = merchant.addWarehouse { name: 'Kho Chính', creator: creator }
-    warehouse2 = merchant.addWarehouse { name: 'Kho Phu', creator: creator }
+    warehouse = merchant.addWarehouse { name: 'Kho Chính', creator: creator, isRoot : true, checkingInventory: false}
+    warehouse2 = merchant.addWarehouse { name: 'Kho Phu', creator: creator, isRoot : false, checkingInventory: false}
 
-    hanoi = merchant.addBranch { name: 'Huynh Chau HA NOI', creator: creator }
+    hanoi = merchant.addBranch { name: 'Huynh Chau HA NOI', creator: creator}
     merchant2 = Merchant.findOne hanoi
-    warehouse3 = merchant2.addWarehouse { name: 'Kho Chính', creator: creator }
+    warehouse3 = merchant2.addWarehouse { name: 'Kho Chính', creator: creator, isRoot : true, checkingInventory: false}
 
     cloudProfile = Schema.userProfiles.insert
       user: creator
       isRoot: true
+      fullName: "Lê Ngọc Sơn"
       parentMerchant: huynhChauId
       currentMerchant: huynhChauId
       currentWarehouse: warehouse
@@ -28,6 +29,7 @@ Meteor.startup ->
       user: loc
       creator: creator
       isRoot: false
+      fullName: "Nguyễn Quốc Lộc"
       parentMerchant: huynhChauId
       currentMerchant: huynhChauId
       currentWarehouse: warehouse
@@ -36,6 +38,7 @@ Meteor.startup ->
       user: ky
       creator: loc
       isRoot: false
+      fullName: "Nguyễn Hồng Kỳ"
       parentMerchant: huynhChauId
       currentMerchant: huynhChauId
       currentWarehouse: warehouse2
@@ -75,22 +78,33 @@ Meteor.startup ->
 
 resetDatabase = ->
   Meteor.users.remove({})
-  Schema.customers.remove({})
+  Schema.userProfiles.remove({})
   Schema.roles.remove({})
   Schema.merchants.remove({})
   Schema.warehouses.remove({})
+  Schema.customers.remove({})
   Schema.providers.remove({})
   Schema.skulls.remove({})
-  Schema.imports.remove({})
-  Schema.importDetails.remove({})
   Schema.products.remove({})
   Schema.productDetails.remove({})
+
+  Schema.imports.remove({})
+  Schema.importDetails.remove({})
   Schema.orders.remove({})
   Schema.orderDetails.remove({})
   Schema.sales.remove({})
   Schema.saleDetails.remove({})
-  Schema.userProfiles.remove({})
+  Schema.inventories.remove({})
+  Schema.inventoryDetails.remove({})
+  Schema.returns.remove({})
+  Schema.returnDetails.remove({})
+  Schema.deliveries.remove({})
+
+  Schema.transactions.remove({})
+  Schema.transactionDetails.remove({})
+
   Schema.messages.remove({})
+
 
 seedSystemRoles = ->
   Schema.roles.insert
@@ -200,12 +214,12 @@ seedProductsFor = (merchant, creator, warehouse) ->
     creator: creator
     emailCreator: Meteor.users.findOne(creator).emails[0].address
     description: "Nhập tồn đầu kỳ 2014"
-    warehouse : warehouse
-    totalPrice:0
-    deposit   : 0
-    debit     :0
-    finish    : true
-    submited  : true
+    warehouse: warehouse
+    totalPrice: 0
+    deposit: 0
+    debit: 0
+    finish: true
+    submited: true
   }, importDetails
 
 

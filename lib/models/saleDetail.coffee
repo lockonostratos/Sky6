@@ -10,6 +10,8 @@ Schema.add 'saleDetails', class SaleDetail
       price         : sellingItem.price
       totalPrice    : (takkenQuality * sellingItem.price)
       returnQuality : 0
+      export        : false
+      status        : false
 
     if currentSale.billDiscount
       if currentSale.discountCash == 0

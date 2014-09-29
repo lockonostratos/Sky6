@@ -14,6 +14,10 @@ Schema2.merchants = new SimpleSchema
   name:
     type: String
 
+  address:
+    type: String
+    optional: true
+
   location:
     type: [String]
     optional: true

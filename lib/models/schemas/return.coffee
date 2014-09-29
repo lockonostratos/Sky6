@@ -11,6 +11,9 @@ Schema2.returns = new SimpleSchema
   creator:
     type: String
 
+  creatorName:
+    type: String
+
   submitReturn:
     type: String
     optional: true

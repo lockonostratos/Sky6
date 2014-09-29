@@ -1,5 +1,6 @@
 reUpdateImportDetail = (newImportDetail, oldImportDetail) ->
-  Schema.importDetails.update oldImportDetail._id, $inc:{ importQuality : newImportDetail.importQuality}
+  totalPrice = newImportDetail.importQuality  * oldImportDetail.importPrice
+  Schema.importDetails.update oldImportDetail._id, $inc:{ importQuality : newImportDetail.importQuality , totalPrice: totalPrice}
   , (error, result) -> console.log error if error
 
 
@@ -12,6 +13,7 @@ Schema.add 'importDetails', class ImportDetail
       skulls        : product.skulls
       importQuality : Number(imports.currentQuality)
       importPrice   : Number(imports.currentImportPrice)
+      totalPrice    : Number(imports.currentImportPrice)*Number(imports.currentQuality)
       finish        : false
       styles        : Sky.helpers.randomColor()
     option.provider  = imports.currentProvider  if imports.currentProvider

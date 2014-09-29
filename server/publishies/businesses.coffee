@@ -23,6 +23,12 @@ Schema.saleDetails.allow
   update: -> true
   remove: -> true
 
+Meteor.publish 'saleExports', -> Schema.saleExports.find({})
+Schema.saleExports.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
 Meteor.publish 'deliveries', -> Schema.deliveries.find({})
 Schema.deliveries.allow
   insert: -> true
@@ -50,6 +56,18 @@ Schema.skulls.allow
 
 Meteor.publish 'providers', -> Schema.providers.find({})
 Schema.providers.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
+Meteor.publish 'inventories', -> Schema.inventories.find({})
+Schema.inventories.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
+Meteor.publish 'inventoryDetails', -> Schema.inventoryDetails.find({})
+Schema.inventoryDetails.allow
   insert: -> true
   update: -> true
   remove: -> true

@@ -19,7 +19,7 @@
   margin-bottom: 4px;
 //  &:hover { outline: rgba(0, 0, 0, 0.1) solid 2px; }
   position: relative;
-//  .border-radius(2px);
+  .border-radius(2px);
   overflow: hidden;
 
   .right-caption {
@@ -43,8 +43,11 @@
     background-repeat: no-repeat;
     background-position: 50% 50%;
     position: absolute;
-    height: 120px;
+    height: 80px;
     width: 80px;
+    .border-radius(50%);
+    top: -10px; left: 10px;
+    border: solid 4px #fff;
   }
 
   .short-desc {
@@ -89,7 +92,7 @@
       font-weight: lighter;
     }
     &.trash {
-      left: 80px; bottom: 0;
+      left: 0; bottom: 0;
       z-index: 10;
       a {
         color: #fff;

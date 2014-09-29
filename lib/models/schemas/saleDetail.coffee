@@ -24,7 +24,7 @@ Schema2.saleDetails = new SimpleSchema
     type: Number
 
   returnQuality:
-    type: String
+    type: Number
     optional: true
 
   price:
@@ -45,7 +45,15 @@ Schema2.saleDetails = new SimpleSchema
     type: String
     optional: true
 
+  export:
+    type: Boolean
 
+  exportDate:
+    type: Date
+    optional: true
+
+  status:
+    type: Boolean
 
   version: { type: Schema.Version }
 

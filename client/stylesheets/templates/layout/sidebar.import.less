@@ -3,7 +3,8 @@
   width: @left-pane-size;
   min-height: 100%;
   background-color: @left-pane-background;
-  z-index: 999;
+  z-index: 9999;
+  padding-top: @nav-bottom-border-size;
 
   .sidebar-dump-dash {
     height: 7px;
@@ -50,89 +51,76 @@
 
   }
 
-  #messenger {
-    position: absolute;
-    right: -250px;
-    width: 250px;
-    background-color: #f4f4f4;
-    border: solid 1px #ddd;
-    bottom: 100px;
-    z-index: 1;
+  ul.messenger-list {
+    padding: 0; margin: 0;
+    color: #fff;
 
-    .header {
-      margin: -1px;
-      color: #fff;
-      background-color: @lime;
-      height: 25px;
-      .text-overflow;
+    &:hover .alias { left: 40px !important; }
+    .chat-avatar {
+      list-style: none;
+      position: relative;
+      background-color: #575757;
+      cursor: pointer;
 
-      .close-btn {
-        float: right;
-        margin-right: 3px;
+      .online-status-orb {
+        width: 8px; height: 8px;
+        .border-radius(50%);
+        position: absolute;
+        top: 5px; left: 5px;
+        background-color: gray;
+        &.active { background-color: @lime; }
+      }
+
+      .has-message-status {
+        position: absolute;
+        top: 7px; right: 5px;
+        line-height: 5px;
+        visibility: hidden;
+        font-size: 8px;
+        &.active {
+          visibility: visible;
+        }
+      }
+
+      .alias {
+        .transition(left 0.15s ease);
+        position: absolute;
+        top: 23px; left: 25px;
+        .rotate(90deg);
+        transform: rotate(90deg);
+        width: 54px;
+        font-size: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 0 2px;
+        pointer-events: none;
+        background-color: rgba(0,0,0, 0.8);
+//        display: none;
+        .border-top-radius(2px);
+        z-index: -1;
+      }
+
+      img, span {
+        width: 60px;
+        height: 60px;
+      }
+
+      span {
+        display: block;
+        text-align: center;
+        line-height: 60px;
         color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+        text-transform: uppercase;
       }
-    }
 
-    ul.messages {
-      height: 245px;
-      margin: 0; padding: 0 5px;
-
-      li {
-        list-style: none;
-        width: 100%;
-        padding: 5px 0;
-
-        span {
-          border: solid 1px #dedede;
-          .border-radius(3px);
-          padding: 0 3px;
-        }
-
-        &.friend-message {
-
-        }
-
-        &.my-message {
-          text-align: right;
-        }
+      &:nth-child(even) {
+        background-color: #9c9c9c;
       }
-    }
-
-    input {
-      width: 100%;
-      border: none;
-      border-top: solid 1px #DDDDDD;
-      background: #FFFFFF;
-      font-size: 12px;
-      height: 28px;
-      line-height: 28px;
-    }
-  }
-
-  .sidebar-handle {
-    .collapse-transition;
-    display: block;
-    position: absolute;
-    width: 20px;
-    height: 45px;
-    bottom: 405px;
-    background-color: @left-pane-background;
-    .border-right-radius(3px);
-    z-index: 2;
-
-    i {
-      color: #fff;
-      line-height: 45px;
-      margin-left: 5px;
-    }
-
-    &.left  {
-      right: -5px;
-      //    background: url("images/left-handle.png") no-repeat;
-    }
-    &.right {
-      left: -5px;
-      //    background: url("images/right-handle.png") no-repeat;
     }
   }
 }

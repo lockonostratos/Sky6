@@ -1,0 +1,12 @@
+template(name="inventoryThumbnail")
+  .col
+    .thumbnails(class="#{styles}")
+      .right-caption {{creatorName creator}}
+      .avatar(style="background-image: url('images/missing.jpg')")
+      .short-desc.quality(style="{{hideDetail}}")
+        button.btn.btn-default.creatInventory(class="{{allowShowDetail}}") Xem
+      .single-price {{description}}
+      .full-desc.price {{createDate version.updateAt}}
+      .full-desc.trash {{status}}
+
+

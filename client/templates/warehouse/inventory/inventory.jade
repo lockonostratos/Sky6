@@ -1,0 +1,44 @@
+template(name="inventory")
+  .app-header
+    span.caption Kiểm Kho
+  .app-editor
+    .row
+      .col.col-auto(style="width: 200px")
+        span.ilabel chi nhánh
+        +iSelect(options=merchantSelectOptions class="field")
+      .col.col-auto(style="width: 200px")
+        span.ilabel kho
+        +iSelect(options=warehouseSelectOptions class="field")
+
+      .col.col-auto(style="width: 200px; {{showDescription}}")
+        span.ilabel lý do kiểm kho
+        input(name="description" maxlength="200" value="{{inventory.description}}")
+      .col.col-auto(style="width:100px; {{showCreate}}")
+        button.btn.btn-default.creatInventory(class="{{allowCreate}}") Tạo
+      .col.col-auto(style="width:100px; {{showDestroy}}")
+        button.btn.btn-default.destroyInventory() Hủy
+      .col.col-auto(style="width:100px; {{showSubmit}}")
+        button.btn.btn-default.submitInventory() Xác Nhận
+
+      .col.col-auto(style="width: 200px; {{showDestroy}}")
+        span.ilabel chọn phiếu xử lý
+        +iSelect(options=warehouseSelectOptions class="field")
+
+      .col.col-auto.pull-right(style="width: 200px")
+        span.ilabel Vai Trò
+        +iSelect(options=viewInventorySelectOption class="field")
+
+
+
+
+
+
+  .app-content
+    if showInventoryDetail
+      +iGrid(options=productDetailOptions)
+    if showHistoryInventories
+      +iGrid(options=inventoryOptions)
+  .app-summary
+
+  .app-status
+

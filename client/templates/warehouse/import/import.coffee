@@ -6,15 +6,31 @@ formatImportProviderSearch = (item) -> "#{item.name}" if item
 runInitImportTracker = (context) ->
   return if Sky.global.importTracker
   Sky.global.importTracker = Tracker.autorun ->
-    if Session.get('currentWarehouse')
-      Session.set 'importHistory', Schema.imports.find({warehouse: Session.get('currentWarehouse')._id, submited: false}).fetch()
+    if currentProfile = Session.get('currentProfile')
+      if currentProfile.currentWarehouse
+        importHistory = Schema.imports.find({
+          warehouse : Session.get('currentWarehouse')._id
+          creator   : Meteor.userId()
+          submited  : false
+        }).fetch()
+        (Session.set 'importHistory', importHistory) if importHistory
 
-    if Session.get('currentImport')
-      Session.set('currentImportDetails', Schema.importDetails.find({import: Session.get('currentImport')._id}).fetch())
-      Session.setDefault 'currentProductInstance', Schema.products.findOne(Session.get('currentImport').currentProduct)
+        if importHistory.length > 0
+          currentImport = _.findWhere(importHistory, {_id: currentProfile.currentImport})
+          if currentImport
+            Session.set 'currentImport', currentImport
+          else
+            currentImport = importHistory[0]
+            Session.set 'currentImport', currentImport
+        else
+          currentImport = Import.createdByWarehouseAndSelect(currentProfile.currentWarehouse, {description: 'New Import'})
+        Session.set 'currentImportDetails', Schema.importDetails.find({import: currentImport._id}).fetch()
 
-    currentImportId = Session.get('currentProfile')?.currentImport
-    Session.set('currentImport', Schema.imports.findOne(currentImportId)) if currentImportId
+    if currentProductId = Session.get('currentImport')?.currentProduct
+      if currentProduct = Schema.products.findOne(currentProductId)
+        Session.setDefault 'currentProductInstance', currentProduct
+
+
 
 Sky.appTemplate.extends Template.import,
   warehouseImport: -> Session.get 'currentImport'

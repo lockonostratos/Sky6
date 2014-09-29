@@ -1,0 +1,8 @@
+template(name="warehouseThumbnail")
+  .col
+    .thumbnails
+      .right-caption {{name}}
+      .full-desc.price {{creatorName}}
+      .avatar(style="background-image: url('images/missing.jpg')")
+      if isntRoot
+        .full-desc.trash: a(href="#"): i.fa.fa-trash-o

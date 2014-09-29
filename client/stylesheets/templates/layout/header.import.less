@@ -2,10 +2,10 @@ header {
   nav.main {
 //    margin-left: @left-pane-size;
 //      box-shadow: 0 0 4px 0 rgba(0,0,0,0.6);
-    background-color: #393939;
-    padding-right: 5px;
+    background-color: #fff;
     min-height: 40px;
     border: none;
+    border-bottom: solid @nav-bottom-border-size #f0f0f0;
     z-index: 999;
 
     .branding {
@@ -15,7 +15,6 @@ header {
       float: left;
       height: 40px;
       text-align: center;
-      border-bottom: 1px solid #333;
 
       .logo {
         margin: 11px 0;
@@ -49,61 +48,83 @@ header {
       width: @left-pane-size;
     }
 
+    .notifications > li {
+      border-left: solid 1px #F0F0F0;
+      border-right: none;
+      i { font-size: 15px; }
+    }
+
     li {
-      &.home {
-//        margin-left: 6px;
-        a { font-size: 40px; padding: 0 10px; }
+      border-right: solid 1px #F0F0F0;
+
+      &.collapse-toggle {
+        &:before {
+          content: '';
+          background-color: #fff;
+          width: 6px;
+          height: 6px;
+          .rotate(45deg);
+          position: absolute;
+          left: -3px;
+          top: 16px;
+        }
       }
 
-      &.iconic {
+      &.home {
+//        margin-left: 6px;
         a {
-          padding: 18px 10px 0px 10px;
+          font-size: 30px;
+          padding: 5px 10px;
+        }
+      }
 
-          i {
-            color: #888;
-            &.notifying { color: #fff; }
-          }
+      a { color: #696969; padding: 10px 15px; }
+      a:hover {
+        background-color: #f2f2f2 !important;
+      }
 
-          span.count {
-            position: absolute;
-            top: -13px;
-            left: 5px;
-            font-size: 10px;
-            background-color: #555;
-            padding: 10px 2px 0 2px;
-            border-radius: 9px;
-            width: 21px;
-            text-align: center;
-            &.active {
-              background-color: @lime;
-            }
-          }
+      &.active {
+        &:after {
+          content: '';
+          background-color: #f0f0f0;
+          width: 6px;
+          height: 6px;
+          .rotate(45deg);
 
+          top: 16px;
+        }
+
+        a {
+          color: #333;
+          background-color: #f0f0f0;
           &:hover {
-            background-color: transparent !important;
-            i { color: #ddd; }
-            span { color: #fff; }
+            background-color: #f0f0f0 !important;
           }
         }
       }
 
-      a { color: #fff; padding: 10px 15px; }
-      a:hover {
-        background-color: #333 !important;
-        color: #ddd;
-      }
+      &.inav {
+        cursor: pointer;
+        span {
+          color: #888888;
+          line-height: 40px;
+          padding: 0 15px;
+        }
 
-      &.active a {
-        color: #333;
-        background-color: #fff;
-        &:hover { background-color: #fff !important; }
-      }
+        .notification-counts {
+          position: absolute;
+          right: 10px; top: 2px;
+          font-size: 9px;
+          padding: 0 4px; height: 15px; line-height: 15px; text-align: center;
+          border-radius: 2px;
+          background-color: #5A4F4F;
+          color: #fff;
+          z-index: 10;
+          visibility: hidden;
 
-      &.home.active a {
-        color: #fff;
-        background-color: #464646;
-        &:hover {
-          background-color: #464646 !important;
+          &.active {
+            visibility: visible;
+          }
         }
       }
     }

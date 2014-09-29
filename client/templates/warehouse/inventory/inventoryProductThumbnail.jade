@@ -1,0 +1,15 @@
+template(name="inventoryProductThumbnail")
+  .col
+    .thumbnails(class="#{styles}")
+      .right-caption {{name}}
+      .avatar(style="background-image: url('images/missing.jpg')")
+      .short-desc.quality
+        .col.col-auto.pull-right(style="width:120px")
+          +iSpinEdit(options=realQualityOptions)
+      .full-desc.price {{status}} -- Tồn Kho: {{originalQuality}}
+      .single-price Đã Bán: {{saleQuality}} / Mất {{lostQuality}}
+      .full-desc.trash: a(href="#")
+        i.fa.fa-reply()
+        i.fa.fa-lock()
+        i.fa.fa-check()
+

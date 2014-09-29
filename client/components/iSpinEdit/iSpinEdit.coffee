@@ -3,7 +3,7 @@ registerSpinEdit = ($element, context) ->
   options.initVal = context.data.options.reactiveValue()
   options.min = context.data.options.reactiveMin()
   options.max = context.data.options.reactiveMax()
-  options.step= context.data.options.reactiveStep()
+  options.step = context.data.options.reactiveStep()
   _.extend(options, context.data.options.others) if context.data.options.others
 
   $element.TouchSpin(options)

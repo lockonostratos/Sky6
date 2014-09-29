@@ -1,7 +1,7 @@
 formatSaleReturnSearch = (item) -> "#{item.orderCode}" if item
 formatReturnSearch = (item) -> "#{item.returnCode}" if item
 formatReturnProductSearch = (item) ->
-  "#{item.name} [#{item.skulls}] - [#{item.discountPercent}% * #{item.quality}]" if item
+  "#{item.name} [#{item.skulls}] - [#{Math.round(item.discountPercent*100)/100}% * #{item.quality - item.returnQuality}]" if item
 
 returnQuality= ->
   findReturnDetail =_.findWhere(Session.get('currentReturnDetails'),{
@@ -30,7 +30,7 @@ runInitReturnsTracker = (context) ->
       Session.set 'currentProductDetail', Schema.saleDetails.findOne(Session.get('currentSale')?.currentProductDetail)
 
     if Session.get('currentReturn')
-      Session.set 'currentReturnDetails', Schema.returnDetails.find({returns: Session.get('currentReturn')._id}).fetch()
+      Session.set 'currentReturnDetails', Schema.returnDetails.find({return: Session.get('currentReturn')._id}).fetch()
     else
       Session.set 'currentReturnDetails'
 
@@ -38,12 +38,11 @@ runInitReturnsTracker = (context) ->
       Session.set 'currentMaxQualityReturn', returnQuality()
 
 Sky.appTemplate.extends Template.returns,
-  return: -> Session.get('currentSale')?
+  saleReturn: -> Session.get('currentReturn')
+  hideAddReturnDetail: -> return "display: none" if Session.get('currentReturn') and Session.get('currentReturn')?.status != 0
   hideFinishReturn: -> return "display: none" if Session.get('currentReturn')?.status != 0
   hideEditReturn:   -> return "display: none" if Session.get('currentReturn')?.status != 1
   hideSubmitReturn: -> return "display: none" if Session.get('currentReturn')?.status != 1
-
-
 
   saleSelectOptions:
     query: (query) -> query.callback
@@ -60,18 +59,13 @@ Sky.appTemplate.extends Template.returns,
 #    minimumResultsForSearch: -1
     changeAction: (e) ->
       Schema.userProfiles.update(Session.get('currentProfile')._id, {$set: {currentSale: e.added._id}})
-      if sale = Schema.sales.findOne(e.added._id)
-        Session.set 'currentSale', sale
-        if returns = Schema.returns.findOne({sale: sale._id})
-          Session.set 'currentReturn', returns
-          Session.set 'currentReturnDetails', Schema.returnDetails.find({returns: returns._id}).fetch()
-        else
-          Session.set 'currentReturn'
-          Session.set 'currentReturnDetails'
-      else
-        Session.set 'currentSale'
-
-
+      sale = Schema.sales.findOne(e.added._id)
+      if !sale.currentProductDetail
+        saleDetail = Schema.saleDetails.findOne({sale: e.added._id})
+        Schema.sales.update(e.added._id, $set:{currentProductDetail: saleDetail._id, currentQuality: 1})
+        sale.currentProductDetail = saleDetail._id
+        sale.currentQuality       = 1
+      Session.set 'currentSale', sale
     reactiveValueGetter: -> Session.get('currentProfile')?.currentSale
 
   returnProductSelectOptions:
@@ -81,16 +75,19 @@ Sky.appTemplate.extends Template.returns,
     formatSelection: formatReturnProductSearch
     formatResult: formatReturnProductSearch
     placeholder: 'CHỌN SẢN PHẨM'
-    minimumResultsForSearch: -1
+#    minimumResultsForSearch: -1
     hotkey: 'return'
-    changeAction: (e) -> Schema.sales.update(Session.get('currentSale')._id, {$set: {
-      currentProductDetail: e.added._id
-      currentQuality: 1
-    }})
+    changeAction: (e) ->
+      Schema.sales.update(Session.get('currentSale')._id, {$set: {
+          currentProductDetail: e.added._id
+          currentQuality: 1
+        }})
     reactiveValueGetter: -> Session.get('currentSale')?.currentProductDetail
 
   returnQualityOptions:
-    reactiveSetter: (val) -> Schema.sales.update(Session.get('currentSale')._id, {$set: {currentQuality: val}})
+    reactiveSetter: (val) ->
+      console.log 'value:'+val
+      Schema.sales.update(Session.get('currentSale')._id, {$set: {currentQuality: val}})
     reactiveValue: -> Session.get('currentSale')?.currentQuality ? 0
     reactiveMax: -> Session.get('currentMaxQualityReturn') ? 0
     reactiveMin: -> 0
@@ -102,15 +99,11 @@ Sky.appTemplate.extends Template.returns,
     wrapperClasses: 'detail-grid row'
 
   events:
-    'click .addReturnDetail': (event, template)-> console.log ReturnDetail.addReturnDetail(Session.get('currentSale')._id)
+    'click .addReturnDetail': (event, template)-> ReturnDetail.addReturnDetail(Session.get('currentSale')._id)
+    'click .finishReturn': (event, template)-> Return.finishReturn(Session.get('currentReturn')._id) if Session.get('currentReturn')
+    'click .editReturn': (event, template)-> Return.editReturn(Session.get('currentReturn')._id) if Session.get('currentReturn')
+    'click .submitReturn': (event, template)-> Return.submitReturn(Session.get('currentReturn')._id) if Session.get('currentReturn')
 
-    'click .finishReturn': (event, template)-> console.log Return.finishReturn(Session.get('currentReturn')._id) if Session.get('currentReturn')
-
-    'click .editReturn': (event, template)-> console.log Return.editReturn(Session.get('currentReturn')._id) if Session.get('currentReturn')
-
-    'click .submitReturn': (event, template)->
-      currentSale = Sale.findOne(Session.get('currentSale')._id)
-      currentSale.submitReturn()
 
   rendered: ->
     runInitReturnsTracker()
