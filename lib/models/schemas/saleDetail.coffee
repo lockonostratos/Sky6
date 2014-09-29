@@ -45,7 +45,12 @@ Schema2.saleDetails = new SimpleSchema
     type: String
     optional: true
 
+  export:
+    type: Boolean
 
+  exportDate:
+    type: Date
+    optional: true
 
   version: { type: Schema.Version }
 

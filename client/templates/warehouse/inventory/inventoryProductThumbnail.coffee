@@ -1,14 +1,10 @@
 calculateOriginalQuality = (context) ->
   if context.lock == context.submit == false then return Schema.productDetails.findOne(context.productDetail).instockQuality ? 0
   if context.lock != context.submit == false then return context.originalQuality
-  if context.lock == context.submit != false
-    productDetail = Schema.productDetails.findOne(context.productDetail)
-    if productDetail.instockQuality != context.originalQuality
-      Schema.inventoryDetails.update context._id, $set: {originalQuality: productDetail.instockQuality}
-    return productDetail.instockQuality
+  if context.lock == context.submit != false then return Schema.productDetails.findOne(context.productDetail).instockQuality ? 0
 
 calculateSaleQuality = (context) ->
-  if context.lock == context.submit == false then return 0
+  if context.lock == context.submit == false then return context.saleQuality
   if context.lock != context.submit == false
     saleDetails = Schema.saleExports.find(
       $and:
@@ -20,7 +16,8 @@ calculateSaleQuality = (context) ->
     for detail in saleDetails
       count += detail.qualityExport
     if count != context.saleQuality
-      Schema.inventoryDetails.update context._id, $set: {saleQuality: count}
+      realQuality = context.realQuality - (count - context.saleQuality)
+      Schema.inventoryDetails.update context._id, $set: {saleQuality: count, realQuality: realQuality}
     return count
 
   if context.lock == context.submit != false
@@ -38,23 +35,46 @@ calculateSaleQuality = (context) ->
     return count
 
 calculateLostQuality = (context) ->
-  if context.lock == context.submit == false then return 0
-  if context.lock != context.submit == false
-    lostQuality = context.originalQuality - (context.realQuality + context.saleQuality)
-    if lostQuality != context.lostQuality
-      Schema.inventoryDetails.update context._id, $set: {lostQuality: lostQuality}
-    return lostQuality
+  if context.lock == context.submit == false then return context.lostQuality
+  if context.lock != context.submit == false then return context.lostQuality
+#    lostQuality = context.originalQuality - (context.realQuality + context.saleQuality)
+#    if lostQuality != context.lostQuality
+#      Schema.inventoryDetails.update context._id, $set: {lostQuality: lostQuality}
+#    return lostQuality
 
-  if context.lock == context.submit != false
-    lostQuality = (context.originalQuality + context.saleQuality) - context.realQuality
-    if lostQuality != context.lostQuality
-      Schema.inventoryDetails.update context._id, $set: {lostQuality: lostQuality}
-    return lostQuality
+  if context.lock == context.submit != false then return context.lostQuality
+#    lostQuality = (context.originalQuality + context.saleQuality) - context.realQuality
+#    if lostQuality != context.lostQuality
+#      Schema.inventoryDetails.update context._id, $set: {lostQuality: lostQuality}
+#    return lostQuality
 
 calculateDate = (context) ->
   if context.lock == context.submit == false then return context.version.createdAt
   if context.lock != context.submit == false then return context.lockDate
   if context.lock == context.submit != false then return context.submitDate
+
+calculateRealQuality = (context) ->
+  if context.lock == context.submit == false then return 0
+  if context.lock != context.submit == false
+    context.realQuality
+
+
+
+  if context.lock == context.submit != false
+    saleDetails = Schema.saleExports.find(
+      $and:
+        [
+          productDetail: context.productDetail
+          'version.createdAt': {$gte: context.submitDate}
+        ]).fetch()
+    count = 0
+    for detail in saleDetails
+      count += detail.qualityExport
+    if count != context.saleQuality
+      Schema.inventoryDetails.update context._id, $set: {saleQuality: count}
+    return count
+
+
 
 Sky.template.extends Template.inventoryProductThumbnail,
   colorClasses: 'none'
@@ -71,9 +91,18 @@ Sky.template.extends Template.inventoryProductThumbnail,
     parentContext: @
     reactiveSetter: (val) ->
       if @parentContext.lock != @parentContext.submit == false
-        Schema.inventoryDetails.update @parentContext._id, $set: {realQuality : val}
+        option={}
+        maxQuality = @parentContext.originalQuality - @parentContext.saleQuality
+        if val < maxQuality
+          option.realQuality = val
+          option.lostQuality = maxQuality - val
+        else
+          option.realQuality = maxQuality
+          option.lostQuality = 0
+        Schema.inventoryDetails.update @parentContext._id, $set: option
     reactiveValue: -> @parentContext.realQuality ? 0
-    reactiveMax: ->  1000
+    #TODO : Chưa cập nhật dc max value (gia tri thay doi, ko cap nhat)
+    reactiveMax: -> @parentContext.originalQuality - @parentContext.saleQuality
     reactiveMin: -> 0
     reactiveStep: -> 1
   }
@@ -90,26 +119,27 @@ Sky.template.extends Template.inventoryProductThumbnail,
           saleQuality    : 0
           lostQuality    : 0
         }
-    "dblclick .fa.fa-reply": (event, template)->
-      if @lock != @submit == false
-        productDetail = Schema.productDetails.findOne(@productDetail)
-        Schema.inventoryDetails.update @_id, $set: {
-          lock: false
-          originalQuality: productDetail.instockQuality
-          realQuality    : 0
-          saleQuality    : 0
-          lostQuality    : 0
-        }
-      if @lock == @submit != false
-        Schema.inventoryDetails.update @_id, $set: {
-          submit: false
-          lockDate: new Date
-        }
-
 
     "dblclick .fa.fa-check": (event, template)->
       if @lock != @submit == false
+        productDetail = Schema.productDetails.findOne(@productDetail)
         Schema.inventoryDetails.update @_id, $set: {
           submit: true
           submitDate: new Date
         }
+
+    "dblclick .fa.fa-reply": (event, template)->
+      if @lock == @submit != false
+        Schema.inventoryDetails.update @_id, $set: {
+          submit      : false
+          realQuality : @originalQuality - @saleQuality - @lostQuality
+        }
+  #      if @lock != @submit == false
+  #        productDetail = Schema.productDetails.findOne(@productDetail)
+  #        Schema.inventoryDetails.update @_id, $set: {
+  #          lock: false
+  #          originalQuality: productDetail.instockQuality
+  #          realQuality    : 0
+  #          saleQuality    : 0
+  #          lostQuality    : 0
+  #        }

@@ -24,6 +24,16 @@ Schema.add 'inventories', class Inventory
     option
     InventoryDetail.createByWarehouse(warehouseId)
 
+  @destroy: (inventoryId)->
+    inventory = Schema.inventories.findOne(inventoryId)
+    Schema.warehouses.update inventory.warehouse,
+      $set:{checkingInventory: false}
+      $unset:{inventory: ""}
+
+    for detail in Schema.inventoryDetails.find({inventory: inventoryId}).fetch()
+      Schema.inventoryDetails.remove detail._id
+    Schema.inventories.remove inventoryId
+    return console.log 'Hủy Phiếu Kiểm Kho Thành Công'
 
 
 

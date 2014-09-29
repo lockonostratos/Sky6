@@ -30,8 +30,17 @@ runInitInventoryTracker = (context) ->
 
 
 
+
 Sky.appTemplate.extends Template.inventory,
   inventory: -> Session.get('currentInventory')
+  showCreate: -> return "display: none" if Session.get('currentInventory')
+  showDestroy: -> return "display: none" if !Session.get('currentInventory')
+  showSubmit: ->
+    return "display: none" if !Session.get('availableProductDetails')
+    for detail in Session.get('availableProductDetails')
+      if detail.lock == false || detail.submit == false
+        return "display: none"
+
   merchantSelectOptions:
     query: (query) -> query.callback
       results: _.filter Session.get('availableInventoryMerchants'), (item) ->
@@ -70,5 +79,14 @@ Sky.appTemplate.extends Template.inventory,
 
   events:
     'click .creatInventory': (event, template)-> Inventory.createByWarehouse(Session.get('currentInventoryWarehouse')._id, "Khiem KHo Dau Nam")
+    'click .destroyInventory': (event, template)-> Inventory.destroy(Session.get('currentInventoryWarehouse').inventory)
+    'click .submitInventory': (event, template)-> Inventory.createByWarehouse(Session.get('currentInventoryWarehouse')._id)
+
+    'blur input': (event, template)->
+      if template.ui.$description.val().length > 1
+        Schema.inventories.update Session.get("currentInventory")._id, $set:{description: template.ui.$description.val()}
+      else
+        template.ui.$description.val(Session.get("currentInventory").description)
+
   rendered: ->
     runInitInventoryTracker()

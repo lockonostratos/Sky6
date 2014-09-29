@@ -15,6 +15,11 @@ Schema2.inventoryDetails = new SimpleSchema
     type: [String]
 
 #so luong trong kho
+  lockOriginalQuality:
+    type: Number
+    optional: true
+
+#so luong trong kho
   originalQuality:
     type: Number
     optional: true
