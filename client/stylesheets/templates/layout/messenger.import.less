@@ -23,7 +23,7 @@
   .header {
     margin: -1px;
     color: #fff;
-    background-color: #FF5C00;
+    background-color: #7BB94A;
     height: 25px;
     .border-top-radius(2px);
     .text-overflow;
@@ -53,6 +53,16 @@
       width: 100%;
       padding: 2px 0;
 
+      .chatbox-avatar {
+        background-color: #FFF;
+        img {
+          height: 35px; width: 35px;
+          position: absolute; left: 0;
+          border-radius: 3px;
+          border: solid 1px #B6B6B6;
+        }
+      }
+
       .message {
         border: solid 1px #C7C7C7;
         .border-radius(3px);
@@ -61,13 +71,15 @@
 
         &.friend {
           float: left;
+          margin: 5px 0 5px 40px;
+
           &:before {
             content: '';
             background-color: #c7c7c7;
             width: 6px;
             height: 6px;
-            left: -3px;
-            top: 12px;
+            left: 37px;
+            top: 17px;
             .rotate(45deg);
             position: absolute;
             z-index: -1;

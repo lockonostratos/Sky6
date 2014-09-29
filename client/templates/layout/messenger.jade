@@ -8,7 +8,6 @@ template(name="messenger")
         .message-wrapper
           span.message(class="{{messageClass}}") {{message}}
           if friendMessage
-            .chatbox-avatar
-
+            .chatbox-avatar: img(src="images/avatars/{{avatar}}.jpg")
 
     input(type="text")

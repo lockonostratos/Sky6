@@ -26,6 +26,7 @@ Sky.template.extends Template.messenger,
     fullName = Schema.userProfiles.findOne({user: Session.get('currentChatTarget')})?.fullName
     email = Meteor.users.findOne(Session.get('currentChatTarget'))?.emails[0]?.address
     fullName ? email
+  avatar: -> 'avatar2'
 
   ui:
     messages: ".all-messages"
