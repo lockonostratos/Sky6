@@ -1,0 +1,73 @@
+@messenger-width: 350px;
+#messenger {
+  position: absolute;
+  left: @left-pane-size + 3;
+  width: @messenger-width - 2px;
+  background-color: #f4f4f4;
+  border: solid 1px #ddd;
+  visibility: hidden;
+  z-index: 99999;
+
+  &.active { visibility: visible; }
+
+  &:before {
+    content: '';
+    background-color: #fff;
+    width: 10px; height: 10px; left: -5px; top: 92px;
+    .rotate(45deg);
+    position: absolute;
+  }
+
+  .header {
+    margin: -1px;
+    color: #fff;
+    background-color: @lime;
+    height: 25px;
+    .text-overflow;
+
+    span {
+      pointer-events: none;
+    }
+    .close-btn {
+      float: right;
+      margin-right: 3px;
+      color: #fff;
+    }
+  }
+
+  ul.messages {
+    height: 145px;
+    margin: 0; padding: 0 5px;
+    padding-bottom: 30px;
+
+    li {
+      list-style: none;
+      width: 100%;
+      padding: 5px 0;
+
+      span {
+        border: solid 1px #dedede;
+        .border-radius(3px);
+        padding: 0 3px;
+      }
+
+      &.friend-message {
+
+      }
+
+      &.my-message {
+        text-align: right;
+      }
+    }
+  }
+
+  input {
+    width: 100%;
+    border: none;
+    border-top: solid 1px #DDDDDD;
+    background: #FFFFFF;
+    font-size: 12px;
+    height: 28px;
+    line-height: 28px;
+  }
+}
