@@ -1,0 +1,13 @@
+template(name="messenger")
+  #messenger(class="{{visibilityClass}}")
+    .header
+      span.right {{targetAlias}}
+      .close-btn: i.fa.fa-times-circle
+    .all-messages
+      each currentMessages
+        .message-wrapper
+          span.message(class="{{messageClass}}") {{message}}
+          if friendMessage
+            .chatbox-avatar: img(src="images/avatars/{{avatar}}.jpg")
+
+    input(type="text")

@@ -1,4 +1,4 @@
-messengerHeight = 298;
+
 
 Sky.template.extends Template.sidebar,
   myProfile: -> Schema.userProfiles.findOne({user: Meteor.userId()})
@@ -6,12 +6,17 @@ Sky.template.extends Template.sidebar,
 
   events:
     "click .chat-avatar:not(.me)": (event, template)->
+      $target = $(event.target)
+      $messenger = $("#messenger")
       Session.set('currentChatTarget', @user)
       Session.set('messengerVisibility', true)
 
-      $target = $(event.target)
-      $messenger = $(template.find("#messenger"))
-      bottomAnchor = $target.offset().top + $target.outerHeight() - 40
-      nextPosition = bottomAnchor - messengerHeight
-      nextPosition = -43 if nextPosition < -43
+      $messenger.addClass('active')
+      $messenger.find('input').focus()
+
+      messengerHeight = $messenger.outerHeight()
+      bottomAnchor = $target.offset().top + ($target.outerHeight()/2)
+      console.log 'bottomAnchor ', bottomAnchor
+      nextPosition = bottomAnchor - $target.outerHeight()/2
+      console.log 'nextPosition ', nextPosition
       $messenger.css('top', "#{nextPosition}px")

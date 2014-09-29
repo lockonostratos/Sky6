@@ -51,66 +51,6 @@
 
   }
 
-  #messenger {
-    position: absolute;
-    right: -250px;
-    width: 250px;
-    background-color: #f4f4f4;
-    border: solid 1px #ddd;
-    top: 2px/Sky6;
-    z-index: 1;
-
-    .header {
-      margin: -1px;
-      color: #fff;
-      background-color: @lime;
-      height: 25px;
-      .text-overflow;
-
-      .close-btn {
-        float: right;
-        margin-right: 3px;
-        color: #fff;
-      }
-    }
-
-    ul.messages {
-      height: 245px;
-      margin: 0; padding: 0 5px;
-      padding-bottom: 30px;
-
-      li {
-        list-style: none;
-        width: 100%;
-        padding: 5px 0;
-
-        span {
-          border: solid 1px #dedede;
-          .border-radius(3px);
-          padding: 0 3px;
-        }
-
-        &.friend-message {
-
-        }
-
-        &.my-message {
-          text-align: right;
-        }
-      }
-    }
-
-    input {
-      width: 100%;
-      border: none;
-      border-top: solid 1px #DDDDDD;
-      background: #FFFFFF;
-      font-size: 12px;
-      height: 28px;
-      line-height: 28px;
-    }
-  }
-
   ul.messenger-list {
     padding: 0; margin: 0;
     color: #fff;
@@ -128,8 +68,17 @@
         position: absolute;
         top: 5px; left: 5px;
         background-color: gray;
-        &.online {
-          background-color: @lime;
+        &.active { background-color: @lime; }
+      }
+
+      .has-message-status {
+        position: absolute;
+        top: 7px; right: 5px;
+        line-height: 5px;
+        visibility: hidden;
+        font-size: 8px;
+        &.active {
+          visibility: visible;
         }
       }
 

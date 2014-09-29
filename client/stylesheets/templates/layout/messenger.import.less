@@ -1,0 +1,120 @@
+@messenger-width: 250px;
+@my-message-background: #CEEEE6;
+
+#messenger {
+  position: absolute;
+  left: @left-pane-size + 1;
+  width: @messenger-width - 2px;
+  background-color: #EEEEEE;
+  border: solid 1px #ddd;
+  .border-radius(2px);
+  visibility: hidden;
+
+  z-index: 99999;
+  .slimScrollBar { width: 3px !important; }
+  &.active { visibility: visible; }
+
+  &:before {
+    content: '';
+    background-color: #EEEEEE;
+    width: 10px; height: 10px; left: -5px; top: 30px;
+    .rotate(45deg);
+    position: absolute;
+  }
+
+  .header {
+    margin: -1px;
+    color: #fff;
+    background-color: #7BB94A;
+    height: 25px;
+    .border-top-radius(2px);
+    .text-overflow;
+    margin-bottom: 1px;
+    span {
+      line-height: 25px;
+      padding-left: 5px;
+      pointer-events: none;
+    }
+    .close-btn {
+      cursor: pointer;
+      position: absolute;
+      top: 0; right: 0; padding: 1px 7px;
+      color: #fff;
+    }
+  }
+
+  .all-messages {
+    max-height: 245px;
+    margin: 0;
+    padding: 5px 7px 30px 5px;
+    overflow: scroll;
+
+    .message-wrapper {
+      .clearfix;
+      position: relative;
+      width: 100%;
+      padding: 2px 0;
+
+      .chatbox-avatar {
+        background-color: #FFF;
+        img {
+          height: 35px; width: 35px;
+          position: absolute; left: 0;
+          border-radius: 3px;
+          border: solid 1px #B6B6B6;
+        }
+      }
+
+      .message {
+        border: solid 1px #C7C7C7;
+        .border-radius(3px);
+        padding: 2px 5px;
+        background-color: #fff;
+
+        &.friend {
+          float: left;
+          margin: 5px 0 5px 40px;
+
+          &:before {
+            content: '';
+            background-color: #c7c7c7;
+            width: 6px;
+            height: 6px;
+            left: 37px;
+            top: 17px;
+            .rotate(45deg);
+            position: absolute;
+            z-index: -1;
+          }
+        }
+
+        &.me {
+          float: right;
+//          .gradient(lighten(@my-message-background, 5), @my-message-background);
+          &:after {
+            content: '';
+            background-color: #c7c7c7;
+            width: 6px;
+            height: 6px;
+            right: -3px;
+            top: 12px;
+            .rotate(45deg);
+            position: absolute;
+            z-index: -1;
+          }
+        }
+      }
+    }
+  }
+
+  input {
+    width: 100%;
+    border: none;
+    border-top: solid 1px #DDDDDD;
+    background: #FFFFFF;
+    font-size: 12px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 5px;
+  }
+}

@@ -1,6 +1,7 @@
 template(name="chatAvatarItem")
   li.chat-avatar(class="{{myAvatar}}")
     .online-status-orb(class="{{isOnline}}")
+    i.glyphicon.glyphicon-comment.has-message-status(class="{{hasUnreadMessage}}")
     .alias {{fullAlias}}
     if avatar
       img(src="images/avatars/{{avatar}}.jpg")

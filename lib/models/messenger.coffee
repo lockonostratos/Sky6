@@ -17,6 +17,9 @@ Schema.add 'messages', class Messenger
   @readAll: ->
     @schema.update({receiver: Meteor.userId()}, {$push: {reads: Meteor.userId()}})
 
+  @readMessagesOf: (sender) ->
+    @schema.update({$and: [{receiver: Meteor.userId()}, {sender: sender}]}, {$push: {reads: Meteor.userId()}})
+
   @incommings: -> @schema.find({receiver: Meteor.userId()}, {limit: 10})
   @unreads: -> @schema.find({reads: {$ne: Meteor.userId()}, sender: {$ne: Meteor.userId()}})
 
