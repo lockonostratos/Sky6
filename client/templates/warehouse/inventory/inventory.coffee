@@ -50,7 +50,7 @@ runInitInventoryTracker = (context) ->
 
       if Session.get('currentProfile')?.currentInventoryView == 2
         listUnSuccessInventories = Schema.inventories.find({warehouse: Session.get('currentInventoryWarehouse')._id, success: false, submit: true}).fetch()
-        if historyInventory.length > 0
+        if listUnSuccessInventories.length > 0
           Session.set "historyInventories", historyInventory
           if Session.get('currentProfile')?.currentUnSuccessInventory
             Session.set "historyInventories"
