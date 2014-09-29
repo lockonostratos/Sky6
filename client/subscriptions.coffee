@@ -23,3 +23,6 @@ Meteor.subscribe 'inventoryDetails'
 
 Meteor.subscribe 'customers'
 Meteor.subscribe 'tests'
+
+Meteor.subscribe 'transactions'
+Meteor.subscribe 'transactionDetails'

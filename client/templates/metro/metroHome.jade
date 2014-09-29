@@ -24,16 +24,16 @@ template(name="metroHome")
       .tile.amethyst.app-navigator(data-app="billManager")
         span.center.middle.caption: span.table: i.fa.fa-file-text-o.fa-3x
         span.bottom.middle.caption ĐƠN HÀNG
-      .tile.double.orange
+      .tile.double.orange.app-navigator(data-app="transactionManager")
         span.top.left.caption: h3 134,315,000 <tiny5>PHẢI THU</tiny5>
         span.center.left.caption: span.table: i.fa.fa-credit-card.fa-3x
         span.bottom.left.caption CÔNG NỢ
-      .tile.amethyst.orange.app-navigator(data-app="delivery")
+      .tile.teal.app-navigator(data-app="delivery")
         span.center.middle.caption: span.table: i.fa.fa-truck.fa-3x
         span.bottom.middle.caption GIAO HÀNG
     .tile-group-3
-      .tile.carrot.app-navigator(data-app="billExport")
-        span.center.middle.caption: span.table: i.fa.fa-eye.fa-3x
+      .tile.sun-flower.app-navigator(data-app="billExport")
+        span.center.middle.caption: span.table: i.fa.fa-share-square-o.fa-3x
         span.bottom.middle.caption XUẤT KHO
       .tile.pumpkin.double.double-vertical.app-navigator(data-app="import")
         span.center.left.caption: span.table: i.fa.fa-cubes.fa-3x
@@ -43,7 +43,7 @@ template(name="metroHome")
         span.bottom.right.caption
           h3 1245<br /> <tiny5>TỒN KHO</tiny5>
       .tile.quadro.amethyst
-      .tile.carrot
+      .tile.carrot.app-navigator(data-app="stockManager")
         span.s7.top.middle.caption ĐIỀU CHỈNH GIÁ BÁN
         span.center.middle.caption: span.table: i.fa.fa-eye.fa-3x
         span.bottom.middle.caption XEM TỒN KHO
@@ -70,6 +70,6 @@ template(name="metroHome")
           i.fa.fa-building-o.fa-3x
           i.fa.fa-building-o.fa-2x
         span.bottom.middle.caption KHO HÀNG
-      .tile.gray
+      .tile.gray.app-navigator(data-app="logManager")
         span.center.middle.caption: span.table: i.fa.fa-newspaper-o.fa-3x
         span.bottom.middle.caption NHẬT KÝ

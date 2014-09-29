@@ -1,0 +1,8 @@
+template(name="transactionThumbnail")
+  .col
+    .thumbnails(class="#{colorClass}")
+      .right-caption {{ownerName}}
+      .avatar(style="background-image: url('images/avatars/avatar2.jpg')")
+      .short-desc.quality {{daysFromNow}}
+      .full-desc.price {{formatNumber debitCash}} <small>VNĐ</small>
+      .single-price {{formatNumber totalCash}} VNĐ
