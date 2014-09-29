@@ -1,6 +1,8 @@
 scrollDownIfNecessary = ($element, instance, timeHook) ->
   if instance.version?.createdAt > timeHook and instance.sender is Session.get('currentChatTarget')
-    $element.slimScroll({ scrollBy: '999999px' })
+#    $element.slimScroll({ scrollBy: '999999px' })
+    console.log 'missing function, we must implement scroll to bottom here!'
+
 playSoundIfNecessary = (instance, timeHook) ->
   if instance.version?.createdAt > timeHook
     createjs.Sound.play("sound")
@@ -62,7 +64,6 @@ Sky.template.extends Template.messenger,
       if event.which is 13 and message.length > 0 and Session.get('currentChatTarget')
         Messenger.say message, Session.get('currentChatTarget')
         $element.val('')
-        $messages.slimScroll({ scrollBy: '999999px' })
     "keyup input": (event, template) ->
       if event.which is 27 then Session.set('messengerVisibility', false)
     "focus input": ->
