@@ -1,6 +1,6 @@
-template(name="inventoryReview")
+template(name="inventoryHistory")
   .app-header
-    span.caption Kiểm Kho
+    span.caption Chi Tiết Kiểm Kho
   .app-editor
     .row
       .col.col-auto(style="width: 200px")
@@ -9,9 +9,12 @@ template(name="inventoryReview")
       .col.col-auto(style="width: 200px")
         span.ilabel kho
         +iSelect(options=warehouseSelectOptions class="field")
+      .col.col-auto(style="width: 200px")
+        span.ilabel phiếu kiểm kho
+        +iSelect(options=inventoryDetailSelectOptions class="field")
 
   .app-content
-    +iGrid(options=inventoryReviewsOptions)
+    +iGrid(options=inventoryDetailOptions)
   .app-summary
   .app-status
 

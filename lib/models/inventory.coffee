@@ -36,20 +36,34 @@ Schema.add 'inventories', class Inventory
     return console.log 'Hủy Phiếu Kiểm Kho Thành Công'
 
   inventorySuccess: ->
+    return console.log 'Kho Khong Ton Tai' if !warehouse = Schema.warehouses.findOne(@data.warehouse)
     for detail in Schema.inventoryDetails.find({inventory: @id}).fetch()
       if detail.lock == false || detail.submit == false
         return console.log 'Xác Nhận Lỗi, Chưa Submited hết các sp'
 
     temp = false
     for detail in Schema.inventoryDetails.find({inventory: @id}).fetch()
-      Schema.inventoryDetails.update detail._id, $set:{success: true}
-      if detail.lostQuality != 0
-        temp = true
+      option =
+        realQuality : detail.realQuality-detail.saleQuality
+        saleQuality : 0
+        success     : true
+        successDate : new Date
+        status      : true
 
-    if temp
-      Schema.inventories.update @id, $set:{submit: true}
-    else
-      Schema.inventories.update @id, $set:{submit: true, success: true}
+      if detail.lostQuality > 0
+        temp = true; option.status = false
+        updateProduct =
+          instockQuality   : -detail.lostQuality
+          availableQuality : -detail.lostQuality
+
+        Schema.productLosts.insert ProductLost.new(warehouse, detail)
+        Schema.products.update detail.product, $inc: updateProduct, (error, result) -> console.log error if error
+        Schema.productDetails.update detail.productDetail, $inc: updateProduct, (error, result) -> console.log error if error
+      Schema.inventoryDetails.update detail._id, $set: option, (error, result) -> console.log error if error
+
+    updateInventory = {submit: true, success: true}
+    if temp then updateInventory.success = false
+    Schema.inventories.update @id, $set: updateInventory
 
     Schema.warehouses.update @data.warehouse,
       $set:{checkingInventory: false}

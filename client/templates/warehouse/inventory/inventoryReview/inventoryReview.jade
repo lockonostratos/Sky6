@@ -1,0 +1,17 @@
+template(name="inventoryReview")
+  .app-header
+    span.caption Xem Kiểm Kho
+  .app-editor
+    .row
+      .col.col-auto(style="width: 200px")
+        span.ilabel chi nhánh
+        +iSelect(options=merchantSelectOptions class="field")
+      .col.col-auto(style="width: 200px")
+        span.ilabel kho
+        +iSelect(options=warehouseSelectOptions class="field")
+
+  .app-content
+    +iGrid(options=inventoryReviewsOptions)
+  .app-summary
+  .app-status
+

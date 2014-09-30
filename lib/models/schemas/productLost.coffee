@@ -5,6 +5,9 @@ Schema2.productLosts = new SimpleSchema
   warehouse:
     type: String
 
+  creator:
+    type: String
+
   product:
     type: String
 
@@ -20,11 +23,8 @@ Schema2.productLosts = new SimpleSchema
   skulls:
     type: [String]
 
-  provider:
-    type: String
-    optional: true
-
   lostQuality:
     type: Number
 
   version: { type: Schema.Version }
+

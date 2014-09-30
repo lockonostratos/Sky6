@@ -21,3 +21,9 @@ Schema.productDetails.allow
   insert: -> true
   update: -> true
   remove: -> true
+
+Meteor.publish 'productLosts', -> Schema.productLosts.find {}
+Schema.productLosts.allow
+  insert: -> true
+  update: -> true
+  remove: -> true

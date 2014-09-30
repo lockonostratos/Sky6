@@ -1,6 +1,6 @@
 template(name="inventoryProductThumbnail")
   .col
-    .thumbnails(class="#{styles}")
+    .thumbnails(class="#{colorClass}")
       .right-caption {{name}}
       .avatar(style="background-image: url('images/missing.jpg')")
       .short-desc.quality
@@ -9,7 +9,7 @@ template(name="inventoryProductThumbnail")
       .full-desc.price {{status}} -- Tồn Kho: {{originalQuality}}
       .single-price Đã Bán: {{saleQuality}} / Mất {{lostQuality}}
       .full-desc.trash: a(href="#")
-        i.fa.fa-reply()
-        i.fa.fa-lock()
-        i.fa.fa-check()
+        i.fa.fa-reply(style="{{hideReply}}")
+        i.fa.fa-lock(style="{{hideLock}}")
+        i.fa.fa-check(style="{{hideCheck}}")
 

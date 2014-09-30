@@ -29,6 +29,27 @@ Meteor.startup ->
       Session.set "currentWarehouse"  , Schema.warehouses.findOne(Session.get('currentProfile').currentWarehouse)
 
   Tracker.autorun ->
+    console.log ('inventoryAutorunWorking..') if autorunDebug
+    if Session.get('currentProfile')
+      allMerchant = Schema.merchants.find({}).fetch()
+      Session.set "availableMerchantInventories", allMerchant
+
+      inventoryMerchant = Schema.merchants.findOne(Session.get('currentProfile').inventoryMerchant)
+      inventoryWarehouse = Schema.warehouses.findOne(Session.get('currentProfile').inventoryWarehouse)
+
+      if inventoryMerchant
+        Session.set "inventoryMerchant", inventoryMerchant
+        Session.set "availableWarehouseInventories", Schema.warehouses.find({merchant: inventoryMerchant._id}).fetch()
+      else
+        Session.set "inventoryMerchant"
+        Session.set "availableWarehouseInventories"
+
+      if inventoryWarehouse?.merchant == inventoryMerchant?._id
+        Session.set "inventoryWarehouse", inventoryWarehouse
+      else
+        Session.set "inventoryWarehouse"
+
+  Tracker.autorun ->
     console.log ('productAutorunWorking..') if autorunDebug
     if Session.get('currentMerchant')
       Session.set "availableWarehouses"  , Schema.warehouses.find({merchant: Session.get("currentMerchant")._id}).fetch()

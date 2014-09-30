@@ -1,0 +1,9 @@
+template(name="inventoryHistoryThumbnail")
+  .col
+    .thumbnails(class="#{colorClass}")
+      .right-caption Kiểm Kho: {{realQuality}}
+      .avatar(style="background-image: url('images/missing.jpg')")
+      .short-desc.quality  Mất: {{lostQuality}}
+      .full-desc.price
+      .single-price Đã xử lý
+      .full-desc.trash {{name}}

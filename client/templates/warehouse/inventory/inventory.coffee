@@ -13,28 +13,19 @@ checkAllowCreate = (context) ->
 runInitInventoryTracker = (context) ->
   return if Sky.global.inventoryTracker
   Sky.global.inventoryTracker = Tracker.autorun ->
-    if Session.get('currentProfile')
-      Session.set "availableInventoryMerchants", Schema.merchants.find({}).fetch()
-
-    if Session.get('availableInventoryMerchants') and Session.get('currentProfile')
-      Session.set "currentInventoryMerchant", Schema.merchants.findOne(Session.get('currentProfile').currentInventoryMerchant)
-
-    if Session.get('currentInventoryMerchant')
-      Session.set "availableInventoryWarehouses", Schema.warehouses.find({merchant: Session.get('currentInventoryMerchant')._id}).fetch()
-
-    if Session.get('availableInventoryWarehouses') and Session.get('currentProfile')
-      Session.set "currentInventoryWarehouse", Schema.warehouses.findOne(Session.get('currentProfile').currentInventoryWarehouse) ? 'skyReset'
-
-    if Session.get('currentInventoryWarehouse')
-      inventory = Schema.inventories.findOne(Session.get('currentInventoryWarehouse').inventory)
+    if Session.get('inventoryWarehouse')
+      inventory = Schema.inventories.findOne(Session.get('inventoryWarehouse').inventory)
       if inventory?.creator == Meteor.userId()
         Session.set "currentInventory", inventory
       else
         Session.set "currentInventory"
-        Session.set "availableProductDetails"
+    else
+      Session.set "currentInventory"
 
     if Session.get('currentInventory')
       Session.set "availableProductDetails", Schema.inventoryDetails.find({inventory: Session.get('currentInventory')._id}).fetch()
+    else
+      Session.set "availableProductDetails"
 
 
 Sky.appTemplate.extends Template.inventory,
@@ -42,9 +33,9 @@ Sky.appTemplate.extends Template.inventory,
   allowCreate: -> if Session.get('allowCreateNewInventory') then 'btn-success' else 'btn-default disabled'
 
   showDescription: ->
-    if Session.get('currentInventoryWarehouse')?.checkingInventory == true and !Session.get("currentInventory") and Session.get("historyInventories")
+    if Session.get('inventoryWarehouse')?.checkingInventory == true and !Session.get("currentInventory") and Session.get("historyInventories")
       return "display: none"
-  showCreate: -> return "display: none" if Session.get('currentInventory') || Session.get('currentInventoryWarehouse')?.checkingInventory == true
+  showCreate: -> return "display: none" if Session.get('currentInventory') || Session.get('inventoryWarehouse')?.checkingInventory == true
   showDestroy: -> return "display: none" if !Session.get('currentInventory') || Session.get('currentInventory')?.submit == true
   showSubmit: ->
     return "display: none" if !Session.get('availableProductDetails')
@@ -54,59 +45,56 @@ Sky.appTemplate.extends Template.inventory,
 
   merchantSelectOptions:
     query: (query) -> query.callback
-      results: _.filter Session.get('availableInventoryMerchants'), (item) ->
+      results: _.filter Session.get('availableMerchantInventories'), (item) ->
         unsignedTerm = Sky.helpers.removeVnSigns query.term
         unsignedName = Sky.helpers.removeVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1
-    initSelection: (element, callback) -> callback(Session.get('currentInventoryMerchant') ? 0)
+    initSelection: (element, callback) -> callback(Session.get('inventoryMerchant') ? 'skyReset')
     formatSelection: formatMerchantSearch
     formatResult: formatMerchantSearch
     placeholder: 'CHỌN CHI NHÁNH'
     changeAction: (e) ->
       Schema.userProfiles.update Session.get('currentProfile')._id, $set:
-        currentInventoryMerchant : e.added._id
-        currentInventoryWarehouse: Schema.warehouses.findOne(merchant: e.added._id)?._id  ? 'skyReset'
-    reactiveValueGetter: -> Session.get('currentInventoryMerchant') ? 0
+        inventoryMerchant : e.added._id
+        inventoryWarehouse: Schema.warehouses.findOne(merchant: e.added._id)?._id  ? 'skyReset'
+    reactiveValueGetter: -> Session.get('inventoryMerchant') ? 0
 
   warehouseSelectOptions:
     query: (query) -> query.callback
-      results: _.filter Session.get('availableInventoryWarehouses'), (item) ->
+      results: _.filter Session.get('availableWarehouseInventories'), (item) ->
         unsignedTerm = Sky.helpers.removeVnSigns query.term
         unsignedName = Sky.helpers.removeVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1
-    initSelection: (element, callback) -> callback(Session.get('currentInventoryWarehouse'))
+    initSelection: (element, callback) -> callback(Session.get('inventoryWarehouse') ? 'skyReset')
     formatSelection: formatWarehouseSearch
     formatResult: formatWarehouseSearch
     placeholder: 'CHỌN CHI NHÁNH'
     minimumResultsForSearch: -1
     changeAction: (e) ->
       Schema.userProfiles.update Session.get('currentProfile')._id, $set:
-        currentInventoryWarehouse: e.added._id
-    reactiveValueGetter: -> Session.get('currentInventoryWarehouse')
+        inventoryWarehouse: e.added._id
+    reactiveValueGetter: -> Session.get('inventoryWarehouse') ? 'skyReset'
 
   productDetailOptions:
     itemTemplate: 'inventoryProductThumbnail'
     reactiveSourceGetter: -> Session.get('availableProductDetails') ? []
     wrapperClasses: 'detail-grid row'
 
-
-
-
-
-
   events:
     'click .creatInventory': (event, template)->
       if template.ui.$description.val().length > 1
-        Inventory.createByWarehouse(Session.get('currentInventoryWarehouse')._id, template.ui.$description.val())
+        Inventory.createByWarehouse(Session.get('inventoryWarehouse')._id, template.ui.$description.val())
+        Session.set('allowCreateNewInventory', false)
 
     'click .destroyInventory': (event, template)->
       if Session.get("currentInventory")?.creator == Meteor.userId()
-        (Inventory.findOne(Session.get('currentInventoryWarehouse').inventory)).inventoryDestroy()
+        (Inventory.findOne(Session.get('inventoryWarehouse').inventory)).inventoryDestroy()
         Session.set('allowCreateNewInventory', false)
 
     'click .submitInventory': (event, template)->
       if Session.get("currentInventory")?.creator == Meteor.userId()
-        (Inventory.findOne(Session.get('currentInventoryWarehouse').inventory)).inventorySuccess()
+        (Inventory.findOne(Session.get('inventoryWarehouse').inventory)).inventorySuccess()
+        Session.set('allowCreateNewInventory', false)
 
     "input input": (event, template) -> checkAllowCreate(template)
 

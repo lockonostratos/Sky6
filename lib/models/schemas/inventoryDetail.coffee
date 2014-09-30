@@ -62,6 +62,9 @@ Schema2.inventoryDetails = new SimpleSchema
     type: Date
     optional: true
 
+  status:
+    type: Boolean
+
 
 
 

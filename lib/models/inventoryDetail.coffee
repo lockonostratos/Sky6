@@ -17,7 +17,7 @@ Schema.add 'inventoryDetails', class InventoryDetail
         productDetail       : productDetail._id
         name                : productDetail.name
         skulls              : productDetail.skulls
-        originalQuality     : productDetail.instockQuality
+        lockOriginalQuality : productDetail.instockQuality
         realQuality         : 0
         saleQuality         : 0
         lostQuality         : 0
@@ -25,6 +25,7 @@ Schema.add 'inventoryDetails', class InventoryDetail
         lock                : false
         submit              : false
         success             : false
+        status             : false
 
       option._id = Schema.inventoryDetails.insert option, (error, result) -> console.log error if error
     Schema.inventories.update warehouse.inventory, $set: {detail: true}, (error, result) -> console.log error if error

@@ -42,11 +42,13 @@ template(name="metroHome")
           h3 2013 <tiny5>TỔNG NHẬP</tiny5>
         span.bottom.right.caption
           h3 1245<br /> <tiny5>TỒN KHO</tiny5>
-      .tile.quadro.amethyst
-      .tile.carrot.app-navigator(data-app="stockManager")
+      .tile.quadro.amethyst.app-navigator(data-app="stockManager")
         span.s7.top.middle.caption ĐIỀU CHỈNH GIÁ BÁN
         span.center.middle.caption: span.table: i.fa.fa-eye.fa-3x
         span.bottom.middle.caption XEM TỒN KHO
+      .tile.carrot.app-navigator(data-app="inventoryHistory")
+        span.center.middle.caption: span.table: i.fa.fa-eye.fa-3x
+        span.bottom.middle.caption <span class="s7">CHI TIẾT</span><br /> KIỂM KHO
       .tile.sun-flower.app-navigator(data-app="inventory")
         span.center.middle.caption: span.table: i.fa.fa-history.fa-3x
         span.bottom.middle.caption KIỂM KHO

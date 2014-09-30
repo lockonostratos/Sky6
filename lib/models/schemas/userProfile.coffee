@@ -64,25 +64,21 @@ Schema2.userProfiles = new SimpleSchema
     type: String
     optional: true
 #---------------------------
-  currentInventoryMerchant:
+  inventoryMerchant:
     type: String
     optional: true
 
-  currentInventoryWarehouse:
+  inventoryWarehouse:
     type: String
     optional: true
 
   currentInventory:
-    type: Number
-    optional: true
-#---------------------------
-  inventoryReviewMerchant:
     type: String
     optional: true
 
-  inventoryReviewWarehouse:
+  currentInventoryHistory:
     type: String
     optional: true
 
 
-#---------------------------
+
