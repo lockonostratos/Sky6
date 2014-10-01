@@ -93,6 +93,24 @@ class Sky
       _id: 2
       display: 'XỬ LÝ KIỂM KHO'
     ]
+    @priorityTasks: [
+      _id: 1
+      display: '1'
+    ,
+      _id: 2
+      display: '2'
+    ,
+      _id: 3
+      display: '3'
+    ,
+      _id: 4
+      display: '4'
+    ,
+      _id: 5
+      display: '5'
+    ]
+
+
 
   class @helpers
     @removeVnSigns: (source) ->

@@ -1,4 +1,5 @@
 Meteor.subscribe 'allUsers'
+Meteor.subscribe 'tasks'
 Meteor.subscribe 'merchants'
 Meteor.subscribe 'warehouses'
 Meteor.subscribe 'products'

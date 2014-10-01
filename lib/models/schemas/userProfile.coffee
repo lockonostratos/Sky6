@@ -36,8 +36,7 @@ Schema2.userProfiles = new SimpleSchema
 
   systemVersion:
     type: String
-
-
+#--------------------------
 #--------------------------
   currentOrder:
     type: String
@@ -76,13 +75,13 @@ Schema2.userProfiles = new SimpleSchema
     type: String
     optional: true
 
-  currentInventory:
-    type: String
-    optional: true
-
   currentInventoryHistory:
     type: String
     optional: true
 
+  currentInventory:
+    type: String
+    optional: true
+#----------------------------
 
 

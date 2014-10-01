@@ -23,6 +23,7 @@ template(name="navigation")
       ul.nav.navbar-nav
         li.inav.collapse-toggle: span: i.collapse.fa.fa-th-list
         li.home(class="{{isActiveRoute 'metroHome'}}"): a(href="{{pathFor 'metroHome'}}"): i.fa.fa-home
+        li(class="{{isActiveRoute 'task'}}"): a(href="{{pathFor 'task'}}") Task
         li(class="{{isActiveRoute 'sales'}}"): a(href="{{pathFor 'sales'}}") Sales
         li(class="{{isActiveRoute 'warehouse'}}"): a(href="{{pathFor 'warehouse'}}") Warehouse
         li(class="{{isActiveRoute 'import'}}"): a(href="{{pathFor 'import'}}") Import

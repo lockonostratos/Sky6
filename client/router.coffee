@@ -57,3 +57,4 @@ Router.map ->
   @route 'stockManager', new skyRouter('stockManager')
   @route 'transactionManager', new skyRouter('transactionManager')
   @route 'logManager', new skyRouter('logManager')
+  @route 'task', new skyRouter('task')

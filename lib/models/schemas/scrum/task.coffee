@@ -2,8 +2,13 @@ Schema2.tasks = new SimpleSchema
   creator:
     type: String
 
+  owner:
+    type: String
+    optional: true
+
   group:
-    type: [String]
+    type: String
+    optional: true
 
   description:
     type: String
@@ -11,12 +16,22 @@ Schema2.tasks = new SimpleSchema
   priority:
     type: Number
 
+  duration:
+    type: Number
+
+  starDate:
+    type: Date
+    optional: true
+
   finishDate:
     type: Date
+    optional: true
 
   status:
-    type: String
+    type: Number
+    optional: true
 
   version: { type: Schema.Version }
 
-Schema.add 'tasks'
+Schema.add 'tasks', class Task
+  @new: ()->
