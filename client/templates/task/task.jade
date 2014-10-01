@@ -1,0 +1,34 @@
+template(name="task")
+  .app-header
+    span.caption Task Eds Beta 0.7.1
+    .col.col-auto.pull-right.viewTask(style="width:150px")
+      +iSelect(options=viewTaskSelectOption class="field")
+  .app-editor
+    .row
+      .col.col-auto(style="width:80px")
+        span.ilabel độ ưu tiên
+        +iSelect(options=priorityTaskSelectOption class="field")
+      .col.col-auto(style="width:180px")
+        span.ilabel người nhận làm
+        +iSelect(options=ownerTaskSelectOption class="field")
+      .col.col-auto(style="width:110px")
+        span.ilabel chức năng
+        input.group(name="group" maxlength="40" value="{{group}}")
+      .col.col-auto(style="width:300px")
+        span.ilabel nội dung
+        input.description(name="description" maxlength="120" value="{{description}}")
+      .col.col-auto(style="width:65px")
+        span.ilabel thời gian
+        input(style="text-align: center" name="duration")
+
+      .col.col-auto(style="width:70px; {{hideCreate}}")
+        button.btn#createTask(class="{{allowCreate}}") THÊM
+      .col.col-auto(style="width:50px; {{hideUpdate}}")
+        button.btn.btn-success#resetTask XONG
+
+  .app-content
+    +iGrid(options=taskDetailOptions)
+  .app-summary
+  .app-status
+
+

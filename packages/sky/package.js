@@ -16,6 +16,8 @@ Package.onUse(function(api) {
     'lib/3rds/jquery.bootstrap-touchspin.js',
     'lib/3rds/switchery.css',
     'lib/3rds/switchery.js',
+    'lib/3rds/bootstrap-timepicker.css',
+    'lib/3rds/bootstrap-timepicker.js',
     'lib/3rds/jquery.event.drag-2.2.js',
     'lib/3rds/jquery.event.drag.live-2.2.js',
     'lib/3rds/notify.js',

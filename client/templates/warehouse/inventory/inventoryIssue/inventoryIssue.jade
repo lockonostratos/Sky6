@@ -1,0 +1,26 @@
+template(name="inventoryIssue")
+  .app-header
+    span.caption Chi Tiết Kiểm Kho
+  .app-editor
+    .row
+      .col.col-auto(style="width: 200px")
+        span.ilabel chi nhánh
+        +iSelect(options=merchantSelectOptions class="field")
+      .col.col-auto(style="width: 200px")
+        span.ilabel kho
+        +iSelect(options=warehouseSelectOptions class="field")
+      .col.col-auto(style="width: 100px")
+        span.ilabel.right xem từ ngày
+        input(name="fromDate" binding="datePicker" todayHighlight="true" maxlength="20")
+      .col.col-auto(style="width: 100px")
+        span.ilabel đến ngày
+        input(name="toDate" binding="datePicker" todayHighlight="true" maxlength="20")
+      .col.col-auto
+        button.btn.btn-success#filterBills ÁP DỤNG
+
+
+  .app-content
+    +iGrid(options=inventoryIssueOptions)
+  .app-summary
+  .app-status
+
