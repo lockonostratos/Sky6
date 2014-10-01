@@ -27,9 +27,11 @@ Schema2.tasks = new SimpleSchema
     type: Date
     optional: true
 
+  lateDuration:
+    type: Boolean
+
   status:
     type: Number
-    optional: true
 
   version: { type: Schema.Version }
 

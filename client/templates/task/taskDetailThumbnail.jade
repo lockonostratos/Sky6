@@ -1,9 +1,15 @@
 template(name="taskDetailThumbnail")
-  .col
+  .col.taskDetail
     .thumbnails(class="#{colorClass}")
-      //.right-caption Kiểm Kho: {{realQuality}}
-      //.avatar(style="background-image: url('images/missing.jpg')")
-      //.short-desc.quality  Mất: {{lostQuality}}
-      //.full-desc.price
-      //.single-price Đã xử lý
-      //.full-desc.trash {{name}}
+      .right-caption.editPriority {{group}} - ({{priorityDisplay}})
+      .message-wrapper(style="width: 200px; height: 80px;") {{description}}
+      .short-desc.quality.editDuration {{duration}}'
+      .full-desc.price {{status}}
+      .single-price {{creatorName}}
+      .full-desc.trash
+        a(href="#")
+          i.fa.fa-unlock(style="{{hideIconUnlock}}")
+          i.fa.fa-lock(style="{{hideIconLock}}")
+          i.fa.fa-reply(style="{{hideIconCheck}}")
+          i.fa.fa-check(style="{{hideIconCheck}}")
+        span {{ownerName}}

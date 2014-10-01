@@ -95,19 +95,33 @@ class Sky
     ]
     @priorityTasks: [
       _id: 1
-      display: '1'
+      display: 'Mức 1'
     ,
       _id: 2
-      display: '2'
+      display: 'Mức 2'
     ,
       _id: 3
-      display: '3'
+      display: 'Mức 3'
     ,
       _id: 4
-      display: '4'
+      display: 'Mức 4'
     ,
       _id: 5
-      display: '5'
+      display: 'Mức 5'
+    ]
+    @viewTasks: [
+      _id: 1
+      display: 'Xem Tất Cả'
+    ,
+      _id: 2
+      display: 'Chưa Nhận'
+    ,
+      _id: 3
+      display: 'Đang Làm'
+    ,
+      _id: 4
+      display: 'Hoàn Thành'
+
     ]
 
 

@@ -1,0 +1,17 @@
+template(name="taskDetailAside")
+  #taskDetailAside.aside.modal.swipe.right
+    .modal-dialog
+      .modal-content
+        .col.col-auto(style="width: 100px")
+          span.ilabel thời gian
+          input(name="taskDetailDuration")
+      .modal-header
+        button.close(type="button" data-dismiss="modal")
+          span(aria-hidden="true") &times;
+          span.sr-only Close
+        h4.modal-title Modal title
+      .modal-body
+
+      .modal-footer
+        button.btn.btn-default(type="button" data-dismiss="modal") Close
+        button.btn.btn-primary(type="button") Save changes
