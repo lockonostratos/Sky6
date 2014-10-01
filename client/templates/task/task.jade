@@ -6,6 +6,9 @@ template(name="task")
       .col.col-auto(style="width: 100px")
         span.ilabel độ ưu tiên
         +iSelect(options=priorityTaskSelectOption class="field")
+      .col.col-auto(style="width: 200px")
+        span.ilabel người nhận làm
+        +iSelect(options=ownerTaskSelectOption class="field")
       .col.col-auto(style="width: 150px")
         span.ilabel nhóm chức năng
         input(name="group" maxlength="40")
@@ -15,9 +18,6 @@ template(name="task")
       .col.col-auto(style="width: 100px")
         span.ilabel thời gian
         input(name="duration")
-      .col.col-auto(style="width: 150px")
-        span.ilabel người nhận
-        +iSelect(options=ownerTaskSelectOption class="field")
       .col.col-auto(style="width:150px")
         button.btn#createTask(class="{{allowCreate}}") THÊM
 

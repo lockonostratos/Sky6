@@ -64,7 +64,13 @@ Sky.appTemplate.extends Template.task,
     formatResult: formatOwnerTaskSearch
     placeholder: 'CHỌN'
     minimumResultsForSearch: -1
-    changeAction: (e) ->  Session.set('ownerTask', e.added.user)
+    others:
+      allowClear: true
+    changeAction: (e) ->
+      Session.set('ownerTask') if e.removed
+      Session.set('ownerTask', e.added.user) if e.added
+
+
     reactiveValueGetter: ->
       if Session.get('ownerTask')
         _.findWhere(Session.get('ownerList'), {user: Session.get('ownerTask')})
