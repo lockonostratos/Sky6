@@ -2,84 +2,134 @@ Meteor.startup ->
   return
   resetDatabase()
   if Schema.merchants.find().count() is 0
-    creator = Accounts.createUser(email: 'lehaoson@gmail.com', password: 'Ultimate5')
-    ky = Accounts.createUser(email: 'nguyenhongky@gmail.com', password: 'Ultimate5')
-    loc = Accounts.createUser(email: 'nguyenquocloc@gmail.com', password: 'Ultimate5')
+    version = '0.7.1'
+    Schema.systems.insert({version: version})
+    son     = Accounts.createUser(email: 'lehaoson@gera.vn'    , password: '12345')
+    ky      = Accounts.createUser(email: 'hongky@gera.vn'      , password: '12345')
+    loc     = Accounts.createUser(email: 'quocloc@gera.vn'     , password: '12345')
+    quyen   = Accounts.createUser(email: 'phuongquyen@gera.vn' , password: '12345')
+    trinh   = Accounts.createUser(email: 'phuongtrinh@gera.vn' , password: '12345')
+    trong   = Accounts.createUser(email: 'ductrong@gera.vn'    , password: '12345')
+    tester  = Accounts.createUser(email: 'tester@gera.vn'      , password: '12345')
 
-    euroWindowId = Merchant.create { name: 'Euro Windows', creator: creator }
+    euroWindowId = Merchant.create { name: 'Euro Windows', creator: son }
 
-    huynhChauId = Merchant.create { name: 'Huynh Chau', creator: creator }
+    huynhChauId = Merchant.create { name: 'Huynh Chau', creator: son }
     merchant = Merchant.findOne huynhChauId
-    warehouse = merchant.addWarehouse { name: 'Kho Chính', creator: creator, isRoot : true, checkingInventory: false}
-    warehouse2 = merchant.addWarehouse { name: 'Kho Phu', creator: creator, isRoot : false, checkingInventory: false}
+    warehouse = merchant.addWarehouse { name: 'Kho Chính', creator: son, isRoot : true, checkingInventory: false}
+    warehouse2 = merchant.addWarehouse { name: 'Kho Phu', creator: son, isRoot : false, checkingInventory: false}
 
-    hanoi = merchant.addBranch { name: 'Huynh Chau HA NOI', creator: creator}
+    hanoi = merchant.addBranch { name: 'Huynh Chau HA NOI', creator: son}
     merchant2 = Merchant.findOne hanoi
-    warehouse3 = merchant2.addWarehouse { name: 'Kho Chính', creator: creator, isRoot : true, checkingInventory: false}
+    warehouse3 = merchant2.addWarehouse { name: 'Kho Chính', creator: son, isRoot : true, checkingInventory: false}
 
     cloudProfile = Schema.userProfiles.insert
-      user: creator
+      user: son
       isRoot: true
       fullName: "Lê Ngọc Sơn"
       parentMerchant: huynhChauId
       currentMerchant: huynhChauId
       currentWarehouse: warehouse
+      systemVersion: version
+
+    kyProfile = Schema.userProfiles.insert
+      user: ky
+      creator: son
+      isRoot: false
+      fullName: "Nguyễn Hồng Kỳ"
+      parentMerchant: huynhChauId
+      currentMerchant: huynhChauId
+      currentWarehouse: warehouse
+      systemVersion: version
 
     locProfile = Schema.userProfiles.insert
       user: loc
-      creator: creator
+      creator: son
       isRoot: false
       fullName: "Nguyễn Quốc Lộc"
       parentMerchant: huynhChauId
       currentMerchant: huynhChauId
       currentWarehouse: warehouse
+      systemVersion: version
 
-    kyProfile = Schema.userProfiles.insert
-      user: ky
-      creator: loc
+    quyenProfile = Schema.userProfiles.insert
+      user: quyen
+      creator: son
       isRoot: false
-      fullName: "Nguyễn Hồng Kỳ"
+      fullName: "Đỗ Phượng Quyên"
       parentMerchant: huynhChauId
       currentMerchant: huynhChauId
-      currentWarehouse: warehouse2
+      currentWarehouse: warehouse
+      systemVersion: version
+    trinhProfile = Schema.userProfiles.insert
+      user: trinh
+      creator: son
+      isRoot: false
+      fullName: "Angola Phương Trinh"
+      parentMerchant: huynhChauId
+      currentMerchant: huynhChauId
+      currentWarehouse: warehouse
+      systemVersion: version
+
+    trongProfile = Schema.userProfiles.insert
+      user: trong
+      creator: son
+      isRoot: false
+      fullName: "Lê Đức Trọng"
+      parentMerchant: huynhChauId
+      currentMerchant: huynhChauId
+      currentWarehouse: warehouse
+      systemVersion: version
+
+    testerProfile = Schema.userProfiles.insert
+      user: tester
+      creator: son
+      isRoot: false
+      fullName: "tester"
+      parentMerchant: huynhChauId
+      currentMerchant: huynhChauId
+      currentWarehouse: warehouse
+      systemVersion: version
 
     merchant.addCustomer({
-      creator: creator
+      creator: son
       name: 'Lê Ngọc Sơn'
       phone: '0123456789012'
       address: '141334 - Lê Thị Riêng, P.13, Q.4, Tp.HCM'
     })
 
     merchant.addCustomer({
-      creator: creator
+      creator: son
       name: 'Nguyễn Hồng Kỳ'
       phone: '01123456789'
       address: '42334 - Lê Thị Riêng, P.13, Q.4, Tp.HCM'
     })
 
     merchant.addCustomer({
-      creator: creator
+      creator: son
       name: 'Nguyễn Quốc Lộc'
       phone: '0123456789'
       address: '45324 - Lê Thị Riêng, P.13, Q.4, Tp.HCM'
     })
 
     merchant.addCustomer({
-      creator: creator
+      creator: son
       name: 'Lê Thị Thảo Nhi'
       phone: '0123456789'
       address: '1234 - Lê Thị Riêng, P.13, Q.4, Tp.HCM'
     })
 
     seedSystemRoles()
-    seedProvidersFor merchant, creator
-    seedSkullsFor merchant, creator
-    seedProductsFor merchant, creator, warehouse
+    seedProvidersFor merchant, son
+    seedSkullsFor merchant, son
+    seedProductsFor merchant, son, warehouse
 
 resetDatabase = ->
   Meteor.users.remove({})
   Schema.userProfiles.remove({})
   Schema.roles.remove({})
+  Schema.messages.remove({})
+
   Schema.merchants.remove({})
   Schema.warehouses.remove({})
   Schema.customers.remove({})
@@ -87,6 +137,7 @@ resetDatabase = ->
   Schema.skulls.remove({})
   Schema.products.remove({})
   Schema.productDetails.remove({})
+  Schema.productLosts.remove({})
 
   Schema.imports.remove({})
   Schema.importDetails.remove({})
@@ -94,16 +145,17 @@ resetDatabase = ->
   Schema.orderDetails.remove({})
   Schema.sales.remove({})
   Schema.saleDetails.remove({})
+  Schema.deliveries.remove({})
   Schema.inventories.remove({})
   Schema.inventoryDetails.remove({})
   Schema.returns.remove({})
   Schema.returnDetails.remove({})
-  Schema.deliveries.remove({})
+
 
   Schema.transactions.remove({})
   Schema.transactionDetails.remove({})
 
-  Schema.messages.remove({})
+
 
 
 seedSystemRoles = ->

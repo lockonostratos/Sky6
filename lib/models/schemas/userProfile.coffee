@@ -1,10 +1,13 @@
 Schema2.userProfiles = new SimpleSchema
+  user:
+    type: String
+
   creator:
     type: String
     optional: true
 
-  user:
-    type: String
+  isRoot:
+    type: Boolean
 
   fullName:
     type: String
@@ -18,9 +21,6 @@ Schema2.userProfiles = new SimpleSchema
     type: Date
     optional: true
 
-  isRoot:
-    type: Boolean
-
   roles:
     type: [String]
     optional: true
@@ -33,6 +33,10 @@ Schema2.userProfiles = new SimpleSchema
 
   currentWarehouse:
     type: String
+
+  systemVersion:
+    type: String
+
 
 #--------------------------
   currentOrder:
