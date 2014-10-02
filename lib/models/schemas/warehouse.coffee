@@ -1,5 +1,5 @@
 Schema2.warehouses = new SimpleSchema
-  parentMerchnat:
+  parentMerchant:
     type: String
     optional: true
 

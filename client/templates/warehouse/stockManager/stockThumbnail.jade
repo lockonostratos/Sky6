@@ -4,7 +4,7 @@ template(name="stockThumbnail")
       .right-caption {{name}}
       .avatar(style="background-image: url('images/missing.jpg')")
       .short-desc.quality.small {{availableQuality}}/{{instockQuality}}
-      .full-desc.price {{formatNumber price}} <small>VNĐ</small>
+      .full-desc.price {{formatNumber price}}
       .discount
         if false
           span.s4 -{{round discountPercent}}<span class="h5">%</span>

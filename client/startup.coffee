@@ -17,7 +17,16 @@ Meteor.startup ->
     if Meteor.userId()
       Session.set "currentUser"       , Meteor.user()
       Session.set "currentProfile"    , Schema.userProfiles.findOne(user: Meteor.userId())
-      Session.set "availableMerchant" , Schema.merchants.find({}).fetch()
+
+    if Session.get('currentProfile')?.parentMerchant
+      availableMerchant = Schema.merchants.find(
+        {$or:
+          [
+            {_id   : Session.get('currentProfile').parentMerchant}
+            {parent: Session.get('currentProfile').parentMerchant}
+          ]}
+      ).fetch()
+      Session.set "availableMerchant", availableMerchant
 
     if Session.get('currentProfile') #Temporaries SUBSCRUBIBE
       Meteor.subscribe 'merchantProfiles', Session.get('currentProfile').parentMerchant
@@ -51,18 +60,9 @@ Meteor.startup ->
 
   Tracker.autorun ->
     console.log ('exportAutorunWorking..') if autorunDebug
-    if Session.get('currentProfile')?.parentMerchant
-      availableMerchantExports = Schema.merchants.find(
-        {$or:
-          [
-            {_id   : Session.get('currentProfile').parentMerchant}
-            {parent: Session.get('currentProfile').parentMerchant}
-          ]}
-      ).fetch()
-      Session.set "availableMerchantExports", availableMerchantExports
-
-      exportMerchant = _.findWhere(availableMerchantExports, {_id: Session.get('currentProfile').exportMerchant})
-      targetExportMerchant = _.findWhere(availableMerchantExports, {_id: Session.get('currentProfile').targetExportMerchant})
+    if Session.get("availableMerchant")
+      exportMerchant = _.findWhere(Session.get("availableMerchant"), {_id: Session.get('currentProfile').exportMerchant})
+      targetExportMerchant = _.findWhere(Session.get("availableMerchant"), {_id: Session.get('currentProfile').targetExportMerchant})
 
       if exportMerchant
         Session.set "exportMerchant", exportMerchant

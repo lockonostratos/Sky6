@@ -28,6 +28,15 @@ createTask = (context) ->
   Session.set('allowCreateNewTask', false)
   Session.set('ownerTask')
 
+updateTask = ->
+  option =
+    owner       : Session.get('ownerTask')
+    group       : Session.get('groupTask')
+    description : Session.get('descriptionTask')
+    priority    : Session.get('priorityTask')
+    duration    : Session.get('durationTask')
+  Schema.tasks.update  Session.get('taskDetail')._id, $set: option, (error, result) -> console.log error if error
+
 resetTask = (context) ->
   Session.set('taskDetail')
   Session.set('priorityTask')
@@ -37,6 +46,7 @@ resetTask = (context) ->
   Session.set('groupTask')
   $("[name=duration]").timepicker('setTime', '00:00')
   context.ui.$duration.timepicker('setTime', '00:00 AM') if context
+
 
 selectUpdateTask = (item, context) ->
   if item.status < 1
@@ -92,7 +102,7 @@ Sky.appTemplate.extends Template.task,
     minimumResultsForSearch: -1
     changeAction: (e) ->
       Session.set('priorityTask', e.added._id )
-      Schema.tasks.update Session.get('taskDetail')._id, $set:{priority: e.added._id}  if Session.get('taskDetail')
+#      Schema.tasks.update Session.get('taskDetail')._id, $set:{priority: e.added._id}  if Session.get('taskDetail')
     reactiveValueGetter: ->_.findWhere(Sky.system.priorityTasks, {_id: Session.get('priorityTask')})
 
   viewTaskSelectOption:
@@ -125,11 +135,11 @@ Sky.appTemplate.extends Template.task,
     changeAction: (e) ->
       Session.set('ownerTask') if e.removed
       Session.set('ownerTask', e.added.user) if e.added
-      if Session.get('taskDetail')
-        if e.added?.user
-          Schema.tasks.update(Session.get('taskDetail')._id, $set:{owner: e.added.user})
-        else
-          Schema.tasks.update(Session.get('taskDetail')._id, $unset:{owner: ''})
+#      if Session.get('taskDetail')
+#        if e.added?.user
+#          Schema.tasks.update(Session.get('taskDetail')._id, $set:{owner: e.added.user})
+#        else
+#          Schema.tasks.update(Session.get('taskDetail')._id, $unset:{owner: ''})
     reactiveValueGetter: ->
       if Session.get('ownerTask')
         _.findWhere(Session.get('ownerList'), {user: Session.get('ownerTask')})
@@ -146,24 +156,25 @@ Sky.appTemplate.extends Template.task,
     "input input": (event, template) -> checkAllowCreate(template)
     "click #createTask": (event, template) -> createTask(template)
     "click #resetTask": (event, template) -> resetTask(template)
+    "click #updateTask": (event, template) -> updateTask(template); resetTask()
     "click .taskDetail .fa.fa-unlock": (event, template) -> resetTask(template)
     "click .taskDetail .fa.fa-eye": (event, template) -> selectUpdateTask(@, template)
     'blur .group': (event, template)->
       Session.set('groupTask', template.ui.$group.val())
-      if Session.get('taskDetail')
-        group = template.ui.$group.val()
-        if group.length > 0
-          Schema.tasks.update Session.get('taskDetail')._id, $set:{group: group}
-        else
-          Schema.tasks.update Session.get('taskDetail')._id, $unset:{group: ''}
+#      if Session.get('taskDetail')
+#        group = template.ui.$group.val()
+#        if group.length > 0
+#          Schema.tasks.update Session.get('taskDetail')._id, $set:{group: group}
+#        else
+#          Schema.tasks.update Session.get('taskDetail')._id, $unset:{group: ''}
     'blur .description': (event, template)->
       Session.set('descriptionTask', template.ui.$description.val())
-      if Session.get('taskDetail')
-        description = template.ui.$description.val()
-        if description.length > 0
-          Schema.tasks.update Session.get('taskDetail')._id, $set:{description: description}
-        else
-          template.ui.$description.val(Session.get('taskDetail').description)
+#      if Session.get('taskDetail')
+#        description = template.ui.$description.val()
+#        if description.length > 0
+#          Schema.tasks.update Session.get('taskDetail')._id, $set:{description: description}
+#        else
+#          template.ui.$description.val(Session.get('taskDetail').description)
 
   rendered: ->
     runInitTaskTracker()
@@ -173,10 +184,11 @@ Sky.appTemplate.extends Template.task,
       defaultTime: '00:00'
 
     @ui.$duration.timepicker().on('changeTime.timepicker', (e)->
-      if Session.get('taskDetail')
-        Schema.tasks.update Session.get('taskDetail')._id, $set:{duration: calculateDuration(e.time)}
-      else
-        Session.set('durationTask', calculateDuration(e.time))
+#      if Session.get('taskDetail')
+#        Schema.tasks.update Session.get('taskDetail')._id, $set:{duration: calculateDuration(e.time)}
+#      else
+#        Session.set('durationTask', calculateDuration(e.time))
+      Session.set('durationTask', calculateDuration(e.time))
 
     )
 

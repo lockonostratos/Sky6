@@ -6,7 +6,7 @@ template(name="warehouseManager")
     .row
       .col.col-auto(style="width:150px")
         span.ilabel.optional chọn chi nhánh
-        +iSpinEdit(options=merchantOptions)
+        +iSelect(options=merchantSelectOptions class="field")
       .col.col-auto
         span.ilabel tên chi kho
         input(name="name" maxlength="40")

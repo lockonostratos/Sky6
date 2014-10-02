@@ -23,8 +23,10 @@ template(name="task")
 
       .col.col-auto(style="width:70px; {{hideCreate}}")
         button.btn#createTask(class="{{allowCreate}}") THÊM
-      .col.col-auto(style="width:50px; {{hideUpdate}}")
-        button.btn.btn-success#resetTask XONG
+      .col.col-auto(style="width:70px; {{hideUpdate}}")
+        button.btn.btn-success#updateTask XONG
+      .col.col-auto(style="width:70px; {{hideUpdate}}")
+        button.btn.btn-danger#resetTask HỦY
 
   .app-content
     +iGrid(options=taskDetailOptions)

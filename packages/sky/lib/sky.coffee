@@ -32,10 +32,8 @@ class Sky
       transactionManagement:  { group: 'finance',   key: 'transactionShow',     description: 'q.lý thu chi' }
 
       taskShow:               { group: 'scrum',     key: 'scrumShow',           description: 'xem task' }
-      createTask:             { group: 'scrum',     key: 'scrumShow',           description: 'tao task' }
+      createTask:             { group: 'scrum',     key: 'scrumShow',           description: 'tạo task' }
       taskManagement:         { group: 'scrum',     key: 'scrumShow',           description: 'q.lý task' }
-
-
 
     @paymentMethods: [
       _id: 0
@@ -50,9 +48,6 @@ class Sky
     ,
       _id: 1
       display: 'GIAO HÀNG'
-    ,
-      _id: 2
-      display: 'Mua Ko Lay Hang'
     ]
     @billDiscounts: [
       _id: false
