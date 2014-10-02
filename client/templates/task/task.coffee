@@ -149,7 +149,8 @@ Sky.appTemplate.extends Template.task,
         'skyReset'
 
   taskDetailOptions:
-    itemTemplate: 'taskDetailThumbnail'
+    itemTemplate: (context) ->
+      if context.status == 0 then 'taskDetailThumbnail' else 'taskDetailThumbnail'
     reactiveSourceGetter: -> Session.get('taskList') ? []
     wrapperClasses: 'detail-grid row'
 

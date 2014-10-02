@@ -1,7 +1,9 @@
 Sky.appTemplate.extends Template.home,
   cooldownOptions:
-    startAt: new Date(new Date - 2 * 60000)
-    buget: 5
+    startAt: new Date(new Date - 0 * 60000)
+    buget: 0.5
+    others:
+      fgColor: "#7caa22"
 
   rendered: ->
     console.log "Home is showing up, awesome!"

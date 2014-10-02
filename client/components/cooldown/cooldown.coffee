@@ -4,16 +4,32 @@ Sky.template.extends Template.iCooldown,
 
   rendered: ->
     options = @data.options
-    $iCooldown = $(@ui.iCooldown)
-    $iCooldown.knob()
+    radius = (options.width / 2) ? 100
+    minArcLength = Math.PI * 2 * radius * (1/360)
+    maxStep = minArcLength * 1000
+    startAt = options.startAt ? new Date
+    buget = (options.buget ? 0) * 60000
     timeHook = new Date
+    animationSpeed = buget / maxStep
+    animationSpeed = 16 if animationSpeed < 16
 
-    interval = setInterval ->
-      console.log 'animating...'
-      startAt = options.startAt ? new Date
-      buget = (options.buget ? 0) * 60000
+    $iCooldown = $(@ui.iCooldown)
 
-      pastedPercentage = ((new Date - startAt) / buget) * 100
-      $iCooldown.val(pastedPercentage).trigger('change')
-      clearInterval(interval) if(pastedPercentage > 100)
-    , 50
+    cooldownConfigures =
+      max: maxStep
+      readOnly: true
+
+    cooldownConfigures.width = options.width if options.width
+
+    _.extend(cooldownConfigures, options.others) if options.others
+
+    $iCooldown.knob cooldownConfigures
+
+    @data.interval = setInterval =>
+      pastedSteps = ((new Date - startAt) / buget) * maxStep
+      $iCooldown.val(pastedSteps).trigger('change')
+      clearInterval(@data.interval) if(pastedSteps > maxStep)
+    , animationSpeed
+
+  destroyed: ->
+    clearInterval(@data.interval)
