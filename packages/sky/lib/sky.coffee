@@ -35,6 +35,16 @@ class Sky
       createTask:             { group: 'scrum',     key: 'scrumShow',           description: 'tạo task' }
       taskManagement:         { group: 'scrum',     key: 'scrumShow',           description: 'q.lý task' }
 
+    @taskStatuses:
+      waiting:                {key: 'waiting'}
+      selected:               {key: 'selected'}
+      working:                {key: 'working'}
+      confirming:             {key: 'confirming'}
+      done:                   {key: 'done'}
+      rejected:               {key: 'rejected'}
+      remaking:               {key: 'remaking'}
+      frozen:                 {key: 'frozen'}
+
     @paymentMethods: [
       _id: 0
       display: 'TIỀN MẶT'

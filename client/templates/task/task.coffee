@@ -20,7 +20,7 @@ createTask = (context) ->
     description : description
     priority    : Session.get('priorityTask')
     duration    : Session.get('durationTask')
-    status      : 0
+    status      : Sky.system.taskStatuses.waiting
     lateDuration: false
   if group.length > 0 then option.group = group
   if Session.get('ownerTask') then option.owner = Session.get('ownerTask')
@@ -77,15 +77,11 @@ runInitTaskTracker = (context) ->
     unless Session.get('viewTask') then Session.set('viewTask', 2)
     Session.set 'ownerList', Schema.userProfiles.find({}).fetch()
     Session.set 'resetTask', false
-    if view = Session.get('viewTask')
-      if view is 1 then Session.set 'taskList', Schema.tasks.find({}, taskDefaultSort).fetch()
-      if view is 2 then Session.set 'taskList', Schema.tasks.find({status: 0}, taskDefaultSort).fetch()
-      if view is 3 then Session.set 'taskList', Schema.tasks.find({status: {$in:[1,2]}, creator: Meteor.userId()}, taskDefaultSort).fetch()
-      if view is 4 then Session.set 'taskList', Schema.tasks.find({status: {$in:[1,2]}, owner: Meteor.userId()}, taskDefaultSort).fetch()
-      if view is 5 then Session.set 'taskList', Schema.tasks.find({status: {$in:[1,2]}}, taskDefaultSort).fetch()
-      if view is 6 then Session.set 'taskList', Schema.tasks.find({status: 3}, taskDefaultSort).fetch()
-    else
-      Session.set 'taskList'
+    if Session.get('statusFilter') && Session.get('userFilter')
+      userFilter = if Session.get('userFilter') is "1" then {owner: Meteor.userId()} else {}
+      statusFilter = if Session.get('statusFilter') is "all" then {} else Session.get('statusFilter')
+
+      Session.set 'filteredTasks', Schema.tasks.find({$and: [statusFilter, userFilter]}).fetch()
 
 Sky.appTemplate.extends Template.task,
   allowCreate: -> if Session.get('allowCreateNewTask') then 'btn-success' else 'btn-default disabled'
@@ -151,33 +147,30 @@ Sky.appTemplate.extends Template.task,
   taskDetailOptions:
     itemTemplate: (context) ->
       if context.status == 0 then 'taskDetailThumbnail' else 'taskDetailThumbnail'
-    reactiveSourceGetter: -> Session.get('taskList') ? []
+    reactiveSourceGetter: -> Session.get('filteredTasks') ? []
     wrapperClasses: 'detail-grid row'
 
-  created: -> Session.setDefault('allowCreateNewTask', false)
+  created: ->
+    Session.setDefault('allowCreateNewTask', false)
+    Session.setDefault('userFilter', 1)
+    Session.setDefault('statusFilter', 1)
   events:
     "input input": (event, template) -> checkAllowCreate(template)
     "click #createTask": (event, template) -> createTask(template)
     "click #resetTask": (event, template) -> resetTask(template)
     "click #updateTask": (event, template) -> updateTask(template); resetTask()
     "click .taskDetail .fa.fa-unlock": (event, template) -> resetTask(template)
-    "click .taskDetail .fa.fa-eye": (event, template) -> selectUpdateTask(@, template)
-    'blur .group': (event, template)->
-      Session.set('groupTask', template.ui.$group.val())
-#      if Session.get('taskDetail')
-#        group = template.ui.$group.val()
-#        if group.length > 0
-#          Schema.tasks.update Session.get('taskDetail')._id, $set:{group: group}
-#        else
-#          Schema.tasks.update Session.get('taskDetail')._id, $unset:{group: ''}
-    'blur .description': (event, template)->
-      Session.set('descriptionTask', template.ui.$description.val())
-#      if Session.get('taskDetail')
-#        description = template.ui.$description.val()
-#        if description.length > 0
-#          Schema.tasks.update Session.get('taskDetail')._id, $set:{description: description}
-#        else
-#          template.ui.$description.val(Session.get('taskDetail').description)
+    "click .taskDetail .fa.fa-pencil-square-o": (event, template) -> selectUpdateTask(@, template)
+    "click [data-status]": (event, template) ->
+      $element = $(event.currentTarget)
+      Session.set 'statusFilter', $element.attr("data-status")
+    "click [data-user]": (event, template) ->
+      $element = $(event.currentTarget)
+      Session.set 'userFilter', $element.attr("data-user")
+
+    'blur .group': (event, template)-> Session.set('groupTask', template.ui.$group.val())
+    'blur .description': (event, template)-> Session.set('descriptionTask', template.ui.$description.val())
+
 
   rendered: ->
     runInitTaskTracker()

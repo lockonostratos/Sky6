@@ -22,21 +22,21 @@ Sky.template.extends Template.taskDetailThumbnail,
 
   events:
     'dblclick .fa.fa-unlock': (event, template)->
-      if @status == 0 and @duration > 0
+      if @status is Sky.system.taskStatuses.waiting and @duration > 0
         Schema.tasks.update(@_id, $set:{
           owner: Meteor.userId()
           starDate: new Date
-          status: 1})
+          status: Sky.system.taskStatuses.waiting})
     'dblclick .fa.fa-lock': (event, template)->
-      if @status == 1 and @owner == Meteor.userId()
+      if @status is Sky.system.taskStatuses.selected and @owner is Meteor.userId()
         Schema.tasks.update(@_id, $set:{
           finishDate   : new Date
-          status       : 2})
+          status       : Sky.system.taskStatuses.selected})
     'dblclick .fa.fa-reply': (event, template)->
-      if @status == 2 and @creator == Meteor.userId()
-        Schema.tasks.update(@_id, $set:{status: 1})
+      if @status is Sky.system.taskStatuses.rejected and @creator == Meteor.userId()
+        Schema.tasks.update(@_id, $set:{status: Sky.system.taskStatuses.rejected})
     'dblclick .fa.fa-check': (event, template)->
-      if @status == 2 and @creator == Meteor.userId()
+      if @status == 5 and @creator == Meteor.userId()
         Schema.tasks.update(@_id, $set:{finishDate: new Date, status: 3})
 
   cooldownOptions: -> {

@@ -55,7 +55,7 @@ Sky.appTemplate.extends Template.warehouseManager,
 
   events:
     "input input": (event, template) -> checkAllowCreate(template)
-    "click #createBranch": (event, template) -> createWarehouse(template)
+    "click #createWarehouse": (event, template) -> createWarehouse(template)
 
   rendered: ->
     runInitWarehouseManagerTracker()

@@ -12,9 +12,9 @@ template(name="delivery")
       .col.col-auto(style="width: 250px")
         span.ilabel bộ lọc
         +iSelect(options=filterDeliverySelectOption class="field")
-      .col.col-auto.pull-right(style="width: 150px")
-        span.ilabel vai trò
-        +iSelect(options=filterDeliverySelectOption class="field")
+      //.col.col-auto.pull-right(style="width: 150px")
+      //  span.ilabel vai trò
+      //  +iSelect(options=filterDeliverySelectOption class="field")
   .app-content
     +iGrid(options=deliveryDetailOptions)
   .app-summary

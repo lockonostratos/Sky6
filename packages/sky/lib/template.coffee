@@ -80,7 +80,7 @@ class Sky.appTemplate
       @ui.extras.show = (name) -> showExtra(name, self)
       @ui.extras.hide = (name) -> hideExtra(name, self)
 
-      @$("[data-toggle='tooltip']").tooltip()
+      @$("[data-toggle='tooltip']").tooltip({container: 'body'})
       for item in @findAll("input[binding='datePicker']")
         $item = $(item)
         options = {}
