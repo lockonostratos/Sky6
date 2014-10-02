@@ -16,7 +16,7 @@ runInitInventoryIssueTracker = (context) ->
 Sky.appTemplate.extends Template.inventoryIssue,
   merchantSelectOptions:
     query: (query) -> query.callback
-      results: _.filter Session.get('availableMerchantInventories'), (item) ->
+      results: _.filter Session.get('allMerchantInventories'), (item) ->
         unsignedTerm = Sky.helpers.removeVnSigns query.term
         unsignedName = Sky.helpers.removeVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1
@@ -32,7 +32,7 @@ Sky.appTemplate.extends Template.inventoryIssue,
 
   warehouseSelectOptions:
     query: (query) -> query.callback
-      results: _.filter Session.get('availableWarehouseInventories'), (item) ->
+      results: _.filter Session.get('allWarehouseInventory'), (item) ->
         unsignedTerm = Sky.helpers.removeVnSigns query.term
         unsignedName = Sky.helpers.removeVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1

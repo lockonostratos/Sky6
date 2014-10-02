@@ -1,3 +1,5 @@
+taskDefaultSort = {sort: {'version.createdAt': -1}}
+
 formatPriorityTaskSearch  = (item) -> "#{item.display}" if item
 formatViewTaskSearch     = (item) -> "#{item.display}" if item
 formatOwnerTaskSearch     = (item) -> "#{item.fullName}" if item
@@ -76,12 +78,12 @@ runInitTaskTracker = (context) ->
     Session.set 'ownerList', Schema.userProfiles.find({}).fetch()
     Session.set 'resetTask', false
     if view = Session.get('viewTask')
-      if view is 1 then Session.set 'taskList', Schema.tasks.find().fetch()
-      if view is 2 then Session.set 'taskList', Schema.tasks.find({status: 0}).fetch()
-      if view is 3 then Session.set 'taskList', Schema.tasks.find({status: {$in:[1,2]}, creator: Meteor.userId()}).fetch()
-      if view is 4 then Session.set 'taskList', Schema.tasks.find({status: {$in:[1,2]}, owner: Meteor.userId()}).fetch()
-      if view is 5 then Session.set 'taskList', Schema.tasks.find({status: {$in:[1,2]}}).fetch()
-      if view is 6 then Session.set 'taskList', Schema.tasks.find({status: 3}).fetch()
+      if view is 1 then Session.set 'taskList', Schema.tasks.find({}, taskDefaultSort).fetch()
+      if view is 2 then Session.set 'taskList', Schema.tasks.find({status: 0}, taskDefaultSort).fetch()
+      if view is 3 then Session.set 'taskList', Schema.tasks.find({status: {$in:[1,2]}, creator: Meteor.userId()}, taskDefaultSort).fetch()
+      if view is 4 then Session.set 'taskList', Schema.tasks.find({status: {$in:[1,2]}, owner: Meteor.userId()}, taskDefaultSort).fetch()
+      if view is 5 then Session.set 'taskList', Schema.tasks.find({status: {$in:[1,2]}}, taskDefaultSort).fetch()
+      if view is 6 then Session.set 'taskList', Schema.tasks.find({status: 3}, taskDefaultSort).fetch()
     else
       Session.set 'taskList'
 
