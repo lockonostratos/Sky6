@@ -42,7 +42,7 @@ Sky.template.extends Template.taskDetailThumbnail,
   cooldownOptions: -> {
     context: @
     startAt: @startDate ? new Date(new Date - 0 * 60000)
-    buget: @duration
+    buget: @duration ? 1
     width: 74
     others:
       thickness: 0.1

@@ -4,7 +4,7 @@ Sky.template.extends Template.iCooldown,
 
   rendered: ->
     options = @data.options
-    radius = (options.width / 2) ? 100
+    radius = ((options.width ? 200) / 2) ? 100
     minArcLength = Math.PI * 2 * radius * (1/360)
     maxStep = minArcLength * 1000
     startAt = options.startAt ? new Date
@@ -26,6 +26,7 @@ Sky.template.extends Template.iCooldown,
     $iCooldown.knob cooldownConfigures
 
     @data.interval = setInterval =>
+      console.log 'updating...'
       pastedSteps = ((new Date - startAt) / buget) * maxStep
       $iCooldown.val(pastedSteps).trigger('change')
       clearInterval(@data.interval) if(pastedSteps > maxStep)

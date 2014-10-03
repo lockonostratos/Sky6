@@ -118,6 +118,7 @@
   .task-cooldown {
     position: absolute;
     top: -7px; left: 13px;
+    z-index: 9;
   }
 
   .task-buget {
@@ -144,6 +145,7 @@
   }
 
   .task-creator {
+    display: none;
     position: absolute;
     bottom: 0;
     left: 20px;
@@ -166,6 +168,58 @@
     text-align: justify;
     color: #FFFFFF;
     border-left: solid 1px #A0A0A0;
+  }
+
+  .task-media {
+    bottom: 1px;
+    left: 5px;
+  }
+
+  .media-navigation {
+    position: absolute;
+    z-index: 10;
+    color: #ccc;
+    .media-center {
+      .border-radius(50%);
+      background-color: #fff;
+      float: left;
+      width: 40px; height: 40px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      border: solid 5px #eee;
+      cursor: pointer;
+      margin: 0 -2px;
+      i {
+        font-size: 20px;
+        line-height: 32px;
+        padding: 0 0 0 4px;
+      }
+    }
+
+    .media-left {
+      .border-radius(50%);
+      background-color: #fff;
+      float: left;
+      width: 25px; height: 25px;
+      line-height: 25px;
+      text-align: center;
+      position: relative;
+      border: solid 3px #eee;
+      cursor: pointer;
+    }
+
+    .media-right {
+      .border-radius(50%);
+      background-color: #fff;
+      float: left;
+      width: 25px; height: 25px;
+      line-height: 25px;
+      text-align: center;
+      position: relative;
+      border: solid 3px #eee;
+      cursor: pointer;
+    }
   }
 }
 
