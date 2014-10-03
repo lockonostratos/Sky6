@@ -1,3 +1,5 @@
+pad =(number) -> if number < 10 then '0' + number else number
+
 Sky.template.extends Template.taskDetailThumbnail,
   colorClass: ->
     switch @status
@@ -7,20 +9,16 @@ Sky.template.extends Template.taskDetailThumbnail,
       when 2 then 'purple'
       when 3
         if @lateDuration then 'carrot' else 'peter-river'
-  status: ->
-    return "chưa xử lý" if @status is 0
-    return "đang xử lý" if @status is 1
-    return "đã xử lý"   if @status is 2
-    return "xác nhận ok" if @status is 3
-  priorityDisplay: ->
+  priorityAlias: ->
     priority = _.findWhere(Sky.system.priorityTasks, {_id: @priority})
     priority.display
-  creatorName: -> Sky.helpers.shortName(Schema.userProfiles.findOne({user: @creator})?.fullName if @creator)
-  ownerName: -> Sky.helpers.shortName(Schema.userProfiles.findOne({user: @owner})?.fullName if @owner)
+  creatorAlias: -> Sky.helpers.shortName(Schema.userProfiles.findOne({user: @creator})?.fullName if @creator)
+  ownerAlias: -> Sky.helpers.shortName(Schema.userProfiles.findOne({user: @owner})?.fullName if @owner)
   hideIconEdit:-> return "display: none" unless @status is 0 and Session.get('viewTask') == 2
   hideIconUnlock:-> return "display: none" unless @status is 0 and @duration > 0
   hideIconLock:-> return "display: none" unless @status is 1 and @owner == Meteor.userId() and (Session.get('viewTask') == 4 || Session.get('viewTask') == 5)
   hideIconCheck:-> return "display: none" unless @status is 2 and @creator == Meteor.userId() and (Session.get('viewTask') == 3 || Session.get('viewTask') == 5)
+  formatedBuget: -> "#{pad(Math.floor(@duration/60))}:#{pad(@duration%60)}"
 
   events:
     'dblclick .fa.fa-unlock': (event, template)->
@@ -41,3 +39,15 @@ Sky.template.extends Template.taskDetailThumbnail,
       if @status == 2 and @creator == Meteor.userId()
         Schema.tasks.update(@_id, $set:{finishDate: new Date, status: 3})
 
+  cooldownOptions: -> {
+    context: @
+    startAt: @startDate ? new Date(new Date - 0 * 60000)
+    buget: @duration
+    width: 74
+    others:
+      thickness: 0.1
+      bgColor: "#fff"
+      fgColor: "#8cbf26"
+      angleOffset: 28
+      angleArc: 304
+  }

@@ -1,18 +1,20 @@
 template(name="taskDetailThumbnail")
   .col.taskDetail
     .thumbnails(class="#{colorClass}")
-      .right-caption.editPriority
-        |{{group}}  ({{priorityDisplay}})
+      .right-caption.editPriority 
+        |{{group}}
         a(href="#")
           i.fa.fa-eye(style="{{hideIconEdit}}")
-      .message-wrapper(style="width:170px;height: 80px; margin-top: 20px; line-height: 1;") {{description}}
-      .short-desc.quality.editDuration {{duration}}'
-      .full-desc.price {{status}}
-      .single-price {{creatorName}}
+      .task-priority {{priorityAlias}}
+      .task-buget {{formatedBuget}}
+      .task-description {{description}}
+      .task-creator {{creatorAlias}}
+      .task-cooldown
+        +iCooldown(options=cooldownOptions)
+      .avatar(style="background-image: url('images/avatars/avatar2.jpg')")
       .full-desc.trash
         a(href="#")
           i.fa.fa-unlock(style="{{hideIconUnlock}}")
           i.fa.fa-lock(style="{{hideIconLock}}")
           i.fa.fa-reply(style="{{hideIconCheck}}")
           i.fa.fa-check(style="{{hideIconCheck}}")
-        span {{ownerName}}
