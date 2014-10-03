@@ -14,30 +14,90 @@ Sky.template.extends Template.taskDetailThumbnail,
     priority.display
   creatorAlias: -> Sky.helpers.shortName(Schema.userProfiles.findOne({user: @creator})?.fullName if @creator)
   ownerAlias: -> Sky.helpers.shortName(Schema.userProfiles.findOne({user: @owner})?.fullName if @owner)
-  hideIconEdit:-> return "display: none" unless @status is 0 and Session.get('viewTask') == 2
-  hideIconUnlock:-> return "display: none" unless @status is 0 and @duration > 0
-  hideIconLock:-> return "display: none" unless @status is 1 and @owner == Meteor.userId() and (Session.get('viewTask') == 4 || Session.get('viewTask') == 5)
-  hideIconCheck:-> return "display: none" unless @status is 2 and @creator == Meteor.userId() and (Session.get('viewTask') == 3 || Session.get('viewTask') == 5)
   formatedBuget: -> "#{pad(Math.floor(@duration/60))}:#{pad(@duration%60)}"
 
+  hideEdit:-> return "display: none" unless @status is Sky.system.taskStatuses.wait.key
+  hideSkip:-> return "display: none" unless @status is Sky.system.taskStatuses.wait.key
+  hideWait:-> return "display: none" unless @status is Sky.system.taskStatuses.skip.key
+  hideSelect:-> return "display: none" unless @status is Sky.system.taskStatuses.wait.key and @duration > 0
+  hideFrozen:-> return "display: none" unless @status is Sky.system.taskStatuses.working.key or @status is Sky.system.taskStatuses.rejected.key
+  hideRejected:-> return "display: none" unless @status is Sky.system.taskStatuses.confirming.key
+  hideWorking:-> return "display: none"  unless @status is Sky.system.taskStatuses.selected.key or @status is Sky.system.taskStatuses.frozen.key or @status is Sky.system.taskStatuses.rejected.key or @status is Sky.system.taskStatuses.remaking.key
+  hideConfirming:-> return "display: none" unless @status is Sky.system.taskStatuses.working.key
+  hideDone:-> return "display: none" unless @status is Sky.system.taskStatuses.confirming.key
+  hideRemaking:-> return "display: none" unless @status is Sky.system.taskStatuses.done.key
+
+
+
+
   events:
-    'dblclick .fa.fa-unlock': (event, template)->
-      if @status is Sky.system.taskStatuses.waiting and @duration > 0
-        Schema.tasks.update(@_id, $set:{
-          owner: Meteor.userId()
-          starDate: new Date
-          status: Sky.system.taskStatuses.waiting})
-    'dblclick .fa.fa-lock': (event, template)->
-      if @status is Sky.system.taskStatuses.selected and @owner is Meteor.userId()
-        Schema.tasks.update(@_id, $set:{
-          finishDate   : new Date
-          status       : Sky.system.taskStatuses.selected})
-    'dblclick .fa.fa-reply': (event, template)->
-      if @status is Sky.system.taskStatuses.rejected and @creator == Meteor.userId()
-        Schema.tasks.update(@_id, $set:{status: Sky.system.taskStatuses.rejected})
-    'dblclick .fa.fa-check': (event, template)->
-      if @status == 5 and @creator == Meteor.userId()
-        Schema.tasks.update(@_id, $set:{finishDate: new Date, status: 3})
+    'dblclick .fa.fa-tasks': (event, template)->
+      #----Skip to Wait----
+      if @status is Sky.system.taskStatuses.skip.key
+        Schema.tasks.update(@_id, $set:{status: Sky.system.taskStatuses.wait.key})
+    'dblclick .fa.fa-times': (event, template)->
+      #----Wait to Skip----
+      if @status is Sky.system.taskStatuses.wait.key
+        Schema.tasks.update(@_id, $set:{status: Sky.system.taskStatuses.skip.key})
+    'dblclick .fa.fa-thumb-tack': (event, template)->
+      #----Wait to Selected----
+      if @status is Sky.system.taskStatuses.wait.key and @duration > 0
+        Schema.tasks.update(
+          @_id
+        ,
+          $set:
+            owner       : Meteor.userId()
+            selectDate  : new Date
+            status      : Sky.system.taskStatuses.selected.key
+        ,
+          $inc:{totalDuration: @duration}
+        )
+    'dblclick .fa.fa-pause': (event, template)->
+      #----Selected to Frozen---
+      if @status is Sky.system.taskStatuses.selected.key and @owner is Meteor.userId()
+        Schema.tasks.update(@_id, $set:{starDate: new Date, status: Sky.system.taskStatuses.frozen.key})
+      #----Working to Frozen----
+      if @status is Sky.system.taskStatuses.working.key and @owner is Meteor.userId()
+        Schema.tasks.update(@_id, $set:{finishDate: new Date, status: Sky.system.taskStatuses.frozen.key})
+      #----Rejected to Frozen----
+      if @status is Sky.system.taskStatuses.rejected.key and @owner is Meteor.userId()
+        Schema.tasks.update(@_id, $set:{finishDate: new Date, status: Sky.system.taskStatuses.frozen.key})
+    'dblclick .fa.fa-play': (event, template)->
+      #----Selected to Working---
+      if @status is Sky.system.taskStatuses.selected.key and @owner is Meteor.userId()
+        Schema.tasks.update(@_id, $set:{starDate: new Date, status: Sky.system.taskStatuses.working.key})
+      #----Frozen to Working----
+      if @status is Sky.system.taskStatuses.frozen.key and @owner is Meteor.userId()
+        Schema.tasks.update(@_id, $set:{starDate: new Date, status: Sky.system.taskStatuses.working.key})
+      #----Rejected to Working----
+      if @status is Sky.system.taskStatuses.rejected.key and @owner is Meteor.userId()
+        Schema.tasks.update(@_id, $set:{starDate: new Date, status: Sky.system.taskStatuses.working.key})
+      #----Remaking to Working----
+      if @status is Sky.system.taskStatuses.remaking.key and @owner is Meteor.userId()
+        Schema.tasks.update(@_id, $set:{starDate : new Date, status: Sky.system.taskStatuses.working.key})
+    'dblclick .fa.fa-question-circle': (event, template)->
+      #----Working to Confirming----
+      if @status is Sky.system.taskStatuses.working.key and @owner is Meteor.userId()
+        Schema.tasks.update(@_id, $set:{finishDate: new Date, status: Sky.system.taskStatuses.confirming.key})
+    'dblclick .fa.fa-exclamation-triangle': (event, template)->
+      #----Confirming to Rejected----
+      if @status is Sky.system.taskStatuses.confirming.key and @creator is Meteor.userId()
+        Schema.tasks.update(@_id, $set:{status: Sky.system.taskStatuses.rejected.key})
+    'dblclick .fa.fa-trophy': (event, template)->
+      #----Confirming to Done----
+      if @status is Sky.system.taskStatuses.confirming.key and @creator is Meteor.userId()
+        Schema.tasks.update(@_id, $set:{status: Sky.system.taskStatuses.done.key})
+    'dblclick .fa.fa-retweet': (event, template)->
+      #----Done to Remaking----
+      if @status is Sky.system.taskStatuses.done.key and @owner is Meteor.userId()
+        Schema.tasks.update(@_id, $set:{status: Sky.system.taskStatuses.remaking.key}, $inc:{remake: 1})
+
+
+
+
+
+
+
 
   cooldownOptions: -> {
     context: @
@@ -50,4 +110,4 @@ Sky.template.extends Template.taskDetailThumbnail,
       fgColor: "#8cbf26"
       angleOffset: 28
       angleArc: 304
-  }
+    }

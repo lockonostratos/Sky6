@@ -16,8 +16,19 @@ Schema2.tasks = new SimpleSchema
   priority:
     type: Number
 
+  totalDuration:
+    type: Number
+    optional: true
+
+  remake:
+    type: Number
+
   duration:
     type: Number
+
+  selectDate:
+    type: Date
+    optional: true
 
   starDate:
     type: Date
@@ -31,7 +42,7 @@ Schema2.tasks = new SimpleSchema
     type: Boolean
 
   status:
-    type: Number
+    type: String
 
   version: { type: Schema.Version }
 

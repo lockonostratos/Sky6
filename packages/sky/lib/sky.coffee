@@ -36,7 +36,8 @@ class Sky
       taskManagement:         { group: 'scrum',     key: 'scrumShow',           description: 'q.lý task' }
 
     @taskStatuses:
-      waiting:                {key: 'waiting'}
+      skip:                   {key: 'skip'}
+      wait:                   {key: 'wait'}
       selected:               {key: 'selected'}
       working:                {key: 'working'}
       confirming:             {key: 'confirming'}
@@ -117,26 +118,6 @@ class Sky
     ,
       _id: 5
       display: 'e'
-    ]
-    @viewTasks: [
-      _id: 1
-      display: 'Xem Tất Cả'
-    ,
-      _id: 2
-      display: 'Chưa Được Nhận'
-    ,
-      _id: 3
-      display: 'Đang Làm (Tạo)'
-    ,
-      _id: 4
-      display: 'Đang Làm (Nhận)'
-    ,
-      _id: 5
-      display: 'Đang Làm (All)'
-    ,
-      _id: 6
-      display: 'Hoàn Thành'
-
     ]
 
 

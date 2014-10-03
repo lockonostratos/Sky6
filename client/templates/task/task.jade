@@ -1,9 +1,11 @@
-
 template(name="task")
   .app-header
     span.caption Task Eds Beta 0.7.1
     .col.col-auto.btn-group.btn-group-sm(data-toggle="buttons")
-      label.btn.btn-default.active(data-toggle="tooltip" title="chưa được chọn" data-status="waiting")
+      label.btn.btn-default(data-toggle="tooltip" title="bỏ qua" data-status="skip")
+        input(type="radio" name="options")
+          i.fa.fa-times
+      label.btn.btn-default.active(data-toggle="tooltip" title="chưa được chọn" data-status="wait")
         input(type="radio" name="options")
           i.fa.fa-tasks
       label.btn.btn-default(data-toggle="tooltip" title="đã chọn" data-status="selected")
@@ -12,7 +14,7 @@ template(name="task")
       label.btn.btn-default(data-toggle="tooltip" title="tạm ngưng" data-status="frozen")
         input(type="radio" name="options")
           i.fa.fa-pause
-      label.btn.btn-default(data-toggle="tooltip" title="đang xử lý" data-status="rejected")
+      label.btn.btn-default(data-toggle="tooltip" title="có vấn đề" data-status="rejected")
         input(type="radio" name="options")
           i.fa.fa-exclamation-triangle
       label.btn.btn-default(data-toggle="tooltip" title="đang xử lý" data-status="working")
