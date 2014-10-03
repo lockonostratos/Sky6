@@ -40,24 +40,18 @@ Meteor.startup ->
 
   Tracker.autorun ->
     console.log ('inventoryAutorunWorking..') if autorunDebug
-    if Session.get('currentProfile')
-      allMerchant = Schema.merchants.find({}).fetch()
-      Session.set "availableMerchantInventories", allMerchant
-
-      inventoryMerchant = Schema.merchants.findOne(Session.get('currentProfile').inventoryMerchant)
-      inventoryWarehouse = Schema.warehouses.findOne(Session.get('currentProfile').inventoryWarehouse)
+    if Session.get("availableMerchant") and Session.get('currentProfile')
+      Session.set("allMerchantInventories", Session.get("availableMerchant"))
+      inventoryMerchant = _.findWhere(Session.get("allMerchantInventories"), {_id: Session.get('currentProfile').inventoryMerchant})
 
       if inventoryMerchant
         Session.set "inventoryMerchant", inventoryMerchant
-        Session.set "availableWarehouseInventories", Schema.warehouses.find({merchant: inventoryMerchant._id}).fetch()
+        allWarehouseInventory = Schema.warehouses.find({merchant: inventoryMerchant._id}).fetch()
+        Session.set "allWarehouseInventory", allWarehouseInventory
       else
         Session.set "inventoryMerchant"
-        Session.set "availableWarehouseInventories"
+        Session.set "allWarehouseInventory"
 
-      if inventoryWarehouse?.merchant == inventoryMerchant?._id
-        Session.set "inventoryWarehouse", inventoryWarehouse
-      else
-        Session.set "inventoryWarehouse"
 
   Tracker.autorun ->
     console.log ('exportAutorunWorking..') if autorunDebug
@@ -100,7 +94,7 @@ Meteor.startup ->
       else
         Session.set "targetExportMerchant"
         Session.set "targetExportWarehouse"
-        Session.set "availableWarehouseInventories"
+        Session.set "availableTargetExportWarehouses"
 
   Tracker.autorun ->
     console.log ('productAutorunWorking..') if autorunDebug

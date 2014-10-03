@@ -5,23 +5,36 @@ formatInventoryDetaileSearch = (item) -> "#{item.description}" if item
 runInitInventoryHistoryTracker = (context) ->
   return if Sky.global.inventoryHistoryTracker
   Sky.global.inventoryHistoryTracker = Tracker.autorun ->
-      if currentWarehouse = Session.get("inventoryWarehouse")
-        inventories = Schema.inventories.find({warehouse: currentWarehouse._id}).fetch()
+      if Session.get("allWarehouseInventory") and Session.get('currentProfile')
+        currentInventoryWarehouse = _.findWhere(Session.get("allWarehouseInventory"), {_id: Session.get('currentProfile').inventoryWarehouse})
+        if currentInventoryWarehouse
+          Session.set "currentInventoryWarehouse", currentInventoryWarehouse
+        else
+          Session.set "currentInventoryWarehouse"
+
+      if Session.get("currentInventoryWarehouse")
+        inventories = Schema.inventories.find({warehouse: Session.get("currentInventoryWarehouse")._id}).fetch()
         if inventories.length > 0 then Session.set "availableInventories", inventories
         if inventories.length == 0 then Session.set "availableInventories"
-
+#
       if Session.get("availableInventories") and Session.get('currentProfile')?.currentInventoryHistory
         currentInventory = Schema.inventories.findOne(Session.get('currentProfile').currentInventoryHistory)
-        Session.set "currentInventoryHistory", currentInventory
-        Session.set "currentInventoryDetail", Schema.inventoryDetails.find({inventory: currentInventory?._id}).fetch()
+        if currentInventory
+          Session.set "currentInventoryHistory", currentInventory
+        else
+          Session.set "currentInventoryHistory"
       else
         Session.set "currentInventoryHistory"
+
+      if Session.get "currentInventoryHistory"
+        Session.set "currentInventoryDetail", Schema.inventoryDetails.find({inventory: currentInventory?._id}).fetch()
+      else
         Session.set "currentInventoryDetail"
 
 Sky.appTemplate.extends Template.inventoryHistory,
   merchantSelectOptions:
     query: (query) -> query.callback
-      results: _.filter Session.get('availableMerchantInventories'), (item) ->
+      results: _.filter Session.get('allMerchantInventories'), (item) ->
         unsignedTerm = Sky.helpers.removeVnSigns query.term
         unsignedName = Sky.helpers.removeVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1
@@ -32,16 +45,16 @@ Sky.appTemplate.extends Template.inventoryHistory,
     changeAction: (e) ->
       Schema.userProfiles.update Session.get('currentProfile')._id, $set:
         inventoryMerchant : e.added._id
-        inventoryWarehouse: Schema.warehouses.findOne(merchant: e.added._id)?._id  ? 'skyReset'
+        inventoryWarehouse: Schema.warehouses.findOne({merchant: e.added._id, isRoot: true})?._id  ? 'skyReset'
     reactiveValueGetter: -> Session.get('inventoryMerchant')
 
   warehouseSelectOptions:
     query: (query) -> query.callback
-      results: _.filter Session.get('availableWarehouseInventories'), (item) ->
+      results: _.filter Session.get('allWarehouseInventory'), (item) ->
         unsignedTerm = Sky.helpers.removeVnSigns query.term
         unsignedName = Sky.helpers.removeVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1
-    initSelection: (element, callback) -> callback(Session.get('inventoryWarehouse') ? 'skyReset')
+    initSelection: (element, callback) -> callback(Session.get('currentInventoryWarehouse') ? 'skyReset')
     formatSelection: formatWarehouseSearch
     formatResult: formatWarehouseSearch
     placeholder: 'CHỌN CHI NHÁNH'
@@ -49,7 +62,8 @@ Sky.appTemplate.extends Template.inventoryHistory,
     changeAction: (e) ->
       Schema.userProfiles.update Session.get('currentProfile')._id, $set:
         inventoryWarehouse: e.added._id
-    reactiveValueGetter: -> Session.get('inventoryWarehouse') ? 'skyReset'
+        currentInventory  : 'skyReset'
+    reactiveValueGetter: -> Session.get('currentInventoryWarehouse') ? 'skyReset'
 
   inventoryDetailSelectOptions:
     query: (query) -> query.callback
@@ -62,9 +76,14 @@ Sky.appTemplate.extends Template.inventoryHistory,
     formatResult: formatInventoryDetaileSearch
     placeholder: 'CHỌN PHIẾU KIỂM KHO'
     minimumResultsForSearch: -1
+    others:
+      allowClear: true
     changeAction: (e) ->
-      Schema.userProfiles.update Session.get('currentProfile')._id, $set:
-        currentInventoryHistory: e.added._id
+      if e.removed
+        Session.set('currentInventoryHistory')
+      else
+        Schema.userProfiles.update Session.get('currentProfile')._id, $set:
+          currentInventoryHistory: e.added._id
     reactiveValueGetter: -> Session.get('currentInventoryHistory') ? 'skyReset'
 
   inventoryDetailOptions:
