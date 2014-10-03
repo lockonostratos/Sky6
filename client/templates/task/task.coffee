@@ -148,7 +148,7 @@ Sky.appTemplate.extends Template.task,
 
   taskDetailOptions:
     itemTemplate: (context) ->
-      if context.status == 0 then 'taskDetailThumbnail' else 'taskDetailThumbnailOthers'
+      if context.status == 0 then 'taskDetailThumbnail' else 'taskDetailThumbnail'
     reactiveSourceGetter: -> Session.get('taskList') ? []
     wrapperClasses: 'detail-grid row'
 
