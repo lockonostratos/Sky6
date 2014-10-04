@@ -32,6 +32,7 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'lib/sky.coffee',
+    'lib/menu.coffee',
     'lib/template.coffee']
   , ['client', 'server']);
 

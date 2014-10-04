@@ -139,8 +139,6 @@ class Sky
 
     ]
 
-
-
   class @helpers
     @removeVnSigns: (source) ->
       str = source
@@ -187,6 +185,10 @@ class Sky
       colorGenerateHistory.push randomIndex
       @monoColors[randomIndex]
 
+    @reArrangeLayout: ->
+      newHeight = $(window).height() - $("#header").outerHeight() - $("#footer").outerHeight()
+      console.log newHeight
+      $("#container").css('height', newHeight)
 
 @Sky = Sky
 

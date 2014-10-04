@@ -3,5 +3,5 @@ _.extend Template.metroHome,
     "click .app-navigator": (event, template) -> Router.go $(event.currentTarget).attr('data-app')
 #  rendered: ->
 #    for tile in @findAll('.tile')
-#      $tile = $(tile); appUrl = $tile.attr('data-app')
-#      if !appUrl then $tile.addClass('locked')
+#      $tile = $(tile); app = $tile.attr('data-app')
+#      $tile.css('background-color', Sky.menu[app].color[0])

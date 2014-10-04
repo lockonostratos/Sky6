@@ -1,14 +1,24 @@
 template(name="layout")
   +messenger
   .application(class="#{collapse}")
-    header
-      +navigation
-    if currentUser
-      .content.wrapper
-        #left-side
-          +sidebar
-        #right-side
-          +yield
-    else
-      .wrapper
-        .left-side: +yield
+    +navigation
+    +sidebar
+    #container
+      +yield
+      //#header Header
+      //#content Content <br /> Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />
+      //#footer Footer
+
+  //+messenger
+  //.application(class="#{collapse}")
+  //  header
+  //    +navigation
+  //  if currentUser
+  //    #content-wrapper
+  //      #left-side
+  //        +sidebar
+  //      #right-side
+  //        +yield
+  //  else
+  //    .wrapper
+  //      .left-side: +yield

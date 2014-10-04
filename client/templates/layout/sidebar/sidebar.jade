@@ -1,5 +1,6 @@
 template(name="sidebar")
-  ul.messenger-list
-    +chatAvatarItem myProfile
-    each friends
-      +chatAvatarItem
+  #sidebar
+    ul.messenger-list
+      +chatAvatarItem myProfile
+      each friends
+        +chatAvatarItem

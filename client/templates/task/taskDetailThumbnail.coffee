@@ -1,4 +1,5 @@
 pad =(number) -> if number < 10 then '0' + number else number
+taskDefaultLifeTime = (7 * 24 * 60)
 
 Sky.template.extends Template.taskDetailThumbnail,
   colorClass: ->
@@ -40,9 +41,8 @@ Sky.template.extends Template.taskDetailThumbnail,
         Schema.tasks.update(@_id, $set:{finishDate: new Date, status: 3})
 
   cooldownOptions: -> {
-    context: @
     startAt: @startDate ? new Date(new Date - 0 * 60000)
-    buget: @duration ? 1
+    buget: if Sky.system.taskStatuses.waiting then taskDefaultLifeTime else @duration
     width: 74
     others:
       thickness: 0.1

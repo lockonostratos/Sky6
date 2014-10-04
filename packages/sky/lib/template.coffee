@@ -97,8 +97,8 @@ class Sky.appTemplate
 
 
       $(item).attr('maxlength', 120) for item in @findAll("input:not([maxlength])")
-      reMarginAppFooter(@)
-      remarginAppHeader(@)
+#      reMarginAppFooter(@)
+#      remarginAppHeader(@)
 
       destination.rendered.apply(@, arguments) if destination.rendered
 

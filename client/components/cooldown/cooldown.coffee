@@ -26,7 +26,6 @@ Sky.template.extends Template.iCooldown,
     $iCooldown.knob cooldownConfigures
 
     @data.interval = setInterval =>
-      console.log 'updating...'
       pastedSteps = ((new Date - startAt) / buget) * maxStep
       $iCooldown.val(pastedSteps).trigger('change')
       clearInterval(@data.interval) if(pastedSteps > maxStep)

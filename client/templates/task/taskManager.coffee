@@ -83,7 +83,7 @@ runInitTaskTracker = (context) ->
 
       Session.set 'filteredTasks', Schema.tasks.find({$and: [statusFilter, userFilter]}).fetch()
 
-Sky.appTemplate.extends Template.task,
+Sky.appTemplate.extends Template.taskManager,
   allowCreate: -> if Session.get('allowCreateNewTask') then 'btn-success' else 'btn-default disabled'
   description : -> if Session.get('descriptionTask') then Session.get('descriptionTask') else ''
   group: -> if Session.get('groupTask') then Session.get('groupTask') else ''
@@ -185,7 +185,6 @@ Sky.appTemplate.extends Template.task,
 #      else
 #        Session.set('durationTask', calculateDuration(e.time))
       Session.set('durationTask', calculateDuration(e.time))
-
     )
 
 

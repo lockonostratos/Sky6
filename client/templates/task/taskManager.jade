@@ -1,0 +1,72 @@
+template(name="taskManager")
+  #header
+    .app-caption
+      span.caption Task Eds Beta 0.7.1
+      .col.col-auto.btn-group.btn-group-sm(data-toggle="buttons")
+        label.btn.btn-default.active(data-toggle="tooltip" title="chưa được chọn" data-status="waiting")
+          input(type="radio" name="options")
+            i.fa.fa-tasks
+        label.btn.btn-default(data-toggle="tooltip" title="đã chọn" data-status="selected")
+          input(type="radio" name="options")
+            i.fa.fa-thumb-tack
+        label.btn.btn-default(data-toggle="tooltip" title="tạm ngưng" data-status="frozen")
+          input(type="radio" name="options")
+            i.fa.fa-pause
+        label.btn.btn-default(data-toggle="tooltip" title="đang xử lý" data-status="rejected")
+          input(type="radio" name="options")
+            i.fa.fa-exclamation-triangle
+        label.btn.btn-default(data-toggle="tooltip" title="đang xử lý" data-status="working")
+          input(type="radio" name="options")
+            i.fa.fa-play
+        label.btn.btn-default(data-toggle="tooltip" title="chờ xác nhận" data-status="confirming")
+          input(type="radio" name="options")
+            i.fa.fa-question-circle
+        label.btn.btn-default(data-toggle="tooltip" title="thành công" data-status="done")
+          input(type="radio" name="options")
+            i.fa.fa-trophy
+        label.btn.btn-default(data-toggle="tooltip" title="lặp lại" data-status="remaking")
+          input(type="radio" name="options")
+            i.fa.fa-retweet
+        label.btn.btn-default(data-toggle="tooltip" title="*" data-status="all")
+          input(type="radio" name="options")
+            i.fa.fa-archive
+
+      .col.col-auto.pull-right(class="btn-group btn-group-sm" data-toggle="buttons")
+        label.btn.btn-default.active(data-toggle="tooltip" title="của tôi" data-user="1")
+          input(type="radio" name="options" id="option1")
+            i.fa.fa-user
+        label.btn.btn-default(data-toggle="tooltip" title="tất cả" data-user="2")
+          input(type="radio" name="options" id="option2" checked)
+            i.fa.fa-users
+
+    .app-editor
+      .col.col-auto(style="width:80px")
+        span.ilabel độ ưu tiên
+        +iSelect(options=priorityTaskSelectOption class="field")
+      .col.col-auto(style="width:180px")
+        span.ilabel người nhận làm
+        +iSelect(options=ownerTaskSelectOption class="field")
+      .col.col-auto(style="width:110px")
+        span.ilabel chức năng
+        input.group(name="group" maxlength="15" value="{{group}}")
+      .col.col-auto(style="width:300px")
+        span.ilabel nội dung
+        input.description(name="description" maxlength="100" value="{{description}}")
+      .col.col-auto(style="width:65px")
+        span.ilabel thời gian
+        input(style="text-align: center" name="duration")
+
+      .col.col-auto(style="width:70px; {{hideCreate}}")
+        button.btn#createTask(class="{{allowCreate}}") THÊM
+      .col.col-auto(style="width:70px; {{hideUpdate}}")
+        button.btn.btn-success#updateTask XONG
+      .col.col-auto(style="width:70px; {{hideUpdate}}")
+        button.btn.btn-danger#resetTask HỦY
+
+  #content
+    .app-content
+      +iGrid(options=taskDetailOptions)
+  .app-summary
+  .app-status
+
+
