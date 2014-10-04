@@ -4,7 +4,16 @@ template(name="taskDetailThumbnail")
       .right-caption.editPriority 
         |{{group}}
         a(href="#")
-          i.fa.fa-pencil-square-o(style="{{hideIconEdit}}")
+          i.fa.fa-pencil-square-o(style="{{hideEdit}}")
+          i.fa.fa-times(style="{{hideSkip}}")
+          i.fa.fa-tasks(style="{{hideWait}}")
+          i.fa.fa-thumb-tack(style="{{hideSelect}}")
+          i.fa.fa-pause(style="{{hideFrozen}}")
+          i.fa.fa-exclamation-triangle(style="{{hideRejected}}")
+          i.fa.fa-play(style="{{hideWorking}}")
+          i.fa.fa-question-circle(style="{{hideConfirming}}")
+          i.fa.fa-trophy(style="{{hideDone}}")
+          i.fa.fa-retweet(style="{{hideRemaking}}")
       .task-priority {{priorityAlias}}
       .task-buget {{formatedBuget}}
       .task-description {{description}}
@@ -14,10 +23,6 @@ template(name="taskDetailThumbnail")
       .avatar(style="background-image: url('images/avatars/avatar2.jpg')")
       .full-desc.trash
         a(href="#")
-          i.fa.fa-unlock(style="{{hideIconUnlock}}")
-          i.fa.fa-lock(style="{{hideIconLock}}")
-          i.fa.fa-reply(style="{{hideIconCheck}}")
-          i.fa.fa-check(style="{{hideIconCheck}}")
       .media-navigation.task-media
         .media-left
         .media-center: i.fa.fa-play

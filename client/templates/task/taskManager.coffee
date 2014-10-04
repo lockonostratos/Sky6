@@ -11,117 +11,102 @@ checkAllowCreate = (context) ->
   else
     Session.set('allowCreateNewTask', false)
 
+calculateMinuteToTime = (item)->
+  hour = Math.floor(item/60); minute = (item/60 - hour)*60
+  if hour > 12 then time = "#{hour}:#{minute} PM" else time = "#{hour}:#{minute} AM"
+  time
+
 createTask = (context) ->
   description = context.ui.$description.val()
   group = context.ui.$group.val()
-
   option =
     creator     : Meteor.userId()
     description : description
-    priority    : Session.get('priorityTask')
-    duration    : Session.get('durationTask')
-    status      : Sky.system.taskStatuses.waiting
+    priority    : Session.get('currentPriorityTask')
+    duration    : Session.get('currentDurationTask')
+    status      : Sky.system.taskStatuses.wait.key
+    remake      : 0
     lateDuration: false
+
   if group.length > 0 then option.group = group
-  if Session.get('ownerTask') then option.owner = Session.get('ownerTask')
+  if Session.get('currentOwnerTask') then option.owner = Session.get('currentOwnerTask')
 
   Schema.tasks.insert option
   resetForm(context)
   Session.set('allowCreateNewTask', false)
-  Session.set('ownerTask')
+  Session.set('currentOwnerTask')
 
 updateTask = ->
   option =
-    owner       : Session.get('ownerTask')
-    group       : Session.get('groupTask')
-    description : Session.get('descriptionTask')
-    priority    : Session.get('priorityTask')
-    duration    : Session.get('durationTask')
-  Schema.tasks.update  Session.get('taskDetail')._id, $set: option, (error, result) -> console.log error if error
+    owner       : Session.get('currentOwnerTask')
+    group       : Session.get('currentGroupTask')
+    description : Session.get('currentDescriptionTask')
+    priority    : Session.get('currentPriorityTask')
+    duration    : Session.get('currentDurationTask')
+  Schema.tasks.update  Session.get('currentTaskDetail')._id, $set: option, (error, result) -> console.log error if error
 
 resetTask = (context) ->
-  Session.set('taskDetail')
-  Session.set('priorityTask')
-  Session.set('durationTask')
-  Session.set('ownerTask')
-  Session.set('descriptionTask')
-  Session.set('groupTask')
+  Session.set('currentTaskDetail')
+  Session.set('currentPriorityTask')
+  Session.set('currentDurationTask')
+  Session.set('currentOwnerTask')
+  Session.set('currentDescriptionTask')
+  Session.set('currentGroupTask')
   $("[name=duration]").timepicker('setTime', '00:00')
   context.ui.$duration.timepicker('setTime', '00:00 AM') if context
 
-
 selectUpdateTask = (item, context) ->
-  if item.status < 1
-    Session.set('taskDetail', item)
-    Session.set('priorityTask', item.priority)
-    Session.set('durationTask', item.duration)
-    Session.set('ownerTask', item.owner)
-    if item.description then Session.set('descriptionTask', item.description) else Session.set('descriptionTask')
-    if item.group then Session.set('groupTask', item.group) else Session.set('groupTask')
-    hour = Math.floor(item.duration/60)
-    minute = (item.duration/60 - hour)*60
-    if hour > 12 then time = "#{hour}:#{minute} PM" else time = "#{hour}:#{minute} AM"
-    context.ui.$duration.timepicker('setTime', time)
+  if item.status is Sky.system.taskStatuses.wait.key
+    Session.set('currentTaskDetail', item)
+    Session.set('currentPriorityTask', item.priority)
+    Session.set('currentDurationTask', item.duration)
+    Session.set('currentOwnerTask', item.owner)
+    if item.description then Session.set('currentDescriptionTask', item.description) else Session.set('currentDescriptionTask')
+    if item.group then Session.set('currentGroupTask', item.group) else Session.set('currentGroupTask')
+    context.ui.$duration.timepicker('setTime', calculateMinuteToTime(item.duration))
   else
-    if Session.get('taskDetail') then resetTask(context)
+    if Session.get('currentTaskDetail') then resetTask(context)
 
-resetForm = (context) -> $(item).val('') for item in context.findAll("[name]")
+resetForm = (context) ->
+  $(item).val('') for item in context.findAll("[name]")
 
 calculateDuration = (time) -> time.hours*60 + time.minutes
 
 runInitTaskTracker = (context) ->
   return if Sky.global.taskTracker
   Sky.global.taskTracker = Tracker.autorun ->
-    unless Session.get('priorityTask') then Session.set('priorityTask', 1)
-    unless Session.get('durationTask') then Session.set('durationTask', 0)
-    unless Session.get('viewTask') then Session.set('viewTask', 2)
-    Session.set 'ownerList', Schema.userProfiles.find({}).fetch()
-    Session.set 'resetTask', false
+    Session.set('ownerList', Schema.userProfiles.find({}).fetch())
     if Session.get('statusFilter') && Session.get('userFilter')
-      userFilter = if Session.get('userFilter') is "1" then {owner: Meteor.userId()} else {}
-      statusFilter = if Session.get('statusFilter') is "all" then {} else Session.get('statusFilter')
+      userFilter = if Session.get('userFilter') is "1" then {$or:[{creator: Meteor.userId()},{owner: Meteor.userId()}]} else {}
+      statusFilter = if Session.get('statusFilter') is "all" then {} else {status: Session.get('statusFilter')}
+      Session.set 'filteredTasks', Schema.tasks.find({$and:[statusFilter, userFilter]},taskDefaultSort).fetch()
 
-      Session.set 'filteredTasks', Schema.tasks.find({$and: [statusFilter, userFilter]}).fetch()
 
-Sky.appTemplate.extends Template.taskManager,
+Sky.appTemplate.extends Template.task,
   allowCreate: -> if Session.get('allowCreateNewTask') then 'btn-success' else 'btn-default disabled'
-  description : -> if Session.get('descriptionTask') then Session.get('descriptionTask') else ''
-  group: -> if Session.get('groupTask') then Session.get('groupTask') else ''
-  hideCreate: -> return "display: none" if Session.get('taskDetail')
-  hideUpdate: -> return "display: none" unless Session.get('taskDetail')
+  description : -> if Session.get('currentDescriptionTask') then Session.get('currentDescriptionTask') else ''
+  group: -> if Session.get('currentGroupTask') then Session.get('currentGroupTask') else ''
+  hideCreate: -> return "display: none" if Session.get('currentTaskDetail')
+  hideUpdate: -> return "display: none" unless Session.get('currentTaskDetail')
 
   priorityTaskSelectOption:
     query: (query) -> query.callback
       results: Sky.system.priorityTasks
-    initSelection: (element, callback) -> callback _.findWhere(Sky.system.priorityTasks, {_id: Session.get('priorityTask')})
+    initSelection: (element, callback) -> callback _.findWhere(Sky.system.priorityTasks, {_id: Session.get('currentPriorityTask')})
     formatSelection: formatPriorityTaskSearch
     formatResult: formatPriorityTaskSearch
     placeholder: 'CHỌN'
     minimumResultsForSearch: -1
     changeAction: (e) ->
-      Session.set('priorityTask', e.added._id )
-#      Schema.tasks.update Session.get('taskDetail')._id, $set:{priority: e.added._id}  if Session.get('taskDetail')
-    reactiveValueGetter: ->_.findWhere(Sky.system.priorityTasks, {_id: Session.get('priorityTask')})
-
-  viewTaskSelectOption:
-    query: (query) -> query.callback
-      results: Sky.system.viewTasks
-    initSelection: (element, callback) -> callback _.findWhere(Sky.system.viewTasks, {_id: Session.get('viewTask')})
-    formatSelection: formatViewTaskSearch
-    formatResult: formatViewTaskSearch
-    placeholder: 'CHỌN CÁCH XEM'
-    minimumResultsForSearch: -1
-    changeAction: (e) ->
-      Session.set('viewTask', e.added._id )
-      resetTask()
-    reactiveValueGetter: ->_.findWhere(Sky.system.viewTasks, {_id: Session.get('viewTask')})
+      Session.set('currentPriorityTask', e.added._id )
+    reactiveValueGetter: ->_.findWhere(Sky.system.priorityTasks, {_id: Session.get('currentPriorityTask')})
 
   ownerTaskSelectOption:
     query: (query) -> query.callback
       results: Session.get('ownerList')
     initSelection: (element, callback) -> callback (
-      if Session.get('ownerTask')
-        _.findWhere(Session.get('ownerList'), {user: Session.get('ownerTask')})
+      if Session.get('currentOwnerTask')
+        _.findWhere(Session.get('ownerList'), {user: Session.get('currentOwnerTask')})
       else
         'skyReset')
     formatSelection: formatOwnerTaskSearch
@@ -131,36 +116,32 @@ Sky.appTemplate.extends Template.taskManager,
     others:
       allowClear: true
     changeAction: (e) ->
-      Session.set('ownerTask') if e.removed
-      Session.set('ownerTask', e.added.user) if e.added
-#      if Session.get('taskDetail')
-#        if e.added?.user
-#          Schema.tasks.update(Session.get('taskDetail')._id, $set:{owner: e.added.user})
-#        else
-#          Schema.tasks.update(Session.get('taskDetail')._id, $unset:{owner: ''})
+      Session.set('currentOwnerTask') if e.removed
+      Session.set('currentOwnerTask', e.added.user) if e.added
     reactiveValueGetter: ->
-      if Session.get('ownerTask')
-        _.findWhere(Session.get('ownerList'), {user: Session.get('ownerTask')})
+      if Session.get('currentOwnerTask')
+        _.findWhere(Session.get('ownerList'), {user: Session.get('currentOwnerTask')})
       else
         'skyReset'
 
   taskDetailOptions:
     itemTemplate: (context) ->
       if context.status == 0 then 'taskDetailThumbnail' else 'taskDetailThumbnail'
-    reactiveSourceGetter: -> Session.get('filteredTasks') ? []
+    reactiveSourceGetter: -> Session.get('filteredTasks')
     wrapperClasses: 'detail-grid row'
+
+
+
 
   created: ->
     Session.setDefault('allowCreateNewTask', false)
-    Session.setDefault('userFilter', 1)
-    Session.setDefault('statusFilter', 1)
+    Session.setDefault('userFilter', '1')
+    Session.setDefault('statusFilter', 'wait')
+    Session.setDefault('currentPriorityTask', 1)
+    Session.setDefault('currentDurationTask', 0)
+
+
   events:
-    "input input": (event, template) -> checkAllowCreate(template)
-    "click #createTask": (event, template) -> createTask(template)
-    "click #resetTask": (event, template) -> resetTask(template)
-    "click #updateTask": (event, template) -> updateTask(template); resetTask()
-    "click .taskDetail .fa.fa-unlock": (event, template) -> resetTask(template)
-    "click .taskDetail .fa.fa-pencil-square-o": (event, template) -> selectUpdateTask(@, template)
     "click [data-status]": (event, template) ->
       $element = $(event.currentTarget)
       Session.set 'statusFilter', $element.attr("data-status")
@@ -168,9 +149,17 @@ Sky.appTemplate.extends Template.taskManager,
       $element = $(event.currentTarget)
       Session.set 'userFilter', $element.attr("data-user")
 
-    'blur .group': (event, template)-> Session.set('groupTask', template.ui.$group.val())
-    'blur .description': (event, template)-> Session.set('descriptionTask', template.ui.$description.val())
+    "input input": (event, template) -> checkAllowCreate(template)
+    "click #createTask": (event, template) -> createTask(template)
 
+    "click #resetTask": (event, template) -> resetTask(template)
+    "click #updateTask": (event, template) -> updateTask(template); resetTask()
+
+    'blur .group': (event, template)-> Session.set('currentGroupTask', template.ui.$group.val())
+    'blur .description': (event, template)-> Session.set('currentDescriptionTask', template.ui.$description.val())
+
+    "click .taskDetail .fa.fa-unlock": (event, template) -> resetTask(template)
+    "click .taskDetail .fa.fa-pencil-square-o": (event, template) -> selectUpdateTask(@, template)
 
   rendered: ->
     runInitTaskTracker()
@@ -180,11 +169,7 @@ Sky.appTemplate.extends Template.taskManager,
       defaultTime: '00:00'
 
     @ui.$duration.timepicker().on('changeTime.timepicker', (e)->
-#      if Session.get('taskDetail')
-#        Schema.tasks.update Session.get('taskDetail')._id, $set:{duration: calculateDuration(e.time)}
-#      else
-#        Session.set('durationTask', calculateDuration(e.time))
-      Session.set('durationTask', calculateDuration(e.time))
+      Session.set('currentDurationTask', calculateDuration(e.time))
     )
 
 
