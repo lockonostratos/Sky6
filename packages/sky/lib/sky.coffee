@@ -149,6 +149,7 @@ class Sky
       name = splited[splited.length - 1]
       middle = splited[splited.length - 2]?.substring(0,1) if name.length < 6
       "#{if middle then middle + '.' else ''} #{name}"
+    @respectName: (fullName, gender) -> "#{if gender then 'Anh' else 'Chị'} #{fullName.split(' ').pop()}"
 
     @colors: ['green', 'light-green', 'yellow', 'orange', 'blue', 'dark-blue', 'lime', 'pink', 'red', 'purple', 'dark',
               'gray', 'magenta', 'teal', 'turquoise', 'green-sea', 'emeral', 'nephritis', 'peter-river', 'belize-hole',
