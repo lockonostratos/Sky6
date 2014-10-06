@@ -4,4 +4,5 @@ template(name="customerThumbnail")
       .right-caption {{name}}
       .full-desc.price {{phone}}
       .avatar(style="background-image: url('images/missing.jpg')")
-      .full-desc.trash: a(href="#"): i.fa.fa-trash-o
+      if isntDelete
+        .full-desc.trash: a(href="#"): i.fa.fa-trash-o

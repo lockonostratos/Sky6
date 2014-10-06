@@ -46,6 +46,12 @@ class Sky
       remaking:               {key: 'remaking'}
       frozen:                 {key: 'frozen'}
 
+    @deliveryStatuses:
+      wait:                   {key: 'wait'}
+      selected:               {key: 'selected'}
+      done:                   {key: 'done'}
+
+
     @paymentMethods: [
       _id: 0
       display: 'TIỀN MẶT'
@@ -169,6 +175,18 @@ class Sky
       newHeight = $(window).height() - $("#header").outerHeight() - $("#footer").outerHeight() - 6
       console.log newHeight
       $("#container").css('height', newHeight)
+
+    @formatDate: (dateObj = new Date(),format = 0)->
+      curr_Day   = dateObj.getDate()
+      curr_Month = dateObj.getMonth()+1
+      curr_Tear  = dateObj.getFullYear().toString()
+      if curr_Day < 10 then curr_Day = "0#{curr_Day}"
+      if curr_Month < 10 then curr_Month = "0#{curr_Month}"
+      switch format
+        when 0 then "#{curr_Day}/#{curr_Month}/#{curr_Tear}"
+        when 1 then "#{curr_Day}/#{curr_Month}/#{curr_Tear.substring(2,4)}"
+
+
 
 @Sky = Sky
 

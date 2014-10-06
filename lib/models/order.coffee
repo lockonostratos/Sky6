@@ -96,6 +96,19 @@ createTransactionAndDetailByOrder = (saleID)->
   transaction = Transaction.newBySale(sale)
   transactionDetail = TransactionDetail.newByTransaction(transaction)
 
+createOrderCode= ->
+  date = new Date()
+  day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  oldOrder = Schema.orders.findOne({'version.createdAt': {$gt: day}},{sort: {'version.createdAt': -1}})
+  if oldOrder
+    code = Number(oldOrder.orderCode.substring(0,3))+1
+    if 9 < code < 100 then code = "0#{code}"
+    if code < 10 then code = "00#{code}"
+    orderCode = "#{code}-01-#{Sky.helpers.formatDate()}"
+  else
+    orderCode = "001-01-#{Sky.helpers.formatDate()}"
+  orderCode
+
 removeOrderAndOrderDetailAfterCreateSale= (orderId)->
   return Console.log('Bạn Chưa Đăng Nhập') if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
   return Console.log 'Order Không Tồn Tại' if !order = Schema.orders.findOne({
@@ -129,6 +142,7 @@ removeOrderAndOrderDetailAfterCreateSale= (orderId)->
 Schema.add 'orders', class Order
   @createOrder: ->
     userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+
     option =
       merchant               : userProfile.currentMerchant
       warehouse              : userProfile.currentWarehouse
@@ -140,7 +154,7 @@ Schema.add 'orders', class Order
       currentPrice           : 0
       currentDiscountCash    : 0
       currentDiscountPercent : 0
-      orderCode              : 'asdsad'
+      orderCode              : createOrderCode()
       paymentsDelivery       : 0
       paymentMethod          : 0
       discountCash           : 0

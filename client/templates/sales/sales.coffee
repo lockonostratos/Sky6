@@ -119,7 +119,7 @@ Sky.appTemplate.extends Template.sales,
   tabOptions:
     source: 'orderHistory'
     currentSource: 'currentOrder'
-    caption: '_id'
+    caption: 'orderCode'
     key: '_id'
     createAction: -> Order.createOrderAndSelect()
     destroyAction: (instance) -> Order.removeAll(instance._id)
