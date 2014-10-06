@@ -173,7 +173,6 @@ class Sky
 
     @reArrangeLayout: ->
       newHeight = $(window).height() - $("#header").outerHeight() - $("#footer").outerHeight() - 6
-      console.log newHeight
       $("#container").css('height', newHeight)
 
     @formatDate: (dateObj = new Date(),format = 0)->

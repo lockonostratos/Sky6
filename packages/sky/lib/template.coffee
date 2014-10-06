@@ -45,7 +45,6 @@ class Sky.appTemplate
         alias = $item.attr('name')
         @ui.switches[alias] = new Switchery(item)
 
-
       $(item).attr('maxlength', 120) for item in @findAll("input:not([maxlength])")
       Sky.helpers.reArrangeLayout()
 
