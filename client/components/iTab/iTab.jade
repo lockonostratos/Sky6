@@ -1,10 +1,9 @@
 template(name="iTab")
 	ul.sky-tab
 		li.new-button
-			a(href="#") &nbsp;
+			.title &nbsp;
 			span.fa.fa-plus
 		each sources
 			li(class="#{activeClass}")
-				a.hidden
-				a(href="#") #{getCaption}
+				.title #{getCaption}
 				span.fa.fa-times-circle

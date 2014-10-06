@@ -20,15 +20,13 @@ ul.sky-tab {
       border-top-color: transparent;
     }
     &:not(.active):hover { background-color: #e6e6e6; }
-    a {
+    .title {
+      cursor: pointer;
       padding: 8px 35px 5px 12px;
       display: block;
       color: #333333;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      .text-overflow;
       text-transform: uppercase;
-      &:focus { outline-style: none; -moz-outline-style:none; }
     }
     span {
       position: absolute !important;
@@ -48,9 +46,9 @@ ul.sky-tab {
     border-top: solid 1px #E6E6E6;
     margin: 0 5px 0 10px;
     top: -1px;
-    a { padding: 8px 22px 5px 12px; }
+    .title { padding: 8px 22px 5px 12px; }
     &:hover {
-      a { background: #fff; }
+      .title { background: #fff; }
       span {
         color: @lime;
       }

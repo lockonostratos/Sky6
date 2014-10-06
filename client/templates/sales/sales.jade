@@ -50,6 +50,9 @@ template(name="sales")
         input.contactName(value="#{delivery.contactName}")
 
     .editor-row.extra(name='advanced')
+      .editor-wrapper(style="width: 200px; margin-right: 5px;")
+        span.ilabel.optional nhân viên
+        +iSelect(options=sellerSelectOptions class="field")
       .editor-wrapper(style="width: 120px")
         span.ilabel.optional thanh toán
         +iSelect(options=paymentMethodSelectOption class="field")
@@ -69,26 +72,22 @@ template(name="sales")
         +iSpinEdit(options=billPercentDiscountOptions)
 
     .editor-row
-      .editor-wrapper(style="width: 200px; margin-right: 5px;")
-        span.ilabel.right.optional nhân viên
-        +iSelect(options=sellerSelectOptions class="field")
       .editor-wrapper(style="width: 180px")
-        span.ilabel.right.optional khách hàng
+        span.ilabel.optional khách hàng
         +iSelect(options=customerSelectOptions class="field")
       .editor-wrapper.pull-right
         button.btn.btn-default.pull-right.finish(type='submit' style="margin-right: 5px;") HOÀN TẤT
       .editor-wrapper.pull-right(style="width: 120px")
-        span.ilabel.optional.center thực thu
+        span.ilabel.optional.right thực thu
         input.quality(value="{{formatNumber order.finalPrice}}" disabled)
       .editor-wrapper.pull-right(style="width: 120px")
-        span.ilabel số dư
+        span.ilabel.right số dư
         input.debit(value="{{formatNumber currentDebit}}" disabled)
       .editor-wrapper.pull-right(style="width: 160px")
-        span.ilabel tiền nhận vào
+        span.ilabel.center tiền nhận vào
         +iSpinEdit(options=depositOptions)
       //.col.col-auto.pull-right(style="width: 120px")
       //  span.ilabel.center.optional tạm tính
       //  input.quality(value="#{order.totalPrice}" disabled)
 
     +iTab(options=tabOptions)
-
