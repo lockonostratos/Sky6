@@ -104,6 +104,8 @@ Meteor.startup ->
       currentWarehouse: warehouse
       systemVersion: version
 
+
+
     merchant.addCustomer({
       creator: son
       name: 'Lê Ngọc Sơn'

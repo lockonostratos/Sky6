@@ -32,7 +32,7 @@ Schema2.customers = new SimpleSchema
     type: String
     optional: true
 
-  sex:
+  gender:
     type: Boolean
     optional: true
 

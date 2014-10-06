@@ -101,12 +101,14 @@ createOrderCode= ->
   day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   oldOrder = Schema.orders.findOne({'version.createdAt': {$gt: day}},{sort: {'version.createdAt': -1}})
   if oldOrder
-    code = Number(oldOrder.orderCode.substring(0,3))+1
-    if 9 < code < 100 then code = "0#{code}"
-    if code < 10 then code = "00#{code}"
-    orderCode = "#{code}-01-#{Sky.helpers.formatDate()}"
+    lenght = oldOrder.orderCode.length
+    code = Number(oldOrder.orderCode.substring(lenght-4))+1
+    if 99 < code < 999 then code = "0#{code}"
+    if 9 < code < 100 then code = "00#{code}"
+    if code < 10 then code = "000#{code}"
+    orderCode = "#{Sky.helpers.formatDate()}-#{code}"
   else
-    orderCode = "001-01-#{Sky.helpers.formatDate()}"
+    orderCode = "#{Sky.helpers.formatDate()}-0001"
   orderCode
 
 removeOrderAndOrderDetailAfterCreateSale= (orderId)->
@@ -138,22 +140,25 @@ removeOrderAndOrderDetailAfterCreateSale= (orderId)->
   else
 
 
+
+
 #-----------------------------------------------------------------------------------------------------------------------
 Schema.add 'orders', class Order
   @createOrder: ->
     userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-
+    buyer = Schema.customers.findOne({parentMerchant: userProfile.parentMerchant})
     option =
       merchant               : userProfile.currentMerchant
       warehouse              : userProfile.currentWarehouse
       creator                : userProfile.user
       seller                 : userProfile.user
-      buyer                  : "null"
+      buyer                  : buyer?._id
       currentProduct         : "null"
       currentQuality         : 0
       currentPrice           : 0
       currentDiscountCash    : 0
       currentDiscountPercent : 0
+      tabDisplay             : Sky.helpers.respectName(buyer.name, buyer.gender)
       orderCode              : createOrderCode()
       paymentsDelivery       : 0
       paymentMethod          : 0

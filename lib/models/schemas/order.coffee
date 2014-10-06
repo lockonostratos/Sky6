@@ -16,6 +16,10 @@ Schema2.orders = new SimpleSchema
     type: String
     optional: true
 
+  tabDisplay:
+    type: String
+    optional: true
+
   orderCode:
     type: String
     optional: true

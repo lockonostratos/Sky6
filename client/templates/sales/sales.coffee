@@ -119,7 +119,7 @@ Sky.appTemplate.extends Template.sales,
   tabOptions:
     source: 'orderHistory'
     currentSource: 'currentOrder'
-    caption: 'orderCode'
+    caption: 'tabDisplay'
     key: '_id'
     createAction: -> Order.createOrderAndSelect()
     destroyAction: (instance) -> Order.removeAll(instance._id)
@@ -164,12 +164,14 @@ Sky.appTemplate.extends Template.sales,
     id: '_id'
     placeholder: 'CHỌN NGƯỜI MUA'
     changeAction: (e) ->
-      option = newDeliver()
       if customer = Schema.customers.findOne(e.added._id)
-        option.buyer = customer._id
-        option.contactName     = customer.name ? null
-        option.contactPhone    = customer.phone ? null
-        option.deliveryAddress = customer.address ? null
+        option = newDeliver()
+        if Session.get('currentOrder')?.paymentsDelivery == 1
+          option.buyer = customer._id
+          option.contactName     = customer.name ? null
+          option.contactPhone    = customer.phone ? null
+          option.deliveryAddress = customer.address ? null
+        option.tabDisplay = Sky.helpers.respectName(customer.name, customer.gender)
       else
         console.log 'Sai customer'; return
       Schema.orders.update(Session.get('currentOrder')._id, {$set: option})

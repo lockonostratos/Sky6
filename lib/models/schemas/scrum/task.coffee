@@ -41,6 +41,9 @@ Schema2.tasks = new SimpleSchema
   lateDuration:
     type: Boolean
 
+  deleted:
+    type: Boolean
+
   status:
     type: String
 

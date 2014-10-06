@@ -27,6 +27,7 @@ createTask = (context) ->
     status      : Sky.system.taskStatuses.wait.key
     remake      : 0
     lateDuration: false
+    deleted     : false
 
   if group.length > 0 then option.group = group
   if Session.get('currentOwnerTask') then option.owner = Session.get('currentOwnerTask')
@@ -78,10 +79,17 @@ runInitTaskTracker = (context) ->
     Session.set('ownerList', Schema.userProfiles.find({}).fetch())
     if Session.get('statusFilter') && Session.get('userFilter')
       userFilter = if Session.get('userFilter') is "1" then {$or:[{creator: Meteor.userId()},{owner: Meteor.userId()}]} else {}
-      statusFilter = if Session.get('statusFilter') is "all" then {} else {status: Session.get('statusFilter')}
-      Session.set 'filteredTasks', Schema.tasks.find({$and:[statusFilter, userFilter]},taskDefaultSort).fetch()
+      deletedFilter = if Session.get('statusFilter') is "deleted" then {deleted: true} else {deleted: false}
+      if Session.get('statusFilter') is "all" || Session.get('statusFilter') is "deleted"
+        statusFilter = {}
+      else
+        statusFilter = {status: {$in : Session.get('statusFilter').split(' ')}}
+
+      Session.set 'filteredTasks', Schema.tasks.find({$and:[statusFilter, userFilter, deletedFilter]},taskDefaultSort).fetch()
 
 Sky.appTemplate.extends Template.taskManager,
+  activeStatus: (status)-> return 'active' if Session.get('statusFilter') is status
+  activeUser: (user)-> return 'active' if Session.get('userFilter') is user
   allowCreate: -> if Session.get('allowCreateNewTask') then 'btn-success' else 'btn-default disabled'
   description : -> if Session.get('currentDescriptionTask') then Session.get('currentDescriptionTask') else ''
   group: -> if Session.get('currentGroupTask') then Session.get('currentGroupTask') else ''
@@ -134,7 +142,7 @@ Sky.appTemplate.extends Template.taskManager,
 
   created: ->
     Session.setDefault('allowCreateNewTask', false)
-    Session.setDefault('userFilter', '1')
+    Session.setDefault('userFilter', '2')
     Session.setDefault('statusFilter', 'wait')
     Session.setDefault('currentPriorityTask', 1)
     Session.setDefault('currentDurationTask', 0)

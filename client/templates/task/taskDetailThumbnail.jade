@@ -5,8 +5,7 @@ template(name="taskDetailThumbnail")
         |{{group}}
         a(href="#")
           i.fa.fa-pencil-square-o(style="{{hideEdit}}")
-          i.fa.fa-times(style="{{hideSkip}}")
-          i.fa.fa-tasks(style="{{hideWait}}")
+          //i.fa.fa-tasks(style="{{hideWait}}")
           i.fa.fa-thumb-tack(style="{{hideSelect}}")
           i.fa.fa-pause(style="{{hideFrozen}}")
           i.fa.fa-exclamation-triangle(style="{{hideRejected}}")
@@ -14,6 +13,7 @@ template(name="taskDetailThumbnail")
           i.fa.fa-question-circle(style="{{hideConfirming}}")
           i.fa.fa-trophy(style="{{hideDone}}")
           i.fa.fa-retweet(style="{{hideRemaking}}")
+          i.fa.fa-trash(style="{{hideDeleted}}")
       .task-priority {{priorityAlias}}
       .task-buget {{formatedBuget}}
       .task-description {{description}}

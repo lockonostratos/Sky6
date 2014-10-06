@@ -16,29 +16,18 @@ Sky.template.extends Template.taskDetailThumbnail,
   ownerAlias: -> Sky.helpers.shortName(Schema.userProfiles.findOne({user: @owner})?.fullName if @owner)
   formatedBuget: -> "#{pad(Math.floor(@duration/60))}:#{pad(@duration%60)}"
 
+#  hideWait:-> return "display: none" unless @status is Sky.system.taskStatuses.skip.key
   hideEdit:-> return "display: none" unless @status is Sky.system.taskStatuses.wait.key
-  hideSkip:-> return "display: none" unless @status is Sky.system.taskStatuses.wait.key
-  hideWait:-> return "display: none" unless @status is Sky.system.taskStatuses.skip.key
   hideSelect:-> return "display: none" unless @status is Sky.system.taskStatuses.wait.key and @duration > 0
   hideFrozen:-> return "display: none" unless @status is Sky.system.taskStatuses.working.key or @status is Sky.system.taskStatuses.rejected.key
   hideRejected:-> return "display: none" unless @status is Sky.system.taskStatuses.confirming.key
+  hideRemaking:-> return "display: none" unless @status is Sky.system.taskStatuses.done.key
   hideWorking:-> return "display: none"  unless @status is Sky.system.taskStatuses.selected.key or @status is Sky.system.taskStatuses.frozen.key or @status is Sky.system.taskStatuses.rejected.key or @status is Sky.system.taskStatuses.remaking.key
   hideConfirming:-> return "display: none" unless @status is Sky.system.taskStatuses.working.key
   hideDone:-> return "display: none" unless @status is Sky.system.taskStatuses.confirming.key
-  hideRemaking:-> return "display: none" unless @status is Sky.system.taskStatuses.done.key
-
-
-
+  hideDeleted:-> return "display: none" unless @deleted is false
 
   events:
-    'dblclick .fa.fa-tasks': (event, template)->
-      #----Skip to Wait----
-      if @status is Sky.system.taskStatuses.skip.key
-        Schema.tasks.update(@_id, $set:{status: Sky.system.taskStatuses.wait.key})
-    'dblclick .fa.fa-times': (event, template)->
-      #----Wait to Skip----
-      if @status is Sky.system.taskStatuses.wait.key
-        Schema.tasks.update(@_id, $set:{status: Sky.system.taskStatuses.skip.key})
     'dblclick .fa.fa-thumb-tack': (event, template)->
       #----Wait to Selected----
       if @status is Sky.system.taskStatuses.wait.key and @duration > 0
@@ -91,12 +80,9 @@ Sky.template.extends Template.taskDetailThumbnail,
       #----Done to Remaking----
       if @status is Sky.system.taskStatuses.done.key and @owner is Meteor.userId()
         Schema.tasks.update(@_id, $set:{status: Sky.system.taskStatuses.remaking.key}, $inc:{remake: 1})
-
-
-
-
-
-
+    'dblclick .fa.fa-trash': (event, template)->
+      #----deleted to unDeleted----
+      if @deleted is false then Schema.tasks.update(@_id, $set:{deleted: true})
 
 
   cooldownOptions: -> {

@@ -36,7 +36,7 @@ class Sky
       taskManagement:         { group: 'scrum',     key: 'scrumShow',           description: 'q.lý task' }
 
     @taskStatuses:
-      skip:                   {key: 'skip'}
+      deleted:                {key: 'deleted'}
       wait:                   {key: 'wait'}
       selected:               {key: 'selected'}
       working:                {key: 'working'}
@@ -45,6 +45,7 @@ class Sky
       rejected:               {key: 'rejected'}
       remaking:               {key: 'remaking'}
       frozen:                 {key: 'frozen'}
+
 
     @deliveryStatuses:
       wait:                   {key: 'wait'}
@@ -183,7 +184,7 @@ class Sky
       if curr_Day < 10 then curr_Day = "0#{curr_Day}"
       if curr_Month < 10 then curr_Month = "0#{curr_Month}"
       switch format
-        when 0 then "#{curr_Day}/#{curr_Month}/#{curr_Tear}"
+        when 0 then "#{curr_Day}#{curr_Month}#{curr_Tear.substring(2,4)}"
         when 1 then "#{curr_Day}/#{curr_Month}/#{curr_Tear.substring(2,4)}"
 
 
