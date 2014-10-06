@@ -38,4 +38,4 @@ Schema2.customers = new SimpleSchema
 
   version: { type: Schema.Version }
 
-Schema.add 'customers'
+

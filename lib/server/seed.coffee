@@ -1,5 +1,18 @@
 Meteor.startup ->
   return
+  guest    = Accounts.createUser(email: 'dungthu@gera.vn'    , password: '12345')
+  mer_VTNN = Merchant.create { name: 'Vật Tư Nông Nghiệp', creator: guest }
+  mer_VTNN = Merchant.findOne mer_VTNN
+  war_VTNN = mer_VTNN.addWarehouse { name: 'Kho Chính', creator: guest, isRoot : true, checkingInventory: false}
+  Schema.userProfiles.insert
+    user: guest
+    isRoot: true
+    fullName: "tài khoản dùng thử"
+    parentMerchant: mer_VTNN
+    currentMerchant: mer_VTNN
+    currentWarehouse: war_VTNN
+    systemVersion: '0.7.1'
+
   resetDatabase()
   if Schema.merchants.find().count() is 0
     version = '0.7.1'

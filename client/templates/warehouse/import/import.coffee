@@ -3,28 +3,41 @@ formatImportSearch = (item) -> "#{item.description}" if item
 formatImportProductSearch = (item) -> "#{item.name} [#{item.skulls}]" if item
 formatImportProviderSearch = (item) -> "#{item.name}" if item
 
+reUpdateProduct = (productId)->
+  product = Schema.products.findOne(productId)
+  if product
+    option =
+      currentProduct     : product._id
+      currentProvider    : product.provider ? 'skyReset'
+      currentQuality     : 1
+      currentImportPrice : product.importPrice ? 0
+    if product.price > 0
+      Schema.imports.update(Session.get('currentImport')._id, $set: option, $unset: {currentPrice: ""})
+    else
+      option.currentPrice = product.importPrice ? 0
+      Schema.imports.update(Session.get('currentImport')._id, {$set: option})
+    Session.set 'currentProductInstance', product
+
 runInitImportTracker = (context) ->
   return if Sky.global.importTracker
   Sky.global.importTracker = Tracker.autorun ->
-    if currentProfile = Session.get('currentProfile')
-      if currentProfile.currentWarehouse
-        importHistory = Schema.imports.find({
-          warehouse : Session.get('currentWarehouse')._id
-          creator   : Meteor.userId()
-          submited  : false
-        }).fetch()
-        (Session.set 'importHistory', importHistory) if importHistory
-
+    if Session.get('currentProfile')?.currentWarehouse
+      importHistory = Schema.imports.find({
+        warehouse : Session.get('currentProfile')?.currentWarehouse
+        creator   : Meteor.userId()
+        submited  : false
+      }).fetch()
+      if importHistory
         if importHistory.length > 0
-          currentImport = _.findWhere(importHistory, {_id: currentProfile.currentImport})
-          if currentImport
-            Session.set 'currentImport', currentImport
-          else
-            currentImport = importHistory[0]
-            Session.set 'currentImport', currentImport
+          Session.set('importHistory', importHistory)
         else
-          currentImport = Import.createdByWarehouseAndSelect(currentProfile.currentWarehouse, {description: 'New Import'})
-        Session.set 'currentImportDetails', Schema.importDetails.find({import: currentImport._id}).fetch()
+#        currentImport = Import.createdByWarehouseAndSelect(Session.get('currentProfile').currentWarehouse, {description: 'New Import'})
+
+    if Session.get('importHistory')
+      currentImport =  _.findWhere(Session.get('importHistory'), {_id: Session.get('currentProfile').currentImport})
+      unless currentImport then currentImport = importHistory[0]
+      Session.set 'currentImport', currentImport
+      Session.set 'currentImportDetails', Schema.importDetails.find({import: currentImport._id}).fetch()
 
     if currentProductId = Session.get('currentImport')?.currentProduct
       if currentProduct = Schema.products.findOne(currentProductId)
@@ -35,12 +48,10 @@ runInitImportTracker = (context) ->
 Sky.appTemplate.extends Template.import,
   warehouseImport: -> Session.get 'currentImport'
   hideAddImportDetail: -> return "display: none" if Session.get('currentImport')?.finish == true
-  hidePrice: -> return "display: none" if !Session.get('currentImport')?.currentPrice
+  hidePrice: -> return "display: none" unless Session.get('currentImport')?.currentPrice >= 0
   hideFinishImport: -> return "display: none" if Session.get('currentImport')?.finish == true || !(Session.get('currentImportDetails')?.length > 0)
   hideEditImport: -> return "display: none" if Session.get('currentImport')?.finish == false
   hideSubmitImport: -> return "display: none" if Session.get('currentImport')?.submited == true
-
-
 
   tabOptions:
     source: 'importHistory'
@@ -49,7 +60,11 @@ Sky.appTemplate.extends Template.import,
     key: '_id'
     createAction  : -> Import.createdByWarehouseAndSelect(Session.get('currentWarehouse')._id, {description: 'new'})
     destroyAction : (instance) -> console.log Import.removeAll(instance._id)
-    navigateAction: (instance) -> UserProfile.update {currentImport: instance._id}
+    navigateAction: (instance) ->
+      UserProfile.update {currentImport: instance._id}
+      currentImport = Schema.imports.findOne(instance._id)
+      reUpdateProduct(currentImport.currentProduct)
+
 
   productSelectOptions:
     query: (query) -> query.callback
@@ -66,18 +81,7 @@ Sky.appTemplate.extends Template.import,
     placeholder: 'CHỌN SẢN PHẨM'
 #    minimumResultsForSearch: -1
     hotkey: 'return'
-    changeAction: (e) ->
-      option =
-        currentProduct     : e.added._id
-        currentProvider    : e.added.provider ? 'skyReset'
-        currentQuality     : 1
-        currentImportPrice : e.added.importPrice ? 0
-      if e.added.price > 0
-        Schema.imports.update(Session.get('currentImport')._id, $set: option, $unset: {currentPrice: ""})
-      else
-        option.currentPrice = e.added.importPrice ? 0
-        Schema.imports.update(Session.get('currentImport')._id, {$set: option})
-      Session.set 'currentProductInstance', Schema.products.findOne(e.added._id)
+    changeAction: (e) -> reUpdateProduct(e.added._id)
     reactiveValueGetter: -> Session.get('currentImport')?.currentProduct
 
   providerSelectOptions:
@@ -107,7 +111,12 @@ Sky.appTemplate.extends Template.import,
 
   importPriceOptions:
     reactiveSetter: (val) ->
-      Schema.imports.update(Session.get('currentImport')._id, {$set: { currentImportPrice: val }})
+      currentImport = Session.get('currentImport')
+      if currentImport.currentPrice
+        if currentImport.currentPrice == currentImport.currentImport || currentImport.currentPrice < val
+          Schema.imports.update(Session.get('currentImport')._id, {$set: {currentImportPrice: val, currentPrice: val}})
+      else
+        Schema.imports.update(Session.get('currentImport')._id, {$set: {currentImportPrice: val}})
       Schema.products.update(Session.get('currentImport').currentProduct, {$set:{importPrice: val}})
     reactiveValue: -> Session.get('currentImport')?.currentImportPrice ? 0
     reactiveMax: -> 999999999
@@ -127,7 +136,6 @@ Sky.appTemplate.extends Template.import,
         return Session.get('currentImport')?.currentImportPrice
       else
         Number(0)
-
     reactiveStep: -> 1000
     others:
       forcestepdivisibility: 'none'

@@ -45,7 +45,7 @@ Router.map ->
   @route route, new skyRouter(route) for route of Sky.menu
 
 
-#  @route 'warehouse', new skyRouter('warehouse') #
+  @route 'warehouse', new skyRouter('warehouse')
 #  @route 'sales', new skyRouter('sales') #
 #  @route 'billManager', new skyRouter('billManager') #
 #  @route 'billExport', new skyRouter('billExport') #
