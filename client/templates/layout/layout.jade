@@ -1,13 +1,11 @@
 template(name="layout")
   +messenger
+  +watermark
   .application(class="#{collapse}")
     +navigation
     +sidebar
     #container
       +yield
-      //#header Header
-      //#content Content <br /> Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />Content <br />
-      //#footer Footer
 
   //+messenger
   //.application(class="#{collapse}")
@@ -22,3 +20,6 @@ template(name="layout")
   //  else
   //    .wrapper
   //      .left-side: +yield
+
+template(name="watermark")
+  .watermark THIÊN BAN<br />TECH

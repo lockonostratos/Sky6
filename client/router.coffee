@@ -31,14 +31,14 @@ class @skyRouter
     @onBeforeAction = onBeforeAction if onBeforeAction
 
   onAfterAction: ->
-    $("body").removeClass() if @path isnt '/'
+#    $("body").removeClass() if @path isnt '/'
     animateUsing("#right-side", "bounceInUp")
     animateUsing("#container", "bounceInDown")
 
 Router.map ->
   @route 'metroHome', new skyRouter('/', false, ->
     AccountsEntry.signInRequired(this)
-    $("body").addClass("dark")
+#    $("body").addClass("dark")
   )
   @route 'home', new skyRouter('home')
 
