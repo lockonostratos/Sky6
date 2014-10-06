@@ -86,15 +86,12 @@ runInitTracker = (context) ->
 
     if Sky.global.salesTemplateInstance
       if Session.get('currentOrder')?.paymentsDelivery == 0 || Session.get('currentOrder')?.paymentsDelivery == 2
-        Sky.global.salesTemplateInstance.ui.extras.hide 'delivery'
+        Sky.global.salesTemplateInstance.ui.extras.toggleExtra 'delivery', false
       else
-        Sky.global.salesTemplateInstance.ui.extras.show 'delivery'
-
-
+        Sky.global.salesTemplateInstance.ui.extras.toggleExtra 'delivery'
 
 Sky.appTemplate.extends Template.sales,
   order: -> Session.get('currentOrder')
-  advancedMode: -> Session.get('enableAdvancedMode')
 
   delivery: ->
     if Session.get('currentOrder')?.paymentsDelivery == 1
@@ -439,8 +436,8 @@ Sky.appTemplate.extends Template.sales,
       else
         template.find(".comment").value = Session.get('currentOrder').comment
 
-    "change [name='advancedMode']": (event, template)->
-      Session.set('enableAdvancedMode', event.target.checked)
+    "change [name='advancedMode']": (event, template) ->
+      Sky.global.salesTemplateInstance.ui.extras.toggleExtra 'advanced', event.target.checked
 
   rendered: ->
     Sky.global.salesTemplateInstance = @

@@ -1,95 +1,94 @@
 template(name="sales")
-  .app-header
-    span.caption Bán hàng
-    .switches.right
-      input(binding="switch" type="checkbox" name="advancedMode")
+  #header
+    .caption-row
+      .title Bán hàng
+      .switches
+        input(binding="switch" type="checkbox" name="advancedMode")
 
-  .app-editor
-    .row
-      .col.col-auto(style="width: 250px")
+    .editor-row
+      .editor-wrapper(style="width: 250px")
         span.ilabel sản phẩm
         +iSelect(options=productSelectOptions class="field")
-      .col.col-auto(style="width: 100px")
+      .editor-wrapper(style="width: 100px")
         span.ilabel.center số lượng
         +iSpinEdit(options=qualityOptions)
-      .col.col-auto(style="width: 150px")
+      .editor-wrapper(style="width: 150px")
         span.ilabel.center giá bán
         +iSpinEdit(options=priceOptions)
-      .col.col-auto(style="width:70px")
+      .editor-wrapper(style="width:70px")
         button.btn.btn-default.addOrderDetail(type='submit') THÊM
 
-      .col.col-auto.pull-right(style="width: 150px")
+      .editor-wrapper.right(style="width: 150px")
         span.ilabel.optional giá tổng
         input.quality(value="{{formatNumber currentFinalPrice}}" disabled)
-      .col.col-auto.pull-right(style="width: 150px")
+      .editor-wrapper.right(style="width: 150px")
         span.ilabel.center.optional giảm giá
         +iSpinEdit(options=discountCashOptions)
-      .col.col-auto.pull-right(style="width:100px")
+      .editor-wrapper.right(style="width:100px")
         span.ilabel.center.optional giảm %
         +iSpinEdit(options=discountPercentOptions)
 
-  .app-content
+  #content
    +iGrid(options=saleDetailOptions)
 
-  .app-summary
-    if advancedMode
-      .row
-        .col.col-auto(style="width: 120px")
-          span.ilabel.optional thanh toán
-          +iSelect(options=paymentMethodSelectOption class="field")
-        .col.col-auto(style="width: 120px")
-          span.ilabel.optional giao hàng
-          +iSelect(options=paymentsDeliverySelectOption class="field")
+  #footer
+    .editor-row.extra(name='delivery')
+      .editor-wrapper.right(style="width:200px")
+        span.ilabel ghi chú
+        input.comment(value="#{delivery.comment}")
+      .editor-wrapper.right(style="width:100px")
+        span.ilabel ngày giao hàng
+        input.deliveryDate(name="deliveryDate" value="#{delivery.deliveryDate}")
+      .editor-wrapper.right(style="width:350px")
+        span.ilabel địa chỉ giao hàng
+        input.deliveryAddress(value="#{delivery.deliveryAddress}")
+      .editor-wrapper.right(style="width:130px")
+        span.ilabel số điện thoại
+        input.contactPhone(value="#{delivery.contactPhone}")
+      .editor-wrapper.right(style="width:170px")
+        span.ilabel tên người nhận
+        input.contactName(value="#{delivery.contactName}")
 
-        .col.col-auto.pull-right(style="width: 195px")
-          span.ilabel.optional phương thức giảm giá
-          +iSelect(options=billDiscountSelectOption class="field")
-        .col.col-auto.pull-right(style="width: 160px")
-          span.ilabel.center.optional giảm giá
-          +iSpinEdit(options=billCashDiscountOptions)
-          //input.quality(value="#{order.discountCash}" disabled)
-        .col.col-auto.pull-right(style="width:150px")
-          span.ilabel.center.optional giảm %
-          +iSpinEdit(options=billPercentDiscountOptions)
+    .editor-row.extra(name='advanced')
+      .editor-wrapper(style="width: 120px")
+        span.ilabel.optional thanh toán
+        +iSelect(options=paymentMethodSelectOption class="field")
+      .editor-wrapper(style="width: 120px")
+        span.ilabel.optional giao hàng
+        +iSelect(options=paymentsDeliverySelectOption class="field")
 
-    .row
-      .col.col-auto(style="width: 200px; margin-right: 5px;")
+      .editor-wrapper.right(style="width: 195px")
+        span.ilabel.optional phương thức giảm giá
+        +iSelect(options=billDiscountSelectOption class="field")
+      .editor-wrapper.right(style="width: 160px")
+        span.ilabel.center.optional giảm giá
+        +iSpinEdit(options=billCashDiscountOptions)
+        //input.quality(value="#{order.discountCash}" disabled)
+      .editor-wrapper.right(style="width:150px")
+        span.ilabel.center.optional giảm %
+        +iSpinEdit(options=billPercentDiscountOptions)
+
+    .editor-row
+      .editor-wrapper(style="width: 200px; margin-right: 5px;")
         span.ilabel.right.optional nhân viên
         +iSelect(options=sellerSelectOptions class="field")
-      .col.col-auto(style="width: 180px")
+      .editor-wrapper(style="width: 180px")
         span.ilabel.right.optional khách hàng
         +iSelect(options=customerSelectOptions class="field")
-      .col.col-auto.pull-right
+      .editor-wrapper.pull-right
         button.btn.btn-default.pull-right.finish(type='submit' style="margin-right: 5px;") HOÀN TẤT
-      .col.col-auto.pull-right(style="width: 120px")
+      .editor-wrapper.pull-right(style="width: 120px")
         span.ilabel.optional.center thực thu
         input.quality(value="{{formatNumber order.finalPrice}}" disabled)
-      .col.col-auto.pull-right(style="width: 120px")
+      .editor-wrapper.pull-right(style="width: 120px")
         span.ilabel số dư
         input.debit(value="{{formatNumber currentDebit}}" disabled)
-      .col.col-auto.pull-right(style="width: 160px")
+      .editor-wrapper.pull-right(style="width: 160px")
         span.ilabel tiền nhận vào
         +iSpinEdit(options=depositOptions)
       //.col.col-auto.pull-right(style="width: 120px")
       //  span.ilabel.center.optional tạm tính
       //  input.quality(value="#{order.totalPrice}" disabled)
 
-    .row.extra(name='delivery')
-      .col.col-auto.pull-right(style="width:200px")
-        span.ilabel ghi chú
-        input.comment(value="#{delivery.comment}")
-      .col.col-auto.pull-right(style="width:100px")
-        span.ilabel ngày giao hàng
-        input.deliveryDate(name="deliveryDate" value="#{delivery.deliveryDate}")
-      .col.col-auto.pull-right(style="width:350px")
-        span.ilabel địa chỉ giao hàng
-        input.deliveryAddress(value="#{delivery.deliveryAddress}")
-      .col.col-auto.pull-right(style="width:130px")
-        span.ilabel số điện thoại
-        input.contactPhone(value="#{delivery.contactPhone}")
-      .col.col-auto.pull-right(style="width:170px")
-        span.ilabel tên người nhận
-        input.contactName(value="#{delivery.contactName}")
+    +iTab(options=tabOptions)
 
-  .app-status
-   +iTab(options=tabOptions)

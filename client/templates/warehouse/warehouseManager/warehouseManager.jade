@@ -1,20 +1,20 @@
 template(name="warehouseManager")
-  .app-header
-    span.caption QUẢN LÝ KHO HÀNG
+  #header
+    .caption-row
+      .title QUẢN LÝ KHO HÀNG
 
-  .app-editor
-    .row
-      .col.col-auto(style="width:150px")
+    .editor-row
+      .editor-wrapper(style="width:150px")
         span.ilabel.optional chi nhánh
         +iSelect(options=merchantSelectOptions class="field")
-      .col.col-auto
+      .editor-wrapper
         span.ilabel tên kho
         input(name="name" maxlength="40")
-      .col.col-auto(style="width: 300px")
+      .editor-wrapper(style="width: 300px")
         span.ilabel.optional địa chỉ
         input(name="address")
-      .col.col-auto
+      .editor-wrapper
         button.btn#createWarehouse(class="{{allowCreate}}") TẠO MỚI
 
-  .app-content
+  #content
     +iGrid(options=warehouseDetailOptions)

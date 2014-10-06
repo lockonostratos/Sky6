@@ -1,42 +1,41 @@
 template(name="returns")
-  .app-header
-    span.caption Trả Hàng
-  .app-editor
-    .row
-      .col.col-auto(style="width: 250px")
+  #header
+    .caption-row: .title Trả Hàng
+    .editor-row
+      .editor-wrapper(style="width: 250px")
         span.ilabel chọn phiếu bán hàng
         +iSelect(options=saleSelectOptions class="field")
-      .col.col-auto(style="width: 400px")
+      .editor-wrapper(style="width: 400px")
         span.ilabel chọn hàng trả
         +iSelect(options=returnProductSelectOptions class="field")
-      .col.col-auto(style="width: 100px")
+      .editor-wrapper(style="width: 100px")
         span.ilabel số lượng trả
         +iSpinEdit(options=returnQualityOptions)
-      .col.col-auto(style="width:150px; {{hideAddReturnDetail}}")
+      .editor-wrapper(style="width:150px; {{hideAddReturnDetail}}")
         button.btn.btn-default.addReturnDetail(type='submit') THÊM
 
-  .app-content
+  #content
     +iGrid(options=returnDetailOptions)
-  .app-summary
-    .row
-      .col.col-auto.pull-right(style="width:100px; {{hideSubmitReturn}}")
+
+  #footer
+    .editor-row
+      .editor-wrapper.right(style="width:100px; {{hideSubmitReturn}}")
         button.btn.btn-default.submitReturn(type='submit') ĐÃ DUYỆT
 
-      .col.col-auto.pull-right(style="width:110px; {{hideEditReturn}}")
+      .editor-wrapper.right(style="width:110px; {{hideEditReturn}}")
         button.btn.btn-default.editReturn(type='submit') CHỈNH SỬA
 
-      .col.col-auto.pull-right(style="width:190px; {{hideFinishReturn}}")
+      .editor-wrapper.right(style="width:190px; {{hideFinishReturn}}")
         button.btn.btn-default.finishReturn(type='submit') XÁC NHẬN, CHỜ DUYỆT
 
-      .col.col-auto.pull-right(style="width: 300px")
+      .editor-wrapper.right(style="width: 300px")
         span.ilabel ghi chú
         input.comment(value="{{saleReturn.comment}}" )
 
-      .col.col-auto.pull-right(style="width: 100px")
+      .editor-wrapper.right(style="width: 100px")
         span.ilabel tỗng tiền
         input.totalPrice(value="{{saleReturn.totalPrice}}" disabled)
 
-      .col.col-auto.pull-right(style="width: 150px")
+      .editor-wrapper.right(style="width: 150px")
         span.ilabel người tạo
         input.totalPrice(value="{{saleReturn.creatorName}}" disabled)
-  .app-status

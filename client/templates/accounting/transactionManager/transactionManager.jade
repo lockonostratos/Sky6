@@ -1,6 +1,6 @@
 template(name="transactionManager")
-  .app-header
-    span.caption QUẢN LÝ CÔNG NỢ <small>PHẢI THU</small>
+  #header
+    .caption-row: .title QUẢN LÝ CÔNG NỢ <small>PHẢI THU</small>
 
-  .app-content
+  #content
     +iGrid(options=transactionDetailOptions)

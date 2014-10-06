@@ -1,6 +1,7 @@
 template(name="warehouse")
-  .app-header
-    span.caption Warehouse <small>Page</small>
+  #header
+    .caption-row
+      .title Warehouse <small>Page</small>
       .commands
         a#popProduct.btn.btn-danger(href="") Them san pham
         a#popProvider.btn.btn-danger(href="") Thêm Nhà Cung Cấp
@@ -9,16 +10,18 @@ template(name="warehouse")
         a#popSkull.btn.btn-danger(href="") Thêm Skull
         a#popWarehouse.btn.btn-danger(href="") Thêm Kho
         a.btn.btn-danger.poptest2(href="#") Poptest 2
-      .app-editor
-        .sl2.field(style="width: 250px;")
-      .app-body
-        .metro.clearfix
-          .tiles
-            .tile
-            .tile.double.double-vertical
-            .tile.double
-            .tile.selected
-            .tile.triple.double-vertical
+    .editor-row
+      .editor-wrapper(style="width: 250px;")
+        .sl2.field
+
+  #content
+    .metro.clearfix
+      .tiles
+        .tile
+        .tile.double.double-vertical
+        .tile.double
+        .tile.selected
+        .tile.triple.double-vertical
 
   +productAside
   +productPopover

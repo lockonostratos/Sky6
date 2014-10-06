@@ -1,17 +1,15 @@
 template(name="branchManager")
-  .app-header
-    span.caption CHI NHÁNH
-
-  .app-editor
-    .row
-      .col.col-auto
+  #header
+    .caption-row: .title CHI NHÁNH
+    .editor-row
+      .editor-wrapper
         span.ilabel tên chi nhánh
         input(name="name" maxlength="40")
-      .col.col-auto(style="width: 300px")
+      .editor-wrapper(style="width: 300px")
         span.ilabel.optional địa chỉ
         input(name="address")
-      .col.col-auto
+      .editor-wrapper
         button.btn#createBranch(class="{{allowCreate}}") TẠO MỚI
 
-  .app-content
+  #content
     +iGrid(options=branchDetailOptions)

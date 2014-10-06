@@ -1,22 +1,21 @@
 template(name="customerManager")
-  .app-header
-    span.caption KHÁCH HÀNG <small>CRM</small>
-  .app-editor
-    .row
-      .col.col-auto
+  #header
+    .caption-row: .title KHÁCH HÀNG <small>CRM</small>
+    .editor-row
+      .editor-wrapper
         span.ilabel tên khách hàng
         input(name="fullName" maxlength="40")
-      .col.col-auto(style="width: 120px")
+      .editor-wrapper(style="width: 120px")
         span.ilabel.optional điện thoại
         input(name="phone" maxlength="15")
-      .col.col-auto(style="width: 300px")
+      .editor-wrapper(style="width: 300px")
         span.ilabel.optional địa chỉ
         input(name="address")
-      .col.col-auto(style="width: 120px")
+      .editor-wrapper(style="width: 120px")
         span.ilabel.optional sinh nhật
         input(binding="datePicker" todayHighlight="true" name="dateOfBirth")
-      .col.col-auto
+      .editor-wrapper
         button.btn#createCustomerAccount(class="{{allowCreate}}") TẠO MỚI
 
-  .app-content
+  #content
     +iGrid(options=customerDetailOptions)

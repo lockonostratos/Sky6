@@ -1,23 +1,18 @@
 template(name="delivery")
-  .app-header
-    span.caption Giao Hàng
-  .app-editor
-    .row
-      .col.col-auto(style="width: 200px")
+  #header
+    .caption-row: .title Giao Hàng
+    .editor-row
+      .editor-wrapper(style="width: 200px")
         span.ilabel chi nhánh
         +iSelect(options=merchantSelectOptions class="field")
-      .col.col-auto(style="width: 200px")
+      .editor-wrapper(style="width: 200px")
         span.ilabel kho
         +iSelect(options=warehouseSelectOptions class="field")
-      .col.col-auto(style="width: 250px")
+      .editor-wrapper(style="width: 250px")
         span.ilabel bộ lọc
         +iSelect(options=filterDeliverySelectOption class="field")
-      //.col.col-auto.pull-right(style="width: 150px")
+      //.editor-wrapper.pull-right(style="width: 150px")
       //  span.ilabel vai trò
       //  +iSelect(options=filterDeliverySelectOption class="field")
-  .app-content
+  #content
     +iGrid(options=deliveryDetailOptions)
-  .app-summary
-  .app-status
-
-

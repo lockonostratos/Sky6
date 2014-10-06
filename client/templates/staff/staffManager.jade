@@ -1,40 +1,40 @@
 template(name="staffManager")
-  .app-header
-    span.caption NHÂN VIÊN <small>TÀI KHOẢN</small>
-  .app-editor
-    .row
-      .col.col-auto(style="width: 200px")
+  #header
+    .caption-row: .title NHÂN VIÊN <small>TÀI KHOẢN</small>
+    .editor-row
+      .editor-wrapper(style="width: 200px")
         span.ilabel tên đăng nhập
         input(name="email")
-      .col.col-auto(style="width: 120px")
+      .editor-wrapper(style="width: 120px")
         span.ilabel.center mật khẩu
         input(type="password" name="password")
-      .col.col-auto(style="width: 120px")
+      .editor-wrapper(style="width: 120px")
         span.ilabel.center xác nhận
         input(type="password" name="confirm")
-      .col.col-auto
+      .editor-wrapper
         button#createStaffAccount.btn.btn-default.addOrderDetail(type='submit') TẠO MỚI
 
-      .col.col-auto.pull-right(style="width: 400px")
+      .editor-wrapper.right(style="width: 400px")
         span.ilabel.optional phân quyền
         +iSelect(options=roleSelectOptions class="field")
 
-    .row
-      .col.col-auto(style="width: 200px")
+    .editor-row
+      .editor-wrapper(style="width: 200px")
         span.ilabel.optional họ tên
         input(name="fullName")
-      .col.col-auto(style="width: 120px")
+      .editor-wrapper(style="width: 120px")
         span.ilabel.center.optional sinh nhật
         input(name="dateOfBirth")
-      .col.col-auto(style="width: 120px")
+      .editor-wrapper(style="width: 120px")
         span.ilabel.center.optional gia nhập
         input(name="startWorkingDate" data-toggle="tooltip" data-container="body" data-placement="left" title="ngày tính lương")
 
-      .col.col-auto.pull-right(style="width: 200px")
+      .editor-wrapper.right(style="width: 200px")
         span.ilabel.optional nơi làm việc
         +iSelect(options=branchSelectOptions class="field")
-      .col.col-auto.pull-right(style="width: 200px")
+      .editor-wrapper.right(style="width: 200px")
         span.ilabel.optional kho mặc định
         +iSelect(options=warehouseSelectOptions class="field")
-  .app-content
+
+  #content
     +iGrid(options=staffManagerDetailOptions)

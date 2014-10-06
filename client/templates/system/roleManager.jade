@@ -1,21 +1,20 @@
 template(name="roleManager")
-  .app-header
-    span.caption PHÂN QUYỀN <small>NHÓM NGƯỜI DÙNG</small>
-  .app-editor
-    .row
-      .col.col-auto(style="width: 200px")
+  #header
+    .caption-row: .title PHÂN QUYỀN <small>NHÓM NGƯỜI DÙNG</small>
+    .editor-row
+      .editor-wrapper(style="width: 200px")
         span.ilabel tên nhóm
         +iSelect(options=roleSelectOptions class="field")
-      .col.col-auto
+      .editor-wrapper
         .btn.btn-default#updateButton ÁP DỤNG
 
-      .col.col-auto.pull-right(style="display")
+      .editor-wrapper.right(style="display")
         .btn#newGroupButton(class="{{allowCreate}}") TẠO MỚI
-      .col.col-auto.pull-right(style="width: 200px")
+      .editor-wrapper.right(style="width: 200px")
         span.ilabel.optional tên nhóm
         input(name="newGroupName")
 
-  .app-content.role-manager
+  #content.role-manager
     ul
       each permissions
         li.permission-item

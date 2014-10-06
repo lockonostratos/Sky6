@@ -1,52 +1,51 @@
 template(name="import")
-  .app-header
-    span.caption Nhập Kho
-  .app-editor
-      .row
-         .col.col-md-2
-           span.ilabel sản phẩm
-           +iSelect(options=productSelectOptions class="field")
-         .col.col-md-2
-           span.ilabel nhà phân phối
-           +iSelect(options=providerSelectOptions class="field")
-         .col.col-auto(style="width:120px")
-           span.ilabel số lượng
-           +iSpinEdit(options=qualityOptions class="field")
-         .col.col-auto(style="width:150px")
-           span.ilabel giá nhập
-           +iSpinEdit(options=importPriceOptions class="field")
-         .col.col-auto(style="width:150px; {{hidePrice}}")
-           span.ilabel giá bán
-           +iSpinEdit(options=priceOptions class="field")
-         .col.col-auto(style="width:100px")
-           button.btn.btn-default.addImportDetail(type='submit' style="{{hideAddImportDetail}}") Add
+  #header
+    .caption-row
+      .title Nhập Kho
+    .editor-row
+      .editor-wrapper(style="width:250px")
+        span.ilabel sản phẩm
+        +iSelect(options=productSelectOptions class="field")
+      .editor-wrapper(style="width:180px")
+        span.ilabel nhà phân phối
+        +iSelect(options=providerSelectOptions class="field")
+      .editor-wrapper(style="width:120px")
+        span.ilabel.center số lượng
+        +iSpinEdit(options=qualityOptions class="field")
+      .editor-wrapper(style="width:150px")
+        span.ilabel.center giá nhập
+        +iSpinEdit(options=importPriceOptions class="field")
+      .editor-wrapper(style="width:150px; {{hidePrice}}")
+        span.ilabel.center giá bán
+        +iSpinEdit(options=priceOptions class="field")
+      .editor-wrapper(style="width:100px")
+        button.btn.btn-default.addImportDetail(type='submit' style="{{hideAddImportDetail}}") Add
 
-  .app-content
+  #content
     +iGrid(options=importDetailOptions)
 
-  .app-summary
-    .row
-      .col.col-auto.pull-right(style="width: 100px; {{hideSubmitImport}}")
-        button.btn.btn-default.pull-right.submitImport(type='submit' style="margin-right: 5px;") ĐÃ DUYỆT
-      .col.col-auto.pull-right(style="width: 200px; {{hideFinishImport}}")
-        button.btn.btn-default.pull-right.finishImport(type='submit' style="margin-right: 5px;") XÁC NHẬN CHỜ DUYỆT
-      .col.col-auto.pull-right(style="width: 120px; {{hideEditImport}}")
-        button.btn.btn-default.pull-right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
-      .col.col-auto.pull-right(style="width: 120px")
+  #footer
+    .editor-row
+      .editor-wrapper.right(style="width: 100px; {{hideSubmitImport}}")
+        button.btn.btn-default.right.submitImport(type='submit' style="margin-right: 5px;") ĐÃ DUYỆT
+      .editor-wrapper.right(style="width: 200px; {{hideFinishImport}}")
+        button.btn.btn-default.right.finishImport(type='submit' style="margin-right: 5px;") XÁC NHẬN CHỜ DUYỆT
+      .editor-wrapper.right(style="width: 120px; {{hideEditImport}}")
+        button.btn.btn-default.right.editImport(type='submit' style="margin-right: 5px;") CHỈNH SỬA
+      .editor-wrapper.right(style="width: 120px")
         span.ilabel tiền còn nợ
         input.debit(value="#{warehouseImport.debit}" disabled)
-      .col.col-auto.pull-right(style="width: 120px")
+      .editor-wrapper.right(style="width: 120px")
         span.ilabel tiền đã trả
         input.deposit(value="#{warehouseImport.deposit}")
-      .col.col-auto.pull-right(style="width: 120px")
+      .editor-wrapper.right(style="width: 120px")
         span.ilabel tổng tiền
         input.totalPrice(value="#{warehouseImport.totalPrice}" disabled)
-      .col.col-auto.pull-right(style="width: 300px")
+      .editor-wrapper.right(style="width: 300px")
         span.ilabel description
         input.description(value="#{warehouseImport.description}" )
-      .col.col-auto.pull-right(style="width: 180px")
+      .editor-wrapper.right(style="width: 180px")
         span.ilabel người tạo
         input.emailCreator(value="#{warehouseImport.emailCreator}" disabled)
 
-  .app-status
     +iTab(options=tabOptions)

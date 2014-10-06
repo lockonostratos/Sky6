@@ -144,7 +144,6 @@ class Sky
       middle = splited[splited.length - 2]?.substring(0,1) if name.length < 6
       "#{if middle then middle + '.' else ''} #{name}"
 
-
     @colors: ['green', 'light-green', 'yellow', 'orange', 'blue', 'dark-blue', 'lime', 'pink', 'red', 'purple', 'dark',
               'gray', 'magenta', 'teal', 'turquoise', 'green-sea', 'emeral', 'nephritis', 'peter-river', 'belize-hole',
               'amethyst', 'wisteria', 'wet-asphalt', 'midnight-blue', 'sun-flower', 'carrot', 'pumpkin', 'alizarin',
@@ -167,7 +166,7 @@ class Sky
       @monoColors[randomIndex]
 
     @reArrangeLayout: ->
-      newHeight = $(window).height() - $("#header").outerHeight() - $("#footer").outerHeight()
+      newHeight = $(window).height() - $("#header").outerHeight() - $("#footer").outerHeight() - 6
       console.log newHeight
       $("#container").css('height', newHeight)
 

@@ -1,53 +1,59 @@
 extraHeight = 40;
 navbarHeight = 40;
 
-remarginAppHeader = (context) ->
-  $header = $(context.find('.app-header'))
-  $editor = $(context.find('.app-editor'))
-  headerHeight = $header.outerHeight() ? 0
-  editorHeight = $editor.outerHeight() ? 0
+#remarginAppHeader = (context) ->
+#  $header = $(context.find('.app-header'))
+#  $editor = $(context.find('.app-editor'))
+#  headerHeight = $header.outerHeight() ? 0
+#  editorHeight = $editor.outerHeight() ? 0
+#
+#  rightSideTopMargin = headerHeight + editorHeight;
+#
+#  $header.css('top', "#{navbarHeight}px")
+#  $editor.css('top', "#{navbarHeight + headerHeight}px")
+#  $('#right-side').css('margin-top', "#{rightSideTopMargin}px")
+#
+#reMarginAppFooter = (context) ->
+#  $summary = $(context.find('.app-summary'))
+#  $status = $(context.find('.app-status'))
+#  summaryHeight = $summary.outerHeight() ? 0
+#  statusHeight  = $status.outerHeight() ? 0
+#
+#  rightSideBottomMargin = summaryHeight + statusHeight + ((context.ui.extras.visibleCount * extraHeight) + 1)
+#
+#  $summary.css('bottom', "#{statusHeight}px")
+#  $('#right-side').css('margin-bottom', "#{rightSideBottomMargin}px")
+#
+#reArrangeVisibleExtras = (context) ->
+#  visibleCount = 1
+#  for currentName of context.ui.extras
+#    if context.ui.extras[currentName]?.visibility
+#      context.ui.extras[currentName].$element.css('top', "-#{(visibleCount * extraHeight) + 1}px")
+#      visibleCount++
 
-  rightSideTopMargin = headerHeight + editorHeight;
+#showExtra = (name, context) ->
+#  return if !context.ui.extras[name] || context.ui.extras[name].visibility
+#  context.ui.extras.visibleCount++
+#  context.ui.extras[name].visibility = true
+#  context.ui.extras[name].$element.show()
+#
+#  reArrangeVisibleExtras(context)
+#  reMarginAppFooter(context)
+#
+#hideExtra = (name, context) ->
+#  return if !context.ui.extras[name] || !context.ui.extras[name].visibility
+#  context.ui.extras.visibleCount--
+#  context.ui.extras[name].visibility = false
+#  context.ui.extras[name].$element.hide()
+#
+#  reArrangeVisibleExtras(context)
+#  reMarginAppFooter(context)
 
-  $header.css('top', "#{navbarHeight}px")
-  $editor.css('top', "#{navbarHeight + headerHeight}px")
-  $('#right-side').css('margin-top', "#{rightSideTopMargin}px")
-
-reMarginAppFooter = (context) ->
-  $summary = $(context.find('.app-summary'))
-  $status = $(context.find('.app-status'))
-  summaryHeight = $summary.outerHeight() ? 0
-  statusHeight  = $status.outerHeight() ? 0
-
-  rightSideBottomMargin = summaryHeight + statusHeight + ((context.ui.extras.visibleCount * extraHeight) + 1)
-
-  $summary.css('bottom', "#{statusHeight}px")
-  $('#right-side').css('margin-bottom', "#{rightSideBottomMargin}px")
-
-reArrangeVisibleExtras = (context) ->
-  visibleCount = 1
-  for currentName of context.ui.extras
-    if context.ui.extras[currentName]?.visibility
-      context.ui.extras[currentName].$element.css('top', "-#{(visibleCount * extraHeight) + 1}px")
-      visibleCount++
-
-showExtra = (name, context) ->
-  return if !context.ui.extras[name] || context.ui.extras[name].visibility
-  context.ui.extras.visibleCount++
-  context.ui.extras[name].visibility = true
-  context.ui.extras[name].$element.show()
-
-  reArrangeVisibleExtras(context)
-  reMarginAppFooter(context)
-
-hideExtra = (name, context) ->
-  return if !context.ui.extras[name] || !context.ui.extras[name].visibility
-  context.ui.extras.visibleCount--
-  context.ui.extras[name].visibility = false
-  context.ui.extras[name].$element.hide()
-
-  reArrangeVisibleExtras(context)
-  reMarginAppFooter(context)
+toggleExtra = (name, context, mode) ->
+  currentExtra = context.ui.extras[name]
+  return if !currentExtra
+  if mode then currentExtra.$element.show() else currentExtra.$element.hide()
+  Sky.helpers.reArrangeLayout()
 
 #appTemplate có thêm hệ thống tooltip, auto-margin bottom.
 class Sky.appTemplate
@@ -65,20 +71,30 @@ class Sky.appTemplate
         @ui[alias] = item
         @ui["$#{alias}"] = $item
 
-      extras = @findAll(".row.extra")
-      @ui.extras = { extrasCount: 0, visibleCount: 0 }
+      extras = @findAll(".editor-row.extra[name]")
+      @ui.extras = {}
       for extra in extras
         $extra = $(extra)
         name = $extra.attr('name')
         visible = $extra.attr('visibility') ? false
-        if $extra.attr('name')
-          @ui.extras[name] = { key: $extra.attr('name'), visibility: visible, $element: $extra }
-          $extra.show() if visible
-          @ui.extras.extrasCount++
-          @ui.extras.visibleCount++ if visible
+        $extra.show() if visible
+        @ui.extras[name] = { visibility: visible, $element: $extra }
 
-      @ui.extras.show = (name) -> showExtra(name, self)
-      @ui.extras.hide = (name) -> hideExtra(name, self)
+      @ui.extras.toggleExtra = (name, mode = true) -> toggleExtra(name, self, mode)
+
+      #      @ui.extras = { extrasCount: 0, visibleCount: 0 }
+#      for extra in extras
+#        $extra = $(extra)
+#        name = $extra.attr('name')
+#        visible = $extra.attr('visibility') ? false
+#        if $extra.attr('name')
+#          @ui.extras[name] = { key: $extra.attr('name'), visibility: visible, $element: $extra }
+#          $extra.show() if visible
+#          @ui.extras.extrasCount++
+#          @ui.extras.visibleCount++ if visible
+#
+#      @ui.extras.show = (name) -> showExtra(name, self)
+#      @ui.extras.hide = (name) -> hideExtra(name, self)
 
       @$("[data-toggle='tooltip']").tooltip({container: 'body'})
       for item in @findAll("input[binding='datePicker']")
@@ -97,6 +113,7 @@ class Sky.appTemplate
 
 
       $(item).attr('maxlength', 120) for item in @findAll("input:not([maxlength])")
+      Sky.helpers.reArrangeLayout()
 #      reMarginAppFooter(@)
 #      remarginAppHeader(@)
 

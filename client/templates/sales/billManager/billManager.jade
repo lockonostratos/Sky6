@@ -1,16 +1,15 @@
 template(name="billManager")
-  .app-header
-    span.caption ĐƠN HÀNG
-  .app-editor
-    .row
-      .col.col-auto(style="width: 100px")
+  #header
+    .caption-row: .title ĐƠN HÀNG
+    .editor-row
+      .editor-wrapper(style="width: 100px")
         span.ilabel.right xem từ ngày
         input(name="fromDate" binding="datePicker" todayHighlight="true" maxlength="20")
-      .col.col-auto(style="width: 100px")
+      .editor-wrapper(style="width: 100px")
         span.ilabel đến ngày
         input(name="toDate" binding="datePicker" todayHighlight="true" maxlength="20")
-      .col.col-auto
+      .editor-wrapper
         button.btn.btn-success#filterBills ÁP DỤNG
 
-  .app-content
+  #content
     +iGrid(options=billDetailOptions)

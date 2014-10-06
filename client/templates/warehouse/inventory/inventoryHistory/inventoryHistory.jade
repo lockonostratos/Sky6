@@ -1,20 +1,16 @@
 template(name="inventoryHistory")
-  .app-header
-    span.caption Chi Tiết Kiểm Kho
-  .app-editor
-    .row
-      .col.col-auto(style="width: 200px")
+  #header
+    .caption-row: .title Chi Tiết Kiểm Kho
+    .editor-row
+      .editor-wrapper(style="width: 200px")
         span.ilabel chi nhánh
         +iSelect(options=merchantSelectOptions class="field")
-      .col.col-auto(style="width: 200px")
+      .editor-wrapper(style="width: 200px")
         span.ilabel kho
         +iSelect(options=warehouseSelectOptions class="field")
-      .col.col-auto(style="width: 200px")
+      .editor-wrapper(style="width: 200px")
         span.ilabel phiếu kiểm kho
         +iSelect(options=inventoryDetailSelectOptions class="field")
 
-  .app-content
+  #content
     +iGrid(options=inventoryDetailOptions)
-  .app-summary
-  .app-status
-
