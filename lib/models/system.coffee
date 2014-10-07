@@ -15,7 +15,7 @@ Schema.add 'systems', class System
     doneTasks = { status: Sky.system.taskStatuses.done.key }
     updates = Schema.tasks.find({$and: [doneTasks, finishAfterCurrentVersion]}).fetch()
 
-    if updates.count is 0
+    if updates.length is 0
       console.log "Upgrading failed, there is no change from previous update!"
       return
 
