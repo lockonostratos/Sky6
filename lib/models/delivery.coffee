@@ -14,6 +14,7 @@ Schema.add 'deliveries', class Delivery
         comment         : order.comment
         status          : 0
       option._id = Schema.deliveries.insert option
+    console.log option._id
     option
 
   @updateDelivery: (deliveryId, success = true) ->

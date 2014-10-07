@@ -1,5 +1,6 @@
 Sky.appTemplate.extends Template.stockManager,
+
   stockDetailOptions:
     itemTemplate: 'stockThumbnail'
-    reactiveSourceGetter: -> Schema.products.find().fetch()
+    reactiveSourceGetter: -> Session.get("availableProducts") ? []
     wrapperClasses: 'detail-grid row'

@@ -6,12 +6,12 @@ template(name="customerPopover")
       .wrapper.bottom
         if error
           |#{error}
-        input.form-control.name(type='text' placeholder='Tên Khách Hàng')
-        input.form-control.sex(type='text' placeholder='Giới Tính Khách Hàng')
-        input.form-control.phone(type='text' placeholder='Số Điện Thoại Khách Hàng')
-        input.form-control.address(type='text' placeholder='Địa Chỉ Khách Hàng')
-        input.form-control.email(type='text' placeholder='Email Khách Hàng')
-        input.form-control.companyName(type='text' placeholder='Tên Cty Khách Hàng')
+        input.form-control.name(type='text' placeholder='Tên')
+        input.form-control.sex(type='text' placeholder='Giới Tính')
+        input.form-control.phone(type='text' placeholder='Số Điện Thoại')
+        input.form-control.address(type='text' placeholder='Địa Chỉ')
+        input.form-control.email(type='text' placeholder='Email')
+        input.form-control.companyName(type='text' placeholder='Tên Cty')
 
         div(align="right"):  a.btn.btn-danger.createCustomer Tạo mới
       ul.grid
