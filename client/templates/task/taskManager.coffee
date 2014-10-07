@@ -97,7 +97,7 @@ Sky.appTemplate.extends Template.taskManager,
   group: -> if Session.get('currentGroupTask') then Session.get('currentGroupTask') else ''
   hideCreate: -> return "display: none" if Session.get('currentTaskDetail')
   hideUpdate: -> return "display: none" unless Session.get('currentTaskDetail')
-
+  currentSystemVersion: -> Schema.systems.findOne()?.version ? ''
   priorityTaskSelectOption:
     query: (query) -> query.callback
       results: Sky.system.priorityTasks
