@@ -19,6 +19,8 @@ template(name="navigation")
         li.inav
           .notification-counts 20
           span: i.fa.fa-gift
+        li.inav
+          a(href="/sign-out"): i.fa.fa-power-off
 
       ul.nav.navbar-nav
         li.inav.collapse-toggle: span: i.collapse.fa.fa-th-list
@@ -30,23 +32,5 @@ template(name="navigation")
         each routeHistory
           li.inav(class="{{isActiveRoute route}}")
             a(href="{{pathFor route}}"): i.fa(class="{{icon}}")
-        //li(class="{{isActiveRoute 'sales'}}"): a(href="{{pathFor 'sales'}}") Sales
-        //li(class="{{isActiveRoute 'import'}}"): a(href="{{pathFor 'import'}}") Import
-        //li(class="{{isActiveRoute 'delivery'}}"): a(href="{{pathFor 'delivery'}}") Delivery
-        //li(class="{{isActiveRoute 'returns'}}"): a(href="{{pathFor 'returns'}}") Returns
-        li: a(href="/sign-out") ĐĂNG XUẤT
-        //form(role="search").navbar-form.navbar-left
-        //  .form-group
-        //    input(type="text", placeholder="Search").form-control
-        //  button(type="submit").btn.btn-default Submit
-      //ul.nav.navbar-nav.navbar-right
-      //  li: a(href="/sign-out") ĐĂNG XUẤT
-        //li.dropdown
-        //  a(href="#", data-toggle="dropdown").dropdown-toggle Dropdown <b class="caret"></b>
-        //  ul.dropdown-menu
-        //    li: a(href="#") Action
-        //    li: a(href="#") Another action
-        //    li: a(href="#") Something else here
-        //    li: a(href="#") Separated link
 
   +unreadMessagePopover
