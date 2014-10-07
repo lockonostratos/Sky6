@@ -3,12 +3,14 @@ pad =(number) -> if number < 10 then '0' + number else number
 Sky.template.extends Template.taskDetailThumbnail,
   colorClass: ->
     switch @status
-      when 0 then 'asbestos'
-      when 1
-        if @lateDuration then 'pumpkin' else 'lime'
-      when 2 then 'purple'
-      when 3
-        if @lateDuration then 'carrot' else 'peter-river'
+      when 'wait' then 'asbestos'
+      when 'selected' then 'amethyst'
+      when 'working' then 'teal'
+      when 'done' then 'lime'
+      when 'confirming' then 'carrot'
+      when 'frozen' then 'blue'
+      when 'rejected' then 'pimpkin'
+
   priorityAlias: ->
     priority = _.findWhere(Sky.system.priorityTasks, {_id: @priority})
     priority.display

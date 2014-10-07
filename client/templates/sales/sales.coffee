@@ -167,10 +167,10 @@ Sky.appTemplate.extends Template.sales,
       if customer = Schema.customers.findOne(e.added._id)
         option = newDeliver()
         if Session.get('currentOrder')?.paymentsDelivery == 1
-          option.buyer = customer._id
           option.contactName     = customer.name ? null
           option.contactPhone    = customer.phone ? null
           option.deliveryAddress = customer.address ? null
+        option.buyer = customer._id
         option.tabDisplay = Sky.helpers.respectName(customer.name, customer.gender)
       else
         console.log 'Sai customer'; return
