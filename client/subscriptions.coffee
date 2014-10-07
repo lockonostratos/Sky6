@@ -1,3 +1,6 @@
+Meteor.subscribe 'systems'
+Meteor.subscribe 'migrations'
+
 Meteor.subscribe 'allUsers'
 Meteor.subscribe 'tasks'
 Meteor.subscribe 'merchants'
