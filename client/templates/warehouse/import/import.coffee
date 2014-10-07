@@ -33,11 +33,11 @@ runInitImportTracker = (context) ->
         else
 #        currentImport = Import.createdByWarehouseAndSelect(Session.get('currentProfile').currentWarehouse, {description: 'New Import'})
 
-    if Session.get('importHistory')
+    if Session.get('importHistory') and Session.get('currentProfile')?.currentImport
       currentImport =  _.findWhere(Session.get('importHistory'), {_id: Session.get('currentProfile').currentImport})
       unless currentImport then currentImport = importHistory[0]
       Session.set 'currentImport', currentImport
-      Session.set 'currentImportDetails', Schema.importDetails.find({import: currentImport._id}).fetch()
+      Session.set 'currentImportDetails', Schema.importDetails.find({import: currentImport?._id}).fetch()
 
     if currentProductId = Session.get('currentImport')?.currentProduct
       if currentProduct = Schema.products.findOne(currentProductId)
@@ -146,6 +146,9 @@ Sky.appTemplate.extends Template.import,
     wrapperClasses: 'detail-grid row'
 
   events:
+    "click #popProduct": (event, template) -> $(template.find '#productPopover').modalPopover('show')
+    "click #popProvider": (event, template) -> $(template.find '#providerPopover').modalPopover('show')
+
     'click .addImportDetail': (event, template)-> console.log ImportDetail.createByImport Session.get('currentImport')._id
     'click .editImport': (event, template)-> console.log Import.editImport Session.get('currentImport')._id
     'click .finishImport': (event, template)-> console.log Import.finishImport Session.get('currentImport')._id
@@ -177,4 +180,15 @@ Sky.appTemplate.extends Template.import,
 
 
 
-  rendered: -> runInitImportTracker()
+  rendered: ->
+    runInitImportTracker()
+
+    $(@find '#productPopover').modalPopover
+      target: '#popProduct'
+      backdrop: true
+      placement: 'bottom'
+
+    $(@find '#providerPopover').modalPopover
+      target: '#popProvider'
+      backdrop: true
+      placement: 'bottom'

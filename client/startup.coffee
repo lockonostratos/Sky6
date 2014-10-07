@@ -55,7 +55,7 @@ Meteor.startup ->
 
   Tracker.autorun ->
     console.log ('exportAutorunWorking..') if autorunDebug
-    if Session.get("availableMerchant")
+    if Session.get("availableMerchant") and Session.get('currentProfile')
       exportMerchant = _.findWhere(Session.get("availableMerchant"), {_id: Session.get('currentProfile').exportMerchant})
       targetExportMerchant = _.findWhere(Session.get("availableMerchant"), {_id: Session.get('currentProfile').targetExportMerchant})
 
