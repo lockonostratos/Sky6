@@ -28,6 +28,8 @@ template(name="staffManager")
       .editor-wrapper(style="width: 120px")
         span.ilabel.center.optional gia nhập
         input(name="startWorkingDate" data-toggle="tooltip" data-container="body" data-placement="left" title="ngày tính lương")
+      .switches
+        input(binding="switch" type="checkbox" name="genderMode")
 
       .editor-wrapper.right(style="width: 200px")
         span.ilabel.optional nơi làm việc

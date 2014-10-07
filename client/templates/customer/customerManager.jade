@@ -6,7 +6,7 @@ template(name="customerManager")
         span.ilabel tên khách hàng
         input(name="fullName" maxlength="40")
       .editor-wrapper(style="width: 120px")
-        span.ilabel.optional điện thoại
+        span.ilabel điện thoại
         input(name="phone" maxlength="15")
       .editor-wrapper(style="width: 300px")
         span.ilabel.optional địa chỉ
@@ -14,6 +14,8 @@ template(name="customerManager")
       .editor-wrapper(style="width: 120px")
         span.ilabel.optional sinh nhật
         input(binding="datePicker" todayHighlight="true" name="dateOfBirth")
+      .switches(style="{{allowCheck}}" )
+        input(binding="switch" type="checkbox" name="genderMode")
       .editor-wrapper
         button.btn#createCustomerAccount(class="{{allowCreate}}") TẠO MỚI
 
