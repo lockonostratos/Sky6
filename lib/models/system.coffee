@@ -29,3 +29,13 @@ Schema.add 'systems', class System
 
     Schema.systems.update(currentVersion._id, {$set: {version: nextVersion}})
     console.log "System successfully upgraded to version #{nextVersion}"
+    return
+
+  @checkUpdates: ->
+    currentVersion = Schema.systems.findOne()
+    finishAfterCurrentVersion = {'version.updateAt': {$gt: currentVersion.updateAt}}
+    doneTasks = { status: Sky.system.taskStatuses.done.key }
+    updates = Schema.tasks.find({$and: [doneTasks, finishAfterCurrentVersion]}).fetch()
+    console.log "There is #{updates.length} updates since previous version:"
+    console.log "#{update.group}: #{update.description}" for update in updates
+    return
