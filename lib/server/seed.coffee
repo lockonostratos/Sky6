@@ -170,8 +170,7 @@ resetDatabase = ->
   Schema.transactions.remove({})
   Schema.transactionDetails.remove({})
 
-
-
+  Schema.systems.remove({})
 
 seedSystemRoles = ->
   Schema.roles.insert

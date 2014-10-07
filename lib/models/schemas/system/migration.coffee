@@ -2,6 +2,14 @@ Schema2.migrations = new SimpleSchema
   systemVersion:
     type: String
 
+  creator:
+    type: String
+    optional: true
+
+  owner:
+    type: String
+    optional: true
+
   description:
     type: String
 
@@ -10,6 +18,7 @@ Schema2.migrations = new SimpleSchema
 
   color:
     type: String
+    optional: true
 
   version: { type: Schema.Version }
 

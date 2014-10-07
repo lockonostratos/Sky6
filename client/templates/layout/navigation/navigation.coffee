@@ -2,6 +2,7 @@ Sky.appTemplate.extends Template.navigation,
   unreadMessageCount: -> Session.get('unreadMessages')?.length ? 0
   messageClass: -> if Session.get('unreadMessages')?.length > 0 then 'active' else ''
   routeHistory: -> Session.get('routeHistory')
+  currentSystemVersion: -> Schema.systems.findOne()?.version ? ''
 
   ui:
     unreadMessagePopover: "#unreadMessagePopover"
