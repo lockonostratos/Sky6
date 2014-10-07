@@ -23,12 +23,17 @@ template(name="navigation")
       ul.nav.navbar-nav
         li.inav.collapse-toggle: span: i.collapse.fa.fa-th-list
         li.home(class="{{isActiveRoute 'metroHome'}}"): a(href="{{pathFor 'metroHome'}}"): i.fa.fa-home
-        li(class="{{isActiveRoute 'taskManager'}}"): a(href="{{pathFor 'taskManager'}}") Task
-        li(class="{{isActiveRoute 'sales'}}"): a(href="{{pathFor 'sales'}}") Sales
-        li(class="{{isActiveRoute 'warehouse'}}"): a(href="{{pathFor 'warehouse'}}") Warehouse
-        li(class="{{isActiveRoute 'import'}}"): a(href="{{pathFor 'import'}}") Import
-        li(class="{{isActiveRoute 'delivery'}}"): a(href="{{pathFor 'delivery'}}") Delivery
-        li(class="{{isActiveRoute 'returns'}}"): a(href="{{pathFor 'returns'}}") Returns
+        li.inav(class="{{isActiveRoute 'taskManager'}}")
+          a(href="{{pathFor 'taskManager'}}"): i.fa.fa-clipboard
+        li.inav(class="{{isActiveRoute 'warehouse'}}")
+          a(href="{{pathFor 'warehouse'}}"): i.fa.fa-cubes
+        each routeHistory
+          li.inav(class="{{isActiveRoute route}}")
+            a(href="{{pathFor route}}"): i.fa(class="{{icon}}")
+        //li(class="{{isActiveRoute 'sales'}}"): a(href="{{pathFor 'sales'}}") Sales
+        //li(class="{{isActiveRoute 'import'}}"): a(href="{{pathFor 'import'}}") Import
+        //li(class="{{isActiveRoute 'delivery'}}"): a(href="{{pathFor 'delivery'}}") Delivery
+        //li(class="{{isActiveRoute 'returns'}}"): a(href="{{pathFor 'returns'}}") Returns
         li: a(href="/sign-out") ĐĂNG XUẤT
         //form(role="search").navbar-form.navbar-left
         //  .form-group

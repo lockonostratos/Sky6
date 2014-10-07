@@ -24,6 +24,17 @@ Router.configure
 #    $("#newPage").addClass "visible"
 #    return
 
+Session.setDefault('routeHistory', [])
+
+addRouteToHistory = (routeName) ->
+  route  = Sky.menu[routeName]
+  return if !route or route.route is 'taskManager'
+
+  routeHistory = Session.get('routeHistory')
+  routeHistory.push route if !_.findWhere(routeHistory, {display: route.display})
+  routeHistory.splice(0,1) if routeHistory.length > 9
+  Session.set('routeHistory', routeHistory)
+
 class @skyRouter
   constructor: (@path, authRequired = true, onBeforeAction = null) ->
     if authRequired
@@ -35,6 +46,8 @@ class @skyRouter
     animateUsing("#right-side", "bounceInUp")
     animateUsing("#container", "bounceInDown")
 
+    addRouteToHistory @path.substring(1)
+
 Router.map ->
   @route 'metroHome', new skyRouter('/', false, ->
     AccountsEntry.signInRequired(this)
@@ -43,7 +56,6 @@ Router.map ->
   @route 'home', new skyRouter('home')
 
   @route route, new skyRouter(route) for route of Sky.menu
-
 
   @route 'warehouse', new skyRouter('warehouse')
 #  @route 'sales', new skyRouter('sales') #
