@@ -15,6 +15,8 @@ Schema.add 'systems', class System
     doneTasks = { status: Sky.system.taskStatuses.done.key }
     updates = Schema.tasks.find({$and: [doneTasks, finishAfterCurrentVersion]}).fetch()
 
+    return if update.count is 0
+
     for update in updates
       Schema.migrations.insert
         systemVersion: nextVersion
@@ -24,3 +26,4 @@ Schema.add 'systems', class System
         group: [update.group]
 
     Schema.systems.update(currentVersion._id, {$set: {version: nextVersion}})
+    console.log "System upgraded to version #{nextVersion}"
