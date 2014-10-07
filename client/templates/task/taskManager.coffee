@@ -32,7 +32,8 @@ createTask = (context) ->
   if group.length > 0 then option.group = group
   if Session.get('currentOwnerTask') then option.owner = Session.get('currentOwnerTask')
 
-  Schema.tasks.insert option
+  task = Schema.tasks.insert option
+  Schema.tasks.update(task, {})
   resetForm(context)
   Session.set('allowCreateNewTask', false)
   Session.set('currentOwnerTask')

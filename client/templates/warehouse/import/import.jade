@@ -2,6 +2,9 @@ template(name="import")
   #header
     .caption-row
       .title Nhập Kho
+      .commands
+        a#popProduct.btn.btn-danger(href="") Thêm Sản Phẩm
+        a#popProvider.btn.btn-danger(href="") Thêm Nhà Phân Phối
     .editor-row
       .editor-wrapper(style="width:250px")
         span.ilabel sản phẩm
@@ -20,6 +23,9 @@ template(name="import")
         +iSpinEdit(options=priceOptions class="field")
       .editor-wrapper(style="width:100px")
         button.btn.btn-default.addImportDetail(type='submit' style="{{hideAddImportDetail}}") Add
+
+    +productPopover
+    +providerPopover
 
   #content
     +iGrid(options=importDetailOptions)

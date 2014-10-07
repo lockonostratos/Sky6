@@ -9,7 +9,7 @@ Sky.template.extends Template.taskDetailThumbnail,
       when 'done' then 'lime'
       when 'confirming' then 'carrot'
       when 'frozen' then 'blue'
-      when 'rejected' then 'pimpkin'
+      when 'rejected' then 'pumpkin'
 
   priorityAlias: ->
     priority = _.findWhere(Sky.system.priorityTasks, {_id: @priority})
