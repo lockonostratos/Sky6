@@ -78,19 +78,20 @@ runInitTaskTracker = (context) ->
   return if Sky.global.taskTracker
   Sky.global.taskTracker = Tracker.autorun ->
     Session.set('ownerList', Schema.userProfiles.find({}).fetch())
-    if Session.get('statusFilter') && Session.get('userFilter')
-      userFilter = if Session.get('userFilter') is "1" then {$or:[{creator: Meteor.userId()},{owner: Meteor.userId()}]} else {}
+    if Session.get('statusFilter') && Session.get('userCreatorFilter') && Session.get('userOwnerFilter')
+      userCreatorFilter = if Session.get('userCreatorFilter') is "one" then {creator: Meteor.userId()} else {}
+      userOwnerFilter = if Session.get('userOwnerFilter') is "one" then {owner: Meteor.userId()} else {}
       deletedFilter = if Session.get('statusFilter') is "deleted" then {deleted: true} else {deleted: false}
       if Session.get('statusFilter') is "all" || Session.get('statusFilter') is "deleted"
         statusFilter = {}
       else
         statusFilter = {status: {$in : Session.get('statusFilter').split(' ')}}
-
-      Session.set 'filteredTasks', Schema.tasks.find({$and:[statusFilter, userFilter, deletedFilter]},taskDefaultSort).fetch()
+      Session.set 'filteredTasks', Schema.tasks.find({$and:[statusFilter, userCreatorFilter, userOwnerFilter, deletedFilter]},taskDefaultSort).fetch()
 
 Sky.appTemplate.extends Template.taskManager,
   activeStatus: (status)-> return 'active' if Session.get('statusFilter') is status
-  activeUser: (user)-> return 'active' if Session.get('userFilter') is user
+  activeUserCreator: (user)-> return 'active' if Session.get('userCreatorFilter') is user
+  activeUserOwner: (user)-> return 'active' if Session.get('userOwnerFilter') is user
   allowCreate: -> if Session.get('allowCreateNewTask') then 'btn-success' else 'btn-default disabled'
   description : -> if Session.get('currentDescriptionTask') then Session.get('currentDescriptionTask') else ''
   group: -> if Session.get('currentGroupTask') then Session.get('currentGroupTask') else ''
@@ -138,12 +139,10 @@ Sky.appTemplate.extends Template.taskManager,
     reactiveSourceGetter: -> Session.get('filteredTasks')
     wrapperClasses: 'detail-grid row'
 
-
-
-
   created: ->
     Session.setDefault('allowCreateNewTask', false)
-    Session.setDefault('userFilter', '2')
+    Session.setDefault('userCreatorFilter', 'all')
+    Session.setDefault('userOwnerFilter', 'all')
     Session.setDefault('statusFilter', 'wait')
     Session.setDefault('currentPriorityTask', 1)
     Session.setDefault('currentDurationTask', 0)
@@ -153,9 +152,12 @@ Sky.appTemplate.extends Template.taskManager,
     "click [data-status]": (event, template) ->
       $element = $(event.currentTarget)
       Session.set 'statusFilter', $element.attr("data-status")
-    "click [data-user]": (event, template) ->
+    "click [data-user-creator]": (event, template) ->
       $element = $(event.currentTarget)
-      Session.set 'userFilter', $element.attr("data-user")
+      Session.set 'userCreatorFilter', $element.attr("data-user-creator")
+    "click [data-user-owner]": (event, template) ->
+      $element = $(event.currentTarget)
+      Session.set 'userOwnerFilter', $element.attr("data-user-owner")
 
     "input input": (event, template) -> checkAllowCreate(template)
     "click #createTask": (event, template) -> createTask(template)
