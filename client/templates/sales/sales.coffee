@@ -67,7 +67,7 @@ runInitTracker = (context) ->
         else
           Session.set 'currentOrder', orderHistory[0]
       else
-        Order.createOrderAndSelect()
+#        Order.createOrderAndSelect()
 
     if Session.get('currentOrder')
       Session.set 'currentOrderDetails', Schema.orderDetails.find({order: Session.get('currentOrder')._id}).fetch()
@@ -229,7 +229,17 @@ Sky.appTemplate.extends Template.sales,
     formatResult: formatpaymentMethodSearch
     placeholder: 'CHỌN SẢN PTGD'
     minimumResultsForSearch: -1
-    changeAction: (e) -> Schema.orders.update(Session.get('currentOrder')._id, {$set: {paymentsDelivery: e.added._id}})
+    changeAction: (e) ->
+      option =
+        paymentsDelivery: e.added._id
+      if e.added._id == 1
+        if customer = Schema.customers.findOne(Session.get('currentOrder').buyer)
+          option.contactName     = customer.name ? null
+          option.contactPhone    = customer.phone ? null
+          option.deliveryAddress = customer.address ? null
+        else
+          console.log 'Sai customer'; return
+      Schema.orders.update(Session.get('currentOrder')._id, {$set: option})
     reactiveValueGetter: -> _.findWhere(Sky.system.paymentsDeliveries, {_id: Session.get('currentOrder')?.paymentsDelivery})
 
   billDiscountSelectOption:

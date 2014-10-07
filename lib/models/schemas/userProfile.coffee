@@ -17,6 +17,10 @@ Schema2.userProfiles = new SimpleSchema
     type: Date
     optional: true
 
+  gender:
+    type: Boolean
+    optional: true
+
   startWorkingDate:
     type: Date
     optional: true

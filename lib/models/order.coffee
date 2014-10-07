@@ -147,18 +147,18 @@ Schema.add 'orders', class Order
   @createOrder: ->
     userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     buyer = Schema.customers.findOne({parentMerchant: userProfile.parentMerchant})
+
     option =
       merchant               : userProfile.currentMerchant
       warehouse              : userProfile.currentWarehouse
       creator                : userProfile.user
       seller                 : userProfile.user
-      buyer                  : buyer?._id
+      buyer                  : buyer._id ? 'null'
       currentProduct         : "null"
       currentQuality         : 0
       currentPrice           : 0
       currentDiscountCash    : 0
       currentDiscountPercent : 0
-      tabDisplay             : Sky.helpers.respectName(buyer.name, buyer.gender)
       orderCode              : createOrderCode()
       paymentsDelivery       : 0
       paymentMethod          : 0
@@ -173,6 +173,11 @@ Schema.add 'orders', class Order
       billDiscount           : false
       status                 : 0
       currentDeposit         : 0
+
+    if buyer
+      option.tabDisplay = Sky.helpers.respectName(buyer.name, buyer.gender)
+    else
+      option.tabDisplay = Sky.helpers.respectName(userProfile.fullName, userProfile.gender)
 
     option._id = Schema.orders.insert option
     option

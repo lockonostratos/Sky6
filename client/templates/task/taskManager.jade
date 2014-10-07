@@ -24,10 +24,18 @@ template(name="taskManager")
             i.fa.fa-trash
 
       .filter.btn-group.btn-group-sm(data-toggle="buttons")
-        label.btn.btn-default(class="{{activeUser '1'}}" data-toggle="tooltip" title="của tôi" data-user="1")
+        label.btn.btn-default(class="{{activeUserCreator 'one'}}" data-toggle="tooltip" title="tạo bởi tôi" data-user-creator="one")
           input( type="radio" name="options" id="option1")
             i.fa.fa-user
-        label.btn.btn-default(class="{{activeUser '2'}}" data-toggle="tooltip" title="tất cả" data-user="2")
+        label.btn.btn-default(class="{{activeUserCreator 'all'}}" data-toggle="tooltip" title="tất cả" data-user-creator="all")
+          input(type="radio" name="options" id="option2" checked)
+            i.fa.fa-users
+
+      .filter.btn-group.btn-group-sm(data-toggle="buttons")
+        label.btn.btn-default(class="{{activeUserOwner 'one'}}" data-toggle="tooltip" title="việc của tôi" data-user-owner="one")
+          input( type="radio" name="options" id="option1")
+            i.fa.fa-user
+        label.btn.btn-default(class="{{activeUserOwner 'all'}}" data-toggle="tooltip" title="tất cả" data-user-owner="all")
           input(type="radio" name="options" id="option2" checked)
             i.fa.fa-users
 

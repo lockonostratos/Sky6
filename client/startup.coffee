@@ -27,7 +27,9 @@ Meteor.startup ->
             {parent: Session.get('currentProfile').parentMerchant}
           ]}
       ).fetch()
+
       Session.set "availableMerchant", availableMerchant
+
 
     if Session.get('currentProfile') #Temporaries SUBSCRUBIBE
       Meteor.subscribe 'merchantProfiles', Session.get('currentProfile').parentMerchant
@@ -37,6 +39,10 @@ Meteor.startup ->
     if Session.get('currentProfile')
       Session.set "currentMerchant"   , Schema.merchants.findOne(Session.get('currentProfile').currentMerchant)
       Session.set "currentWarehouse"  , Schema.warehouses.findOne(Session.get('currentProfile').currentWarehouse)
+
+  Tracker.autorun ->
+    if Session.get('currentWarehouse')
+      Session.set 'availableProducts', Schema.products.find({warehouse: Session.get('currentWarehouse')._id}).fetch()
 
   Tracker.autorun ->
     console.log ('inventoryAutorunWorking..') if autorunDebug
@@ -100,7 +106,6 @@ Meteor.startup ->
     console.log ('productAutorunWorking..') if autorunDebug
     if Session.get('currentMerchant')
       Session.set "availableWarehouses"  , Schema.warehouses.find({merchant: Session.get("currentMerchant")._id}).fetch()
-      Session.set 'availableProducts'    , Schema.products.find({merchant: Session.get('currentMerchant')._id}).fetch()
 
       Session.set 'personalNewProducts'  , Schema.products.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId(), totalQuality: 0},sort: {version:{createdAt: -1}}).fetch()
       Session.set 'personalNewProviders' , Schema.providers.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId()},sort: {version:{createdAt: -1}}).fetch()
