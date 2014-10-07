@@ -2,21 +2,26 @@ checkAllowCreate = (context) ->
   name = context.ui.$name.val()
 
   if name.length > 0
-    Session.set('allowCreateNewBranch', true)
+    if _.findWhere(Session.get("availableMerchant"), {name: name})
+      Session.set('allowCreateNewBranch', false)
+    else
+      Session.set('allowCreateNewBranch', true)
   else
     Session.set('allowCreateNewBranch', false)
 
 createBranch = (context) ->
   name = context.ui.$name.val()
   address = context.ui.$address.val()
+  if Schema.merchants.findOne({name: name})
+    console.log 'Chi Nhanh Ton Tai'
+  else
+    Schema.merchants.insert
+      parent: Session.get('currentProfile').parentMerchant
+      creator: Meteor.userId()
+      name: name
+      address: address
 
-  Schema.merchants.insert
-    parent: Session.get('currentProfile').parentMerchant
-    creator: Meteor.userId()
-    name: name
-    address: address
-
-  resetForm(context)
+    resetForm(context)
 
 resetForm = (context) -> $(item).val('') for item in context.findAll("[name]")
 
@@ -27,7 +32,8 @@ Sky.appTemplate.extends Template.branchManager,
     "input input": (event, template) -> checkAllowCreate(template)
     "click #createBranch": (event, template) -> createBranch(template)
 
+
   branchDetailOptions:
     itemTemplate: 'merchantThumbnail'
-    reactiveSourceGetter: -> Schema.merchants.find({ parent: Session.get('currentProfile').parentMerchant }).fetch()
+    reactiveSourceGetter: -> Session.get("availableMerchant") ? []
     wrapperClasses: 'detail-grid row'

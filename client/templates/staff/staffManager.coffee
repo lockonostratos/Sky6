@@ -20,8 +20,10 @@ resetForm = (context) ->
 Sky.appTemplate.extends Template.staffManager,
   created: ->
     runInitTracker()
+    Session.set("createStaffGenderSelection", false)
 
   rendered: ->
+    Sky.global.staffManagerTemplateInstance = @
     @ui.$dateOfBirth.datepicker
       language: "vi"
 
@@ -30,6 +32,9 @@ Sky.appTemplate.extends Template.staffManager,
       todayHighlight: true
 
   events:
+    "change [name='genderMode']": (event, template) ->
+      Session.set("createStaffGenderSelection", event.target.checked)
+
     "click #createStaffAccount": (event, template) ->
       dateOfBirth = template.ui.$dateOfBirth.data('datepicker').dates[0]
       startWorkingDate = template.ui.$startWorkingDate.data('datepicker').dates[0]
@@ -41,14 +46,16 @@ Sky.appTemplate.extends Template.staffManager,
       if Session.get('currentRoleSelection')?.length > 0
         roles.push role.name for role in Session.get('currentRoleSelection')
       newProfile =
-        parentMerchant: Session.get("currentProfile").parentMerchant
-        currentMerchant: Session.get("createStaffBranchSelection")._id
+        parentMerchant  : Session.get("currentProfile").parentMerchant
+        currentMerchant : Session.get("createStaffBranchSelection")._id
         currentWarehouse: Session.get("createStaffWarehouseSelection")._id
-        fullName: fullName
+        fullName        : fullName
+        systemVersion   : Schema.systems.findOne().version
 
       newProfile.roles = roles if roles.length > 0
       newProfile.dateOfBirth = dateOfBirth if dateOfBirth
       newProfile.startWorkingDate = startWorkingDate if startWorkingDate
+      newProfile.gender = Session.get("createStaffGenderSelection") if fullName
 
       Meteor.call "createMerchantAccount", email, password, newProfile
 #      Meteor.call "createMerchantAccount",
@@ -56,6 +63,8 @@ Sky.appTemplate.extends Template.staffManager,
 #        password: template.ui.$password.val()
 
       resetForm(template)
+
+
 
   roleSelectOptions:
     query: (query) -> query.callback
