@@ -1,12 +1,11 @@
 template(name="stockManager")
-  .app-header
-    span.caption XEM TỒN KHO <small>QUẢN LÝ GIÁ BÁN</small>
+  #header
+    .caption-row: .title XEM TỒN KHO <small>QUẢN LÝ GIÁ BÁN</small>
 
-  //.app-editor
-  //  .row
-  //    .col.col-auto(style="width: 200px")
-  //      span.ilabel tên đăng nhập
-  //      input(name="email")
+  //.editor-row
+  //  .editor-wrapper(style="width: 200px")
+  //    span.ilabel tên đăng nhập
+  //    input(name="email")
 
-  .app-content
+  #content
     +iGrid(options=stockDetailOptions)
