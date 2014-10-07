@@ -177,7 +177,7 @@ class Sky
       newHeight = $(window).height() - $("#header").outerHeight() - $("#footer").outerHeight() - 6
       $("#container").css('height', newHeight)
 
-    @formatDate: (dateObj = new Date(),format = 0)->
+    @formatDate: (format = 0, dateObj = new Date())->
       curr_Day   = dateObj.getDate()
       curr_Month = dateObj.getMonth()+1
       curr_Tear  = dateObj.getFullYear().toString()
@@ -185,7 +185,7 @@ class Sky
       if curr_Month < 10 then curr_Month = "0#{curr_Month}"
       switch format
         when 0 then "#{curr_Day}#{curr_Month}#{curr_Tear.substring(2,4)}"
-        when 1 then "#{curr_Day}/#{curr_Month}/#{curr_Tear.substring(2,4)}"
+        when 1 then "#{curr_Day}-#{curr_Month}-#{curr_Tear}"
 
 
 
