@@ -4,6 +4,8 @@ formatImportProductSearch = (item) -> "#{item.name} [#{item.skulls}]" if item
 formatImportProviderSearch = (item) -> "#{item.name}" if item
 
 reUpdateProduct = (productId)->
+  unless Session.get('currentImport')
+    Session.set 'currentImport', Import.createdByWarehouseAndSelect(Session.get('currentWarehouse')._id, {description: Sky.helpers.formatDate(1)})
   product = Schema.products.findOne(productId)
   if product
     option =
@@ -11,11 +13,12 @@ reUpdateProduct = (productId)->
       currentProvider    : product.provider ? 'skyReset'
       currentQuality     : 1
       currentImportPrice : product.importPrice ? 0
-    if product.price > 0
+    if product.price > 0 and product.instockQuality > 0
       Schema.imports.update(Session.get('currentImport')._id, $set: option, $unset: {currentPrice: ""})
     else
       option.currentPrice = product.importPrice ? 0
       Schema.imports.update(Session.get('currentImport')._id, {$set: option})
+      Session.set 'currentImport', Schema.imports.findOne(Session.get('currentImport')._id)
     Session.set 'currentProductInstance', product
 
 runInitImportTracker = (context) ->
@@ -36,7 +39,7 @@ runInitImportTracker = (context) ->
     if Session.get('importHistory') and Session.get('currentProfile')?.currentImport
       currentImport =  _.findWhere(Session.get('importHistory'), {_id: Session.get('currentProfile').currentImport})
       unless currentImport then currentImport = importHistory[0]
-      Session.set 'currentImport', currentImport
+      Session.set 'currentImport', Schema.imports.findOne(currentImport?._id)
       Session.set 'currentImportDetails', Schema.importDetails.find({import: currentImport?._id}).fetch()
 
     if currentProductId = Session.get('currentImport')?.currentProduct
@@ -74,7 +77,7 @@ Sky.appTemplate.extends Template.import,
 
         unsignedName.indexOf(unsignedTerm) > -1 || item.productCode.indexOf(unsignedTerm) > -1
       text: 'name'
-    initSelection: (element, callback) -> callback(Schema.products.findOne(Session.get('currentImport')?.currentProduct))
+    initSelection: (element, callback) -> callback(Schema.products.findOne(Session.get('currentImport')?.currentProduct) ? 'skyReset')
     formatSelection: formatImportProductSearch
     formatResult: formatImportProductSearch
     id: '_id'
@@ -82,7 +85,7 @@ Sky.appTemplate.extends Template.import,
 #    minimumResultsForSearch: -1
     hotkey: 'return'
     changeAction: (e) -> reUpdateProduct(e.added._id)
-    reactiveValueGetter: -> Session.get('currentImport')?.currentProduct
+    reactiveValueGetter: -> Session.get('currentImport')?.currentProduct  ? 'skyReset'
 
   providerSelectOptions:
     query: (query) -> query.callback
@@ -91,16 +94,22 @@ Sky.appTemplate.extends Template.import,
         unsignedName = Sky.helpers.removeVnSigns item.name
         unsignedName.indexOf(unsignedTerm) > -1
       text: 'name'
-    initSelection: (element, callback) -> callback(Schema.providers.findOne(Session.get('currentImport')?.currentProvider))
+    initSelection: (element, callback) -> callback(Schema.providers.findOne(Session.get('currentImport')?.currentProvider) ? 'skyReset')
     formatSelection: formatImportProviderSearch
     formatResult: formatImportProviderSearch
     id: '_id'
     placeholder: 'CHỌN NHÀ CUNG CẤP'
+    others:
+      allowClear: true
 #    minimumResultsForSearch: -1
     changeAction: (e) ->
-      Schema.imports.update(Session.get('currentImport')._id, {$set: {currentProvider: e.added._id }})
-      Schema.products.update(Session.get('currentProductInstance')._id, {$set:{provider: e.added._id}})
-    reactiveValueGetter: -> Session.get('currentImport')?.currentProvider
+      if e.removed
+        Schema.imports.update(Session.get('currentImport')._id, {$set: {currentProvider: 'skyReset' }})
+        Schema.products.update(Session.get('currentProductInstance')._id, {$set:{provider: 'skyReset'}})
+      else
+        Schema.imports.update(Session.get('currentImport')._id, {$set: {currentProvider: e.added._id }})
+        Schema.products.update(Session.get('currentProductInstance')._id, {$set:{provider: e.added._id}})
+    reactiveValueGetter: -> Session.get('currentImport')?.currentProvider ? 'skyReset'
 
   qualityOptions:
     reactiveSetter: (val) -> Schema.imports.update(Session.get('currentImport')._id, {$set: { currentQuality: val }})
@@ -112,11 +121,12 @@ Sky.appTemplate.extends Template.import,
   importPriceOptions:
     reactiveSetter: (val) ->
       currentImport = Session.get('currentImport')
-      if currentImport.currentPrice
-        if currentImport.currentPrice == currentImport.currentImport || currentImport.currentPrice < val
+      if currentImport.currentPrice >= 0
+        if currentImport.currentPrice == currentImport.currentImportPrice || currentImport.currentPrice < val
           Schema.imports.update(Session.get('currentImport')._id, {$set: {currentImportPrice: val, currentPrice: val}})
       else
         Schema.imports.update(Session.get('currentImport')._id, {$set: {currentImportPrice: val}})
+      Session.set 'currentImport', Schema.imports.findOne(Session.get('currentImport')._id)
       Schema.products.update(Session.get('currentImport').currentProduct, {$set:{importPrice: val}})
     reactiveValue: -> Session.get('currentImport')?.currentImportPrice ? 0
     reactiveMax: -> 999999999
@@ -149,10 +159,20 @@ Sky.appTemplate.extends Template.import,
     "click #popProduct": (event, template) -> $(template.find '#productPopover').modalPopover('show')
     "click #popProvider": (event, template) -> $(template.find '#providerPopover').modalPopover('show')
 
-    'click .addImportDetail': (event, template)-> console.log ImportDetail.createByImport Session.get('currentImport')._id
-    'click .editImport': (event, template)-> console.log Import.editImport Session.get('currentImport')._id
-    'click .finishImport': (event, template)-> console.log Import.finishImport Session.get('currentImport')._id
-    'click .submitImport': (event, template)-> console.log Import.submitedImport Session.get('currentImport')._id
+    'click .addImportDetail': (event, template)->
+      console.log ImportDetail.createByImport Session.get('currentImport')._id
+
+    'click .editImport': (event, template)->
+      console.log Import.editImport Session.get('currentImport')._id
+
+    'click .finishImport': (event, template)->
+      console.log Import.finishImport Session.get('currentImport')._id
+
+    'click .submitImport': (event, template)->
+      console.log Import.submitedImport Session.get('currentImport')._id
+      unless Schema.imports.findOne({_id: Session.get('currentImport')._id, submited: false})
+        Session.set 'currentImport', Import.createdByWarehouseAndSelect(Session.get('currentWarehouse')._id, {description: Sky.helpers.formatDate(1)})
+
     'blur .description': (event, template)->
       if template.find(".description").value.length > 1
         Schema.imports.update(Session.get('currentImport')._id, {$set: {description: template.find(".description").value}})

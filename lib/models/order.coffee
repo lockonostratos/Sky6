@@ -38,7 +38,8 @@ createSaleAndSaleOrder= (orderId)->
     if currentSale.paymentsDelivery == 0
       Schema.sales.update currentSale._id, $set: {status: true, success: false}
     if currentSale.paymentsDelivery == 1
-      delivery = Delivery.createdNewBySale(currentSale._id, order._id)
+      delivery = Delivery.newBySale(currentSale._id, order._id)
+      delivery._id = Schema.deliveries.insert delivery
       Schema.sales.update currentSale._id, $set: {delivery: delivery._id}
     if currentSale.paymentsDelivery == 2
       for detail in Schema.saleDetails.find({sale: currentSale._id})

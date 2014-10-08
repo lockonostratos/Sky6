@@ -23,8 +23,7 @@ createProvider= (event, template)->
     Session.set 'errorProviderPopover', 'Tạo mới nhà phân phối bị trùng lặp.'
   else
     Schema.providers.insert provider, (e,r)->
-      console.log e
-      console.log r
+      if e then console.log e
       if r
         template.find(".name").value = null
         template.find(".representative").value = null
@@ -35,18 +34,10 @@ createProvider= (event, template)->
 
 Sky.template.extends Template.providerPopover,
   error:      -> Session.get 'errorProviderPopover'
-  providerList:  ->
-    providers = Schema.providers.find({merchant: Session.get('currentProfile')?.parentMerchant, creator: Meteor.userId()},sort: {version:{createdAt: -1}}).fetch()
-    if providers
-      providerList= []
-      for item in providers
-        unless Schema.products.findOne({provider: item._id}) then providerList.push(item)
-      providerList
+  providerList:  -> Session.get 'personalNewProviders'
 
   events:
     'click .createProvider': (event, template)-> createProvider(event, template)
-
-
     'click .removeProvider': (event, template)->
       if provider = Schema.providers.findOne(@_id)
         if findProduct = Schema.products.findOne({provider: provider._id})

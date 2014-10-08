@@ -14,7 +14,7 @@ Schema.add 'returnDetails', class ReturnDetail
       price           : saleDetail.price
       submit          : false
       discountPercent : saleDetail.discountPercent
-      discountCash    : saleDetail.price * sale.currentQuality * saleDetail.discountPercent
+      discountCash    : Math.round(saleDetail.price * sale.currentQuality * saleDetail.discountPercent)
       finalPrice      : Math.round(saleDetail.price * sale.currentQuality * (100 - saleDetail.discountPercent)/100)
     option
 
@@ -62,6 +62,9 @@ Schema.add 'returnDetails', class ReturnDetail
       return console.log('Phiếu trả hàng đã xác nhận, không thể xóa.')
     else
       Schema.returnDetails.remove returnDetail._id
-      Sky.global.reCalculateReturn(returnDetail.return)
+      if Schema.returnDetails.findOne({return: returnDetail.return})
+        Sky.global.reCalculateReturn(returnDetail.return)
+      else
+        Schema.returns.remove(returnDetail.return)
 
 

@@ -6,10 +6,10 @@ template(name="providerPopover")
       .wrapper.bottom
         if error
           |#{error}
-        input.form-control.name(           type='text' placeholder='Tên Công Ty Phân Phối')
-        input.form-control.representative( type='text' placeholder='Người Đại Diện Công')
-        input.form-control.address(        type='text' placeholder='Địa Chỉ Công Ty')
-        input.form-control.phone(          type='text' placeholder='Số Điện Thoại Công Ty')
+        input.form-control.name(           type='text' placeholder='Tên Công Ty')
+        input.form-control.phone(          type='text' placeholder='Số Điện Thoại')
+        input.form-control.representative( type='text' placeholder='Tên Người Đại Diện')
+        input.form-control.address(        type='text' placeholder='Địa Chỉ')
 
         div(align="right"):  a.btn.btn-danger.createProvider Tạo mới
       ul.grid

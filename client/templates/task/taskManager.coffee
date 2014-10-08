@@ -1,4 +1,4 @@
-taskDefaultSort = {sort: {'version.updateAt': -1, 'version.createdAt': -1}}
+taskDefaultSort = Sky.helpers.defaultSort()
 
 formatPriorityTaskSearch  = (item) -> "#{item.display}" if item
 formatViewTaskSearch     = (item) -> "#{item.display}" if item
@@ -49,13 +49,15 @@ updateTask = ->
 
 resetTask = (context) ->
   Session.set('currentTaskDetail')
-  Session.set('currentPriorityTask')
+  Session.set('currentPriorityTask', 1)
   Session.set('currentDurationTask')
   Session.set('currentOwnerTask')
   Session.set('currentDescriptionTask')
   Session.set('currentGroupTask')
+  Session.set('allowCreateNewTask', false)
   $("[name=duration]").timepicker('setTime', '00:00')
   context.ui.$duration.timepicker('setTime', '00:00 AM') if context
+
 
 selectUpdateTask = (item, context) ->
   if item.status is Sky.system.taskStatuses.wait.key
@@ -168,7 +170,7 @@ Sky.appTemplate.extends Template.taskManager,
     'blur .group': (event, template)-> Session.set('currentGroupTask', template.ui.$group.val())
     'blur .description': (event, template)-> Session.set('currentDescriptionTask', template.ui.$description.val())
 
-    "click .taskDetail .fa.fa-unlock": (event, template) -> resetTask(template)
+#    "click .taskDetail .fa.fa-unlock": (event, template) -> resetTask(template)
     "click .taskDetail .fa.fa-pencil-square-o": (event, template) -> selectUpdateTask(@, template)
 
   rendered: ->

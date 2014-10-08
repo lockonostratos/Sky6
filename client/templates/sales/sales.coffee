@@ -127,7 +127,7 @@ Sky.appTemplate.extends Template.sales,
 
   productSelectOptions:
     query: (query) -> query.callback
-      results: _.filter Session.get('availableProducts'), (item) ->
+      results: _.filter Session.get('availableSaleProducts'), (item) ->
         unsignedTerm = Sky.helpers.removeVnSigns query.term
         unsignedName = Sky.helpers.removeVnSigns item.name
 
