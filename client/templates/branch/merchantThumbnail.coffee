@@ -3,3 +3,5 @@ Sky.template.extends Template.merchantThumbnail,
   events:
     "dblclick .full-desc.trash": ->
       Schema.merchants.remove(@_id)
+      for item in Schema.warehouses.find({merchant: @_id}).fetch()
+        Schema.warehouses.remove item._id

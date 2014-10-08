@@ -80,7 +80,7 @@ Sky.appTemplate.extends Template.inventoryHistory,
       allowClear: true
     changeAction: (e) ->
       if e.removed
-        Session.set('currentInventoryHistory')
+        Session.set 'currentInventoryHistory'
       else
         Schema.userProfiles.update Session.get('currentProfile')._id, $set:
           currentInventoryHistory: e.added._id

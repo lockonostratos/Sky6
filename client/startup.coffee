@@ -99,6 +99,18 @@ Meteor.startup ->
         Session.set "inventoryMerchant"
         Session.set "allWarehouseInventory"
 
+      if Session.get("allWarehouseInventory")?.length > 0
+        inventoryWarehouse = _.findWhere(Session.get("allWarehouseInventory"), {_id: Session.get('currentProfile').inventoryWarehouse})
+        if inventoryWarehouse
+          Session.set "inventoryWarehouse", Schema.warehouses.findOne(inventoryWarehouse._id)
+        else
+          Session.set "inventoryWarehouse", Session.get("allWarehouseInventory")[0]
+      else
+        Session.set "inventoryWarehouse"
+
+
+
+
   Tracker.autorun ->
     console.log ('exportAutorunWorking..') if autorunDebug
     if Session.get("availableMerchant") and Session.get('currentProfile')

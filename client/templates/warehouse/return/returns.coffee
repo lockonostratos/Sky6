@@ -86,11 +86,10 @@ Sky.appTemplate.extends Template.returns,
 
   returnQualityOptions:
     reactiveSetter: (val) ->
-      console.log 'value:'+val
       Schema.sales.update(Session.get('currentSale')._id, {$set: {currentQuality: val}})
     reactiveValue: -> Session.get('currentSale')?.currentQuality ? 0
     reactiveMax: -> Session.get('currentMaxQualityReturn') ? 0
-    reactiveMin: -> 0
+    reactiveMin: -> if Session.get('currentMaxQualityReturn') > 0 then 1 else 0
     reactiveStep: -> 1
 
   returnDetailOptions:
