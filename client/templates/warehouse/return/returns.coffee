@@ -1,7 +1,7 @@
 formatSaleReturnSearch = (item) -> "#{item.orderCode}" if item
 formatReturnSearch = (item) -> "#{item.returnCode}" if item
 formatReturnProductSearch = (item) ->
-  "#{item.name} [#{item.skulls}] - [#{Math.round(item.discountPercent*100)/100}% * #{item.quality - item.returnQuality}]" if item
+  "#{item.name} [#{item.skulls}] - [giảm giá:#{Math.round(item.discountPercent*100)/100}% * số lượng:#{item.quality - item.returnQuality}]" if item
 
 returnQuality= ->
   findReturnDetail =_.findWhere(Session.get('currentReturnDetails'),{
@@ -17,7 +17,7 @@ runInitReturnsTracker = (context) ->
   return if Sky.global.returnTracker
   Sky.global.returnTracker = Tracker.autorun ->
     if Session.get('currentWarehouse')
-      Session.set "availableSales", Schema.sales.find({warehouse: Session.get('currentWarehouse')._id}).fetch()
+      Session.set "availableSales", Schema.sales.find({warehouse: Session.get('currentWarehouse')._id, status: true, success: true}).fetch()
 
     if Session.get('currentProfile')?.currentSale
       Session.set 'currentSale', Schema.sales.findOne(Session.get('currentProfile')?.currentSale)

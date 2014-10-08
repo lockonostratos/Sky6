@@ -187,6 +187,11 @@ class Sky
         when 0 then "#{curr_Day}#{curr_Month}#{curr_Tear.substring(2,4)}"
         when 1 then "#{curr_Day}-#{curr_Month}-#{curr_Tear}"
 
+    @defaultSort: (option = 0)->
+      switch option
+        when 0 then {sort: {'version.updateAt': -1, 'version.createdAt': -1}}
+        when 1 then {sort: {'version.createdAt': -1, 'version.updateAt': -1}}
+
 
 
 @Sky = Sky

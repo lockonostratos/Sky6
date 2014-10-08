@@ -35,15 +35,55 @@ Meteor.startup ->
       Meteor.subscribe 'merchantProfiles', Session.get('currentProfile').parentMerchant
 
   Tracker.autorun ->
-    console.log ('warehouseAutorunWorking..') if autorunDebug
+    console.log ('merchant-warehouseAutorunWorking..') if autorunDebug
     if Session.get('currentProfile')
-      Session.set "currentMerchant"   , Schema.merchants.findOne(Session.get('currentProfile').currentMerchant)
-      Session.set "currentWarehouse"  , Schema.warehouses.findOne(Session.get('currentProfile').currentWarehouse)
+      if Session.get('currentProfile').parentMerchant == Session.get('currentProfile').currentMerchant
+        Session.set "currentMerchant"   , Schema.merchants.findOne(Session.get('currentProfile').parentMerchant)
+      else
+        Session.set "currentMerchant"   , Schema.merchants.findOne({
+          _id           : Session.get('currentProfile').currentMerchant
+          parentMerchant: Session.get('currentProfile').parentMerchant   })
 
-        
+    if Session.get('currentMerchant')
+      Session.set "availableWarehouses", Schema.warehouses.find({merchant: Session.get('currentMerchant')._id}).fetch()
+      Session.set "currentWarehouse", Schema.warehouses.findOne({
+        _id     : Session.get('currentProfile').currentWarehouse
+        merchant: Session.get('currentMerchant')._id })
+
   Tracker.autorun ->
-    if Session.get('currentWarehouse')
-      Session.set 'availableProducts', Schema.products.find({warehouse: Session.get('currentWarehouse')._id}).fetch()
+    console.log ('popoverAutorunWorking..') if autorunDebug
+    if Session.get('currentProfile')?.parentMerchant
+
+      if Session.get('currentWarehouse')
+        Session.set 'availableProducts', Schema.products.find({warehouse: Session.get('currentWarehouse')._id}, Sky.helpers.defaultSort(1)).fetch()
+        Session.set 'availableSaleProducts', Schema.products.find({
+          warehouse: Session.get('currentWarehouse')._id
+          price: {$gt: 0}
+          instockQuality: {$gt: 0}
+        }, Sky.helpers.defaultSort(1)).fetch()
+        Session.set 'personalNewProducts', _.where(Session.get('availableProducts'), {creator: Session.get('currentProfile').user, totalQuality: 0}) if Session.get('availableProducts')
+
+      availableProviders = Schema.providers.find({merchant: Session.get('currentProfile')?.parentMerchant }, Sky.helpers.defaultSort()).fetch()
+      Session.set 'availableProviders', availableProviders
+      if Session.get('availableProviders')
+        providers = _.where(Session.get('availableProviders'), {merchant: Session.get('currentProfile')?.parentMerchant, creator: Session.get('currentProfile').user})
+        if providers
+          providerList= []
+          for item in providers
+            unless Schema.products.findOne({provider: item._id}) then providerList.push(item)
+          Session.set 'personalNewProviders' , providerList
+
+
+
+      #chưa fix(viet lai dep)
+      if Session.get('currentMerchant')
+        Session.set 'personalNewCustomers' , Schema.customers.find({currentMerchant: Session.get('currentMerchant')._id, creator: Meteor.userId()}).fetch()
+        Session.set 'personalNewWarehouses', Schema.warehouses.find({merchant: Session.get('currentMerchant')._id, creator: Meteor.userId()}).fetch()
+        Session.set 'personalNewSkulls'    , Schema.skulls.find({merchant: Session.get('currentMerchant')._id, creator: Meteor.userId()}).fetch()
+
+        Session.set 'availableSkulls'      , Schema.skulls.find({merchant: Session.get('currentMerchant')._id}).fetch()
+        Session.set 'currentProviders'     , Schema.providers.find({merchant: Session.get('currentMerchant')._id, status: false}).fetch()
+
 
   Tracker.autorun ->
     console.log ('inventoryAutorunWorking..') if autorunDebug
@@ -58,7 +98,6 @@ Meteor.startup ->
       else
         Session.set "inventoryMerchant"
         Session.set "allWarehouseInventory"
-
 
   Tracker.autorun ->
     console.log ('exportAutorunWorking..') if autorunDebug
@@ -102,21 +141,6 @@ Meteor.startup ->
         Session.set "targetExportMerchant"
         Session.set "targetExportWarehouse"
         Session.set "availableTargetExportWarehouses"
-
-  Tracker.autorun ->
-    console.log ('productAutorunWorking..') if autorunDebug
-    if Session.get('currentMerchant')
-      Session.set "availableWarehouses"  , Schema.warehouses.find({merchant: Session.get("currentMerchant")._id}).fetch()
-
-      Session.set 'personalNewProducts'  , Schema.products.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId(), totalQuality: 0},sort: {version:{createdAt: -1}}).fetch()
-      Session.set 'personalNewProviders' , Schema.providers.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId()},sort: {version:{createdAt: -1}}).fetch()
-      Session.set 'personalNewCustomers' , Schema.customers.find({currentMerchant: Session.get("currentMerchant")._id, creator: Meteor.userId()}).fetch()
-      Session.set 'personalNewWarehouses', Schema.warehouses.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId()}).fetch()
-      Session.set 'personalNewSkulls'    , Schema.skulls.find({merchant: Session.get("currentMerchant")._id, creator: Meteor.userId()}).fetch()
-
-      Session.set 'availableProviders'   , Schema.providers.find({merchant: Session.get('currentMerchant')._id}).fetch()
-      Session.set 'availableSkulls'      , Schema.skulls.find({merchant: Session.get("currentMerchant")._id}).fetch()
-      Session.set 'currentProviders'     , Schema.providers.find({merchant: Session.get("currentMerchant")._id, status: false}).fetch()
 
   Tracker.autorun ->
     console.log ('deliveriesAutorunWorking..') if autorunDebug
