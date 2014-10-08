@@ -2,7 +2,7 @@ template(name="returns")
   #header
     .caption-row: .title Trả Hàng
     .editor-row
-      .editor-wrapper(style="width: 150px")
+      .editor-wrapper(style="width: 200px")
         span.ilabel chọn phiếu bán hàng
         +iSelect(options=saleSelectOptions class="field")
       .editor-wrapper(style="width: 400px")
@@ -11,7 +11,7 @@ template(name="returns")
       .editor-wrapper(style="width: 100px")
         span.ilabel số lượng trả
         +iSpinEdit(options=returnQualityOptions)
-      .editor-wrapper(style="width:150px; {{hideAddReturnDetail}}")
+      .editor-wrapper(style="width:100px; {{hideAddReturnDetail}}")
         button.btn.btn-default.addReturnDetail(type='submit') THÊM
 
   #content

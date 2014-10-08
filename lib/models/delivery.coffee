@@ -1,20 +1,17 @@
 Schema.add 'deliveries', class Delivery
-  @createdNewBySale: (saleId, orderId)->
+  @newBySale: (saleId, orderId)->
     sale = Schema.sales.findOne(saleId)
     order = Schema.orders.findOne(orderId)
-    if sale.orderCode == order.orderCode
-      option =
-        merchant        : sale.merchant
-        warehouse       : sale.warehouse
-        creator         : Meteor.userId()
-        sale            : sale._id
-        contactName     : order.contactName
-        contactPhone    : order.contactPhone
-        deliveryAddress : order.deliveryAddress
-        comment         : order.comment
-        status          : 0
-      option._id = Schema.deliveries.insert option
-    console.log option._id
+    option =
+      merchant        : sale.merchant
+      warehouse       : sale.warehouse
+      creator         : Meteor.userId()
+      sale            : sale._id
+      contactName     : order.contactName
+      contactPhone    : order.contactPhone
+      deliveryAddress : order.deliveryAddress
+      comment         : order.comment
+      status          : 0
     option
 
   @updateDelivery: (deliveryId, success = true) ->

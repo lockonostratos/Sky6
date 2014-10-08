@@ -1,7 +1,7 @@
-formatSaleReturnSearch = (item) -> "#{item.orderCode}" if item
+formatSaleReturnSearch = (item) -> "#{item.orderCode} #{}" if item
 formatReturnSearch = (item) -> "#{item.returnCode}" if item
 formatReturnProductSearch = (item) ->
-  "#{item.name} [#{item.skulls}] - [giảm giá:#{Math.round(item.discountPercent*100)/100}% * số lượng:#{item.quality - item.returnQuality}]" if item
+  "#{item.name} [#{item.skulls}] - [giảm giá: #{Math.round(item.discountPercent*100)/100}% - số lượng: #{item.quality - item.returnQuality}]" if item
 
 returnQuality= ->
   findReturnDetail =_.findWhere(Session.get('currentReturnDetails'),{
