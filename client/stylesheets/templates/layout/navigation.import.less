@@ -115,16 +115,21 @@ nav.main {
       span {
         color: #888888;
         line-height: 40px;
-        padding: 0 15px;
+        padding: 12px 15px;
       }
 
       .notification-counts {
+        pointer-events: none;
         position: absolute;
         right: 10px; top: 2px;
-        font-size: 10px;
-        padding: 0 4px; height: 15px; line-height: 15px; text-align: center;
-        border-radius: 2px;
+        font-size: 11px;
+        padding: 0 3px;
+        height: 17px;
+        line-height: 15px;
+        text-align: center;
+        .border-radius(3px);
         background-color: #F35112;
+        border: solid 1px #ECECEC;
         color: #fff;
         z-index: 10;
         visibility: hidden;

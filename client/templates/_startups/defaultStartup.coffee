@@ -6,12 +6,8 @@ registerSounds = ->
 
 Meteor.startup ->
   registerSounds()
-#  Session.set('messengerVisibility', true)
-#  Session.set('currentChatTarget', 'QsvgXdzKPzJxCMD9N')
   moment.locale('vi');
   Session.set('collapse', '');
-  Sky.global.allMessages = Messenger.allMessages()
-  Sky.global.currentMessages = Messenger.currentMessages()
 
   Tracker.autorun ->
     console.log ('userAutorunWorking..') if autorunDebug
@@ -160,6 +156,3 @@ Meteor.startup ->
       Session.set 'availableSale'   , Schema.sales.find({warehouse: Session.get("currentWarehouse")._id, status: true}).fetch()
       Session.set 'availableReturns'   , Schema.returns.find({warehouse: Session.get("currentWarehouse")._id}).fetch()
 
-  messengerTracker = Tracker.autorun ->
-    Session.set 'unreadMessages', Messenger.unreads().fetch()
-    Session.set 'incommingMessages', Messenger.incommings().fetch()

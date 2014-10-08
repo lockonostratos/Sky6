@@ -1,5 +1,7 @@
 Meteor.subscribe 'systems'
 Meteor.subscribe 'migrations'
+Meteor.subscribe 'myMessages'
+Meteor.subscribe 'myNotifications'
 
 Meteor.subscribe 'allUsers'
 Meteor.subscribe 'tasks'
@@ -11,7 +13,6 @@ Meteor.subscribe 'productLosts'
 Meteor.subscribe 'skulls'
 Meteor.subscribe 'providers'
 Meteor.subscribe 'myProfile'
-Meteor.subscribe 'myMessages'
 
 Meteor.subscribe 'orders'
 Meteor.subscribe 'orderDetails'

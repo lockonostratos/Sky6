@@ -8,18 +8,21 @@ template(name="navigation")
         //  input.form-control(type="text" maxlength="30" placeholder="tìm kiếm nhanh")
 
       ul.nav.navbar-nav.navbar-right.notifications
+        li.inav
+          +eventNotification
+          .notification-counts(class="{{eventClass}}") {{unreadEventCount}}
+          span.dropdown-toggle(data-toggle="dropdown"): i.fa.fa-magic
+        li.inav
+          +requestNotification
+          .notification-counts(class="{{requestClass}}") {{unreadRequestCount}}
+          span.dropdown-toggle(data-toggle="dropdown"): i.fa.fa-share-alt
         li.inav#unreadMessageHandler
           .notification-counts(class="{{messageClass}}") {{unreadMessageCount}}
           span: i.fa.fa-comments
-        li.inav
-          .notification-counts 3
-          span: i.fa.fa-gear
         li.inav#systemNotificationHandler
-          .notification-counts 20
-          span: i.fa.fa-bomb
-        li.inav
-          .notification-counts 20
-          span: i.fa.fa-gift
+          +notifyNotification
+          .notification-counts(class="{{notifyClass}}") {{unreadNotifyCount}}
+          span.dropdown-toggle(data-toggle="dropdown"): i.fa.fa-globe
         li.inav
           a(href="/sign-out"): i.fa.fa-power-off
 
