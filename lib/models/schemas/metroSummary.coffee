@@ -1,5 +1,8 @@
 Schema2.metroSummaries = new SimpleSchema
-  warehouse:
+  parentMerchant:
+    type: String
+
+  merchant:
     type: String
 
   productCount:
@@ -8,13 +11,22 @@ Schema2.metroSummaries = new SimpleSchema
   stockCount:
     type: Number
 
-  customerCount:
+  deliveryProductCount:
     type: Number
 
-  staffCount:
+  customerCountAll:
+    type: Number
+
+  customerCountMerchant:
+    type: Number
+
+  staffCountAll:
     type: Number
 
   staffCountMerchant:
+    type: Number
+
+  deliveryCount:
     type: Number
 
   saleCount:
@@ -46,4 +58,3 @@ Schema2.metroSummaries = new SimpleSchema
 
   version: { type: Schema.Version }
 
-Schema.add 'metroSummaries'

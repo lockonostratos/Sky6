@@ -1,6 +1,10 @@
 template(name="stockManager")
   #header
-    .caption-row: .title XEM TỒN KHO <small>QUẢN LÝ GIÁ BÁN</small>
+    .caption-row
+      .title XEM TỒN KHO <small>QUẢN LÝ GIÁ BÁN</small>
+      .filter
+        |Tổng Nhập:{{totalQualityProduct}} - Tồn Kho:{{totalStockProduct}} - Loại:{{totalProduct}}
+        +iSelect(options=warehouseSelectOptions class="field")
 
   //.editor-row
   //  .editor-wrapper(style="width: 200px")

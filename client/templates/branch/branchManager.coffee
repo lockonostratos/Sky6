@@ -1,6 +1,5 @@
 checkAllowCreate = (context) ->
   name = context.ui.$name.val()
-
   if name.length > 0
     if _.findWhere(Session.get("availableMerchant"), {name: name})
       Session.set('allowCreateNewBranch', false)
@@ -15,19 +14,7 @@ createBranch = (context) ->
   if Schema.merchants.findOne({name: name})
     console.log 'Chi Nhanh Ton Tai'
   else
-    newBranch = Schema.merchants.insert
-      parent: Session.get('currentProfile').parentMerchant
-      creator: Meteor.userId()
-      name: name
-      address: address
-    Schema.warehouses.insert
-      parentMerchant    : Session.get('currentProfile').parentMerchant
-      merchant          : newBranch
-      creator           : Meteor.userId()
-      name              : 'Kho Chính'
-      isRoot            : true
-      checkingInventory : false
-
+    UserProfile.findOne({user: Meteor.userId()}).addBranch({name: name, address: address})
     resetForm(context)
 
 resetForm = (context) -> $(item).val('') for item in context.findAll("[name]")

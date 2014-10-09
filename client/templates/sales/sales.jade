@@ -4,6 +4,7 @@ template(name="sales")
       .title Bán hàng
       .switches
         input(binding="switch" type="checkbox" name="advancedMode")
+        +iSelect(options=warehouseSelectOptions class="field")
 
     .editor-row
       .editor-wrapper(style="width: 250px")

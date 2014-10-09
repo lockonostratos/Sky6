@@ -14,6 +14,7 @@ Meteor.subscribe 'productLosts'
 Meteor.subscribe 'skulls'
 Meteor.subscribe 'providers'
 Meteor.subscribe 'myProfile'
+Meteor.subscribe 'metroSummaries'
 
 Meteor.subscribe 'orders'
 Meteor.subscribe 'orderDetails'

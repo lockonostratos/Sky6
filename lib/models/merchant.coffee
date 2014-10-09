@@ -1,4 +1,17 @@
 Schema.add 'merchants', class Merchant
+  addDefaultWarehouse: ->
+    if Schema.warehouse.findOne({merchant: @id})
+      option =
+        merchant          : @id
+        creator           : Meteor.userId()
+        name              : 'Kho Chính'
+        isRoot            : true
+        checkingInventory : false
+      option.parentMerchant = merchant.parent if merchant.parent
+      option
+
+
+
   addAccount: (option, creator, currentWarehouse = null) ->
       option.merchant = @id
       option.creator = creator

@@ -30,6 +30,12 @@ Schema.customers.allow
 #  remove: -> true
 
 
+Meteor.publish 'metroSummaries', -> Schema.metroSummaries.find({})
+Schema.metroSummaries.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
 Meteor.publish 'tests', -> Schema.tests.find({})
 Schema.tests.allow
   insert: -> true

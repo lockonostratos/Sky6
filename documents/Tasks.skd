@@ -23,6 +23,7 @@ Bao cao---------------      8h
  + Inventory                                            [...]
  + Customer                                             [...]
  + Staff                                                [...]
+
 Metro summary---------      4h
  + Import & Detail                                      [...]
  + Sale & Detail                                        [...]
@@ -31,6 +32,7 @@ Metro summary---------      4h
  + Inventory & Detail                                   [...]
  + Export & Detail                                      [...]
  + Customer & Staff                                     [...]
+
 Transaction-------------    6h
  + Product & Detail                                     [...]
  + Skull & Provider                                     [...]
