@@ -1,5 +1,5 @@
 Sky.template.extends Template.stockThumbnail,
-  colorClasses: 'none'
+  colorClass: -> if @instockQuality > 0 then 'lime' else 'blue'
   formatCurrency: (number) ->
     accounting.formatMoney(number, { symbol: 'VNĐ',  format: "%v %s", precision: 0 })
   formatNumber: (number) -> accounting.formatMoney(number, { format: "%v", precision: 0 })

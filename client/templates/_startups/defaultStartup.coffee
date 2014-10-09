@@ -40,7 +40,7 @@ Meteor.startup ->
           _id           : Session.get('currentProfile').currentMerchant
           parentMerchant: Session.get('currentProfile').parentMerchant   })
 
-    if Session.get('currentMerchant')
+    if Session.get('currentMerchant') and Session.get('currentProfile')
       Session.set "availableWarehouses", Schema.warehouses.find({merchant: Session.get('currentMerchant')._id}).fetch()
       Session.set "currentWarehouse", Schema.warehouses.findOne({
         _id     : Session.get('currentProfile').currentWarehouse

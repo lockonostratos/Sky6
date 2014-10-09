@@ -3,4 +3,5 @@ template(name="billThumbnail")
     .thumbnails
       .right-caption {{buyerName}} <br /> {{sellerName}}
       .full-desc.price {{formatNumber finalPrice}} VNĐ
-      .full-desc.trash: a(href="#"): i.fa.fa-trash-o
+      if isntDelete
+        .full-desc.trash: a(href="#"): i.fa.fa-trash-o
