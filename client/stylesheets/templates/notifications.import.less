@@ -1,6 +1,7 @@
 .notifications .dropdown-menu {
   right: -10px;
-  margin: 6px 0 !important;
+  margin: 3px 0 !important;
+  padding: 0;
 
   &:after, &:before {
     z-index: 15;
@@ -17,5 +18,35 @@
   &:after {
     border-bottom-color: #999;
     z-index: 14;
+  }
+
+  .header-caption {
+    font-size: 14px;
+    padding: 5px;
+  }
+
+  ul.details {
+    padding-left: 0;
+    max-height: 424px;
+    overflow-y: scroll;
+    li {
+      .clearfix;
+      list-style: none;
+      border-top: solid 1px #dedede;
+
+      .avatar {
+        float: left;
+        width: 50px; height: 50px;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 1px;
+      }
+      .content {
+        width: 300px;
+        padding-left: 55px;
+        height: 50px;
+        font-size: 12px;
+      }
+    }
   }
 }

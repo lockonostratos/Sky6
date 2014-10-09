@@ -4,5 +4,6 @@ Sky.notificationTypes =
   event:                    { key: 'event' }
 
 Sky.notificationCharacteristics =
+  event:                    {key: 'event'}
   alert:                    {key: 'alert'}
   danger:                   {key: 'danger'}
