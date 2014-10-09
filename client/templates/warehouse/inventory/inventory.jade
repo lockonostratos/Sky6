@@ -8,15 +8,18 @@ template(name="inventory")
       .editor-wrapper(style="width: 200px")
         span.ilabel kho
         +iSelect(options=warehouseSelectOptions class="field")
-      .editor-wrapper(style="width: 200px; {{showDescription}}")
-        span.ilabel lý do kiểm kho
-        input(name="description" maxlength="200" value="{{inventory.description}}")
-      .editor-wrapper(style="width:100px; {{showCreate}}")
-        button.btn.btn-default.creatInventory(class="{{allowCreate}}") Tạo
-      .editor-wrapper(style="width:100px; {{showDestroy}}")
-        button.btn.btn-default.destroyInventory() Hủy
-      .editor-wrapper(style="width:100px; {{showSubmit}}")
-        button.btn.btn-default.submitInventory() Xác Nhận
+      if show
+        .editor-wrapper(style="width: 200px; {{showDescription}}")
+          span.ilabel lý do kiểm kho
+          input(name="description" maxlength="200" value="{{inventory.description}}")
+        .editor-wrapper(style="width:100px; {{showCreate}}")
+          button.btn.btn-default.creatInventory(class="{{allowCreate}}") Tạo
+        .editor-wrapper(style="width:100px; {{showDestroy}}")
+          button.btn.btn-default.destroyInventory() Hủy
+        .editor-wrapper(style="width:100px; {{showSubmit}}")
+          button.btn.btn-default.submitInventory() Xác Nhận
+      unless show
+        span Kho đang được kiểm, không thể tạo mới
 
   #content
     +iGrid(options=productDetailOptions)

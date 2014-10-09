@@ -65,6 +65,7 @@ Schema.add 'returnDetails', class ReturnDetail
       if Schema.returnDetails.findOne({return: returnDetail.return})
         Sky.global.reCalculateReturn(returnDetail.return)
       else
+        Schema.sales.update returnDetail.sale, $set:{status: true }
         Schema.returns.remove(returnDetail.return)
 
 

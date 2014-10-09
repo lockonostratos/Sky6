@@ -15,11 +15,18 @@ createBranch = (context) ->
   if Schema.merchants.findOne({name: name})
     console.log 'Chi Nhanh Ton Tai'
   else
-    Schema.merchants.insert
+    newBranch = Schema.merchants.insert
       parent: Session.get('currentProfile').parentMerchant
       creator: Meteor.userId()
       name: name
       address: address
+    Schema.warehouses.insert
+      parentMerchant    : Session.get('currentProfile').parentMerchant
+      merchant          : newBranch
+      creator           : Meteor.userId()
+      name              : 'Kho Chính'
+      isRoot            : true
+      checkingInventory : false
 
     resetForm(context)
 

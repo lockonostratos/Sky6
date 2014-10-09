@@ -29,9 +29,17 @@ runInitInventoryTracker = (context) ->
 
 
 Sky.appTemplate.extends Template.inventory,
+  showName: -> 'wewe'
   inventory: -> Session.get('currentInventory')
-  allowCreate: -> if Session.get('allowCreateNewInventory') then 'btn-success' else 'btn-default disabled'
+  show: ->
+    if Session.get('currentInventory') then true
+    else
+      if Session.get('inventoryWarehouse')?.checkingInventory == false
+        true
+      else
+        false
 
+  allowCreate: -> if Session.get('allowCreateNewInventory') then 'btn-success' else 'btn-default disabled'
   showDescription: ->
     if Session.get('inventoryWarehouse')?.checkingInventory == true and !Session.get("currentInventory") and Session.get("historyInventories")
       return "display: none"
@@ -73,6 +81,7 @@ Sky.appTemplate.extends Template.inventory,
     changeAction: (e) ->
       Schema.userProfiles.update Session.get('currentProfile')._id, $set:
         inventoryWarehouse: e.added._id
+      Session.set 'inventoryWarehouse', Schema.warehouses.findOne(e.added._id)
     reactiveValueGetter: -> Session.get('inventoryWarehouse') ? 'skyReset'
 
   productDetailOptions:
