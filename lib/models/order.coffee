@@ -138,10 +138,22 @@ removeOrderAndOrderDetailAfterCreateSale= (orderId)->
     else
       UserProfile.update {currentOrder: allTabs[currentIndex+1]._id}
     Order.removeAll(orderId)
-  else
 
+updateMetroSummary= (saleId)->
+  sale = Schema.sales.findOne(saleId)
+  option =
+    saleCount : 1
+    saleCountDay : 1
+    saleCountMonth : 1
+    revenue : sale.deposit
+    revenueDay : sale.deposit
+    revenueMonth : sale.deposit
+  option.stockCount = -sale.saleCount if sale.success == true
+  option.deliveryCount = 1 if sale.paymentsDelivery == 1
+  option.deliveryProductCount = sale.saleCount if sale.paymentsDelivery == 1
 
-
+  metroSummary = Schema.metroSummaries.findOne({merchant: sale.merchant})
+  Schema.metroSummaries.update metroSummary._id, $inc: option
 
 #-----------------------------------------------------------------------------------------------------------------------
 Schema.add 'orders', class Order
@@ -251,6 +263,7 @@ Schema.add 'orders', class Order
 #    Sale.findOne(saleId).createSaleExport()
     removeOrderAndOrderDetailAfterCreateSale(orderId)
     createTransactionAndDetailByOrder(saleId)
+    updateMetroSummary(saleId)
     return("Tạo phiếu bán hàng thành công")
 
 #-----------------------------------------------------

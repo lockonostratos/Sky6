@@ -36,15 +36,16 @@ createCustomer = (context) ->
 resetForm = (context) -> $(item).val('') for item in context.findAll("[name]")
 
 Sky.appTemplate.extends Template.customerManager,
-  allowCheck: -> return "display: none" unless Session.get('allowCreateNewCustomer')
   allowCreate: -> if Session.get('allowCreateNewCustomer') then 'btn-success' else 'btn-default disabled'
   created: ->
     Session.setDefault('allowCreateNewCustomer', false)
-    Session.setDefault('genderNewCustomer', false)
+    Session.setDefault('genderNewCustomer', true)
 
   events:
     "input input": (event, template) -> checkAllowCreate(template)
     "click #createCustomerAccount": (event, template) -> createCustomer(template)
+    "change [name='genderMode']": (event, template) ->
+      Session.set 'genderNewCustomer', event.target.checked
 
   customerDetailOptions:
     itemTemplate: 'customerThumbnail'

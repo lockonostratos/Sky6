@@ -14,8 +14,8 @@ template(name="customerManager")
       .editor-wrapper(style="width: 120px")
         span.ilabel.optional sinh nhật
         input(binding="datePicker" todayHighlight="true" name="dateOfBirth")
-      .switches(style="{{allowCheck}}" )
-        input(binding="switch" type="checkbox" name="genderMode")
+      .switches
+        input(binding="switch" type="checkbox" name="genderMode" checked="true")
       .editor-wrapper
         button.btn#createCustomerAccount(class="{{allowCreate}}") TẠO MỚI
 
