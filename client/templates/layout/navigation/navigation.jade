@@ -9,20 +9,17 @@ template(name="navigation")
 
       ul.nav.navbar-nav.navbar-right.notifications
         li.inav
-          +eventNotification
-          .notification-counts(class="{{eventClass}}") {{unreadEventCount}}
-          span.dropdown-toggle(data-toggle="dropdown"): i.fa.fa-magic
+          +messageNotifications
+          .notification-counts(class="{{messageClass}}") {{unreadMessageCount}}
+          span.dropdown-toggle(data-toggle="dropdown"): i.fa.fa-comments
         li.inav
-          +requestNotification
+          +notificationDetails
+          .notification-counts(class="{{notificationClass}}") {{unreadNotificationCount}}
+          span.dropdown-toggle(data-toggle="dropdown"): i.fa.fa-globe
+        li.inav
+          +requestDetails
           .notification-counts(class="{{requestClass}}") {{unreadRequestCount}}
           span.dropdown-toggle(data-toggle="dropdown"): i.fa.fa-share-alt
-        li.inav#unreadMessageHandler
-          .notification-counts(class="{{messageClass}}") {{unreadMessageCount}}
-          span: i.fa.fa-comments
-        li.inav#systemNotificationHandler
-          +notifyNotification
-          .notification-counts(class="{{notifyClass}}") {{unreadNotifyCount}}
-          span.dropdown-toggle(data-toggle="dropdown"): i.fa.fa-globe
         li.inav
           a(href="/sign-out"): i.fa.fa-power-off
 
@@ -37,4 +34,4 @@ template(name="navigation")
           li.inav(class="{{isActiveRoute route}}")
             a(href="{{pathFor route}}"): i.fa(class="{{icon}}")
 
-  +unreadMessagePopover
+  //+unreadMessagePopover

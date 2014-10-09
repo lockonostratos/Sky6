@@ -1,0 +1,8 @@
+template(name="requestDetails")
+  .dropdown-menu(role="menu")
+    .header PHÊ DUYỆT
+    ul.details
+      each requests
+        li
+          .avatar(style="background-image: url('images/avatars/avatar.jpg')")
+          .content {{message}}

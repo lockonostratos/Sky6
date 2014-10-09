@@ -10,6 +10,10 @@ Schema2.notifications = new SimpleSchema
   message:
     type: String
 
+  isRequest:
+    type: Boolean
+    defaultValue: false
+
   notificationType:
     type: String
 
