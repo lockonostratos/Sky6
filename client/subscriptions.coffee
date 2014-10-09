@@ -2,6 +2,7 @@ Meteor.subscribe 'systems'
 Meteor.subscribe 'migrations'
 Meteor.subscribe 'myMessages'
 Meteor.subscribe 'myNotifications'
+Meteor.subscribe 'avatarImages'
 
 Meteor.subscribe 'allUsers'
 Meteor.subscribe 'tasks'

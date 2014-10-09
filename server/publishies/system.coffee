@@ -15,3 +15,9 @@ Schema.migrations.allow
   insert: -> true
   update: -> true
   remove: -> true
+
+Meteor.publish 'avatarImages', -> Sky.avatarImages.find {}
+Sky.avatarImages.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
