@@ -58,11 +58,12 @@
 
     &:hover .alias { left: 40px !important; }
     .chat-avatar {
+      .user-select(none);
       list-style: none;
       position: relative;
       background-color: #575757;
       cursor: pointer;
-
+      &.me { input[type="file"] { display: none; } }
       .online-status-orb {
         width: 8px; height: 8px;
         .border-radius(50%);

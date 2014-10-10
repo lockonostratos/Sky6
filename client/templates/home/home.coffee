@@ -4,10 +4,11 @@ Sky.appTemplate.extends Template.home,
     buget: 0.5
     others:
       fgColor: "#7caa22"
-  avatarImages: -> Sky.avatarImages.find()
+  avatarImages: -> AvatarImages.find()
 
   rendered: ->
     console.log "Home is showing up, awesome!"
+    console.log AvatarImages
 
   events:
     'click input': -> console.log 'Fuck YOU!'
@@ -15,5 +16,5 @@ Sky.appTemplate.extends Template.home,
     'change #fileUpload': (event, template) ->
       files = event.target.files
       if files.length > 0
-        Sky.avatarImages.insert files[0], (error, fileObj) ->
+        AvatarImages.insert files[0], (error, fileObj) ->
           console.log error, fileObj
