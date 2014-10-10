@@ -12,7 +12,7 @@ template(name="staffManager")
         span.ilabel.center xác nhận
         input(type="password" name="confirm")
       .editor-wrapper
-        button#createStaffAccount.btn.btn-default.addOrderDetail(type='submit') TẠO MỚI
+        button#createStaffAccount.btn.btn-default.addOrderDetail(class="{{allowCreate}}" type='submit') TẠO MỚI
 
       .editor-wrapper.right(style="width: 400px")
         span.ilabel.optional phân quyền
@@ -20,7 +20,7 @@ template(name="staffManager")
 
     .editor-row
       .editor-wrapper(style="width: 200px")
-        span.ilabel.optional họ tên
+        span.ilabel họ tên
         input(name="fullName")
       .editor-wrapper(style="width: 120px")
         span.ilabel.center.optional sinh nhật
