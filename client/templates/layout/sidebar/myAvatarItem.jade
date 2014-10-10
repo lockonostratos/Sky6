@@ -1,7 +1,7 @@
-template(name="chatAvatarItem")
-  li.chat-avatar(class="{{myAvatar}}")
+template(name="myAvatarItem")
+  li.chat-avatar.me
+    input.avatarFileSelector(type="file")
     .online-status-orb(class="{{isOnline}}")
-    i.glyphicon.glyphicon-comment.has-message-status(class="{{hasUnreadMessage}}")
     .alias {{fullAlias}}
     if avatar
       img(src="{{avatarImageSrc}}")

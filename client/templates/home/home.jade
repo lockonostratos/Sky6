@@ -16,3 +16,7 @@ template(name="home")
     +iCooldown(options=cooldownOptions)
 
     .content-footer footer
+    each avatarImages
+      img(src="{{url}}")
+
+    input#fileUpload(type="file")

@@ -1,9 +1,5 @@
 Sky.template.extends Template.chatAvatarItem,
-  myAvatar: -> if @user is Meteor.userId() then 'me' else ''
-  avatar: ->
-    if Meteor.userId() is @user then 'avatar'
-    else @avatar
-
+  avatarImageSrc: -> AvatarImages.findOne(@avatar)?.url()
   avatarLetter: ->
     fullAlias = @fullName ? Meteor.users.findOne(@user)?.emails[0].address
     fullAlias?.split(' ').pop().substring(0,1)

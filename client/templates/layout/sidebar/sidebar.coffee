@@ -2,7 +2,7 @@
 
 Sky.template.extends Template.sidebar,
   myProfile: -> Schema.userProfiles.findOne({user: Meteor.userId()})
-  friends: -> Schema.userProfiles.find({user: {$not : Meteor.userId()}}).fetch()
+  friends: -> Schema.userProfiles.find({user: {$not : Meteor.userId()}})
 
   events:
     "click .chat-avatar:not(.me)": (event, template) ->

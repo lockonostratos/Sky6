@@ -15,3 +15,10 @@ Schema.migrations.allow
   insert: -> true
   update: -> true
   remove: -> true
+
+Meteor.publish 'avatarImages', -> AvatarImages.find {}
+AvatarImages.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+  download: -> true

@@ -4,6 +4,9 @@
 # but you can also edit it by hand.
 
 meteor-platform
+cfs:standard-packages
+cfs:filesystem
+
 less
 coffeescript
 waitingkuo:jade
@@ -22,4 +25,5 @@ sky
 zimme:iron-router-active
 dburles:collection-helpers
 mizzao:user-status
+cfs:graphicsmagick
 
