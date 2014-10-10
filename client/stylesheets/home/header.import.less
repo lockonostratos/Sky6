@@ -1,0 +1,105 @@
+#homeHeader {
+  background-color: #fff;
+  .header-content {
+
+  }
+
+  .home-branding {
+    .clearfix;
+    padding: 0 10px;
+
+    .logo-text {
+      float: left;
+      padding-top: 20px;
+      .caption {
+        color: #565a5f;
+        text-align: right;
+        font-size: 30px;
+        font-weight: bold;
+      }
+
+      .slogan {
+        text-align: right;
+        font-style: italic;
+        font-size: 12px;
+        color: #bcc1c7;
+        margin-top: -8px;
+      }
+    }
+
+    .logo-image {
+      float: left;
+      margin: 20px 0 0 15px;
+      padding: 10px 0 7px 15px;
+      border-left: solid 1px #EEEEEE;
+    }
+
+    .languages {
+      float: left;
+      margin: 36px 0 0 46px;
+    }
+
+    .search {
+      float: right;
+    }
+
+    .social {
+      float: right;
+    }
+
+    .phone {
+      position: relative;
+      float: right;
+      color: #828a93;
+      padding: 2px 0 2px 13px;
+      font-size: 12px;
+      line-height: 24px;
+      margin: 30px 70px 0 0;
+
+      i {
+        position: absolute;
+        top: 4px; left: 0;
+        font-size: 22px;
+        color: #E9E9E9;
+      }
+    }
+  }
+
+  ul.home-navigation {
+    .clearfix;
+    margin: 0; padding: 50px 10px 50px 10px;
+    list-style: none;
+    color: #565a5f;
+
+    li {
+      cursor: pointer;
+      position: relative;
+      float: left;
+      width: 16.66%;
+      height: 40px;
+
+      .icon {
+        font-size: 40px;
+        color: #bcc1c7;
+        line-height: 40px;
+        float: left;
+      }
+      &:hover .icon {
+        color: @home-theme;
+      }
+      .main-caption, .sub-caption {
+        position: absolute;
+        left: 45px;
+
+      }
+
+      .sub-caption {
+        color: #bcc1c7;
+        font-style: italic;
+        font-size: 13px;
+        top: 20px;
+      }
+    }
+  }
+
+}

@@ -1,0 +1,33 @@
+.home-wrapper {
+  width: 1200px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.top-panel {
+  position: relative;
+  z-index: 10;
+  background-color: @home-theme;
+  color: #fff;
+  .top-panel-content {
+    margin: 0 auto;
+    padding: 30px 0 40px 0;
+    position: relative;
+    width: 100%;
+
+    .top-panel-toggle {
+      cursor: pointer;
+      background-color: @home-theme;
+      width: 105px; height: 105px;
+      .border-radius(7px);
+      position: absolute;
+      bottom: -7px;
+      left: 40%;
+      .rotate(-135deg);
+      i.fa {
+        padding-left: 3px;
+        .rotate(-45deg);
+      }
+    }
+  }
+}
