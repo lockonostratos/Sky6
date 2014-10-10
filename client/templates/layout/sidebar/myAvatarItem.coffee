@@ -1,5 +1,5 @@
 Sky.template.extends Template.myAvatarItem,
-  avatarImageSrc: -> AvatarImages.findOne(@avatar).url()
+  avatarImageSrc: -> AvatarImages.findOne(@avatar)?.url()
   avatarLetter: ->
     fullAlias = @fullName ? Meteor.users.findOne(@user)?.emails[0].address
     fullAlias?.split(' ').pop().substring(0,1)

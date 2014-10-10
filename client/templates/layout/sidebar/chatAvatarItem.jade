@@ -4,6 +4,6 @@ template(name="chatAvatarItem")
     i.glyphicon.glyphicon-comment.has-message-status(class="{{hasUnreadMessage}}")
     .alias {{fullAlias}}
     if avatar
-      img(src="images/avatars/{{avatar}}.jpg")
+      img(src="{{avatarImageSrc}}")
     else
       span {{avatarLetter}}
