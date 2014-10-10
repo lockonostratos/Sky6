@@ -10,6 +10,12 @@ Sky.template.extends Template.taskDetailThumbnail,
       when 'confirming' then 'carrot'
       when 'frozen' then 'blue'
       when 'rejected' then 'pumpkin'
+  currentAvatarUrl: ->
+    profile = Schema.userProfiles.findOne({user: @owner ? @creator})
+    return undefined if !profile?.avatar
+    AvatarImages.findOne(profile.avatar)?.url()
+
+  currentAlias: -> Schema.userProfiles.findOne({user: @owner ? @creator})?.fullName ? '?'
 
   priorityAlias: ->
     priority = _.findWhere(Sky.system.priorityTasks, {_id: @priority})

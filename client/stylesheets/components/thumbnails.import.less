@@ -36,17 +36,26 @@
     .text-overflow;
   }
 
-  .avatar {
-    background-color: #fff;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    position: absolute;
-    height: 80px;
-    width: 80px;
+  .avatar-img {
     .border-radius(50%);
-    top: -10px; left: 10px;
     border: solid 4px #fff;
+    width: 80px; height: 80px;
+    position: absolute;
+    top: -10px; left: 10px;
+  }
+
+  .avatar-letter {
+    background-color: #9c9c9c;
+    .border-radius(50%);
+    border: solid 4px #fff;
+    width: 80px; height: 80px;
+    position: absolute;
+    top: -10px; left: 10px;
+    color: #fff;
+    line-height: 75px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
   }
 
   .short-desc {

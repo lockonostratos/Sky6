@@ -4,5 +4,5 @@ template(name="notificationDetails")
     ul.details
       each notifications
         li
-          .avatar(style="background-image: url('images/avatars/avatar.jpg')")
+          +avatarImageComponent(avatar=requestSenderAvatar alias=requestSenderAlias)
           .content {{message}}

@@ -20,7 +20,8 @@ template(name="taskDetailThumbnail")
       .task-creator {{creatorAlias}}
       .task-cooldown
         +iCooldown(options=cooldownOptions)
-      .avatar(style="background-image: url('images/avatars/avatar2.jpg')")
+      //.avatar(style="background-image: url({{avatarImageSrc}})")
+      +avatarImageComponent(avatar=currentAvatarUrl alias=currentAlias)
       .full-desc.trash
         a(href="#")
       .media-navigation.task-media

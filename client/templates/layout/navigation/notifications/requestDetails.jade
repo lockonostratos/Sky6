@@ -4,5 +4,5 @@ template(name="requestDetails")
     ul.details
       each requests
         li
-          .avatar(style="background-image: url('images/avatars/avatar.jpg')")
+          +avatarImageComponent(avatar=requestSenderAvatar alias=requestSenderAlias)
           .content {{message}}

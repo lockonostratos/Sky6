@@ -1,11 +1,8 @@
 Sky.template.extends Template.chatAvatarItem,
-  avatarImageSrc: -> AvatarImages.findOne(@avatar)?.url()
-  avatarLetter: ->
-    fullAlias = @fullName ? Meteor.users.findOne(@user)?.emails[0].address
-    fullAlias?.split(' ').pop().substring(0,1)
-  fullAlias: ->
+  shortAlias: ->
     fullAlias = @fullName ? Meteor.users.findOne(@user)?.emails[0].address
     Sky.helpers.shortName(fullAlias)
+  avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
   isOnline: -> if Meteor.users.findOne(@user)?.status?.online then 'active' else ''
   hasUnreadMessage: ->
     return '' if @user is Meteor.userId()
