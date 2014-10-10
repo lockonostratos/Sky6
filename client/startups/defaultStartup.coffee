@@ -15,6 +15,7 @@ Meteor.startup ->
       Session.set "currentUser"       , Meteor.user()
       Session.set "currentProfile"    , Schema.userProfiles.findOne(user: Meteor.userId())
 
+
     if Session.get('currentProfile')?.parentMerchant
       availableMerchant = Schema.merchants.find(
         {$or:
@@ -26,6 +27,8 @@ Meteor.startup ->
 
       Session.set "availableMerchant", availableMerchant
       Session.set 'availableCustomers', Schema.customers.find({parentMerchant: Session.get('currentProfile').parentMerchant}).fetch()
+      Session.set "availableUserProfile" , Schema.userProfiles.find({parentMerchant: Session.get('currentProfile').parentMerchant}).fetch()
+
 
     if Session.get('currentProfile') #Temporaries SUBSCRUBIBE
       Meteor.subscribe 'merchantProfiles', Session.get('currentProfile').parentMerchant

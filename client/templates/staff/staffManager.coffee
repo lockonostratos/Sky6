@@ -1,3 +1,53 @@
+formatRoleSelect = (item) -> "#{item.name}" if item
+formatBranchSelect = (item) -> "#{item.name}" if item
+formatWarehouseSelect = (item) -> "#{item.name}" if item
+
+resetForm = (context) ->
+  $(item).val('') for item in context.findAll("[name]")
+  Session.set('currentRoleSelection', [])
+
+checkAllowCreate = (template) ->
+  email = template.ui.$email.val()
+  password = template.ui.$password.val()
+  confirm = template.ui.$confirm.val()
+  fullName = template.ui.$fullName.val()
+  if Meteor.users.findOne({'emails.address': email}) then return Session.set('allowCreateStaffAccount', false)
+  if email.length > 0 and password.length > 0 and confirm.length > 0 and fullName.length > 0 and password is confirm
+    if _.findWhere(Session.get('availableUserProfile'), {fullName: fullName})
+      Session.set('allowCreateStaffAccount', false)
+    else
+      Session.set('allowCreateStaffAccount', true)
+  else
+    Session.set('allowCreateStaffAccount', false)
+
+createStaffAccount = (template)->
+  dateOfBirth = template.ui.$dateOfBirth.data('datepicker').dates[0]
+  startWorkingDate = template.ui.$startWorkingDate.data('datepicker').dates[0]
+  email = template.ui.$email.val()
+  password = template.ui.$password.val()
+  fullName = template.ui.$fullName.val()
+  unless Meteor.users.findOne({'emails.address': email}) || Schema.userProfiles.findOne({fullName: fullName})
+    roles = []
+    if Session.get('currentRoleSelection')?.length > 0
+      roles.push role.name for role in Session.get('currentRoleSelection')
+    newProfile =
+      parentMerchant  : Session.get("currentProfile").parentMerchant
+      currentMerchant : Session.get("createStaffBranchSelection")._id
+      currentWarehouse: Session.get("createStaffWarehouseSelection")._id
+      fullName        : fullName
+      systemVersion   : Schema.systems.findOne().version
+
+    newProfile.roles = roles if roles.length > 0
+    newProfile.dateOfBirth = dateOfBirth if dateOfBirth
+    newProfile.startWorkingDate = startWorkingDate if startWorkingDate
+    newProfile.gender = Session.get("createStaffGenderSelection") if fullName
+
+    Meteor.call "createMerchantAccount", email, password, newProfile
+    #      Meteor.call "createMerchantAccount",
+    #        email: template.ui.$email.val()
+    #        password: template.ui.$password.val()
+    resetForm(template)
+
 runInitTracker = (context) ->
   return if Sky.global.staffManagerTracker
   Sky.global.staffManagerTracker = Tracker.autorun ->
@@ -9,18 +59,13 @@ runInitTracker = (context) ->
     Session.setDefault 'createStaffBranchSelection', Session.get('currentMerchant')
     Session.setDefault 'createStaffWarehouseSelection', Session.get('currentWarehouse')
 
-formatRoleSelect = (item) -> "#{item.name}" if item
-formatBranchSelect = (item) -> "#{item.name}" if item
-formatWarehouseSelect = (item) -> "#{item.name}" if item
-
-resetForm = (context) ->
-  $(item).val('') for item in context.findAll("[name]")
-  Session.set('currentRoleSelection', [])
-
 Sky.appTemplate.extends Template.staffManager,
+  allowCreate: -> if Session.get('allowCreateStaffAccount') then 'btn-success' else 'btn-default disabled'
+
   created: ->
     runInitTracker()
     Session.set("createStaffGenderSelection", false)
+    Session.setDefault('allowCreateStaffAccount', false)
 
   rendered: ->
     Sky.global.staffManagerTemplateInstance = @
@@ -32,37 +77,13 @@ Sky.appTemplate.extends Template.staffManager,
       todayHighlight: true
 
   events:
+    "input input": (event, template) -> checkAllowCreate(template)
     "change [name='genderMode']": (event, template) ->
       Session.set("createStaffGenderSelection", event.target.checked)
 
-    "click #createStaffAccount": (event, template) ->
-      dateOfBirth = template.ui.$dateOfBirth.data('datepicker').dates[0]
-      startWorkingDate = template.ui.$startWorkingDate.data('datepicker').dates[0]
-      email = template.ui.$email.val()
-      password = template.ui.$password.val()
-      fullName = template.ui.$fullName.val()
+    "click #createStaffAccount": (event, template) -> createStaffAccount(template)
 
-      roles = []
-      if Session.get('currentRoleSelection')?.length > 0
-        roles.push role.name for role in Session.get('currentRoleSelection')
-      newProfile =
-        parentMerchant  : Session.get("currentProfile").parentMerchant
-        currentMerchant : Session.get("createStaffBranchSelection")._id
-        currentWarehouse: Session.get("createStaffWarehouseSelection")._id
-        fullName        : fullName
-        systemVersion   : Schema.systems.findOne().version
 
-      newProfile.roles = roles if roles.length > 0
-      newProfile.dateOfBirth = dateOfBirth if dateOfBirth
-      newProfile.startWorkingDate = startWorkingDate if startWorkingDate
-      newProfile.gender = Session.get("createStaffGenderSelection") if fullName
-
-      Meteor.call "createMerchantAccount", email, password, newProfile
-#      Meteor.call "createMerchantAccount",
-#        email: template.ui.$email.val()
-#        password: template.ui.$password.val()
-
-      resetForm(template)
 
 
 
@@ -109,7 +130,7 @@ Sky.appTemplate.extends Template.staffManager,
 
   staffManagerDetailOptions:
     itemTemplate: 'roleDetailRow'
-    reactiveSourceGetter: -> Schema.userProfiles.find().fetch()
+    reactiveSourceGetter: -> Session.get('availableUserProfile') ? []
     wrapperClasses: 'detail-grid row'
 
 
