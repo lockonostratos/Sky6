@@ -39,3 +39,15 @@ Schema.add 'systems', class System
     console.log "There is #{updates.length} updates since previous version:"
     console.log "#{update.group}: #{update.description}" for update in updates
     return
+
+  @createNewUser: (email, fullName, nameMerchant)->
+    user = Meteor.users.findOne({'emails.address': email})._id
+    unless Schema.userProfiles.findOne(user)
+      merchant = Merchant.create { name: nameMerchant, creator: user }
+      warehouse = Schema.warehouses.insert Warehouse.newDefault(merchant, merchant, user)
+      version = Schema.systems.findOne().version
+      Schema.userProfiles.insert UserProfile.newDefault(merchant, warehouse, user, version, fullName)
+      Schema.metroSummaries.insert MetroSummary.newByMerchant(merchant)
+
+
+

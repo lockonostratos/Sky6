@@ -13,12 +13,38 @@ runInitBillExportTracker = (context) ->
   Sky.global.billExportTracker = Tracker.autorun ->
     if Session.get('currentWarehouse')
       currentBillDetails = Schema.sales.find({$and: [
-        {warehouse: Session.get('currentWarehouse')._id}
-        {'version.createdAt': {$gt: Session.get('billFilterStartDate')}}
-        {'version.createdAt': {$lt: Session.get('billFilterToDate')}}
-        {status: true}
-        {success: false}
-        {paymentsDelivery: 0}
+        { $or : [
+          {
+            warehouse: Session.get('currentWarehouse')._id
+            'version.createdAt': {$gt: Session.get('billFilterStartDate')}
+            'version.createdAt': {$lt: Session.get('billFilterToDate')}
+            paymentsDelivery: 0
+            status: true
+            success: false
+            export: false
+            import: false
+          }
+          {
+            warehouse: Session.get('currentWarehouse')._id
+            'version.createdAt': {$gt: Session.get('billFilterStartDate')}
+            'version.createdAt': {$lt: Session.get('billFilterToDate')}
+            paymentsDelivery: 1
+            status: true
+            success: false
+            export: false
+            import: false
+          }
+          {
+            warehouse: Session.get('currentWarehouse')._id
+            'version.createdAt': {$gt: Session.get('billFilterStartDate')}
+            'version.createdAt': {$lt: Session.get('billFilterToDate')}
+            paymentsDelivery: 1
+            status: true
+            success: false
+            export: true
+            import: false
+          }
+        ]}
       ]}, Sky.helpers.defaultSort(1)).fetch()
       Session.set 'billExportDetails', currentBillDetails
 

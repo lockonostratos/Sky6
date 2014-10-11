@@ -41,13 +41,13 @@ createSaleAndSaleOrder= (orderId)->
       delivery = Delivery.newBySale(currentSale._id, order._id)
       delivery._id = Schema.deliveries.insert delivery
       Schema.sales.update currentSale._id, $set: {delivery: delivery._id}
-    if currentSale.paymentsDelivery == 2
-      for detail in Schema.saleDetails.find({sale: currentSale._id})
-        if detail.status == false and detail.export == false
-          Schema.saleDetails.update detail._id, $set:{exportDate: new Date, status: true}
-          Schema.productDetails.update detail.productDetail , $inc:{instockQuality: -detail.quality}
-          Schema.products.update detail.product,   $inc:{instockQuality: -detail.quality}
-      Schema.sales.update currentSale._id, $set: {status: true, success: true}
+#    if currentSale.paymentsDelivery == 2
+#      for detail in Schema.saleDetails.find({sale: currentSale._id})
+#        if detail.status == false and detail.export == false
+#          Schema.saleDetails.update detail._id, $set:{exportDate: new Date, status: true}
+#          Schema.productDetails.update detail.productDetail , $inc:{instockQuality: -detail.quality}
+#          Schema.products.update detail.product,   $inc:{instockQuality: -detail.quality}
+#      Schema.sales.update currentSale._id, $set: {status: true, success: true}
 
 
 
@@ -138,23 +138,6 @@ removeOrderAndOrderDetailAfterCreateSale= (orderId)->
     else
       UserProfile.update {currentOrder: allTabs[currentIndex+1]._id}
     Order.removeAll(orderId)
-
-updateMetroSummary= (saleId)->
-  sale = Schema.sales.findOne(saleId)
-  option =
-    saleCount : 1
-    saleCountDay : 1
-    saleCountMonth : 1
-    revenue : sale.deposit
-    revenueDay : sale.deposit
-    revenueMonth : sale.deposit
-  option.stockCount = -sale.saleCount if sale.success == true
-  option.deliveryCount = 1 if sale.paymentsDelivery == 1
-  option.deliveryProductCount = sale.saleCount if sale.paymentsDelivery == 1
-
-  metroSummary = Schema.metroSummaries.findOne({merchant: sale.merchant})
-  Schema.metroSummaries.update metroSummary._id, $inc: option
-
 #-----------------------------------------------------------------------------------------------------------------------
 Schema.add 'orders', class Order
   @createOrder: ->
@@ -263,7 +246,7 @@ Schema.add 'orders', class Order
 #    Sale.findOne(saleId).createSaleExport()
     removeOrderAndOrderDetailAfterCreateSale(orderId)
     createTransactionAndDetailByOrder(saleId)
-    updateMetroSummary(saleId)
+    MetroSummary.updateMetroSummaryBySale(saleId)
     return("Tạo phiếu bán hàng thành công")
 
 #-----------------------------------------------------

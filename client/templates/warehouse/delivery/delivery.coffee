@@ -21,16 +21,15 @@ runInitDeliveryTracker = (context) ->
       option =
         merchant: Session.get('currentDeliveryMerchant')._id
         warehouse: Session.get('currentDeliveryWarehouse')._id
-        status: {$in: [Session.get('currentProfile')?.currentDeliveryFilter]}
-      (option.status = {$in: [7]}) if Session.get('currentProfile')?.currentDeliveryFilter == 5
-      (option.status = {$in: [5,8]}) if Session.get('currentProfile')?.currentDeliveryFilter == 6
-      (option.status = {$in: [6,9]}) if Session.get('currentProfile')?.currentDeliveryFilter == 7
+      (option.status = {$in: [0]}) if Session.get('currentProfile')?.currentDeliveryFilter == 0
+      (option.status = {$in: [2,3,4,5,7,8]}) if Session.get('currentProfile')?.currentDeliveryFilter == 1
+      (option.status = {$in: [6,9]}) if Session.get('currentProfile')?.currentDeliveryFilter == 2
+      (option.status = {$in: [5,8]}) if Session.get('currentProfile')?.currentDeliveryFilter == 4
       Session.set "availableDeliveries", Schema.deliveries.find(option).fetch()
 
 
-
 Sky.appTemplate.extends Template.delivery,
-  deliverry: ->
+  rendered: -> runInitDeliveryTracker()
 
   merchantSelectOptions:
     query: (query) -> query.callback
@@ -83,5 +82,3 @@ Sky.appTemplate.extends Template.delivery,
     reactiveSourceGetter: -> Session.get('availableDeliveries') ? []
     wrapperClasses: 'detail-grid row'
 
-  rendered: ->
-    runInitDeliveryTracker()

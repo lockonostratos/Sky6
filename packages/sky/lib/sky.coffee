@@ -80,24 +80,12 @@ class Sky
       display: 'ĐƠN HÀNG CHƯA ĐƯỢC NHẬN'
     ,
       _id: 1
-      display: 'ĐƠN HÀNG CHƯA XUẤT KHO'
-    ,
-      _id: 2
-      display: 'ĐƠN HÀNG ĐÃ XUẤT KHO'
-    ,
-      _id: 3
-      display: 'XÁC NHẬN TRẠNG THÁI'
+      display: 'ĐƠN HÀNG ĐANG GIAO'
     ,
       _id: 4
       display: 'XÁC NHẬN ĐÃ NHẬN TIỀN'
     ,
-      _id: 5
-      display: 'XÁC NHẬN ĐÃ TRẢ HÀNG'
-    ,
-      _id: 6
-      display: 'XÁC NHẬN KẾT THÚC ĐƠN HÀNG'
-    ,
-      _id: 7
+      _id: 2
       display: 'ĐƠN HÀNG ĐÃ HOÀN THÀNH'
     ]
     @viewInventories: [

@@ -1,6 +1,25 @@
 template(name="transactionManager")
   #header
-    .caption-row: .title QUẢN LÝ CÔNG NỢ <small>PHẢI THU</small>
+    .caption-row
+      .title QUẢN LÝ CÔNG NỢ
+      .filter.btn-group.btn-group-sm(data-toggle="buttons")
+        label.btn.btn-default(class="{{activeReceivable 'true'}}" data-toggle="tooltip" title="phải thu" data-receivable="true")
+          input( type="radio" name="options" id="option1")
+            i.fa.fa-user
+        label.btn.btn-default(class="{{activeReceivable 'false'}}" data-toggle="tooltip" title="phải trả" data-receivable="false")
+          input(type="radio" name="options" id="option2")
+            i.fa.fa-users
+
+      .filter.btn-group.btn-group-sm(data-toggle="buttons")
+        label.btn.btn-default(class="{{activeTransactionFilter '1'}}" data-toggle="tooltip" title="nợ" data-filter="1")
+          input( type="radio" name="options" id="option1")
+            i.fa.fa-user
+        label.btn.btn-default(class="{{activeTransactionFilter '2'}}" data-toggle="tooltip" title="quá hạn" data-filter="2")
+          input(type="radio" name="options" id="option2")
+            i.fa.fa-users
+        label.btn.btn-default(class="{{activeTransactionFilter '3'}}" data-toggle="tooltip" title="hoàn tất" data-filter="3")
+          input(type="radio" name="options" id="option2")
+            i.fa.fa-users
 
   #content
     +iGrid(options=transactionDetailOptions)

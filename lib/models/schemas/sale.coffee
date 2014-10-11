@@ -61,6 +61,12 @@ Schema2.sales = new SimpleSchema
   debit:
     type: Number
 
+  import:
+    type: Boolean
+
+  export:
+    type: Boolean
+
   status:
     type: Boolean
 

@@ -38,9 +38,11 @@ Schema2.userProfiles = new SimpleSchema
 
   currentMerchant:
     type: String
+    optional: true
 
   currentWarehouse:
     type: String
+    optional: true
 
   systemVersion:
     type: String

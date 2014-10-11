@@ -1,10 +1,10 @@
 Schema2.tests = new SimpleSchema
   provider:
-    type: [String]
+    type: String
     optional: true
 
   providerStar:
-    type: [Number]
+    type: Number
     optional: true
 
 

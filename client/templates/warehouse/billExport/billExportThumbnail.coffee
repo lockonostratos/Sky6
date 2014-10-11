@@ -4,11 +4,13 @@ Sky.template.extends Template.billExportThumbnail,
   formatNumber: (number) -> accounting.formatNumber(number)
 
   showInput: ->
-    if @status == true and @paymentsDelivery == 0 and @success ==false
-#      console.log @
-    else
+    unless @status == true  and @success ==false and (@paymentsDelivery == 0 || @paymentsDelivery == 1)
       return "display: none"
+
+  showInputText: ->
+    if @status == true and @success == @export == @import == false and @paymentsDelivery == 0 then return 'Xuất Bán Hàng'
+    if @status == true and @success == @export == @import == false and @paymentsDelivery == 1 then return 'Xuất Giao Hàng'
+    if @status == @export == true and @success == @import == false and @paymentsDelivery == 1 then return 'Nhận Giao Hàng'
+
   events:
-    "click .creatSaleExport": ->
-      if @status == true and @paymentsDelivery == 0 and @success ==false
-        Sale.findOne(@_id).createSaleExport()
+    "click .creatSaleExport": ->  Sale.findOne(@_id).createSaleExport()

@@ -3,7 +3,7 @@ Sky.template.extends Template.merchantThumbnail,
     if Session.get('currentProfile')?.parentMerchant == @_id then false
     else
       metroSummary = Schema.metroSummaries.findOne(merchant: @_id)
-      if !metroSummary || (metroSummary.productCount == metroSummary.customerCountMerchant == metroSummary.staffCountMerchant == 0)
+      if !metroSummary || (metroSummary.productCount == metroSummary.customerCount == metroSummary.staffCount == 0)
         return true
       else
         return false

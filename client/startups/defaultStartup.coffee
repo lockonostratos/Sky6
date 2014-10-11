@@ -30,6 +30,7 @@ Meteor.startup ->
       Session.set "availableUserProfile" , Schema.userProfiles.find({parentMerchant: Session.get('currentProfile').parentMerchant}).fetch()
 
 
+
     if Session.get('currentProfile') #Temporaries SUBSCRUBIBE
       Meteor.subscribe 'merchantProfiles', Session.get('currentProfile').parentMerchant
 
@@ -44,6 +45,8 @@ Meteor.startup ->
           parentMerchant: Session.get('currentProfile').parentMerchant   })
 
     if Session.get('currentMerchant') and Session.get('currentProfile')
+      Session.set "metroSummary", Schema.metroSummaries.findOne({merchant: Session.get('currentMerchant')._id})
+
       Session.set "availableWarehouses", Schema.warehouses.find({merchant: Session.get('currentMerchant')._id}).fetch()
       Session.set "currentWarehouse", Schema.warehouses.findOne({
         _id     : Session.get('currentProfile').currentWarehouse

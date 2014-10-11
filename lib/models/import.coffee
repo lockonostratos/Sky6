@@ -1,3 +1,44 @@
+reUpdateMetroSummary=(importId)->
+  imports = Schema.imports.findOne(importId)
+  oldImports = Schema.imports.findOne({$and: [
+    {merchant: imports.merchant}
+    {'version.updateAt': {$lt: imports.version.updateAt}}
+    {submited: true}
+  ]}, Sky.helpers.defaultSort())
+  console.log imports.version.updateAt.getDate()
+  console.log oldImports
+
+  unless oldImports
+    oldImports = {version: {}}
+    oldImports.version.updateAt = imports.version.updateAt
+
+  importDetails = Schema.importDetails.find({import: imports._id, finish: true}).fetch()
+  totalProduct = 0
+  for importDetail in importDetails
+    totalProduct += importDetail.importQuality
+
+  setOption={}
+  option =
+    importCount: totalProduct
+    stockProductCount: totalProduct
+    availableProductCount: totalProduct
+
+  if imports.version.updateAt.getDate() == oldImports.version.updateAt.getDate()
+    option.importCountDay = totalProduct
+  else
+    setOption.importCountDay = totalProduct
+
+  if imports.version.updateAt.getMonth() == oldImports.version.updateAt.getMonth()
+    option.importCountMonth = totalProduct
+  else
+    setOption.importCountMonth = totalProduct
+
+  metroSummary = Schema.metroSummaries.findOne({merchant: imports.merchant})
+  console.log option
+  console.log metroSummary
+  Schema.metroSummaries.update metroSummary._id, $inc: option, $set: setOption
+
+
 createTransactionAndDetailByImport = (importId)->
   warehouseImport = Schema.imports.findOne(importId)
   transaction = Transaction.newByImport(warehouseImport)
@@ -121,6 +162,7 @@ Schema.add 'imports', class Import
 
       Schema.imports.update importId, $set:{finish: true, submited: true}
       createTransactionAndDetailByImport(importId)
+      reUpdateMetroSummary(importId)
       return ('Phiếu nhập kho đã được duyệt')
     else
       return ('Đã có lỗi trong quá trình xác nhận')

@@ -5,56 +5,90 @@ Schema2.metroSummaries = new SimpleSchema
   merchant:
     type: String
 
-  productCount:
+  merchantCount:
     type: Number
 
-  stockCount:
+  warehouseCount:
     type: Number
 
-  deliveryProductCount:
+  warehouseCountAll:
     type: Number
 
   customerCountAll:
     type: Number
 
-  customerCountMerchant:
+  customerCount:
     type: Number
 
   staffCountAll:
     type: Number
 
-  staffCountMerchant:
+  staffCount:
     type: Number
 
-  deliveryCount:
+  productCount:
+    type: Number
+
+  stockProductCount:
+    type: Number
+
+  availableProductCount:
+    type: Number
+
+
+  importCount:
+    type: Number
+
+  importProductCount:
     type: Number
 
   saleCount:
     type: Number
 
-  saleCountDay:
+  saleProductCount:
     type: Number
 
-  saleCountMonth:
+  deliveryCount:
+    type: Number
+
+  deliveryProductCount:
     type: Number
 
   returnCount:
     type: Number
 
-  returnCountDay:
+  returnProductCount:
     type: Number
 
-  returnCountMonth:
+  inventoryCount:
     type: Number
 
-  revenue:
+  inventoryProductCount:
     type: Number
 
-  revenueDay:
+
+
+  returnCash:
     type: Number
 
-  revenueMonth:
+  saleDepositCash:
     type: Number
+
+  saleDebitCash:
+    type: Number
+
+  saleRevenueCash:
+    type: Number
+
+  importDepositCash:
+    type: Number
+
+  importDebitCash:
+    type: Number
+
+  importRevenueCash:
+    type: Number
+
 
   version: { type: Schema.Version }
 

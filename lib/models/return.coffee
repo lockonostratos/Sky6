@@ -64,7 +64,6 @@ Schema.add 'returns', class Return
     returns = Schema.returns.findOne({_id: returnId})
     return console.log('Lỗi, Phiếu không tồn tại.') if !returns
     if returns.status == 1
-      Schema.returns.update returns._id, $set: {status: 2}
       returnQuality = 0
       for returnDetail in Schema.returnDetails.find({return: returns._id, submit: true}).fetch()
         returnQuality = returnDetail.returnQuality
@@ -76,7 +75,10 @@ Schema.add 'returns', class Return
         Schema.products.update returnDetail.product, $inc: option
         Schema.saleDetails.update returnDetail.saleDetail, $inc:{returnQuality: returnDetail.returnQuality}
 
+
+      Schema.returns.update returns._id, $set: {status: 2}
       Schema.sales.update returns.sale, $set:{status: true, return: true}, $inc:{returnCount: 1, returnQuality: returnQuality}
+      MetroSummary.updateMetroSummaryByReturn(returns._id, returnQuality)
       return console.log('Ok, Phiếu đã được duyệt bởi quản lý.')
     return console.log('Lỗi, Phiếu chưa được xác nhận từ nhân viên.') if returns.status == 0
     return console.log('Lỗi, Phiếu đã được duyệt, không thể thao tác.') if returns.status == 2

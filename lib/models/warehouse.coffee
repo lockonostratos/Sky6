@@ -1,12 +1,12 @@
 Schema.add 'warehouses', class Warehouse
-  @newDefault: (merchantId)->
+  @newDefault: (parentMerchantId = null, merchantId = null, creator = null )->
     merchant = Schema.merchants.findOne(merchantId)
     warehouse = Schema.warehouses.find({merchant: merchantId}).count()
     if merchant and !warehouse
       option =
-        parentMerchant    : Session.get('currentProfile').parentMerchant
+        parentMerchant    : parentMerchantId ? merchant.parent
         merchant          : merchant._id
-        creator           : Meteor.userId()
+        creator           : creator ? Meteor.userId()
         name              : 'Kho Chính'
         isRoot            : false
         checkingInventory : false
@@ -18,7 +18,7 @@ Schema.add 'warehouses', class Warehouse
     if merchant
       warehouseCount = Schema.warehouse.find({merchant: merchantId}).count()
       option =
-        parentMerchant    : Session.get('currentProfile').parentMerchant
+        parentMerchant    : merchant.parent
         merchant          : merchant._id
         creator           : Meteor.userId()
         name              : "Kho Phu + #{warehouseCount}"
