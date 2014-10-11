@@ -9,7 +9,7 @@ versionUpdatesTracker = ->
       $.notify(update.description, {autoHide: false, className: 'success'}) for update in updates
       Schema.userProfiles.update(Session.get('currentProfile')._id, {$set: {systemVersion: systemCurrentVersion}})
 
-_.extend Template.layout,
+_.extend Template.merchantLayout,
   collapse: -> Session.get('collapse') ? 'collapsed'
 
   rendered: ->

@@ -6,7 +6,7 @@ animateUsing = (selector, animationType) ->
   .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', -> $element.removeClass())
 
 Router.configure
-  layoutTemplate: 'layout'
+  layoutTemplate: 'merchantLayout'
 
 #  path: "/posts/:_id"
 #  data: ->
@@ -49,15 +49,19 @@ class @skyRouter
     addRouteToHistory @path.substring(1)
 
 Router.map ->
-  @route 'metroHome', new skyRouter('/', false, ->
+  @route 'home',
+    path: 'home'
+    layoutTemplate: 'homeLayout'
+
+  @route 'metroHome', new skyRouter('/dashboard', false, ->
     AccountsEntry.signInRequired(this)
 #    $("body").addClass("dark")
   )
-  @route 'home', new skyRouter('home')
+  @route 'warehouse', new skyRouter('warehouse')
 
   @route route, new skyRouter(route) for route of Sky.menu
 
-  @route 'warehouse', new skyRouter('warehouse')
+
 #  @route 'sales', new skyRouter('sales') #
 #  @route 'billManager', new skyRouter('billManager') #
 #  @route 'billExport', new skyRouter('billExport') #

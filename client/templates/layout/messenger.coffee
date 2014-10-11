@@ -25,11 +25,16 @@ Sky.template.extends Template.messenger,
   visibilityClass: -> if Session.get('messengerVisibility') then 'active' else ''
   messageClass: -> if @sender is Meteor.userId() then 'me' else 'friend'
   friendMessage: -> @sender isnt Meteor.userId()
+
+  targetAvatar: ->
+    profile = Schema.userProfiles.findOne({user: Session.get('currentChatTarget')})
+    return undefined if !profile?.avatar
+    AvatarImages.findOne(profile.avatar)?.url()
+
   targetAlias: ->
     fullName = Schema.userProfiles.findOne({user: Session.get('currentChatTarget')})?.fullName
     email = Meteor.users.findOne(Session.get('currentChatTarget'))?.emails[0]?.address
     fullName ? email
-  avatar: -> 'avatar2'
 
   ui:
     messages: ".all-messages"

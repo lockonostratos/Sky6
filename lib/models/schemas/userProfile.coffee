@@ -23,7 +23,7 @@ Schema2.userProfiles = new SimpleSchema
 
   avatar:
     type: String
-    optional: true
+    defaultValue: 'images/avatars/no-avatar.jpg'
 
   startWorkingDate:
     type: Date

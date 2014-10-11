@@ -2,8 +2,5 @@ template(name="myAvatarItem")
   li.chat-avatar.me
     input.avatarFileSelector(type="file")
     .online-status-orb(class="{{isOnline}}")
-    .alias {{fullAlias}}
-    if avatar
-      img(src="{{avatarImageSrc}}")
-    else
-      span {{avatarLetter}}
+    .alias {{shortAlias}}
+    +avatarImageComponent(avatar=avatarUrl alias=fullName)

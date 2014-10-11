@@ -1,0 +1,5 @@
+template(name="avatarImageComponent")
+  if avatar
+    img.avatar-img(src="{{avatar}}")
+  else
+    span.avatar-letter {{avatarLetter alias}}

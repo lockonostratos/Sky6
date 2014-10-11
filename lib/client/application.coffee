@@ -1,3 +1,3 @@
 root = global ? window
 root.application =
-  toggleCollapse: -> Session.set 'collapse', if Template.layout.collapse() then '' else 'collapsed'
+  toggleCollapse: -> Session.set 'collapse', if Template.merchantLayout.collapse() then '' else 'collapsed'
