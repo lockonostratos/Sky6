@@ -1,0 +1,98 @@
+.top-panel {
+  position: relative;
+  z-index: 10;
+  background-color: @home-theme;
+  color: #fff;
+
+  .top-panel-content {
+    .clearfix;
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+
+    .top-panel-toggle {
+      cursor: pointer;
+      background-color: @home-theme;
+      border: solid 3px @home-theme;
+      width: 105px; height: 105px;
+      .border-radius(7px);
+      position: absolute;
+      bottom: -7px;
+      left: 40%;
+      z-index: -1;
+      .rotate(-135deg);
+      i.fa {
+        padding-left: 3px;
+        .rotate(-45deg);
+      }
+    }
+
+    .content-inner {
+      .clearfix;
+      background-color: @home-theme;
+      padding: 30px 0 40px 0;
+      overflow: hidden;
+      max-height: 500px;
+      transition-property: padding, max-height;
+      transition-duration: 1s, 1s;
+    }
+
+    .registeration-section {
+      float: left;
+      margin-right: 50px;
+
+      .sky-field, .sky-field.group { width: 250px; }
+      .sky-field {
+        .ilabel { background-color: #fff; color: #696969; }
+        input {
+          background: #1aaede; color: #fff;
+          padding: 8px 16px 8px 14px;
+          border: none;
+          .placeholder(#68DAFF);
+        }
+
+        &:last-child { margin-bottom: 5px; }
+      }
+
+      #secretConfirm {
+        border-left: solid 1px #26bdef;
+      }
+
+      .btn {
+        color: #fff;
+        background: transparent;
+        border: 2px solid #fff;
+        padding: 4px 12px;
+        .border-radius(2px);
+        &:hover {
+          background: rgba(255, 255, 255, .3);
+        }
+      }
+
+      #merchantRegister { margin-right: 15px; }
+    }
+
+    .eula-section {
+      float: left;
+      .title { font-size: 20px; margin-bottom: 15px; }
+      .details { margin-left: 20px; }
+    }
+  }
+}
+
+.top-panel.minimize {
+  .content-inner {
+    max-height: 0; padding: 0;
+  }
+  .top-panel-toggle {
+    border: solid 3px #ff6565;
+    background-color: transparent;
+    i { color: #ff6565; }
+
+    &:hover {
+      background-color: @home-theme;
+      border: solid 3px @home-theme;
+      i { color: #fff; }
+    }
+  }
+}

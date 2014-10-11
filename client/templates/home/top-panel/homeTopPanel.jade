@@ -1,5 +1,21 @@
 template(name="homeTopPanel")
-  .home-wrapper
-    .top-panel-content
-      .h2 this is top panel
-      span.top-panel-toggle: i.fa.fa-chevron-up
+  .top-panel(class="{{minimizeClass}}")
+    .home-wrapper
+      .top-panel-content
+        span.top-panel-toggle: i.fa(class="{{toggleIcon}}")
+        .content-inner
+          .registeration-section
+            .sky-field
+              input#companyName(type="text" placeholder="tên doanh nghiệp (không bắt buộc)")
+            .sky-field
+              input#account(type="text" placeholder="địa chỉ email")
+            .sky-field.group
+              .col.col-lg-6: input#secret(type="password" placeholder="mật khẩu")
+              .col.col-lg-6: input#secretConfirm(type="password" placeholder="xác nhận")
+
+            #merchantRegister.btn.pull-right ĐĂNG KÝ
+
+          .eula-section
+            .title.icon-award Điều khoản sử dụng
+            .details Đây là chi tiết điều khoản sử dụng...
+            .post-script Tôi đồng ý với tất cả những điều khoản trên.

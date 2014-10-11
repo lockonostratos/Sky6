@@ -1,0 +1,50 @@
+.home-wrapper {
+  width: 1200px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.sky-field {
+  position: relative;
+  margin-bottom: 20px;
+
+  .ilabel {
+    position: absolute;
+    display: block;
+    top: -10px; left: 10px;
+    background-color: #006dcc;
+    font-size: 10px;
+    line-height: 10px;
+    padding: 0 5px;
+    .border-top-radius(2px);
+  }
+
+  input {
+    border: none;
+    .border-radius(3px);
+    padding: 5px 10px;
+    font-size: 12px;
+    width: 100%;
+  }
+
+  &.group {
+    .row; width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    .col {
+      padding: 0;
+      &:first-child {
+        input { .border-right-radius(0) !important; }
+      }
+      &:last-child {
+        input { .border-left-radius(0) !important; }
+      }
+      &:not(:first-child):not(:last-child) {
+        input { .border-radius(0) !important; }
+      }
+      &:not(:last-child) {
+        input { border-right: none !important; }
+      }
+    }
+  }
+}
