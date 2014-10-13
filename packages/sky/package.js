@@ -22,7 +22,8 @@ Package.onUse(function(api) {
     'lib/3rds/jquery.event.drag-2.2.js',
     'lib/3rds/jquery.event.drag.live-2.2.js',
     'lib/3rds/notify.js',
-    'lib/3rds/jquery.knob.js'
+    'lib/3rds/jquery.knob.js',
+    'lib/3rds/jquery.cookie.js'
     ]
   , 'client');
 

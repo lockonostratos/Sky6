@@ -1,7 +1,7 @@
 template(name="navigation")
   nav(role="navigation").navbar.main.navbar-fixed-top
     .wrapper
-      a.branding(href="/home")
+      a.branding(href="/")
         span.logo EDS
         span.version {{currentSystemVersion}}
         //form.navbar-form.navbar-left
@@ -21,7 +21,7 @@ template(name="navigation")
           .notification-counts(class="{{requestClass}}") {{unreadRequestCount}}
           span.dropdown-toggle(data-toggle="dropdown"): i.fa.fa-share-alt
         li.inav
-          a(href="/sign-out"): i.fa.fa-power-off
+          span#logoutButton: i.fa.fa-power-off
 
       ul.nav.navbar-nav
         li.inav.collapse-toggle: span: i.collapse.fa.fa-th-list

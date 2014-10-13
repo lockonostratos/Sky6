@@ -6,9 +6,7 @@ Sky.appTemplate.extends Template.home,
       fgColor: "#7caa22"
   avatarImages: -> AvatarImages.find()
 
-  rendered: ->
-    console.log "Home is showing up, awesome!"
-    console.log AvatarImages
+  rendered: -> $("body").css("overflow", "auto")
 
   events:
     'click input': -> console.log 'Fuck YOU!'

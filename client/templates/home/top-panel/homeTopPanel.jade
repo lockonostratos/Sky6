@@ -2,7 +2,9 @@ template(name="homeTopPanel")
   .top-panel(class="{{minimizeClass}}")
     .home-wrapper
       .top-panel-content
-        span.top-panel-toggle: i.fa(class="{{toggleIcon}}")
+        if showRegisterToggle
+          span.top-panel-toggle: i.fa(class="{{toggleIcon}}")
+
         .content-inner
           .registeration-section
             .sky-field
@@ -13,7 +15,7 @@ template(name="homeTopPanel")
               .col.col-lg-6: input#secret(type="password" placeholder="mật khẩu")
               .col.col-lg-6: input#secretConfirm(type="password" placeholder="xác nhận")
 
-            #merchantRegister.btn.pull-right ĐĂNG KÝ
+            #merchantRegister.btn.pull-right DÙNG THỬ
 
           .eula-section
             .title.icon-award Điều khoản sử dụng

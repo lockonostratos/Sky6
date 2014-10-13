@@ -50,7 +50,7 @@ class @skyRouter
 
 Router.map ->
   @route 'home',
-    path: 'home'
+    path: '/'
     layoutTemplate: 'homeLayout'
 
   @route 'metroHome', new skyRouter('/dashboard', false, ->
