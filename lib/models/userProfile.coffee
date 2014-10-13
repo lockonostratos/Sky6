@@ -21,19 +21,23 @@ Schema.add 'userProfiles', class UserProfile
   addBranch: (option)->
     option.parent   = @data.parentMerchant
     option.creator = @data.user
-    Schema.merchants.insert option, (error, result) ->
+    Schema.merchants.insert option, (error, merchantId)->
       if error then console.log error
       else
-        Schema.warehouses.insert Warehouse.newDefault(result)
-        Schema.metroSummaries.insert MetroSummary.newByMerchant(result)
+        Schema.warehouses.insert Warehouse.newDefault(merchantId), (error, result)->
+          if error then console.log error
+        Schema.metroSummaries.insert MetroSummary.newByMerchant(merchantId), (error, result)->
+          if error then console.log error
+        MetroSummary.updateMetroSummaryBy(['branch'])
 
 
   removeBranch: (brachId)->
     branch = Schema.merchants.findOne({_id: brachId, parent: {$exists: true}})
     if branch
       metroSummary = Schema.metroSummaries.findOne(merchant: branch._id)
-      if metroSummary.productCount == metroSummary.customerCount == metroSummary.staffCount == 0
+      if !metroSummary || metroSummary.productCount == metroSummary.customerCount == metroSummary.staffCount == 0
         for item in Schema.warehouses.find({merchant: branch._id}).fetch()
           Schema.warehouses.remove item._id
-        Schema.metroSummaries.remove metroSummary._id
+        Schema.metroSummaries.remove metroSummary._id if metroSummary
         Schema.merchants.remove branch._id
+        MetroSummary.updateMetroSummaryBy(['branch'])

@@ -4,55 +4,55 @@ checkAllowFilter = (context) ->
   toDate = context.ui.$toDate.data('datepicker').dates[0]
 
   if !fromDate or !toDate
-    Session.set('allowFilterBills', true)
+    Session.set('allowFilterAccounting', true)
   else
-    Session.set('allowFilterBills', false)
+    Session.set('allowFilterAccounting', false)
 
-runInitBillExportTracker = (context) ->
-  return if Sky.global.billExportTracker
-  Sky.global.billExportTracker = Tracker.autorun ->
+runInitAccountingManagerTracker = (context) ->
+  return if Sky.global.accountingManagerTracker
+  Sky.global.accountingManagerTracker = Tracker.autorun ->
     if Session.get('currentWarehouse')
-      currentBillDetails = Schema.sales.find({$and: [
+      accountingDetails = Schema.sales.find({$and: [
         { $or : [
           {
             warehouse: Session.get('currentWarehouse')._id
-            'version.createdAt': {$gt: Session.get('billFilterStartDate')}
-            'version.createdAt': {$lt: Session.get('billFilterToDate')}
+            'version.createdAt': {$gt: Session.get('accountingFilterStartDate')}
+            'version.createdAt': {$lt: Session.get('accountingFilterToDate')}
             paymentsDelivery: 0
             status: true
             submitted: false
             exported: false
             imported: false
-            received: true
+            received: false
           }
           {
             warehouse: Session.get('currentWarehouse')._id
-            'version.createdAt': {$gt: Session.get('billFilterStartDate')}
-            'version.createdAt': {$lt: Session.get('billFilterToDate')}
+            'version.createdAt': {$gt: Session.get('accountingFilterStartDate')}
+            'version.createdAt': {$lt: Session.get('accountingFilterToDate')}
             paymentsDelivery: 1
             status: true
             submitted: false
             exported: false
             imported: false
-            received: true
+            received: false
           }
           {
             warehouse: Session.get('currentWarehouse')._id
-            'version.createdAt': {$gt: Session.get('billFilterStartDate')}
-            'version.createdAt': {$lt: Session.get('billFilterToDate')}
+            'version.createdAt': {$gt: Session.get('accountingFilterStartDate')}
+            'version.createdAt': {$lt: Session.get('accountingFilterToDate')}
             paymentsDelivery: 1
             status: true
             submitted: false
             exported: true
             imported: false
             received: true
-            success : false
+            success : true
           }
         ]}
       ]}, Sky.helpers.defaultSort(1)).fetch()
-      Session.set 'billExportDetails', currentBillDetails
+      Session.set 'accountingDetails', accountingDetails
 
-Sky.appTemplate.extends Template.billExport,
+Sky.appTemplate.extends Template.accountingManager,
 
   warehouseSelectOptions:
     query: (query) -> query.callback
@@ -73,20 +73,20 @@ Sky.appTemplate.extends Template.billExport,
     date = new Date();
     firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
     lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    Session.set('billFilterStartDate', firstDay)
-    Session.set('billFilterToDate', lastDay)
+    Session.set('accountingFilterStartDate', firstDay)
+    Session.set('accountingFilterToDate', lastDay)
 
   rendered: ->
-    runInitBillExportTracker()
-    @ui.$fromDate.datepicker('setDate', Session.get('billFilterStartDate'));
-    @ui.$toDate.datepicker('setDate', Session.get('billFilterToDate'));
+    runInitAccountingManagerTracker()
+    @ui.$fromDate.datepicker('setDate', Session.get('accountingFilterStartDate'));
+    @ui.$toDate.datepicker('setDate', Session.get('accountingFilterToDate'));
 
   events:
     "click #filterBills": (event, template)->
-      Session.set('billFilterStartDate', template.ui.$fromDate.data('datepicker').dates[0])
-      Session.set('billFilterToDate', template.ui.$toDate.data('datepicker').dates[0])
+      Session.set('accountingFilterStartDate', template.ui.$fromDate.data('datepicker').dates[0])
+      Session.set('accountingFilterToDate', template.ui.$toDate.data('datepicker').dates[0])
 
   billDetailOptions:
-    itemTemplate: 'billExportThumbnail'
-    reactiveSourceGetter: ->  Session.get('billExportDetails') ? []
+    itemTemplate: 'accountingManagerThumbnail'
+    reactiveSourceGetter: ->  Session.get('accountingDetails') ? []
     wrapperClasses: 'detail-grid row'

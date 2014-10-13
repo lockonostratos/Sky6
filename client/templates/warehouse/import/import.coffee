@@ -28,7 +28,7 @@ runInitImportTracker = (context) ->
       importHistory = Schema.imports.find({
         warehouse : Session.get('currentProfile')?.currentWarehouse
         creator   : Meteor.userId()
-        submited  : false
+        submitted  : false
       }).fetch()
       if importHistory
         if importHistory.length > 0
@@ -54,7 +54,7 @@ Sky.appTemplate.extends Template.import,
   hidePrice: -> return "display: none" unless Session.get('currentImport')?.currentPrice >= 0
   hideFinishImport: -> return "display: none" if Session.get('currentImport')?.finish == true || !(Session.get('currentImportDetails')?.length > 0)
   hideEditImport: -> return "display: none" if Session.get('currentImport')?.finish == false
-  hideSubmitImport: -> return "display: none" if Session.get('currentImport')?.submited == true
+  hideSubmitImport: -> return "display: none" if Session.get('currentImport')?.submitted == true
 
   tabOptions:
     source: 'importHistory'
@@ -103,12 +103,14 @@ Sky.appTemplate.extends Template.import,
       allowClear: true
 #    minimumResultsForSearch: -1
     changeAction: (e) ->
-      if e.removed
-        Schema.imports.update(Session.get('currentImport')._id, {$set: {currentProvider: 'skyReset' }})
-        Schema.products.update(Session.get('currentProductInstance')._id, {$set:{provider: 'skyReset'}})
-      else
+      if e.added
         Schema.imports.update(Session.get('currentImport')._id, {$set: {currentProvider: e.added._id }})
         Schema.products.update(Session.get('currentProductInstance')._id, {$set:{provider: e.added._id}})
+      else
+        Schema.imports.update(Session.get('currentImport')._id, {$set: {currentProvider: 'skyReset' }})
+        Schema.products.update(Session.get('currentProductInstance')._id, {$set:{provider: 'skyReset'}})
+
+
     reactiveValueGetter: -> Session.get('currentImport')?.currentProvider ? 'skyReset'
 
   qualityOptions:
@@ -169,8 +171,8 @@ Sky.appTemplate.extends Template.import,
       console.log Import.finishImport Session.get('currentImport')._id
 
     'click .submitImport': (event, template)->
-      console.log Import.submitedImport Session.get('currentImport')._id
-      unless Schema.imports.findOne({_id: Session.get('currentImport')._id, submited: false})
+      console.log Import.submittedImport Session.get('currentImport')._id
+      unless Schema.imports.findOne({_id: Session.get('currentImport')._id, submitted: false})
         Session.set 'currentImport', Import.createdByWarehouseAndSelect(Session.get('currentWarehouse')._id, {description: Sky.helpers.formatDate(1)})
 
     'blur .description': (event, template)->

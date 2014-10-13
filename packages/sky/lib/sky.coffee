@@ -82,12 +82,10 @@ class Sky
       _id: 1
       display: 'ĐƠN HÀNG ĐANG GIAO'
     ,
-      _id: 4
-      display: 'XÁC NHẬN ĐÃ NHẬN TIỀN'
-    ,
       _id: 2
       display: 'ĐƠN HÀNG ĐÃ HOÀN THÀNH'
     ]
+
     @viewInventories: [
       _id: 0
       display: 'KIỂM KHO'

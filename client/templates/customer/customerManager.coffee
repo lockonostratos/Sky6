@@ -16,22 +16,28 @@ createCustomer = (context) ->
   address = context.ui.$address.val()
   dateOfBirth = context.ui.$dateOfBirth.data('datepicker').dates[0]
 
+  option =
+    creator: Meteor.userId()
+    name: fullName
+    phone: phone
+    address: address
+    currentMerchant : Session.get('currentProfile').currentMerchant
+    parentMerchant  : Session.get('currentProfile').parentMerchant
+    gender          : Session.get('genderNewCustomer')
+
+
   if Schema.customers.findOne({
     name: fullName
     phone: phone
     currentMerchant: Session.get('currentProfile').currentMerchant})
     console.log 'Trùng tên khách hàng'
   else
-    Schema.customers.insert
-      creator: Meteor.userId()
-      name: fullName
-      phone: phone
-      address: address
-      currentMerchant : Session.get('currentProfile').currentMerchant
-      parentMerchant  : Session.get('currentProfile').parentMerchant
-      gender          : Session.get('genderNewCustomer')
-
-     resetForm(context)
+    Schema.customers.insert option, (error, result) ->
+      if error
+        console.log error
+      else
+        MetroSummary.updateMetroSummaryBy(['customer'])
+    resetForm(context)
 
 resetForm = (context) -> $(item).val('') for item in context.findAll("[name]")
 

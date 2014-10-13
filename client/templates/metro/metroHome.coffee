@@ -16,6 +16,7 @@ _.extend Template.metroHome,
   unlockReturn: -> unless Session.get('metroSummary')?.saleCount ? 0 > 0 then 'locked'
   unlockBillManager: -> unless Session.get('metroSummary')?.saleCount ? 0 > 0 then 'locked'
   unlockTransactionManager: -> unless Session.get('metroSummary')?.importCount ? 0 > 0 then 'locked'
+  unlockAccountingManager: -> unless Session.get('metroSummary')?.saleCount ? 0 > 0 then 'locked'
   unlockDelivery: -> unless Session.get('metroSummary')?.deliveryCount ? 0 > 0 then 'locked'
 
   unlockBillExport: -> unless Session.get('metroSummary')?.saleCount ? 0 > 0 then 'locked'

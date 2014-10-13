@@ -39,7 +39,7 @@ Schema.add 'inventories', class Inventory
     return console.log 'Kho Khong Ton Tai' if !warehouse = Schema.warehouses.findOne(@data.warehouse)
     for detail in Schema.inventoryDetails.find({inventory: @id}).fetch()
       if detail.lock == false || detail.submit == false
-        return console.log 'Xác Nhận Lỗi, Chưa Submited hết các sp'
+        return console.log 'Xác Nhận Lỗi, Chưa Submitted hết các sp'
 
     temp = false
     for detail in Schema.inventoryDetails.find({inventory: @id}).fetch()

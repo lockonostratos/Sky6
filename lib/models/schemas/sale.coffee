@@ -61,16 +61,28 @@ Schema2.sales = new SimpleSchema
   debit:
     type: Number
 
-  import:
+  #người xác nhận đà nhận tiền
+  recipient:
+    type: String
+    optional: true
+
+  received:
     type: Boolean
 
-  export:
+  imported:
+    type: Boolean
+
+  exported:
     type: Boolean
 
   status:
     type: Boolean
 
   success:
+    type: Boolean
+    optional: true
+
+  submitted:
     type: Boolean
 #----------------------------------------
   currentReturn:

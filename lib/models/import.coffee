@@ -3,7 +3,7 @@ reUpdateMetroSummary=(importId)->
   oldImports = Schema.imports.findOne({$and: [
     {merchant: imports.merchant}
     {'version.updateAt': {$lt: imports.version.updateAt}}
-    {submited: true}
+    {submitted: true}
   ]}, Sky.helpers.defaultSort())
   console.log imports.version.updateAt.getDate()
   console.log oldImports
@@ -71,7 +71,7 @@ Schema.add 'imports', class Import
   @removeAll: (importId)->
 #    return ('Chua Dang Nhap') if !userProfile = Sky.global.userProfile()
     return ("Phiếu nhập kho không tồn tại") if !imports = Schema.imports.findOne({_id: importId, finish: false})
-    return ("Phiếu nhập kho đã duyệt, không thể xóa") if imports.submited == true
+    return ("Phiếu nhập kho đã duyệt, không thể xóa") if imports.submitted == true
     return ("Phiếu nhập kho đang chờ duyệt, không thể xóa") if imports.finish == true
 
     for importDetail in Schema.importDetails.find({import: imports._id}).fetch()
@@ -86,7 +86,7 @@ Schema.add 'imports', class Import
     option.warehouse  = warehouse._id
     option.creator    = Meteor.userId()
     option.finish     = false
-    option.submited   = false
+    option.submitted   = false
     option.totalPrice = 0
     option.deposit    = 0
     option.debit      = 0
@@ -98,12 +98,12 @@ Schema.add 'imports', class Import
   @finishImport: (importId)->
     return('Bạn chưa đăng nhập') if !userProfile = Sky.global.userProfile()
     return('Phiếu nhập kho không tồn tại') if !imports = Schema.imports.findOne({_id: importId})
-    return ("Phiếu nhập kho đã duyệt, không thể chờ duyệt") if imports.submited == true && imports.finish == true
-    return ("Phiếu nhập kho đã đang chờ duyệt") if imports.submited == false && imports.finish == true
+    return ("Phiếu nhập kho đã duyệt, không thể chờ duyệt") if imports.submitted == true && imports.finish == true
+    return ("Phiếu nhập kho đã đang chờ duyệt") if imports.submitted == false && imports.finish == true
     importDetails = Schema.importDetails.find({import: importId}).fetch()
     return('Phiếu nhập kho rỗng, hay thêm sản phẩm') if importDetails.length < 1
 
-    if imports.finish == false && imports.submited == false
+    if imports.finish == false && imports.submitted == false
       for importDetail in importDetails
         Schema.importDetails.update importDetail._id, $set: {finish: true}
       Schema.imports.update importId, $set:{finish: true}
@@ -114,12 +114,12 @@ Schema.add 'imports', class Import
   @editImport: (importId)->
     return('Bạn chưa đăng nhập') if !userProfile = Sky.global.userProfile()
     return('Phiếu nhập kho không tồn tại') if !imports = Schema.imports.findOne({_id: importId})
-    return ("Phiếu nhập kho đã duyệt, không thể chỉnh sửa") if imports.submited == true && imports.finish == true
-    return ("Phiếu nhập kho đang có thể chỉnh sửa") if imports.finish == false && imports.submited == false
+    return ("Phiếu nhập kho đã duyệt, không thể chỉnh sửa") if imports.submitted == true && imports.finish == true
+    return ("Phiếu nhập kho đang có thể chỉnh sửa") if imports.finish == false && imports.submitted == false
     importDetails = Schema.importDetails.find({import: importId}).fetch()
     return ('Phiếu nhập kho rỗng, hay thêm sản phẩm') if importDetails.length < 1
 
-    if imports.finish == true && imports.submited == false
+    if imports.finish == true && imports.submitted == false
       for importDetail in importDetails
         Schema.importDetails.update importDetail._id, $set: {finish: false}
       Schema.imports.update importId, $set:{finish: false}
@@ -127,16 +127,16 @@ Schema.add 'imports', class Import
     else
       return ('Đã có lỗi trong quá trình xác nhận')
 
-  @submitedImport: (importId)->
+  @submittedImport: (importId)->
     return('Bạn chưa đăng nhập') if !userProfile = Sky.global.userProfile()
     return('Phiếu nhập kho không tồn tại') if !imports = Schema.imports.findOne({_id: importId})
-    return ("Phiếu nhập kho đã duyệt, không thể duyệt lần thứ nữa") if imports.submited == true && imports.finish == true
-    return ("Phiếu nhập kho chưa chờ duyệt") if imports.finish == false && imports.submited == false
+    return ("Phiếu nhập kho đã duyệt, không thể duyệt lần thứ nữa") if imports.submitted == true && imports.finish == true
+    return ("Phiếu nhập kho chưa chờ duyệt") if imports.finish == false && imports.submitted == false
 
     importDetails = Schema.importDetails.find({import: importId, finish: true}).fetch()
     return ('Phiếu nhập kho rỗng, hay thêm sản phẩm') if importDetails.length < 1
 
-    if imports.finish == true && imports.submited == false
+    if imports.finish == true && imports.submitted == false
       for importDetail in importDetails
         product = Schema.products.findOne importDetail.product
         return ('Không tìm thấy sản phẩm id:'+ importDetail.product) if !product
@@ -160,7 +160,7 @@ Schema.add 'imports', class Import
         Schema.products.update product._id, $inc: option1, $set: option2, (error, result) ->
           if error then return 'Sai thông tin sản phẩm nhập kho'
 
-      Schema.imports.update importId, $set:{finish: true, submited: true}
+      Schema.imports.update importId, $set:{finish: true, submitted: true}
       createTransactionAndDetailByImport(importId)
       reUpdateMetroSummary(importId)
       return ('Phiếu nhập kho đã được duyệt')

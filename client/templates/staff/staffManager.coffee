@@ -87,6 +87,7 @@ Sky.appTemplate.extends Template.staffManager,
 
 
 
+
   roleSelectOptions:
     query: (query) -> query.callback
       results: Schema.roles.find().fetch()

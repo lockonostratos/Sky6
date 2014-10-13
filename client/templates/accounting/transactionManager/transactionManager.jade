@@ -3,10 +3,10 @@ template(name="transactionManager")
     .caption-row
       .title QUẢN LÝ CÔNG NỢ
       .filter.btn-group.btn-group-sm(data-toggle="buttons")
-        label.btn.btn-default(class="{{activeReceivable 'true'}}" data-toggle="tooltip" title="phải thu" data-receivable="true")
+        label.btn.btn-default(class="{{activeReceivable '0'}}" data-toggle="tooltip" title="phải thu" data-receivable="0")
           input( type="radio" name="options" id="option1")
             i.fa.fa-user
-        label.btn.btn-default(class="{{activeReceivable 'false'}}" data-toggle="tooltip" title="phải trả" data-receivable="false")
+        label.btn.btn-default(class="{{activeReceivable '1'}}" data-toggle="tooltip" title="phải trả" data-receivable="1")
           input(type="radio" name="options" id="option2")
             i.fa.fa-users
 

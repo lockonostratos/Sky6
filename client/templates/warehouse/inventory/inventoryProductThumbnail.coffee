@@ -85,7 +85,7 @@ Sky.template.extends Template.inventoryProductThumbnail,
   status: ->
     if @lock == @submit == false then return 'New'
     if @lock != @submit == false then return 'Locked'
-    if @lock == @submit != false then return 'Submited'
+    if @lock == @submit != false then return 'Submitted'
 
   hideLock:  -> unless @lock == @submit == false then return "display: none"
   hideCheck: -> unless @lock != @submit == false then return "display: none"

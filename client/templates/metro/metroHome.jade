@@ -32,14 +32,16 @@ template(name="metroHome")
       .tile.teal.app-navigator(class="{{unlockDelivery}}" data-app='delivery')
         span.center.middle.caption: span.table: i.fa.fa-truck.fa-2x
         span.bottom.middle.caption {{metroSummary.deliveryCount}} GIAO HÀNG
-      .tile.sun-flower
+      .tile.sun-flower.app-navigator(class="{{unlockAccountingManager}}" data-app='accountingManager')
+        span.center.middle.caption: span.table: i.fa.fa-truck.fa-2x
+        span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> THU TIỀN
       .tile.sun-flower
       .tile.sun-flower
 
     .tile-group-3
       .tile.sun-flower.app-navigator(class="{{unlockBillExport}}" data-app='billExport')
         span.center.middle.caption: span.table: i.fa.fa-share-square-o.fa-2x
-        span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> XUẤT KHO
+        span.bottom.middle.caption <span class="s7">XÁC NHẬN</span><br /> XUẤT NHẬP KHO
       .tile.pumpkin.double.double-vertical.app-navigator(class="{{unlockImport}}" data-app='import')
         span.center.left.caption: span.table: i.fa.fa-cubes.fa-2x
         span.bottom.left.caption {{metroSummary.importCount}} NHẬP KHO

@@ -34,7 +34,11 @@ Meteor.methods
     profile.creator = Meteor.userId()
     profile.isRoot = false
 
-    Schema.userProfiles.insert profile
+    Schema.userProfiles.insert profile, (error, result)->
+      if error
+        console.log error
+      else
+        MetroSummary.updateMetroSummaryBy(['staff'])
 
   updateAccount: (options) ->
     Meteor.users.update(Meteor.userId(), {$set: options})

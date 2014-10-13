@@ -65,7 +65,6 @@ Schema2.orders = new SimpleSchema
     type: Number
     optional: true
 
-
   deposit:
     type: Number
     optional: true

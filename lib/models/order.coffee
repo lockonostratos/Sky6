@@ -1,56 +1,35 @@
 subtractQualityOnSales= (stockingItems, sellingItem , currentSale) ->
-  transactionedQuality = 0
-  for product in stockingItems
-    requiredQuality = sellingItem.quality - transactionedQuality
-    if product.availableQuality > requiredQuality
+  transactionQuality = 0
+  for productDetail in stockingItems
+    requiredQuality = sellingItem.quality - transactionQuality
+    if productDetail.availableQuality > requiredQuality
       takkenQuality = requiredQuality
     else
-      takkenQuality = product.availableQuality
+      takkenQuality = productDetail.availableQuality
 
-    SaleDetail.createSaleDetailByOrder(currentSale, sellingItem, product, takkenQuality)
+    SaleDetail.createSaleDetailByOrder(currentSale, sellingItem, productDetail, takkenQuality)
 #    Schema.productDetails.update product._id, $inc:{availableQuality: -takkenQuality}
 #    Schema.products.update product.product,   $inc:{availableQuality: -takkenQuality}
 
     if currentSale.paymentsDelivery == 2 then instockQuality = takkenQuality else instockQuality = 0
-    Schema.productDetails.update product._id, $inc:{availableQuality: -takkenQuality, instockQuality: -instockQuality}
-    Schema.products.update product.product,   $inc:{availableQuality: -takkenQuality, instockQuality: -instockQuality}
+    Schema.productDetails.update productDetail._id, $inc:{availableQuality: -takkenQuality, instockQuality: -instockQuality}
+    Schema.products.update productDetail.product,   $inc:{availableQuality: -takkenQuality, instockQuality: -instockQuality}
 
-    transactionedQuality += takkenQuality
-    if transactionedQuality == sellingItem.quality then break
-  return transactionedQuality == sellingItem.quality
+    transactionQuality += takkenQuality
+    if transactionQuality == sellingItem.quality then break
+  return transactionQuality == sellingItem.quality
 
-createSaleAndSaleOrder= (orderId)->
-  return Console.log 'Bạn Chưa Đăng Nhập' if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-  return Console.log 'Order Không Tồn Tại' if !order = Schema.orders.findOne({
-    _id       : orderId
-    creator   : Meteor.userId()
-    merchant  : userProfile.currentMerchant
-    warehouse : userProfile.currentWarehouse
-  })
-  currentOrderDetails = Schema.orderDetails.find({order: orderId}).fetch()
-  sale = Sale.newByOrder(order)
-  sale._id = Schema.sales.insert sale, (error, result) -> console.log error if error
-  currentSale = Schema.sales.findOne(sale)
-  if currentSale
-    for currentOrderDetail in currentOrderDetails
+createSaleAndSaleOrder= (order)->
+  sale = Schema.sales.insert Sale.newByOrder(order), (error, result) -> console.log error if error
+  if currentSale = Schema.sales.findOne(sale)
+    for currentOrderDetail in Schema.orderDetails.find({order: order._id}).fetch()
       productDetails = Schema.productDetails.find({product: currentOrderDetail.product}).fetch()
       subtractQualityOnSales(productDetails, currentOrderDetail, currentSale)
-    if currentSale.paymentsDelivery == 0
-      Schema.sales.update currentSale._id, $set: {status: true, success: false}
+
+    option = {status: true}
     if currentSale.paymentsDelivery == 1
-      delivery = Delivery.newBySale(currentSale._id, order._id)
-      delivery._id = Schema.deliveries.insert delivery
-      Schema.sales.update currentSale._id, $set: {delivery: delivery._id}
-#    if currentSale.paymentsDelivery == 2
-#      for detail in Schema.saleDetails.find({sale: currentSale._id})
-#        if detail.status == false and detail.export == false
-#          Schema.saleDetails.update detail._id, $set:{exportDate: new Date, status: true}
-#          Schema.productDetails.update detail.productDetail , $inc:{instockQuality: -detail.quality}
-#          Schema.products.update detail.product,   $inc:{instockQuality: -detail.quality}
-#      Schema.sales.update currentSale._id, $set: {status: true, success: true}
-
-
-
+      option.delivery = Schema.deliveries.insert Delivery.newBySale(currentSale._id, order._id)
+    Schema.sales.update currentSale._id, $set: option
   return currentSale._id if currentSale
 
 reUpdateOrderDetail = (newOrderDetail, oldOrderDetail) ->
@@ -63,13 +42,6 @@ reUpdateOrderDetail = (newOrderDetail, oldOrderDetail) ->
   Schema.orderDetails.update oldOrderDetail._id, $set: option , (error, result) -> console.log error if error
 
 checkProductInstockQuality= (orderId)->
-  return Console.log 'Bạn Chưa Đăng Nhập' if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-  return Console.log 'Order Không Tồn Tại' if !order = Schema.orders.findOne({
-    _id       : orderId
-    creator   : Meteor.userId()
-    merchant  : userProfile.currentMerchant
-    warehouse : userProfile.currentWarehouse
-  })
   orderDetails = Schema.orderDetails.find({order: orderId}).fetch()
   product_ids = _.union(_.pluck(orderDetails, 'product'))
   products = Schema.products.find({_id: {$in: product_ids}}).fetch()
@@ -92,11 +64,6 @@ checkProductInstockQuality= (orderId)->
   catch e
     return {error: e}
 
-createTransactionAndDetailByOrder = (saleID)->
-  sale = Schema.sales.findOne(saleID)
-  transaction = Transaction.newBySale(sale)
-  transactionDetail = TransactionDetail.newByTransaction(transaction)
-
 createOrderCode= ->
   date = new Date()
   day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -112,14 +79,7 @@ createOrderCode= ->
     orderCode = "#{Sky.helpers.formatDate()}-0001"
   orderCode
 
-removeOrderAndOrderDetailAfterCreateSale= (orderId)->
-  return Console.log('Bạn Chưa Đăng Nhập') if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-  return Console.log 'Order Không Tồn Tại' if !order = Schema.orders.findOne({
-    _id       : orderId
-    creator   : Meteor.userId()
-    merchant  : userProfile.currentMerchant
-    warehouse : userProfile.currentWarehouse
-  })
+removeOrderAndOrderDetailAfterCreateSale= (orderId, userProfile)->
   allTabs = Schema.orders.find({
     _id       : orderId
     creator   : Meteor.userId()
@@ -138,6 +98,7 @@ removeOrderAndOrderDetailAfterCreateSale= (orderId)->
     else
       UserProfile.update {currentOrder: allTabs[currentIndex+1]._id}
     Order.removeAll(orderId)
+
 #-----------------------------------------------------------------------------------------------------------------------
 Schema.add 'orders', class Order
   @createOrder: ->
@@ -175,7 +136,10 @@ Schema.add 'orders', class Order
     option._id = Schema.orders.insert option
     option
 
-  @createOrderAndSelect: -> UserProfile.update {currentOrder: @createOrder()._id}
+  @createOrderAndSelect: ->
+    order = @createOrder()
+    UserProfile.update {currentOrder: order._id}
+    order
 
   @removeAll: (orderId)->
     try
@@ -222,6 +186,7 @@ Schema.add 'orders', class Order
     return 'Bạn Chưa Đăng Nhập' if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     return 'Order Không Tồn Tại' if !order = Schema.orders.findOne({
       _id       : orderId
+      creator   : Meteor.userId()
       merchant  : userProfile.currentMerchant
       warehouse : userProfile.currentWarehouse
     })
@@ -242,11 +207,16 @@ Schema.add 'orders', class Order
     result = checkProductInstockQuality(orderId)
     if result.error then console.log result.error; return
 
-    saleId = createSaleAndSaleOrder(orderId)
+    saleId = createSaleAndSaleOrder(order)
+    #xac nhan tien()
+#    Sale.findOne(saleId).confirmReceiveSale()
+    #xac xuat kho
 #    Sale.findOne(saleId).createSaleExport()
-    removeOrderAndOrderDetailAfterCreateSale(orderId)
-    createTransactionAndDetailByOrder(saleId)
-    MetroSummary.updateMetroSummaryBySale(saleId)
+
+#    createTransactionAndDetailByOrder(saleId)
+#    MetroSummary.updateMetroSummaryBySale(saleId)
+
+    removeOrderAndOrderDetailAfterCreateSale(orderId, userProfile)
     return("Tạo phiếu bán hàng thành công")
 
 #-----------------------------------------------------
