@@ -1,7 +1,8 @@
 template(name="homeLayout")
   +homeTopPanel
-  section#homeHeader
+  section#homeHeader: .home-wrapper
     +homeHeader
+    +homeNavigation
   section#homeContent
     +yield
   section#homeFooter

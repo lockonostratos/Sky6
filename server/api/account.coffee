@@ -8,7 +8,7 @@ Meteor.methods
 #    creator = Meteor.userId()
 #    #Checking permission....
 #    return if !creator
-#
+
 #    newUserId = Accounts.createUser(email, password)
 #    console.log "the user #{creator} has created an account for his merchant: #{email}"
 

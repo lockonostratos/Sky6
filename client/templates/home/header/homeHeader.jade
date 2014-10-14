@@ -1,54 +1,27 @@
 template(name="homeHeader")
-  .home-wrapper
-    .header-content
-      .home-branding
-        .logo-text
-          .caption eds
-          .slogan hệ thống chiến lược đồng bộ
-        .logo-image
-          img(src="images/gera-small.png")
-        .languages TIẾNG VIỆT
+  .header-content
+    .home-branding
+      .logo-text
+        .caption eds
+        .slogan hệ thống chiến lược đồng bộ
+      .logo-image
+        img(src="images/gera-small.png")
+      .languages TIẾNG VIỆT
 
-        .login-section
-          if authenticated
-            #gotoMerchantButton.btn.icon-shop
-            #logoutButton.btn.icon-power.background-pumpkin
-          else
-            input.login-field#authAlias(type="text" placeholder="tài khoản" maxlength="50")
-            input.login-field#authSecret(type="password" placeholder="mật khẩu" maxlength="30")
-            #authButton.btn.icon-key-1(class="{{loginValid}}")
+      .login-section
+        if authenticated
+          #gotoMerchantButton.btn.icon-shop
+          #logoutButton.btn.icon-power.background-pumpkin
+        else
+          input.login-field#authAlias(type="text" placeholder="tài khoản" maxlength="50")
+          input.login-field#authSecret(type="password" placeholder="mật khẩu" maxlength="30")
+          #authButton.btn.icon-key-1(class="{{loginValid}}")
 
-        .social
-          a.icon-facebook-rect
-          a.icon-twitter-bird
-          a.icon-googleplus-rect
-          a.icon-linkedin-rect
-        .phone
-          i.icon-mobile
-          |+84 838-<b>111</b>-766
-
-      ul.home-navigation
-        li
-          span.menu-item.icon-globe
-            span.main-caption Hỗ trợ
-            span.sub-caption Câu hỏi thường gặp
-        li
-          span.menu-item.icon-doc
-            span.main-caption Tin tức
-            span.sub-caption Cập nhật mới nhất
-        li
-          span.menu-item.icon-camera
-            span.main-caption Khách hàng
-            span.sub-caption Bình luận
-        li
-          span.menu-item.icon-beaker
-            span.main-caption Tính năng
-            span.sub-caption Hệ thống EDS
-        li
-          span.menu-item.icon-wallet
-            span.main-caption Bảng giá
-            span.sub-caption Gói sản phẩm
-        li
-          span.menu-item.icon-pencil
-            span.main-caption Liên hệ
-            span.sub-caption Tuyển dụng
+      .social
+        a.icon-facebook-rect
+        a.icon-twitter-bird
+        a.icon-googleplus-rect
+        a.icon-linkedin-rect
+      .phone
+        i.icon-mobile
+        |+84 838-<b>111</b>-766

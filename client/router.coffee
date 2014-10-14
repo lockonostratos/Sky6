@@ -41,9 +41,8 @@ class @skyRouter
     addRouteToHistory @path.substring(1)
 
 Router.map ->
-  @route 'home',
-    path: '/'
-    layoutTemplate: 'homeLayout'
+  @route 'home', { path: '/', layoutTemplate: 'homeLayout' }
+  @route 'merchantWizard', { path: '/merchantWizard', layoutTemplate: 'wizardLayout' }
 
   @route 'metroHome', new skyRouter('/dashboard', false, ->
     AccountsEntry.signInRequired(this)
