@@ -13,3 +13,4 @@ Sky.appTemplate.extends Template.navigation,
 
   events:
     "click #logoutButton": (event, template) -> Meteor.logout(); Router.go('/')
+    "click a.branding": -> Session.set('autoNatigateDashboardOff', true); Router.go('/')

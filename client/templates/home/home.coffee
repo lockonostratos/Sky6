@@ -6,7 +6,8 @@ Sky.appTemplate.extends Template.home,
       fgColor: "#7caa22"
   avatarImages: -> AvatarImages.find()
 
-  rendered: -> $("body").css("overflow", "auto")
+  created: -> Router.go('/dashboard') unless Meteor.userId() is null or (Session.get('autoNatigateDashboardOff'))
+  rendered: -> $("body").css("overflow", "auto"); Sky.helpers.animateUsing("body", "bounceInDown")
 
   events:
     'click input': -> console.log 'Fuck YOU!'

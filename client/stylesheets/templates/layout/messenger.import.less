@@ -1,26 +1,32 @@
-@messenger-width: 250px;
+@messenger-width: 300px;
 @my-message-background: #CEEEE6;
 
 #messenger {
   position: absolute;
-  left: @left-pane-size + 1;
+  .collapse-transition;
+  right: @left-pane-size + 210px; top: 0;
   width: @messenger-width - 2px;
   background-color: #EEEEEE;
   border: solid 1px #ddd;
   .border-radius(2px);
   visibility: hidden;
+  margin-top: 5px;
 
   z-index: 99999;
   .slimScrollBar { width: 3px !important; }
   &.active { visibility: visible; }
-
-  &:before {
-    content: '';
-    background-color: #EEEEEE;
-    width: 10px; height: 10px; left: -5px; top: 30px;
-    .rotate(45deg);
-    position: absolute;
+  &.minimized {
+    .all-messages {
+      height: 50px;
+    }
   }
+//  &:before {
+//    content: '';
+//    background-color: #EEEEEE;
+//    width: 10px; height: 10px; left: -5px; top: 30px;
+//    .rotate(45deg);
+//    position: absolute;
+//  }
 
   .header {
     margin: -1px;
@@ -123,11 +129,8 @@
   input {
     width: 100%;
     border: none;
-    border-top: solid 1px #DDDDDD;
     background: #FFFFFF;
     font-size: 12px;
-    height: 28px;
-    line-height: 28px;
-    padding: 0 5px;
+    padding: 5px 10px;
   }
 }

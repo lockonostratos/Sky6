@@ -1,7 +1,7 @@
 template(name="navigation")
   nav(role="navigation").navbar.main.navbar-fixed-top
     .wrapper
-      a.branding(href="/")
+      a.branding
         span.logo EDS
         span.version {{currentSystemVersion}}
         //form.navbar-form.navbar-left
@@ -11,25 +11,24 @@ template(name="navigation")
         li.inav
           +messageNotifications
           .notification-counts(class="{{messageClass}}") {{unreadMessageCount}}
-          span.dropdown-toggle(data-toggle="dropdown"): i.fa.fa-comments
+          span.dropdown-toggle(data-toggle="dropdown"): i.icon-chat-6
         li.inav
           +notificationDetails
           .notification-counts(class="{{notificationClass}}") {{unreadNotificationCount}}
-          span.dropdown-toggle(data-toggle="dropdown"): i.fa.fa-globe
+          span.dropdown-toggle(data-toggle="dropdown"): i.icon-globe-6
         li.inav
           +requestDetails
           .notification-counts(class="{{requestClass}}") {{unreadRequestCount}}
-          span.dropdown-toggle(data-toggle="dropdown"): i.fa.fa-share-alt
-        li.inav
-          span#logoutButton: i.fa.fa-power-off
+          span.dropdown-toggle(data-toggle="dropdown"): i.icon-share-3
+        li.inav.collapse-toggle: span: i.collapse.fa.fa-th-list
 
       ul.nav.navbar-nav
-        li.inav.collapse-toggle: span: i.collapse.fa.fa-th-list
-        li.home(class="{{isActiveRoute 'metroHome'}}"): a(href="{{pathFor 'metroHome'}}"): i.fa.fa-home
+        li.inav: span#logoutButton: i.icon-off-1
+        li.home(class="{{isActiveRoute 'metroHome'}}"): a(href="{{pathFor 'metroHome'}}"): i.icon-home-4
         li.inav(class="{{isActiveRoute 'taskManager'}}")
-          a(href="{{pathFor 'taskManager'}}"): i.fa.fa-clipboard
+          a(href="{{pathFor 'taskManager'}}"): i.icon-clipboard-2
         li.inav(class="{{isActiveRoute 'warehouse'}}")
-          a(href="{{pathFor 'warehouse'}}"): i.fa.fa-cubes
+          a(href="{{pathFor 'warehouse'}}"): i.icon-cubes
         each routeHistory
           li.inav(class="{{isActiveRoute route}}")
             a(href="{{pathFor route}}"): i.fa(class="{{icon}}")

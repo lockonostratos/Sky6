@@ -118,11 +118,11 @@ class Sky
       str = str.replace /-+-/g, "-" #thay thế 2- thành 1-
       str = str.replace /^\-+|\-+$/g, "" #cắt bỏ ký tự - ở đầu và cuối chuỗi
       str
-    @shortName: (fullName) ->
+    @shortName: (fullName, maxlength = 6) ->
       return undefined if !fullName
       splited = fullName?.split(' ')
       name = splited[splited.length - 1]
-      middle = splited[splited.length - 2]?.substring(0,1) if name.length < 6
+      middle = splited[splited.length - 2]?.substring(0,1) if name.length < maxlength
       "#{if middle then middle + '.' else ''} #{name}"
     @respectName: (fullName, gender) -> "#{if gender then 'Anh' else 'Chị'} #{fullName.split(' ').pop()}"
 
@@ -150,6 +150,12 @@ class Sky
     @reArrangeLayout: ->
       newHeight = $(window).height() - $("#header").outerHeight() - $("#footer").outerHeight() - 6
       $("#container").css('height', newHeight)
+
+    @animateUsing: (selector, animationType) ->
+      $element = $(selector)
+      $element.removeClass()
+      .addClass("animated #{animationType}")
+      .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', -> $element.removeClass())
 
     @formatDate: (format = 0, dateObj = new Date())->
       curr_Day   = dateObj.getDate()

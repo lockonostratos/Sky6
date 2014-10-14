@@ -1,9 +1,13 @@
 Sky.template.extends Template.myAvatarItem,
-  shortAlias: ->
-    fullAlias = @fullName ? Meteor.users.findOne(@user)?.emails[0].address
-    Sky.helpers.shortName(fullAlias)
   avatarUrl: -> if @avatar then AvatarImages.findOne(@avatar)?.url() else undefined
-  isOnline: -> if Meteor.users.findOne(@user)?.status?.online then 'active' else ''
+  onlineStatus: ->
+    currentUser = Meteor.users.findOne(@user)
+    if currentUser?.status?.online
+      return 'online'
+    else if currentUser?.status?.idle
+      return 'idle'
+    else
+      return 'offline'
 
   events:
     "click": (event, template) -> console.log template.find('.avatarFileSelector').click()

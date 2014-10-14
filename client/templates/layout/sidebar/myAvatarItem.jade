@@ -1,6 +1,5 @@
 template(name="myAvatarItem")
   li.chat-avatar.me
     input.avatarFileSelector(type="file")
-    .online-status-orb(class="{{isOnline}}")
-    .alias {{shortAlias}}
+    .online-status-orb(class="{{onlineStatus}}")
     +avatarImageComponent(avatar=avatarUrl alias=fullName)

@@ -1,8 +1,6 @@
 template(name="messenger")
-  #messenger(class="{{visibilityClass}}")
-    .header
-      span.right {{targetAlias}}
-      .close-btn: i.fa.fa-times-circle
+  #messenger(class="{{visibilityClass}} {{minimizedClass}}")
+    input(type="text")
     .all-messages
       each currentMessages
         .message-wrapper
@@ -10,5 +8,3 @@ template(name="messenger")
           if friendMessage
             .chatbox-avatar
               +avatarImageComponent(avatar=targetAvatar alias=targetAlias)
-
-    input(type="text")

@@ -3,16 +3,17 @@
   nav.main { .collapse-transition; }
 
   &.collapsed {
-    margin-left: @left-pane-collapse-size - @left-pane-size;
-    nav.main { margin-left: @left-pane-collapse-size - @left-pane-size; }
-    .app-status, .app-summary, .app-header, .app-editor {
-      padding-right: @left-pane-collapse-size;
-    }
-
-    .sidebar-handle {
-      &.left { right: -15px !important; }
-      &.right { left: -15px !important; }
-    }
+    margin-right: @left-pane-collapse-size - @left-pane-size;
+    nav.main { margin-right: @left-pane-collapse-size - @left-pane-size; }
+    #sidebar { right: @left-pane-collapse-size - @left-pane-size; }
+//    .app-status, .app-summary, .app-header, .app-editor {
+//      padding-right: @left-pane-collapse-size;
+//    }
+//
+//    .sidebar-handle {
+//      &.left { right: -15px !important; }
+//      &.right { left: -15px !important; }
+//    }
 
     .metro-wrapper {
 

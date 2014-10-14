@@ -1,6 +1,6 @@
 template(name="chatAvatarItem")
   li.chat-avatar(class="{{myAvatar}}")
-    .online-status-orb(class="{{isOnline}}")
+    .online-status-orb(class="{{onlineStatus}}")
     i.glyphicon.glyphicon-comment.has-message-status(class="{{hasUnreadMessage}}")
     .alias {{shortAlias}}
     +avatarImageComponent(avatar=avatarUrl alias=fullName)

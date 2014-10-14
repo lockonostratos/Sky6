@@ -15,6 +15,7 @@ _.extend Template.merchantLayout,
   rendered: ->
     $(window).resize -> Sky.helpers.reArrangeLayout()
     versionUpdatesTracker()
+    Sky.helpers.animateUsing("#container", "bounceInDown")
 
   events:
     "click .collapse-toggle": -> application.toggleCollapse()

@@ -1,11 +1,14 @@
 #sidebar { margin-top: 40px; }
-#sidebar, #left-side {
+#sidebar {
+  .collapse-transition;
   position: fixed;
   width: @left-pane-size;
   min-height: 100%;
   background-color: @left-pane-background;
   z-index: 9999;
   padding-top: @nav-bottom-border-size;
+  right: 0;
+  border-left: 5px solid #1A1A1A;
 
   .sidebar-dump-dash {
     height: 7px;
@@ -56,21 +59,30 @@
     padding: 0; margin: 0;
     color: #fff;
 
-    &:hover .alias { left: 40px !important; }
     .chat-avatar {
       .user-select(none);
       list-style: none;
       position: relative;
-      background-color: #575757;
       cursor: pointer;
       &.me { input[type="file"] { display: none; } }
+
+      &:after {
+        font-family: 'sky';
+        content: '\E848';
+        position: absolute;
+        font-size: 10px;
+        color: #999999;
+        bottom: -7px; left: 26px;
+      }
+
       .online-status-orb {
-        width: 8px; height: 8px;
+        width: 10px; height: 10px;
+        top: 6px; right: 6px;
         .border-radius(50%);
         position: absolute;
-        top: 5px; left: 5px;
         background-color: gray;
-        &.active { background-color: @lime; }
+        &.online { background-color: @lime; }
+        &.idle { background-color: @carrot; }
       }
 
       .has-message-status {
@@ -87,27 +99,35 @@
       .alias {
         .transition(left 0.15s ease);
         position: absolute;
-        top: 23px; left: 25px;
-        .rotate(90deg);
-        transform: rotate(90deg);
+        top: 37px; left: 37px;
         width: 54px;
-        font-size: 10px;
+        font-size: 9px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        text-transform: uppercase;
-        text-align: center;
+        text-transform: capitalize;
+        .rotate(90deg);
+        color: #5C5C5C;
         padding: 0 2px;
         pointer-events: none;
-        background-color: rgba(0,0,0, 0.8);
-//        display: none;
-        .border-top-radius(2px);
-        z-index: -1;
       }
 
-      img, span {
+      img {
         width: 60px;
         height: 60px;
+        border-radius: 50%;
+        padding: 5px;
+      }
+
+      &.me {
+        img { width: 78px; height: 78px; }
+      }
+
+      span {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        padding: 5px;
       }
 
       span {
@@ -115,13 +135,9 @@
         text-align: center;
         line-height: 60px;
         color: #fff;
-        font-size: 20px;
-        font-weight: bold;
+        font-size: 14px;
+        font-weight: bolder;
         text-transform: uppercase;
-      }
-
-      &:nth-child(even) {
-        background-color: #9c9c9c;
       }
     }
   }

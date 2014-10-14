@@ -25,7 +25,7 @@ Sky.template.extends Template.messenger,
   visibilityClass: -> if Session.get('messengerVisibility') then 'active' else ''
   messageClass: -> if @sender is Meteor.userId() then 'me' else 'friend'
   friendMessage: -> @sender isnt Meteor.userId()
-
+  minimizedClass: -> Session.get('messengerMinimize')
   targetAvatar: ->
     profile = Schema.userProfiles.findOne({user: Session.get('currentChatTarget')})
     return undefined if !profile?.avatar
@@ -40,7 +40,9 @@ Sky.template.extends Template.messenger,
     messages: ".all-messages"
     messenger: "#messenger"
 
-  created: -> initTracker()
+  created: ->
+    initTracker()
+    Session.set('messengerMinimize', 'minimized')
 
   rendered: ->
     $messages = $(@ui.messages)
@@ -51,16 +53,16 @@ Sky.template.extends Template.messenger,
         scrollDownIfNecessary($messages, instance, thisTime)
         playSoundIfNecessary(instance, thisTime)
 
-    $(@ui.messenger).bind('dragstart', (event) -> $(event.target).is('.header'))
-    .bind('drag', (event) ->
-      maxOffset = $(document).height() - $(@).outerHeight() + 15
-      $(@).css({top: event.clientY - 15}) if 58 < event.clientY < maxOffset
-    )
+#    $(@ui.messenger).bind('dragstart', (event) -> $(event.target).is('.header'))
+#    .bind('drag', (event) ->
+#      maxOffset = $(document).height() - $(@).outerHeight() + 15
+#      $(@).css({top: event.clientY - 15}) if 58 < event.clientY < maxOffset
+#    )
 
   destroyed: -> Sky.global.incomingObserver.stop()
 
   events:
-    "click .close-btn": -> Session.set('messengerVisibility', false)
+#    "click .close-btn": -> Session.set('messengerVisibility', false)
     "click ul.messages": (event, template) ->
       $(template.find('input')).focus()
     "keypress input": (event, template) ->
@@ -73,5 +75,6 @@ Sky.template.extends Template.messenger,
     "keyup input": (event, template) ->
       if event.which is 27 then Session.set('messengerVisibility', false)
     "focus input": ->
-      console.log 'reading...'
       Messenger.read(message._id) for message in Session.get('unreadMessages') when message.sender is Session.get('currentChatTarget')
+      Session.set('messengerMinimize', 'maximized')
+    "focusout input": -> Session.set('messengerMinimize', 'minimized')

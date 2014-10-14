@@ -1,2 +1,2 @@
 Sky.template.extends Template.avatarImageComponent,
-  avatarLetter: (fullAlias) -> fullAlias.split(' ').pop().substring(0,1)
+  avatarLetter: (fullAlias) -> fullAlias?.split(' ').pop().substring(0,1)

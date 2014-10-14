@@ -18,9 +18,9 @@ Sky.template.extends Template.sidebar,
       $messenger.addClass('active')
       $messenger.find('input').focus()
 
-      messengerHeight = $messenger.outerHeight()
-      bottomAnchor = $target.offset().top + ($target.outerHeight()/2)
-      console.log 'bottomAnchor ', bottomAnchor
-      nextPosition = bottomAnchor - $target.outerHeight()/2
-      console.log 'nextPosition ', nextPosition
-      $messenger.css('top', "#{nextPosition}px")
+#      messengerHeight = $messenger.outerHeight()
+#      bottomAnchor = $target.offset().top + ($target.outerHeight()/2)
+#      console.log 'bottomAnchor ', bottomAnchor
+#      nextPosition = bottomAnchor - $target.outerHeight()/2
+#      console.log 'nextPosition ', nextPosition
+#      $messenger.css('top', "#{nextPosition}px")

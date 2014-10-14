@@ -1,10 +1,3 @@
-animateUsing = (selector, animationType) ->
-  $element = $(selector)
-#  $element.removeAttr('style')
-  $element.removeClass()
-  .addClass("animated #{animationType}")
-  .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', -> $element.removeClass())
-
 Router.configure
   layoutTemplate: 'merchantLayout'
 
@@ -43,8 +36,7 @@ class @skyRouter
 
   onAfterAction: ->
 #    $("body").removeClass() if @path isnt '/'
-    animateUsing("#right-side", "bounceInUp")
-    animateUsing("#container", "bounceInDown")
+    Sky.helpers.animateUsing("#container", "bounceInDown")
 
     addRouteToHistory @path.substring(1)
 
