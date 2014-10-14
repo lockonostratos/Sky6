@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'sky';
-  src: url('../font/sky.eot?51217158');
-  src: url('../font/sky.eot?51217158#iefix') format('embedded-opentype'),
-       url('../font/sky.woff?51217158') format('woff'),
-       url('../font/sky.ttf?51217158') format('truetype'),
-       url('../font/sky.svg?51217158#sky') format('svg');
+  src: url('../font/sky.eot?11808185');
+  src: url('../font/sky.eot?11808185#iefix') format('embedded-opentype'),
+       url('../font/sky.woff?11808185') format('woff'),
+       url('../font/sky.ttf?11808185') format('truetype'),
+       url('../font/sky.svg?11808185#sky') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,7 +14,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'sky';
-    src: url('../font/sky.svg?51217158#sky') format('svg');
+    src: url('../font/sky.svg?11808185#sky') format('svg');
   }
 }
 */
@@ -110,6 +110,7 @@
 .icon-skype:before { content: '\e839'; } /* '' */
 .icon-phone-circled:before { content: '\e83a'; } /* '' */
 .icon-mail-circled:before { content: '\e83b'; } /* '' */
+.icon-flag-circled:before { content: '\e83c'; } /* '' */
 .icon-emo-happy:before { content: '\f027'; } /* '' */
 .icon-emo-wink:before { content: '\f028'; } /* '' */
 .icon-emo-wink2:before { content: '\f029'; } /* '' */

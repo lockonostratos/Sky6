@@ -11,7 +11,7 @@ Router.configure
 #  path: "/posts/:_id"
 #  data: ->
 #    Posts.findOne @params._id
-#
+#s
 #  waitOn: postsSub
 #  loading: "loadingTemplate"
 #  notFound: "notFoundTemplate"
