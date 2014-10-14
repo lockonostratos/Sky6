@@ -74,18 +74,6 @@ class Sky
       _id: true
       display: 'GIẢM GIÁ THEO PHIẾU'
     ]
-
-    @filterDeliveries:[
-      _id: 0
-      display: 'ĐƠN HÀNG CHƯA ĐƯỢC NHẬN'
-    ,
-      _id: 1
-      display: 'ĐƠN HÀNG ĐANG GIAO'
-    ,
-      _id: 2
-      display: 'ĐƠN HÀNG ĐÃ HOÀN THÀNH'
-    ]
-
     @viewInventories: [
       _id: 0
       display: 'KIỂM KHO'

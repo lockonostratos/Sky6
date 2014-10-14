@@ -47,7 +47,12 @@ Schema.add 'systems', class System
       warehouse = Schema.warehouses.insert Warehouse.newDefault(merchant, merchant, user)
       version = Schema.systems.findOne().version
       Schema.userProfiles.insert UserProfile.newDefault(merchant, warehouse, user, version, fullName)
-      Schema.metroSummaries.insert MetroSummary.newByMerchant(merchant)
+      Schema.metroSummaries.insert(MetroSummary.newByMerchant(merchant))
 
+  @createNewMetroSummary: ->
+    userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    unless metro = Schema.metroSummaries.findOne({merchant: userProfile.currentMerchant})
+      metroId = Schema.metroSummaries.insert(MetroSummary.newByMerchant(userProfile.currentMerchant))
+      MetroSummary.findOne(metroId).updateMetroSummary()
 
 

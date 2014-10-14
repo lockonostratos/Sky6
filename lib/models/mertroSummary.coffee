@@ -13,10 +13,8 @@ saleStatusIsImport = (sale)->
 
 Schema.add 'metroSummaries', class MetroSummary
   @newByMerchant: (merchantId)->
-    console.log '1'
     currentMerchant = Schema.merchants.findOne(merchantId)
     if currentMerchant
-      console.log '2'
       merchant       = currentMerchant._id
       parentMerchant = currentMerchant.parent ? currentMerchant._id
       staffCount       = Schema.userProfiles.find({currentMerchant: merchant})
@@ -26,7 +24,7 @@ Schema.add 'metroSummaries', class MetroSummary
       merchantCount    = Schema.merchants.find({$or:[{_id: parentMerchant }, {parent: parentMerchant}]})
       warehouseCountAll= Schema.warehouses.find({$or:[{merchant: parentMerchant }, {parentMerchant: parentMerchant}]})
       warehouseCount   = Schema.warehouses.find({merchant: merchant })
-      console.log '3'
+
       option =
         parentMerchant        : parentMerchant
         merchant              : merchant
@@ -57,9 +55,9 @@ Schema.add 'metroSummaries', class MetroSummary
         importDepositCash     : 0
         importDebitCash       : 0
         importRevenueCash     : 0
+
       console.log option
       option
-
 
   updateMetroSummary: ->
     merchantCount    = Schema.merchants.find({$or:[{_id: @data.parentMerchant }, {parent: @data.parentMerchant}]})
