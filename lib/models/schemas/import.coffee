@@ -27,7 +27,7 @@ Schema2.imports = new SimpleSchema
   finish:
     type: Boolean
 
-  submited:
+  submitted:
     type: Boolean
 
   systemTransaction:

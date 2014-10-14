@@ -21,10 +21,9 @@ runInitDeliveryTracker = (context) ->
       option =
         merchant: Session.get('currentDeliveryMerchant')._id
         warehouse: Session.get('currentDeliveryWarehouse')._id
-      (option.status = {$in: [0]}) if Session.get('currentProfile')?.currentDeliveryFilter == 0
-      (option.status = {$in: [2,3,4,5,7,8]}) if Session.get('currentProfile')?.currentDeliveryFilter == 1
-      (option.status = {$in: [6,9]}) if Session.get('currentProfile')?.currentDeliveryFilter == 2
-      (option.status = {$in: [5,8]}) if Session.get('currentProfile')?.currentDeliveryFilter == 4
+      (option.status = {$in: [1]}) if Session.get('currentProfile')?.currentDeliveryFilter == 0
+      (option.status = {$in: [2,3,4,5,6,8,9]}) if Session.get('currentProfile')?.currentDeliveryFilter == 1
+      (option.status = {$in: [7,10]}) if Session.get('currentProfile')?.currentDeliveryFilter == 2
       Session.set "availableDeliveries", Schema.deliveries.find(option).fetch()
 
 

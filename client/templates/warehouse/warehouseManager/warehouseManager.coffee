@@ -12,14 +12,19 @@ createWarehouse = (context) ->
   name = context.ui.$name.val()
   address = context.ui.$address.val()
 
-  Schema.warehouses.insert
-#    parentMerchant: Session.get('currentProfile').parentMerchant
+  option=
+    parentMerchant    : Session.get('currentProfile').parentMerchant
     merchant          : Session.get('currentBranch')._id
     creator           : Meteor.userId()
     name              : name
     location          : {address: [address] if address}
     isRoot            : false
     checkingInventory : false
+
+  Schema.warehouses.insert option, (error, result)->
+    if error then console.log error
+    else
+      MetroSummary.updateMetroSummaryBy(['warehouse'])
 
   resetForm(context)
 
@@ -30,6 +35,9 @@ runInitWarehouseManagerTracker = ->
   Sky.global.warehouseManagerTracker = Tracker.autorun ->
     if Session.get("availableMerchant") and Session.get('currentProfile')?.currentMerchant
       Session.set "currentBranch", _.findWhere(Session.get("availableMerchant"), {_id: Session.get('currentProfile').currentMerchant})
+    if Session.get('currentBranch')
+      Session.set "warehouseDetails", Schema.warehouses.find({merchant: Session.get('currentBranch')._id}).fetch()
+
 
 Sky.appTemplate.extends Template.warehouseManager,
   allowCreate: -> if Session.get('allowCreateNewWarehouse') then 'btn-success' else 'btn-default disabled'
@@ -48,9 +56,7 @@ Sky.appTemplate.extends Template.warehouseManager,
 
   warehouseDetailOptions:
     itemTemplate: 'warehouseThumbnail'
-    reactiveSourceGetter: ->
-      currentBranch = Session.get('currentBranch')
-      if currentBranch then Schema.warehouses.find({merchant: currentBranch._id}).fetch() else []
+    reactiveSourceGetter: -> Session.get('warehouseDetails') ? []
     wrapperClasses: 'detail-grid row'
 
   events:

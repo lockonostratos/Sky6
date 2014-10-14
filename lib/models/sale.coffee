@@ -1,11 +1,11 @@
 saleStatusIsExport = (sale)->
-  if sale.status == true and sale.success == sale.export == sale.import == false and (sale.paymentsDelivery == 0 || sale.paymentsDelivery == 1)
+  if sale.status == sale.received == true and sale.submitted == sale.exported == sale.imported == false and (sale.paymentsDelivery == 0 || sale.paymentsDelivery == 1)
     true
   else
     false
 
 saleStatusIsImport = (sale)->
-  if sale.status == sale.export == true and sale.success == sale.import == false and sale.paymentsDelivery == 1
+  if sale.status == sale.received == sale.exported == true and sale.submitted == sale.imported == false and sale.paymentsDelivery == 1
     true
   else
     false
@@ -24,6 +24,7 @@ createSaleCode= ->
   else
     orderCode = "#{Sky.helpers.formatDate()}-0001"
   orderCode
+
 
 
 Schema.add 'sales', class Sale
@@ -48,10 +49,11 @@ Schema.add 'sales', class Sale
       finalPrice        : order.finalPrice
       deposit           : order.deposit
       debit             : order.debit
-      import            : false
-      export            : false
+      imported          : false
+      exported          : false
+      received          : false
       status            : false
-      success           : false
+      submitted         : false
 
 
 
@@ -65,16 +67,16 @@ Schema.add 'sales', class Sale
     if saleStatusIsExport(@data)
       saleDetails = Schema.saleDetails.find({sale: @id}).fetch()
       for detail in saleDetails
-        Schema.saleDetails.update detail._id, $set:{export: true, exportDate: new Date, status: true}
+        Schema.saleDetails.update detail._id, $set:{exported: true, exportDate: new Date, status: true}
         Schema.productDetails.update detail.productDetail , $inc:{instockQuality: -detail.quality}
         Schema.products.update detail.product,   $inc:{instockQuality: -detail.quality}
 
         Schema.saleExports.insert SaleExport.new(@data, detail), (error, result) -> console.log error if error
       MetroSummary.updateMetroSummaryBySaleExport(@id)
-      if @data.paymentsDelivery == 0 then  Schema.sales.update @id, $set:{success: true, export: true}
+      if @data.paymentsDelivery == 0 then  Schema.sales.update @id, $set:{submitted: true, exported: true}
       if @data.paymentsDelivery == 1
-        Schema.sales.update @id, $set:{export: true, status: false}
-        Schema.deliveries.update @data.delivery, $set:{status: 2, exporter: Meteor.userId()}
+        Schema.sales.update @id, $set:{exported: true, status: false}
+        Schema.deliveries.update @data.delivery, $set:{status: 3, exporter: Meteor.userId()}
       console.log 'create ExportSale'
 
     if saleStatusIsImport(@data)
@@ -88,12 +90,26 @@ Schema.add 'sales', class Sale
 
 #        Schema.saleExports.insert SaleExport.new(@data, detail), (error, result) -> console.log error if error
       MetroSummary.updateMetroSummaryBySaleImport(@id)
-      Schema.sales.update @id, $set:{import: true, status: false}
-      Schema.deliveries.update @data.delivery, $set:{status: 8, importer: Meteor.userId()}
+      Schema.sales.update @id, $set:{imported: true, status: false}
+      Schema.deliveries.update @data.delivery, $set:{status: 9, importer: Meteor.userId()}
       console.log 'create ImportSale'
 
+  #xác nhận đã nhận tiền
+  confirmReceiveSale: ->
+    if @data.received == @data.imported ==  @data.exported == @data.submitted == false and @data.status == true
+      option = {received: true}
+      if @data.paymentsDelivery == 1
+        option.status = false
+        Schema.deliveries.update @data.delivery, $set: {status: 1}
 
+      Schema.sales.update @id, $set: option
+      transaction =  Transaction.newBySale(@data)
+      transactionDetail = TransactionDetail.newByTransaction(transaction)
+      MetroSummary.updateMetroSummaryBySale(@id)
 
+    if @data.status == @data.success == @data.received == @data.exported == true and @data.submitted ==  @data.imported == false and @data.paymentsDelivery == 1
+      Schema.deliveries.update @data.delivery, $set:{status: 6, cashier: Meteor.userId()}
+      Schema.sales.update @id, $set:{paymentsDelivery: @data.debit, debit: 0}
 
 
 

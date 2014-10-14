@@ -157,6 +157,7 @@ Sky.appTemplate.extends Template.sales,
 #    minimumResultsForSearch: -1
     hotkey: 'return'
     changeAction: (e) ->
+      unless Session.get('currentOrder') then Session.set('currentOrder', Order.createOrderAndSelect())
       Schema.orders.update Session.get('currentOrder')._id,
         $set:
           currentProduct        : e.added._id

@@ -17,7 +17,7 @@ runInitReturnsTracker = (context) ->
   return if Sky.global.returnTracker
   Sky.global.returnTracker = Tracker.autorun ->
     if Session.get('currentWarehouse')
-      Session.set "availableSales", Schema.sales.find({warehouse: Session.get('currentWarehouse')._id, status: true, success: true}).fetch()
+      Session.set "availableSales", Schema.sales.find({warehouse: Session.get('currentWarehouse')._id, status: true, submitted: true}).fetch()
 
     if Session.get('currentProfile')?.currentSale
       Session.set 'currentSale', Schema.sales.findOne(Session.get('currentProfile')?.currentSale)

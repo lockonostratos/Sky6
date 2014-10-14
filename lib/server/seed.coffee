@@ -285,7 +285,7 @@ seedProductsFor = (merchant, creator, warehouse) ->
     deposit: 0
     debit: 0
     finish: true
-    submited: true
+    submitted: true
   }, importDetails
 
 
