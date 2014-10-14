@@ -26,7 +26,15 @@
 
     &:hover {
       * { opacity: 0.2; }
-      background: url("/images/lockedx64.png") no-repeat center;
+      &:before {
+        font-family: 'sky';
+        content: '\E81C';
+        font-size: 40px;
+        position: absolute;
+        left: 50%; top: 50%;
+        margin-left: -15px; margin-top: -30px;
+      }
+//      background: url("/images/lockedx64.png") no-repeat center;
     }
   }
 
