@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'sky';
-  src: url('../font/sky.eot?11454157');
-  src: url('../font/sky.eot?11454157#iefix') format('embedded-opentype'),
-       url('../font/sky.woff?11454157') format('woff'),
-       url('../font/sky.ttf?11454157') format('truetype'),
-       url('../font/sky.svg?11454157#sky') format('svg');
+  src: url('../font/sky.eot?88999850');
+  src: url('../font/sky.eot?88999850#iefix') format('embedded-opentype'),
+       url('../font/sky.woff?88999850') format('woff'),
+       url('../font/sky.ttf?88999850') format('truetype'),
+       url('../font/sky.svg?88999850#sky') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,7 +14,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'sky';
-    src: url('../font/sky.svg?11454157#sky') format('svg');
+    src: url('../font/sky.svg?88999850#sky') format('svg');
   }
 }
 */
@@ -127,6 +127,8 @@
 .icon-home-6:before { content: '\e84a'; } /* '' */
 .icon-group:before { content: '\e84b'; } /* '' */
 .icon-location-1:before { content: '\e84c'; } /* '' */
+.icon-home:before { content: '\e84d'; } /* '' */
+.icon-home-circled:before { content: '\e84e'; } /* '' */
 .icon-emo-happy:before { content: '\f027'; } /* '' */
 .icon-emo-wink:before { content: '\f028'; } /* '' */
 .icon-emo-wink2:before { content: '\f029'; } /* '' */
