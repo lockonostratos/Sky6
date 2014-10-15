@@ -28,7 +28,17 @@ Schema2.returns = new SimpleSchema
   productQuality:
     type: Number
 
+  discountCash:
+    type: Number
+
+  discountPercent:
+    type: Number
+    decimal: true
+
   totalPrice:
+    type: Number
+
+  finallyPrice:
     type: Number
 
   comment:

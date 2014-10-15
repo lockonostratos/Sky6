@@ -30,7 +30,7 @@ Schema.add 'deliveries', class Delivery
             deliveryOption = {status: 5, shipper: Meteor.userId()}
             saleOption     = {status: true, success: true}
           else
-            deliveryOption = {status: 5, shipper: Meteor.userId()}
+            deliveryOption = {status: 6, shipper: Meteor.userId()}
             saleOption     = {status: true, success: true}
         #that bai
         else
@@ -42,7 +42,6 @@ Schema.add 'deliveries', class Delivery
             saleOption     = {status: true, success: false}
       #xac nhan thanh cong
       when 6
-        console.log 'asdasd'
         deliveryOption = {status: 7, shipper: Meteor.userId()}
         saleOption     = {status: true, submitted: true}
       #xac nhan that bai
@@ -50,6 +49,6 @@ Schema.add 'deliveries', class Delivery
         deliveryOption = {status: 10, shipper: Meteor.userId()}
         saleOption     = {status: true, submitted: true}
 
-    console.log @data.status
     Schema.deliveries.update @id, $set: deliveryOption
     Schema.sales.update @data.sale, $set: saleOption
+

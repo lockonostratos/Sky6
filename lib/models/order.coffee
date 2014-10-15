@@ -214,7 +214,7 @@ Schema.add 'orders', class Order
 #    Sale.findOne(saleId).createSaleExport()
 
 #    createTransactionAndDetailByOrder(saleId)
-#    MetroSummary.updateMetroSummaryBySale(saleId)
+    MetroSummary.updateMetroSummaryBySale(saleId)
 
     removeOrderAndOrderDetailAfterCreateSale(orderId, userProfile)
     return("Tạo phiếu bán hàng thành công")

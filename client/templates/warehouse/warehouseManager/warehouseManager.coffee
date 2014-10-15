@@ -34,7 +34,9 @@ runInitWarehouseManagerTracker = ->
   return if Sky.global.warehouseManagerTracker
   Sky.global.warehouseManagerTracker = Tracker.autorun ->
     if Session.get("availableMerchant") and Session.get('currentProfile')?.currentMerchant
-      Session.set "currentBranch", _.findWhere(Session.get("availableMerchant"), {_id: Session.get('currentProfile').currentMerchant})
+      unless Session.get('currentBranch')
+        Session.set "currentBranch", _.findWhere(Session.get("availableMerchant"), {_id: Session.get('currentProfile').currentMerchant})
+
     if Session.get('currentBranch')
       Session.set "warehouseDetails", Schema.warehouses.find({merchant: Session.get('currentBranch')._id}).fetch()
 

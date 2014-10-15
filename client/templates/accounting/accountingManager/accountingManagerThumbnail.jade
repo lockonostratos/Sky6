@@ -1,6 +1,11 @@
 template(name="accountingManagerThumbnail")
   .col
     .thumbnails
-      .right-caption {{buyerName}} <br /> {{sellerName}}
-      .full-desc.price
+      .left-caption {{group}}<br />{{orderCode}}
+      .right-caption {{buyerName}}
+      .short-desc.quality
+      .single-price
         button.btn.btn-default.confirmReceive(style="{{showInput}}") {{showInputText}}
+      .full-desc.price {{formatNumber}} <small>VNĐ</small>
+      //.full-desc.price
+      //  button.btn.btn-default.confirmReceive(style="{{showInput}}") {{showInputText}}

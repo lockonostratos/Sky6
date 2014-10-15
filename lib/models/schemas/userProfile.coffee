@@ -2,12 +2,23 @@ Schema2.userProfiles = new SimpleSchema
   user:
     type: String
 
+  isRoot:
+    type: Boolean
+
+  merchantRegistered:
+    type: Boolean
+
   creator:
     type: String
     optional: true
 
-  isRoot:
-    type: Boolean
+  companyName:
+    type: String
+    optional: true
+
+  companyPhone:
+    type: String
+    optional: true
 
   fullName:
     type: String
@@ -35,6 +46,7 @@ Schema2.userProfiles = new SimpleSchema
 
   parentMerchant:
     type: String
+    optional: true
 
   currentMerchant:
     type: String
@@ -47,6 +59,7 @@ Schema2.userProfiles = new SimpleSchema
   systemVersion:
     type: String
     optional: true
+
 #--------------------------
   currentOrder:
     type: String

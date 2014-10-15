@@ -40,19 +40,39 @@ Schema.add 'systems', class System
     console.log "#{update.group}: #{update.description}" for update in updates
     return
 
-  @createNewUser: (email, fullName, nameMerchant)->
-    user = Meteor.users.findOne({'emails.address': email})._id
-    unless Schema.userProfiles.findOne(user)
-      merchant = Merchant.create { name: nameMerchant, creator: user }
-      warehouse = Schema.warehouses.insert Warehouse.newDefault(merchant, merchant, user)
-      version = Schema.systems.findOne().version
-      Schema.userProfiles.insert UserProfile.newDefault(merchant, warehouse, user, version, fullName)
-      Schema.metroSummaries.insert(MetroSummary.newByMerchant(merchant))
-
   @createNewMetroSummary: ->
     userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     unless metro = Schema.metroSummaries.findOne({merchant: userProfile.currentMerchant})
       metroId = Schema.metroSummaries.insert(MetroSummary.newByMerchant(userProfile.currentMerchant))
-      MetroSummary.findOne(metroId).updateMetroSummary()
+    else metroId = metro._id
+    MetroSummary.findOne(metroId).updateMetroSummary()
+
+  @registerNewMerchant:(email, password, merchantName = null, fullName = null)->
+    Meteor.call "registerMerchant", email, password, (error, result)->
+      if error
+        console.log error
+      else
+        user = result
+        merchantName = email unless merchantName?.length > 0
+        fullName = email unless fullName?.length > 0
+
+        merchant = Schema.merchants.insert { name: merchantName , creator: user }, (error, result)->
+          if error
+            console.log error
+
+        warehouseOption =
+          merchantId: merchant
+          parentMerchantId: merchant
+          creator: user
+        warehouse = Schema.warehouses.insert Warehouse.newDefault(warehouseOption), (error, result)->
+          if error
+            console.log error
+        version = Schema.systems.findOne().version
+        Schema.userProfiles.insert UserProfile.newDefault(merchant, warehouse, user, version, fullName), (error, result)->
+          if error
+            console.log error
+        Schema.metroSummaries.insert MetroSummary.newByMerchant(merchant), (error, result)->
+          if error
+            console.log error
 
 

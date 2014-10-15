@@ -7,4 +7,4 @@ Sky.template.extends Template.warehouseThumbnail,
         product = Schema.products.findOne({warehouse: warehouse._id})
         unless product
           Schema.warehouses.remove warehouse._id
-          MetroSummary.updateMetroSummaryBy(['warehouse'])
+          MetroSummary. updateMetroSummaryBy(['warehouse'])

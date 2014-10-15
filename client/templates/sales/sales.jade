@@ -17,7 +17,7 @@ template(name="sales")
         span.ilabel.center giá bán
         +iSpinEdit(options=priceOptions)
       .editor-wrapper(style="width:70px")
-        button.btn.btn-default.addOrderDetail(type='submit') THÊM
+        button.btn.btn-default.addOrderDetail(class="{{allowAllOrderDetail}}" type='submit') THÊM
 
       .editor-wrapper.right(style="width: 150px")
         span.ilabel.optional giá tổng
@@ -64,11 +64,11 @@ template(name="sales")
       .editor-wrapper.right(style="width: 195px")
         span.ilabel.optional phương thức giảm giá
         +iSelect(options=billDiscountSelectOption class="field")
-      .editor-wrapper.right(style="width: 160px")
+      .editor-wrapper.right(style="width: 190px")
         span.ilabel.center.optional giảm giá
         +iSpinEdit(options=billCashDiscountOptions)
         //input.quality(value="#{order.discountCash}" disabled)
-      .editor-wrapper.right(style="width:150px")
+      .editor-wrapper.right(style="width:110px")
         span.ilabel.center.optional giảm %
         +iSpinEdit(options=billPercentDiscountOptions)
 
@@ -77,14 +77,14 @@ template(name="sales")
         span.ilabel.optional khách hàng
         +iSelect(options=customerSelectOptions class="field")
       .editor-wrapper.pull-right
-        button.btn.btn-default.pull-right.finish(type='submit' style="margin-right: 5px;") HOÀN TẤT
+        button.btn.btn-default.pull-right.finish(class="{{allowSuccessOrder}}" type='submit' style="margin-right: 5px;") HOÀN TẤT
       .editor-wrapper.pull-right(style="width: 120px")
         span.ilabel.optional.right thực thu
         input.quality(value="{{formatNumber order.finalPrice}}" disabled)
       .editor-wrapper.pull-right(style="width: 120px")
         span.ilabel.right số dư
         input.debit(value="{{formatNumber currentDebit}}" disabled)
-      .editor-wrapper.pull-right(style="width: 160px")
+      .editor-wrapper.pull-right(style="width: 190px")
         span.ilabel.center tiền nhận vào
         +iSpinEdit(options=depositOptions)
       //.col.col-auto.pull-right(style="width: 120px")

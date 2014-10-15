@@ -5,17 +5,39 @@ Schema.add 'userProfiles', class UserProfile
 
   set: (options) -> @schema.update(@id, {$set: options})
 
-  @newDefault: (merchantId, warehouseId, userId, systemVersion, fullName) ->
+  @newDefault: (userId, companyName, companyPhone) ->
     option=
       user            : userId
       isRoot          : true
-      fullName        : fullName
-      parentMerchant  : merchantId
-      currentMerchant : merchantId
-      currentWarehouse: warehouseId
-      systemVersion   : systemVersion
+      merchantRegistered: false
+      companyName     : companyName
+      companyPhone    : companyPhone
+      systemVersion   : Schema.systems.findOne().version
     console.log option
     option
+
+  updateNewMerchant: (companyName, companyPhone, merchantName, warehouseName)->
+    merchant = Schema.merchants.insert { name: merchantName , creator: @data.user },
+      (error, result)-> console.log error if error
+
+    warehouseOption =
+      merchantId: merchant
+      parentMerchantId: merchant
+      creator: @data.user
+      name: warehouseName
+    warehouse = Schema.warehouses.insert Warehouse.newDefault(warehouseOption),
+      (error, result)-> console.log error if error
+
+    Schema.userProfiles.update @id, $set:{
+      merchantRegistered: true
+      companyName: companyName
+      companyPhone: companyPhone
+      parentMerchant: merchant
+      currentMerchant: merchant
+      currentWarehouse: warehouse}, (error, result)-> console.log error if error
+
+    Schema.metroSummaries.insert MetroSummary.newByMerchant(merchant),
+      (error, result)-> console.log error if error
 
 
   addBranch: (option)->
@@ -24,7 +46,7 @@ Schema.add 'userProfiles', class UserProfile
     Schema.merchants.insert option, (error, merchantId)->
       if error then console.log error
       else
-        Schema.warehouses.insert Warehouse.newDefault(merchantId), (error, result)->
+        Schema.warehouses.insert Warehouse.newDefault({merchantId: merchantId}), (error, result)->
           if error then console.log error
         Schema.metroSummaries.insert MetroSummary.newByMerchant(merchantId), (error, result)->
           if error then console.log error

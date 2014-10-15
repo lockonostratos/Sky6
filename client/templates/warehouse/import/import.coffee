@@ -24,12 +24,13 @@ reUpdateProduct = (productId)->
 runInitImportTracker = (context) ->
   return if Sky.global.importTracker
   Sky.global.importTracker = Tracker.autorun ->
-    if Session.get('currentProfile')?.currentWarehouse
+    if Session.get('currentWarehouse')._id
       importHistory = Schema.imports.find({
-        warehouse : Session.get('currentProfile')?.currentWarehouse
+        warehouse : Session.get('currentWarehouse')._id
         creator   : Meteor.userId()
         submitted  : false
       }).fetch()
+
       if importHistory
         if importHistory.length > 0
           Session.set('importHistory', importHistory)
@@ -68,6 +69,20 @@ Sky.appTemplate.extends Template.import,
       currentImport = Schema.imports.findOne(instance._id)
       reUpdateProduct(currentImport.currentProduct)
 
+  warehouseSelectOptions:
+    query: (query) -> query.callback
+      results: _.filter Session.get('availableWarehouses'), (item) ->
+        unsignedTerm = Sky.helpers.removeVnSigns query.term
+        unsignedName = Sky.helpers.removeVnSigns item.name
+        unsignedName.indexOf(unsignedTerm) > -1
+    initSelection: (element, callback) -> callback(Session.get('currentWarehouse') ? 'skyReset')
+    formatSelection: formatWarehouseSearch
+    formatResult: formatWarehouseSearch
+    placeholder: 'CHỌN CHI NHÁNH'
+    minimumResultsForSearch: -1
+    changeAction: (e) ->
+      Schema.userProfiles.update Session.get('currentProfile')._id, $set: {currentWarehouse: e.added._id}
+    reactiveValueGetter: -> Session.get('currentWarehouse') ? 'skyReset'
 
   productSelectOptions:
     query: (query) -> query.callback
