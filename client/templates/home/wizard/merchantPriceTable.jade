@@ -1,14 +1,69 @@
 template(name="merchantPriceTable")
-  .price-table-group
-    .package-block
-      .title
-      .content
-        p.price
-        p.hint
-      .features
-        li f1
-        li f2
-        li f3
-        li f4
-      .footer
-        p footer
+  .price-table-group.row
+    .col.col-sm-3
+      .package-block.free
+        .title Dùng thử
+        .content
+          p.price
+            sup VNĐ
+            span 0
+            sub /THÁNG.
+          p.hint hint cho phần này
+        .features
+          li.icon-group 5 Tài khoản
+          li.icon-location-1 1 Chi nhánh
+          li f3
+          li f4
+        .footer
+          span footer
+
+    .col.col-sm-3
+      .package-block.basic
+        .title Tăng trưởng
+        .content
+          p.price
+            sup VNĐ
+            span 1 triệu
+            sub /THÁNG.
+          p.hint hint cho phần này
+        .features
+          li.icon-group f1
+          li.icon-location-1 f2
+          li f3
+          li f4
+        .footer
+          span footer
+
+    .col.col-sm-3
+      .package-block.premium
+        .title Bùng nổ
+        .content
+          p.price
+            sup VNĐ
+            span 3 triệu
+            sub /THÁNG.
+          p.hint hint cho phần này
+        .features
+          li.icon-group f1
+          li.icon-location-1 f2
+          li f3
+          li f4
+        .footer
+          span footer
+
+    .col.col-sm-3
+      .package-block.advance
+        .title Không giới hạn
+        .content
+          p.price
+            sup VNĐ
+            span 10 triệu
+            sub /THÁNG.
+          p.hint hint cho phần này
+        .features
+          li.icon-group f1
+          li.icon-location-1 f2
+          li f3
+          li f4
+        .footer
+          span footer
