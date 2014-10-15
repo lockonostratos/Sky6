@@ -22,3 +22,22 @@ Sky.menu =
   warehouseManager  : {route: 'warehouseManager',     display: "KHO HÀNG",           color: ["#555555"], icon: "fa-building"}
   tracker           : {route: 'tracker',              display: "NHẬT KÝ",            color: ["#"],       icon: "fa-newspaper-o"}
   taskManager       : {route: 'taskManager',          display: "CÔNG VIỆC",          color: ["#"],       icon: "" }
+
+Sky.menuGroup = [
+  [Sky.menu.sales, Sky.menu.returns, Sky.menu.billManager]
+  [Sky.menu.roleManager, Sky.menu.staffManager, Sky.menu.customerManager]
+]
+
+Sky.generateMenuFor = (routeName) ->
+  found = false
+
+  for group in Sky.menuGroup
+    for menu in group
+      if routeName is menu.route
+        found = true
+        currentGroup = group
+        break
+
+    break if found
+
+  Session.set('subMenus', currentGroup) if found

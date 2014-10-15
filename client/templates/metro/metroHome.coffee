@@ -28,8 +28,6 @@ _.extend Template.metroHome,
   unlockInventoryIssue: -> unless Session.get('metroSummary')?.inventoryCount ? 0 > 0 then 'locked'
   unlockExport: -> unless Session.get('metroSummary')?.saleCount ? 0 > 0 then 'locked'
 
-
   unlockBranchManager: -> unless Session.get('metroSummary')?.merchantCount ? 0 > 0 then 'locked'
   unlockWarehouseManager: -> unless Session.get('metroSummary')?.warehouseCount ? 0 > 0 then 'locked'
   unlockTracker: -> unless Session.get('metroSummary')?.merchantCount ? 0 > 0 then 'locked'
-

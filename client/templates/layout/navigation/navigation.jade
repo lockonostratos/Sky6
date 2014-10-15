@@ -29,7 +29,7 @@ template(name="navigation")
           a(href="{{pathFor 'taskManager'}}"): i.icon-clipboard-2
         li.inav(class="{{isActiveRoute 'warehouse'}}")
           a(href="{{pathFor 'warehouse'}}"): i.icon-cubes
-        each routeHistory
+        each subMenus
           li.inav(class="{{isActiveRoute route}}")
             a(href="{{pathFor route}}"): i.fa(class="{{icon}}")
 

@@ -28,6 +28,13 @@ addRouteToHistory = (routeName) ->
   routeHistory.splice(0,1) if routeHistory.length > 9
   Session.set('routeHistory', routeHistory)
 
+loadSubmenus = (routeName) ->
+  route  = Sky.menu[routeName]
+  return if !route or route.route is 'taskManager'
+
+  route.subMenus = route.subMenus ? []
+  Session.set('subMenus', route.subMenus)
+
 class @skyRouter
   constructor: (@path, authRequired = true, onBeforeAction = null) ->
     if authRequired
@@ -37,8 +44,7 @@ class @skyRouter
   onAfterAction: ->
 #    $("body").removeClass() if @path isnt '/'
     Sky.helpers.animateUsing("#container", "bounceInDown")
-
-    addRouteToHistory @path.substring(1)
+    Sky.generateMenuFor @path.substring(1)
 
 Router.map ->
   @route 'home', { path: '/', layoutTemplate: 'homeLayout' }

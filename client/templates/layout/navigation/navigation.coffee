@@ -8,7 +8,7 @@ Sky.appTemplate.extends Template.navigation,
   unreadRequestCount: -> Sky.global.notification.unreadRequests.count()
   requestClass: -> if Sky.global.notification.unreadRequests.count() > 0 then 'active' else ''
 
-  routeHistory: -> Session.get('routeHistory')
+  subMenus: -> Session.get('subMenus')
   currentSystemVersion: -> Schema.systems.findOne()?.version ? ''
 
   events:
