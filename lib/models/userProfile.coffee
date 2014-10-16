@@ -7,31 +7,52 @@ Schema.add 'userProfiles', class UserProfile
 
   @newDefault: (userId, companyName, companyPhone) ->
     option=
-      user            : userId
-      isRoot          : true
+      user              : userId
+      isRoot            : true
       merchantRegistered: false
-      companyName     : companyName
-      companyPhone    : companyPhone
-      systemVersion   : Schema.systems.findOne().version
+      packageClass      : 'free'
+      companyName       : companyName
+      companyPhone      : companyPhone
+      systemVersion     : Schema.systems.findOne().version
     console.log option
     option
 
-  updateNewMerchant: (companyName, companyPhone, merchantName, warehouseName)->
-    merchant = Schema.merchants.insert { name: merchantName , creator: @data.user },
+  updateNewMerchant: (optionMerchant, optionPackage)->
+    merchant = Schema.merchants.insert { name: optionMerchant.merchantName , creator: @data.user },
       (error, result)-> console.log error if error
+    console.log optionPackage
+    optionPackage.merchant            = merchant
+    optionPackage.user                = @data.user
+    optionPackage.packageClassActive  = false
+    date = new Date
+    optionPackage.trialEndDate = new Date(date.getTime() + 86400000 * 14)
+
+    if optionPackage.packageClass is 'free'
+      optionPackage.extendAccountLimit    = 0
+      optionPackage.extendBranchLimit     = 0
+      optionPackage.extendWarehouseLimit  = 0
+      optionPackage.totalPrice = 0
+    else
+      extendAccountTotalPrice    = optionPackage.extendAccountPrice * optionPackage.extendAccountLimit
+      extendBranchTotalPrice    = optionPackage.extendBranchPrice * optionPackage.extendBranchLimit
+      extendWarehouseTotalPrice  = optionPackage.extendWarehousePrice * optionPackage.extendWarehouseLimit
+      optionPackage.totalPrice = extendAccountTotalPrice + extendBranchTotalPrice + extendWarehouseTotalPrice + optionPackage.price
+
+    console.log optionPackage
+    Schema.merchantPackages.insert optionPackage
 
     warehouseOption =
       merchantId: merchant
       parentMerchantId: merchant
       creator: @data.user
-      name: warehouseName
+      name: optionMerchant.warehouseName
     warehouse = Schema.warehouses.insert Warehouse.newDefault(warehouseOption),
       (error, result)-> console.log error if error
 
     Schema.userProfiles.update @id, $set:{
       merchantRegistered: true
-      companyName: companyName
-      companyPhone: companyPhone
+      companyName: optionMerchant.companyName
+      companyPhone: optionMerchant.companyPhone
       parentMerchant: merchant
       currentMerchant: merchant
       currentWarehouse: warehouse}, (error, result)-> console.log error if error

@@ -15,8 +15,8 @@ template(name="merchantWizard")
       .sky-field
         input#companyPhone(type="text" placeholder="số điên thoại *" value="{{merchantWizard.companyPhone}}")
       .sky-field
-        input#merchantName(type="text" placeholder="tên chi nhánh chính *")
+        input#merchantName(type="text" placeholder="tên chi nhánh chính *" value="{{merchantWizard.merchantName}}")
       .sky-field
-        input#warehouseName(type="text" placeholder="tên kho hàng *")
+        input#warehouseName(type="text" placeholder="tên kho hàng *" value="{{merchantWizard.warehouseName}}")
 
       #merchantUpdate.btn.pull-right(class="{{updateValid}}") CẬP NHẬT

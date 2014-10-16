@@ -33,8 +33,9 @@ Sky.template.extends Template.homeTopPanel,
           user = result
           Schema.userProfiles.insert UserProfile.newDefault(user, $companyName.val(), $companyPhone.val()), (error, result)-> console.log error if error
           Session.set('topPanelMinimize', true)
-          Meteor.loginWithPassword $account.val(), $secret.val()
-          Router.go('/merchantWizard')
+          Meteor.loginWithPassword $account.val(), $secret.val(), (error) -> Router.go('/merchantWizard') if !error
+
+
 
     "keypress #secretConfirm": (event, template) ->
       $(template.find("#merchantRegister")).click() if event.which is 13 and Template.homeTopPanel.registerValid is 'valid'

@@ -10,6 +10,12 @@ Schema.merchants.allow
   update: -> true
   remove: -> true
 
+Meteor.publish 'merchantPackages', -> Schema.merchantPackages.find({})
+Schema.merchantPackages.allow
+  insert: -> true
+  update: -> true
+  remove: -> true
+
 Meteor.publish 'warehouses', -> Schema.warehouses.find({})
 Schema.warehouses.allow
   insert: -> true

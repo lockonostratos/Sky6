@@ -4,14 +4,22 @@ template(name="merchantPriceTable")
     .content
       p.price
         sup VNĐ
-        span {{options.price}}
-        sub /{{options.duration}}.
+        span {{options.titlePrice}}
+        sub /{{options.titleDuration}}.
       p.hint {{options.hint}}
     .features
       li.icon-group {{options.accountLim}} Tài khoản
       li.icon-location-1 {{options.branchLim}} Chi nhánh
       li.icon-home-4 {{options.warehouseLim}} Kho hàng
       if showExtension
-        +merchantPriceTableExtension
+        li.icon-group
+          +iSpinEdit(options=accountLimitOptions) Tài khoản/{{options.extendAccountPrice}} vnd
+        li.icon-location-1
+          +iSpinEdit(options=branchLimitOptions) Chi nhánh/{{options.extendBranchPrice}} vnd
+        li.icon-home-4
+          +iSpinEdit(options=warehouseLimitOptions) Kho hàng/{{options.extendWarehousePrice}} vnd
+        //+merchantPriceTableExtension
     .footer
+      if showExtension
+        span {{extendPrice}}
       span {{options.footer}}
