@@ -108,8 +108,12 @@ Schema.add 'sales', class Sale
       MetroSummary.updateMetroSummaryBySale(@id)
 
     if @data.status == @data.success == @data.received == @data.exported == true and @data.submitted ==  @data.imported == false and @data.paymentsDelivery == 1
+      userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
       Schema.deliveries.update @data.delivery, $set:{status: 6, cashier: Meteor.userId()}
-      Schema.sales.update @id, $set:{paymentsDelivery: @data.debit, debit: 0}
+      transaction = Transaction.findOne({parent: @id, merchant: userProfile.currentMerchant, status: "tracking"})
+      debitCash = @data.debit
+      transaction.recalculateTransaction(debitCash)
+
 
 
 

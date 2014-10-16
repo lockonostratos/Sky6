@@ -9,3 +9,5 @@ Schema.add 'transactionDetails', class TransactionDetail
       debitCash   : transaction.debitCash
     option._id = Schema.transactionDetails.insert option
     option
+
+

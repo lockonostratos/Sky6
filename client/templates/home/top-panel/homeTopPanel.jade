@@ -8,14 +8,17 @@ template(name="homeTopPanel")
         .content-inner
           .registeration-section
             .sky-field
-              input#companyName(type="text" placeholder="tên doanh nghiệp (không bắt buộc)")
+              input#companyName(type="text" placeholder="tên doanh nghiệp")
             .sky-field
-              input#account(type="text" placeholder="địa chỉ email")
+              input#companyPhone(type="text" placeholder="điện thoại liên lạc")
+            .sky-field
+              input#account(type="text" placeholder="email *")
             .sky-field.group
-              .col.col-lg-6: input#secret(type="password" placeholder="mật khẩu")
-              .col.col-lg-6: input#secretConfirm(type="password" placeholder="xác nhận")
+              .col.col-sm-6: input#secret(type="password" placeholder="mật khẩu  *")
+              .col.col-sm-6: input#secretConfirm(type="password" placeholder="xác nhận *")
 
-            #merchantRegister.btn.pull-right DÙNG THỬ
+            | (*) Phần bắt buộc
+            #merchantRegister.btn.pull-right(class="{{registerValid}}") ĐĂNG KÝ
 
           .eula-section
             .title.icon-award Điều khoản sử dụng

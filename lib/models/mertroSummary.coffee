@@ -15,6 +15,7 @@ Schema.add 'metroSummaries', class MetroSummary
   @newByMerchant: (merchantId)->
     currentMerchant = Schema.merchants.findOne(merchantId)
     if currentMerchant
+
       merchant       = currentMerchant._id
       parentMerchant = currentMerchant.parent ? currentMerchant._id
       staffCount       = Schema.userProfiles.find({currentMerchant: merchant})
@@ -55,9 +56,9 @@ Schema.add 'metroSummaries', class MetroSummary
         importDepositCash     : 0
         importDebitCash       : 0
         importRevenueCash     : 0
-
       console.log option
       option
+
 
   updateMetroSummary: ->
     merchantCount    = Schema.merchants.find({$or:[{_id: @data.parentMerchant }, {parent: @data.parentMerchant}]})
@@ -227,6 +228,52 @@ Schema.add 'metroSummaries', class MetroSummary
 
       metroSummary = Schema.metroSummaries.findOne({merchant: sale.merchant})
       Schema.metroSummaries.update metroSummary._id, $inc: incOption, $set: setOption
+
+  @updateMetroSummaryByImport: (importId)->
+    imports = Schema.imports.findOne(importId)
+    importDetails = Schema.importDetails.find({import: imports._id, finish: true}).fetch()
+    totalProduct = 0
+    for importDetail in importDetails
+      totalProduct += importDetail.importQuality
+    setOption={}
+    option =
+      importCount: 1
+      importProductCount: totalProduct
+      stockProductCount: totalProduct
+      availableProductCount: totalProduct
+
+    #  oldImports = Schema.imports.findOne({$and: [
+    #    {merchant: imports.merchant}
+    #    {'version.updateAt': {$lt: imports.version.updateAt}}
+    #    {submitted: true}
+    #  ]}, Sky.helpers.defaultSort())
+    #  console.log imports.version.updateAt.getDate()
+    #  console.log oldImports
+    #
+    #  unless oldImports
+    #    oldImports = {version: {}}
+    #    oldImports.version.updateAt = imports.version.updateAt
+
+    #  if imports.version.updateAt.getDate() == oldImports.version.updateAt.getDate()
+    #    option.importCountDay = totalProduct
+    #  else
+    #    setOption.importCountDay = totalProduct
+    #
+    #  if imports.version.updateAt.getMonth() == oldImports.version.updateAt.getMonth()
+    #    option.importCountMonth = totalProduct
+    #  else
+    #    setOption.importCountMonth = totalProduct
+
+    metroSummary = Schema.metroSummaries.findOne({merchant: imports.merchant})
+    Schema.metroSummaries.update metroSummary._id, $inc: option, $set: setOption
+
+  @updateMetroSummaryByTransaction: (merchant, depositCash)->
+    metroSummary = Schema.metroSummaries.findOne({merchant: merchant})
+    Schema.metroSummaries.update metroSummary._id, $inc: {
+      saleDepositCash       : depositCash
+      saleDebitCash         : -depositCash
+    }
+
 
   @updateMetroSummaryByReturn: (returnId, returnQuality)->
     returns = Schema.returns.findOne(returnId)

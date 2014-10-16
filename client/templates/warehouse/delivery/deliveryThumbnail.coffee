@@ -6,7 +6,7 @@ Sky.template.extends Template.deliveryThumbnail,
       when 2 then 'Chờ xác nhận kho'
       when 3 then 'Đã xác nhận xuất kho'
       when 4 then 'Đang Giao Hàng'
-      when 5 then 'Giao Thàng Công'
+      when 5 then 'Giao Thành Công'
       when 6 then 'Kế Toán Đã Nhận Tiền'
       when 7 then 'Kết Thúc'
       when 8 then 'Giao Thất Bại'

@@ -6,7 +6,13 @@ runInitDeliveryTracker = (context) ->
   return if Sky.global.deliveryTracker
   Sky.global.deliveryTracker = Tracker.autorun ->
     if Session.get('currentProfile')
-      Session.set "availableDeliveryMerchants", Schema.merchants.find({}).fetch()
+      Session.set "availableDeliveryMerchants", Schema.merchants.find({
+        $or:
+          [
+            {_id: Session.get('currentProfile').parentMerchant}
+            {parent: Session.get('currentProfile').parentMerchant}
+          ]
+      }).fetch()
 
     if Session.get('availableDeliveryMerchants') and Session.get('currentProfile')
       Session.set "currentDeliveryMerchant", Schema.merchants.findOne(Session.get('currentProfile').currentDeliveryMerchant)
@@ -17,18 +23,25 @@ runInitDeliveryTracker = (context) ->
     if Session.get('availableDeliveryWarehouses') and Session.get('currentProfile')
       Session.set "currentDeliveryWarehouse", Schema.warehouses.findOne(Session.get('currentProfile').currentDeliveryWarehouse) ? 'skyReset'
 
-    if Session.get("currentDeliveryWarehouse")
+    if Session.get("currentDeliveryWarehouse") && Session.get('deliveryFilter')
       option =
         merchant: Session.get('currentDeliveryMerchant')._id
         warehouse: Session.get('currentDeliveryWarehouse')._id
-      (option.status = {$in: [1]}) if Session.get('currentProfile')?.currentDeliveryFilter == 0
-      (option.status = {$in: [2,3,4,5,6,8,9]}) if Session.get('currentProfile')?.currentDeliveryFilter == 1
-      (option.status = {$in: [7,10]}) if Session.get('currentProfile')?.currentDeliveryFilter == 2
-      Session.set "availableDeliveries", Schema.deliveries.find(option).fetch()
+      switch Session.get('deliveryFilter')
+        when "selected" then deliveryFilter = {status: 1}
+        when "working" then deliveryFilter = {status: {$in: [2,3,4,5,6,8,9]}}
+        when "done" then deliveryFilter = {status: {$in: [7,10]}}
+      Session.set 'filteredDeliveries', Schema.deliveries.find({$and:[option,deliveryFilter]},Sky.helpers.defaultSort()).fetch()
 
 
 Sky.appTemplate.extends Template.delivery,
+  activeDeliveryFilter: (status)-> return 'active' if Session.get('deliveryFilter') is status
+  created: -> Session.setDefault('deliveryFilter', 'working')
   rendered: -> runInitDeliveryTracker()
+  events:
+    "click [data-filter]": (event, template) ->
+      $element = $(event.currentTarget)
+      Session.set 'deliveryFilter', $element.attr("data-filter")
 
   merchantSelectOptions:
     query: (query) -> query.callback
@@ -63,21 +76,8 @@ Sky.appTemplate.extends Template.delivery,
         currentDeliveryFilter   : 0
     reactiveValueGetter: -> Session.get('currentDeliveryWarehouse')
 
-  filterDeliverySelectOption:
-    query: (query) -> query.callback
-      results: Sky.system.filterDeliveries
-      text: 'id'
-    initSelection: (element, callback) -> callback _.findWhere(Sky.system.filterDeliveries, {_id: Session.get('currentProfile')?.currentDeliveryFilter})
-    formatSelection: formatfilterDeliverySearch
-    formatResult: formatfilterDeliverySearch
-    placeholder: 'BỘ LỌC'
-    minimumResultsForSearch: -1
-    changeAction: (e) ->
-      Schema.userProfiles.update Session.get('currentProfile')._id, $set:{currentDeliveryFilter: e.added._id}
-    reactiveValueGetter: -> _.findWhere(Sky.system.filterDeliveries, {_id: Session.get('currentProfile')?.currentDeliveryFilter})
-
   deliveryDetailOptions:
     itemTemplate: 'deliveryThumbnail'
-    reactiveSourceGetter: -> Session.get('availableDeliveries') ? []
+    reactiveSourceGetter: -> Session.get('filteredDeliveries') ? []
     wrapperClasses: 'detail-grid row'
 

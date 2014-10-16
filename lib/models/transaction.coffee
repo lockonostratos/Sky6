@@ -40,3 +40,36 @@ Schema.add 'transactions', class Transaction
 
     option._id = Schema.transactions.insert option
     option
+
+  recalculateTransaction: (debitCash)->
+    if @data.debitCash >= debitCash and @data.status is 'tracking'
+      currentDebitCash = @data.debitCash - debitCash
+      currentDepositCash = @data.depositCash + debitCash
+      if currentDepositCash == @data.totalCash then status = 'closed' else status = 'tracking'
+      transactionDetail=
+        merchant    : @data.merchant
+        warehouse   : @data.warehouse
+        transaction : @data._id
+        totalCash   : @data.debitCash
+        depositCash : debitCash
+        debitCash   : (@data.debitCash - debitCash)
+
+      Schema.transactions.update @id, $set:{
+        debitCash: currentDebitCash
+        depositCash: currentDepositCash
+        status: status
+      }
+
+      Schema.transactionDetails.insert transactionDetail
+
+      if @data.group is 'sale'
+        Schema.sales.update @data.parent, $set:{
+          deposit : currentDepositCash
+          debit   : currentDebitCash
+          status  : false
+        }
+        MetroSummary.updateMetroSummaryByTransaction(@data.merchant, debitCash)
+
+
+
+

@@ -27,7 +27,10 @@ Schema.add 'returns', class Return
       returnCode     : "ramdom"
       productSale    : 0
       productQuality : 0
+      discountCash   : 0
+      discountPercent: 0
       totalPrice     : 0
+      finallyPrice   : 0
       status         : 0
     option._id = Schema.returns.insert option
     Schema.sales.update sale._id, $set:{

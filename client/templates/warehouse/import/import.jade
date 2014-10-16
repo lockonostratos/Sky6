@@ -5,6 +5,7 @@ template(name="import")
       .commands
         a#popProduct.btn.btn-danger(href="") Thêm Sản Phẩm
         a#popProvider.btn.btn-danger(href="") Thêm Nhà Phân Phối
+        +iSelect(options=warehouseSelectOptions class="field")
     .editor-row
       .editor-wrapper(style="width:250px")
         span.ilabel sản phẩm

@@ -42,3 +42,9 @@ Meteor.methods
 
   updateAccount: (options) ->
     Meteor.users.update(Meteor.userId(), {$set: options})
+
+  registerMerchant: (email, password) ->
+    Accounts.createUser {email: email, password: password}
+
+
+

@@ -1,65 +1,25 @@
 template(name="merchantPriceTable")
-  .price-table-group.row
-    .col.col-sm-3
-      .package-block.free
-        .title TRẢI NGHIỆM
-        .content
-          p.price
-            sup VNĐ
-            span 0
-            sub /14 NGÀY.
-          p.hint hint cho phần này
-        .features
-          li.icon-group 5 Tài khoản
-          li.icon-location-1 1 Chi nhánh
-          li.icon-home-4 1 Kho hàng
-        .footer
-          span footer
-
-    .col.col-sm-3
-      .package-block.basic
-        .title KHỞI ĐỘNG
-        .content
-          p.price
-            sup VNĐ
-            span 11 triệu
-            sub /1 NĂM.
-          p.hint hint cho phần này
-        .features
-          li.icon-group 10 Tài khoản
-          li.icon-location-1 1 Chi nhánh
-          li.icon-home-4 1 Kho hàng
-        .footer
-          span footer
-
-    .col.col-sm-3
-      .package-block.premium
-        .title TĂNG TRƯỞNG
-        .content
-          p.price
-            sup VNĐ
-            span 30 triệu
-            sub /3 NĂM.
-          p.hint hint cho phần này
-        .features
-          li.icon-group 15 Tài khoản
-          li.icon-location-1 1 Chi nhánh
-          li.icon-home-4 2 Kho hàng
-        .footer
-          span footer
-
-    .col.col-sm-3
-      .package-block.advance
-        .title BỀN VỮNG
-        .content
-          p.price
-            sup VNĐ
-            span 45 triệu
-            sub /5 NĂM.
-          p.hint hint cho phần này
-        .features
-          li.icon-group 20 Tài khoản
-          li.icon-location-1 2 Chi nhánh
-          li.icon-home-4 4 Kho hàng
-        .footer
-          span footer
+  .package-block(class="{{options.packageClass}}")
+    .title {{options.title}}
+    .content
+      p.price
+        sup VNĐ
+        span {{options.titlePrice}}
+        sub /{{options.titleDuration}}.
+      p.hint {{options.hint}}
+    .features
+      li.icon-group {{options.accountLim}} Tài khoản
+      li.icon-location-1 {{options.branchLim}} Chi nhánh
+      li.icon-home-4 {{options.warehouseLim}} Kho hàng
+      if showExtension
+        li.icon-group
+          +iSpinEdit(options=accountLimitOptions) Tài khoản/{{options.extendAccountPrice}} vnd
+        li.icon-location-1
+          +iSpinEdit(options=branchLimitOptions) Chi nhánh/{{options.extendBranchPrice}} vnd
+        li.icon-home-4
+          +iSpinEdit(options=warehouseLimitOptions) Kho hàng/{{options.extendWarehousePrice}} vnd
+        //+merchantPriceTableExtension
+    .footer
+      if showExtension
+        span {{extendPrice}}
+      span {{options.footer}}

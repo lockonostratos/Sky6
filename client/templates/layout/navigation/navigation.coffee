@@ -12,5 +12,8 @@ Sky.appTemplate.extends Template.navigation,
   currentSystemVersion: -> Schema.systems.findOne()?.version ? ''
 
   events:
-    "click #logoutButton": (event, template) -> Meteor.logout(); Router.go('/')
-    "click a.branding": -> Router.go('/')
+    "click #logoutButton": (event, template) ->
+      Meteor.logout()
+      Router.go('/')
+      Session.set("currentProfile")
+    "click a.branding": -> Session.set('autoNatigateDashboardOff', true); Router.go('/')

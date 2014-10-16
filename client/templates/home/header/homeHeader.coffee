@@ -31,7 +31,11 @@ Sky.template.extends Template.homeHeader,
               $password.notify(currentLoginError.message, {position: "bottom right"})
             else
               $login.notify(currentLoginError.message)
-    "click #logoutButton": -> Meteor.logout()
+
+    "click #logoutButton": ->
+      Meteor.logout()
+      Session.set("currentProfile")
+
     "click #gotoMerchantButton": -> Router.go('/dashboard')
     "click .logo-text": -> Router.go('/dashboard') if Meteor.userId() isnt null
 

@@ -1,4 +1,22 @@
 template(name="merchantWizard")
   .home-wrapper
-    input(type="text")
-    +merchantPriceTable
+    .price-table-group.row
+      .col.col-sm-3
+        +merchantPriceTable(options=trialPackageOption)
+      .col.col-sm-3
+        +merchantPriceTable(options=oneYearsPackageOption)
+      .col.col-sm-3
+        +merchantPriceTable(options=threeYearsPackageOption)
+      .col.col-sm-3
+        +merchantPriceTable(options=fiveYearsPackageOption)
+    .registeration-section(style="width: 400px")
+      .sky-field
+        input#companyName(type="text" placeholder="tên doanh nghiệp *" value="{{merchantWizard.companyName}}")
+      .sky-field
+        input#companyPhone(type="text" placeholder="số điên thoại *" value="{{merchantWizard.companyPhone}}")
+      .sky-field
+        input#merchantName(type="text" placeholder="tên chi nhánh chính *" value="{{merchantWizard.merchantName}}")
+      .sky-field
+        input#warehouseName(type="text" placeholder="tên kho hàng *" value="{{merchantWizard.warehouseName}}")
+
+      #merchantUpdate.btn.pull-right(class="{{updateValid}}") CẬP NHẬT

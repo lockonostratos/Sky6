@@ -5,11 +5,11 @@ template(name="returns")
       .editor-wrapper(style="width: 200px")
         span.ilabel chọn phiếu bán hàng
         +iSelect(options=saleSelectOptions class="field")
-      .editor-wrapper(style="width: 400px")
-        span.ilabel chọn hàng trả
+      .editor-wrapper(style="width: 500px")
+        span.ilabel.optional chọn hàng trả
         +iSelect(options=returnProductSelectOptions class="field")
       .editor-wrapper(style="width: 100px")
-        span.ilabel số lượng trả
+        span.ilabel.optional số lượng trả
         +iSpinEdit(options=returnQualityOptions)
       .editor-wrapper(style="width:100px; {{hideAddReturnDetail}}")
         button.btn.btn-default.addReturnDetail(type='submit') THÊM
@@ -18,6 +18,11 @@ template(name="returns")
     +iGrid(options=returnDetailOptions)
 
   #footer
+    .editor-row
+      .editor-wrapper.right(style="width: 500px")
+        span.ilabel ghi chú
+        input.comment(value="{{saleReturn.comment}}" )
+
     .editor-row
       .editor-wrapper.right(style="width:100px; {{hideSubmitReturn}}")
         button.btn.btn-default.submitReturn(type='submit') ĐÃ DUYỆT
@@ -28,14 +33,17 @@ template(name="returns")
       .editor-wrapper.right(style="width:190px; {{hideFinishReturn}}")
         button.btn.btn-default.finishReturn(type='submit') XÁC NHẬN, CHỜ DUYỆT
 
-      .editor-wrapper.right(style="width: 300px")
-        span.ilabel ghi chú
-        input.comment(value="{{saleReturn.comment}}" )
-
       .editor-wrapper.right(style="width: 100px")
-        span.ilabel tỗng tiền
-        input.totalPrice(value="{{saleReturn.totalPrice}}" disabled)
+        span.ilabel.optional  tỗng tiền
+        input.totalPrice(value="{{saleReturn.finallyPrice}}" disabled)
+      .editor-wrapper.right(style="width: 180px")
+        span.ilabel.center.optional giảm giá
+        +iSpinEdit(options=discountCashOptions)
+      .editor-wrapper.right(style="width:110px")
+        span.ilabel.center giảm %
+        +iSpinEdit(options=discountPercentOptions)
 
       .editor-wrapper.right(style="width: 150px")
-        span.ilabel người tạo
+        span.ilabel.optional  người tạo
         input.totalPrice(value="{{saleReturn.creatorName}}" disabled)
+

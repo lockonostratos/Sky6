@@ -1,6 +1,8 @@
 _.extend Template.metroHome,
   userProfile: -> Session.get('currentProfile')?
   metroSummary: -> Session.get('metroSummary') if Session.get('metroSummary')
+  created: ->
+    unless Schema.userProfiles.findOne(user: Meteor.userId())?.merchantRegistered then Router.go('/merchantWizard')
   events:
     "click .app-navigator:not(.locked)": (event, template) -> Router.go $(event.currentTarget).attr('data-app')
 #  rendered: ->
@@ -19,7 +21,7 @@ _.extend Template.metroHome,
   unlockAccountingManager: -> unless Session.get('metroSummary')?.saleCount ? 0 > 0 then 'locked'
   unlockDelivery: -> unless Session.get('metroSummary')?.deliveryCount ? 0 > 0 then 'locked'
 
-  unlockBillExport: -> unless Session.get('metroSummary')?.saleCount ? 0 > 0 then 'locked'
+  unlockBillExport: -> unless Session.get('metroSummary')?.importCount ? 0 > 0 then 'locked'
   unlockImport: -> unless Session.get('metroSummary')?.warehouseCount ? 0 > 0 then 'locked'
   unlockStockManager: -> unless Session.get('metroSummary')?.importCount ? 0 > 0 then 'locked'
   unlockInventory: -> unless Session.get('metroSummary')?.importCount ? 0 > 0 then 'locked'
