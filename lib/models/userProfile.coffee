@@ -53,6 +53,18 @@ Schema.add 'userProfiles', class UserProfile
         currentWarehouse: warehouse
 
       Schema.userProfiles.update @id, $set: setUser, (error, result)-> console.log error if error
+
+      customerOption =
+        creator: Meteor.userId()
+        name: 'Hệ Thống'
+        phone: merchantPackages.companyPhone
+        address: merchantPackages.companyName
+        currentMerchant : merchant
+        parentMerchant  : merchant
+        gender          : true
+
+      Schema.customers.insert customerOption, (error, result) -> console.log error if error
+
       Schema.metroSummaries.insert MetroSummary.newByMerchant(merchant),
         (error, result)-> console.log error if error
 

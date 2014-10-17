@@ -8,9 +8,13 @@ Sky.global.reCalculateReturn = (returnId)->
 
   if returnDetails.length > 0
     for detail in returnDetails
+#      discountPercent
       option.totalPrice     += Math.round(detail.price * detail.returnQuality * (100 - detail.discountPercent)/100)
       option.productQuality += detail.returnQuality
       option.productSale    += 1
+
+    option.discountCash = (saleReturn.discountPercent * option.totalPrice)/100
+    option.finallyPrice = option.totalPrice - option.discountCash
   Schema.returns.update saleReturn._id, $set: option
 
 Schema.add 'returns', class Return
@@ -81,7 +85,11 @@ Schema.add 'returns', class Return
 
       Schema.returns.update returns._id, $set: {status: 2}
       Schema.sales.update returns.sale, $set:{status: true, return: true}, $inc:{returnCount: 1, returnQuality: returnQuality}
+      transaction =  Transaction.newByReturn(returns)
+      transactionDetail = TransactionDetail.newByTransaction(transaction)
       MetroSummary.updateMetroSummaryByReturn(returns._id, returnQuality)
+
+
       return console.log('Ok, Phiếu đã được duyệt bởi quản lý.')
     return console.log('Lỗi, Phiếu chưa được xác nhận từ nhân viên.') if returns.status == 0
     return console.log('Lỗi, Phiếu đã được duyệt, không thể thao tác.') if returns.status == 2
