@@ -13,6 +13,7 @@ _.extend Template.merchantLayout,
   collapse: -> Session.get('collapse') ? 'collapsed'
 
   rendered: ->
+    Session.set('autoNatigateDashboardOff', true)
     $(window).resize -> Sky.helpers.reArrangeLayout()
     versionUpdatesTracker()
     Sky.helpers.animateUsing("#container", "bounceInDown")
