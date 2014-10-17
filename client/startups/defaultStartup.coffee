@@ -17,7 +17,7 @@ Meteor.startup ->
 
     if Session.get('currentProfile')
       merchantPackages = Schema.merchantPackages.findOne({user: Meteor.userId()})
-      if merchantPackages  Session.set "merchantPackages", merchantPackages
+      if merchantPackages then Session.set "merchantPackages", merchantPackages
       else
         merchantPackage = Schema.merchantPackages.findOne({merchant: Session.get('currentProfile').parentMerchant})
         if merchantPackage then Session.set "merchantPackages" , merchantPackage else Session.set "merchantPackages"
