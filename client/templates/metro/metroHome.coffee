@@ -1,8 +1,14 @@
+Sky.global.metroHomeTracker = Tracker.autorun ->
+  if Session.get('merchantPackages')
+    if Session.get('merchantPackages').user is Meteor.userId()
+      unless Session.get('merchantPackages').merchantRegistered then Router.go('/merchantWizard')
+
 _.extend Template.metroHome,
   userProfile: -> Session.get('currentProfile')?
   metroSummary: -> Session.get('metroSummary') if Session.get('metroSummary')
-  created: ->
-    unless Schema.userProfiles.findOne(user: Meteor.userId())?.merchantRegistered then Router.go('/merchantWizard')
+  created: -> Sky.global.metroHomeTracker
+#  destroyed: -> Sky.global.metroHomeTracker.stop()
+
   events:
     "click .app-navigator:not(.locked)": (event, template) -> Router.go $(event.currentTarget).attr('data-app')
 #  rendered: ->

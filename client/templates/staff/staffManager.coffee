@@ -31,11 +31,11 @@ createStaffAccount = (template)->
     if Session.get('currentRoleSelection')?.length > 0
       roles.push role.name for role in Session.get('currentRoleSelection')
     newProfile =
-      parentMerchant  : Session.get("currentProfile").parentMerchant
-      currentMerchant : Session.get("createStaffBranchSelection")._id
-      currentWarehouse: Session.get("createStaffWarehouseSelection")._id
-      fullName        : fullName
-      systemVersion   : Schema.systems.findOne().version
+      parentMerchant    : Session.get("currentProfile").parentMerchant
+      currentMerchant   : Session.get("createStaffBranchSelection")._id
+      currentWarehouse  : Session.get("createStaffWarehouseSelection")._id
+      fullName          : fullName
+      systemVersion     : Schema.systems.findOne().version
 
     newProfile.roles = roles if roles.length > 0
     newProfile.dateOfBirth = dateOfBirth if dateOfBirth

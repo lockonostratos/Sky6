@@ -1,27 +1,52 @@
+packageOption = (option)->
+  packageClass          : option.packageClass
+  price                 : option.price
+  duration              : option.duration
+  defaultAccountLimit   : option.accountLim
+  defaultBranchLimit    : option.branchLim
+  defaultWarehouseLimit : option.warehouseLim
+  extendAccountPrice    : option.extendAccountPrice
+  extendBranchPrice     : option.extendBranchPrice
+  extendWarehousePrice  : option.extendBranchPrice
+
+
 runInitMerchantWizardTracker = (context) ->
   return if Sky.global.merchantWizardTracker
   Sky.global.merchantWizardTracker = Tracker.autorun ->
     Router.go('/') if Meteor.userId() is null
-    if Session.get("currentProfile")
-      Router.go('/dashboard') if Session.get("currentProfile").merchantRegistered
+    if Session.get('merchantPackages')
+      if Session.get('merchantPackages').user is Meteor.userId()
+        if Session.get('merchantPackages').merchantRegistered then Router.go('/dashboard')
+        else Router.go('/merchantWizard')
 
-      if Template.merchantWizard.trialPackageOption.packageClass is Session.get("currentProfile").packageClass
+    if Session.get("merchantPackages")
+      Session.set 'extendAccountLimit',   Session.get("merchantPackages").extendAccountLimit ? 0
+      Session.set 'extendBranchLimit',    Session.get("merchantPackages").extendBranchLimit ? 0
+      Session.set 'extendWarehouseLimit', Session.get("merchantPackages").extendWarehouseLimit ? 0
+
+      if Template.merchantWizard.trialPackageOption.packageClass is Session.get("merchantPackages").packageClass
         Session.set('merchantPackage', Template.merchantWizard.trialPackageOption)
 
-      if Template.merchantWizard.oneYearsPackageOption.packageClass is Session.get("currentProfile").packageClass
+      if Template.merchantWizard.oneYearsPackageOption.packageClass is Session.get("merchantPackages").packageClass
         Session.set('merchantPackage', Template.merchantWizard.oneYearsPackageOption)
 
-      if Template.merchantWizard.threeYearsPackageOption.packageClass is Session.get("currentProfile").packageClass
+      if Template.merchantWizard.threeYearsPackageOption.packageClass is Session.get("merchantPackages").packageClass
         Session.set('merchantPackage', Template.merchantWizard.threeYearsPackageOption)
 
-      if Template.merchantWizard.fiveYearsPackageOption.packageClass is Session.get("currentProfile").packageClass
+      if Template.merchantWizard.fiveYearsPackageOption.packageClass is Session.get("merchantPackages").packageClass
         Session.set('merchantPackage', Template.merchantWizard.fiveYearsPackageOption)
 
+      if Session.get("merchantPackages").companyName?.length > 0 then Session.set('companyNameValid', 'valid')
+      else Session.set('companyNameValid', 'invalid')
 
-      Session.set 'extendAccountLimit',   Session.get("currentProfile").extendAccountLimit ? 0
-      Session.set 'extendBranchLimit',    Session.get("currentProfile").extendBranchLimit ? 0
-      Session.set 'extendWarehouseLimit', Session.get("currentProfile").extendWarehouseLimit ? 0
+      if Session.get("merchantPackages").companyPhone?.length > 0 then Session.set('companyPhoneValid', 'valid')
+      else Session.set('companyPhoneValid', 'invalid')
 
+      if Session.get("merchantPackages").merchantName?.length > 0 then Session.set('merchantNameValid', 'valid')
+      else Session.set('merchantNameValid', 'invalid')
+
+      if Session.get("merchantPackages").warehouseName?.length > 0 then Session.set('warehouseNameValid', 'valid')
+      else Session.set('warehouseNameValid', 'invalid')
 
 Sky.template.extends Template.merchantWizard,
 
@@ -86,7 +111,7 @@ Sky.template.extends Template.merchantWizard,
     extendWarehousePrice: 100000
     footer: 'advance footer'
 
-  merchantWizard: -> Session.get('currentProfile')
+  merchantPackage: -> Session.get('merchantPackages')
   updateValid: ->
     if Session.get('companyNameValid') is 'invalid' then return 'invalid'
     if Session.get('companyPhoneValid') is 'invalid' then return 'invalid'
@@ -114,82 +139,46 @@ Sky.template.extends Template.merchantWizard,
     "blur #companyName"  : (event, template) ->
       $companyName = $(template.find("#companyName"))
       if $companyName.val().length > 0
-        Session.set('companyNameValid', 'valid')
-        Schema.userProfiles.update Session.get("currentProfile")._id, $set: {companyName: $companyName.val()}
+        Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {companyName: $companyName.val()}
       else
         $companyName.notify('tên công ty không được để trống', {position: "right"})
-        Session.set('companyNameValid', 'invalid')
-
 
     "blur #companyPhone" : (event, template) ->
       $companyPhone = $(template.find("#companyPhone"))
       if $companyPhone.val().length > 0
-        Session.set('companyPhoneValid', 'valid')
-        Schema.userProfiles.update Session.get("currentProfile")._id, $set: {companyPhone: $companyPhone.val()}
+        Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {companyPhone: $companyPhone.val()}
       else
         $companyPhone.notify('số điện thoại không được để trống!', {position: "right"})
-        Session.set('companyPhoneValid', 'invalid')
 
     "blur #merchantName" : (event, template) ->
       $merchantName = $(template.find("#merchantName"))
       if $merchantName.val().length > 0
-        Session.set('merchantNameValid', 'valid')
-        Schema.userProfiles.update Session.get("currentProfile")._id, $set: {merchantName: $merchantName.val()}
+        Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {merchantName: $merchantName.val()}
       else
         $merchantName.notify('tên chi nhánh không được để trống!', {position: "right"})
-        Session.set('merchantNameValid', 'invalid')
 
     "blur #warehouseName": (event, template) ->
       $warehouseName = $(template.find("#warehouseName"))
       if $warehouseName.val().length > 0
-        Session.set('warehouseNameValid', 'valid')
-        Schema.userProfiles.update Session.get("currentProfile")._id, $set: {warehouseName: $warehouseName.val()}
+        Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {warehouseName: $warehouseName.val()}
       else
         $warehouseName.notify('tên kho hàng không để trống!', {position: "right"})
-        Session.set('warehouseNameValid', 'invalid')
+
 
     "click .package-block.free": (event, template)->
-      Schema.userProfiles.update Session.get("currentProfile")._id, $set: {packageClass: Template.merchantWizard.trialPackageOption.packageClass}
+      Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: packageOption(Template.merchantWizard.trialPackageOption)
 
     "click .package-block.basic": (event, template)->
-      Schema.userProfiles.update Session.get("currentProfile")._id, $set: {packageClass: Template.merchantWizard.oneYearsPackageOption.packageClass}
+      Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: packageOption(Template.merchantWizard.oneYearsPackageOption)
 
     "click .package-block.premium": (event, template)->
-      Schema.userProfiles.update Session.get("currentProfile")._id, $set: {packageClass: Template.merchantWizard.threeYearsPackageOption.packageClass}
+      Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: packageOption(Template.merchantWizard.threeYearsPackageOption)
 
     "click .package-block.advance": (event, template)->
-      Schema.userProfiles.update Session.get("currentProfile")._id, $set: {packageClass: Template.merchantWizard.fiveYearsPackageOption.packageClass}
+      Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: packageOption(Template.merchantWizard.fiveYearsPackageOption)
 
     "click #merchantUpdate.valid": (event, template)->
-      $companyName   = $(template.find("#companyName"))
-      $companyPhone  = $(template.find("#companyPhone"))
-      $merchantName  = $(template.find("#merchantName"))
-      $warehouseName = $(template.find("#warehouseName"))
-
-      optionMerchant=
-        companyName: $companyName.val()
-        companyPhone: $companyPhone.val()
-        merchantName: $merchantName.val()
-        warehouseName: $warehouseName.val()
-
-      optionMerchantPackage=
-        packageClass: Session.get('merchantPackage').packageClass
-        price: Session.get('merchantPackage').price
-        duration: Session.get('merchantPackage').duration
-
-        defaultAccountLimit:   Session.get('merchantPackage').accountLim
-        defaultBranchLimit:    Session.get('merchantPackage').branchLim
-        defaultWarehouseLimit: Session.get('merchantPackage').warehouseLim
-
-        extendAccountPrice:   Session.get('merchantPackage').extendAccountPrice
-        extendBranchPrice:    Session.get('merchantPackage').extendBranchPrice
-        extendWarehousePrice: Session.get('merchantPackage').extendWarehousePrice
-
-        extendAccountLimit:   Session.get('extendAccountLimit')
-        extendBranchLimit:    Session.get('extendBranchLimit')
-        extendWarehouseLimit: Session.get('extendWarehouseLimit')
-
-      UserProfile.findOne(Session.get('currentProfile')?._id).updateNewMerchant(optionMerchant, optionMerchantPackage)
+      UserProfile.findOne(Session.get('currentProfile')?._id).updateNewMerchant()
       Router.go('/dashboard')
 
 

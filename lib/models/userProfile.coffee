@@ -5,57 +5,52 @@ Schema.add 'userProfiles', class UserProfile
 
   set: (options) -> @schema.update(@id, {$set: options})
 
-  @newDefault: (userId, companyName, companyPhone) ->
+  @newDefault: (userId) ->
     option=
       user              : userId
       isRoot            : true
-      merchantRegistered: false
-      packageClass      : 'free'
-      companyName       : companyName
-      companyPhone      : companyPhone
       systemVersion     : Schema.systems.findOne().version
     console.log option
     option
 
-  updateNewMerchant: (optionMerchant, optionPackage)->
-    merchant = Schema.merchants.insert { name: optionMerchant.merchantName , creator: @data.user },
-      (error, result)-> console.log error if error
-    console.log optionPackage
-    optionPackage.merchant            = merchant
-    optionPackage.user                = @data.user
-    optionPackage.packageClassActive  = false
-    date = new Date
-    optionPackage.trialEndDate = new Date(date.getTime() + 86400000 * 14)
+  updateNewMerchant: ->
+    merchantPackages = Schema.merchantPackages.findOne({user: @data.user})
+    merchant = Schema.merchants.insert { name: merchantPackages.merchantName , creator: @data.user }, (error, result)-> console.log error if error
 
-    if optionPackage.packageClass is 'free'
+    optionPackage =
+      merchant          : merchant
+      merchantRegistered: true
+      trialEndDate      : new Date((new Date).getTime() + 86400000 * 14)
+
+    if merchantPackages.packageClass is 'free'
       optionPackage.extendAccountLimit    = 0
       optionPackage.extendBranchLimit     = 0
       optionPackage.extendWarehouseLimit  = 0
-      optionPackage.totalPrice = 0
+      optionPackage.totalPrice            = 0
     else
-      extendAccountTotalPrice    = optionPackage.extendAccountPrice * optionPackage.extendAccountLimit
-      extendBranchTotalPrice    = optionPackage.extendBranchPrice * optionPackage.extendBranchLimit
-      extendWarehouseTotalPrice  = optionPackage.extendWarehousePrice * optionPackage.extendWarehouseLimit
-      optionPackage.totalPrice = extendAccountTotalPrice + extendBranchTotalPrice + extendWarehouseTotalPrice + optionPackage.price
+      extendAccountTotalPrice    = merchantPackages.extendAccountPrice * merchantPackages.extendAccountLimit
+      extendBranchTotalPrice     = merchantPackages.extendBranchPrice * merchantPackages.extendBranchLimit
+      extendWarehouseTotalPrice  = merchantPackages.extendWarehousePrice * merchantPackages.extendWarehouseLimit
 
-    console.log optionPackage
-    Schema.merchantPackages.insert optionPackage
+      optionPackage.totalPrice   = extendAccountTotalPrice + extendBranchTotalPrice + extendWarehouseTotalPrice + merchantPackages.price
+
+    Schema.merchantPackages.update merchantPackages._id, $set: optionPackage
 
     warehouseOption =
-      merchantId: merchant
+      merchantId      : merchant
       parentMerchantId: merchant
-      creator: @data.user
-      name: optionMerchant.warehouseName
+      creator         : @data.user
+      name            : merchantPackages.warehouseName
+
     warehouse = Schema.warehouses.insert Warehouse.newDefault(warehouseOption),
       (error, result)-> console.log error if error
 
-    Schema.userProfiles.update @id, $set:{
-      merchantRegistered: true
-      companyName: optionMerchant.companyName
-      companyPhone: optionMerchant.companyPhone
+    setUser=
       parentMerchant: merchant
       currentMerchant: merchant
-      currentWarehouse: warehouse}, (error, result)-> console.log error if error
+      currentWarehouse: warehouse
+
+    Schema.userProfiles.update @id, $set: setUser, (error, result)-> console.log error if error
 
     Schema.metroSummaries.insert MetroSummary.newByMerchant(merchant),
       (error, result)-> console.log error if error

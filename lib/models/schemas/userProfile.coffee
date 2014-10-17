@@ -5,9 +5,6 @@ Schema2.userProfiles = new SimpleSchema
   isRoot:
     type: Boolean
 
-  merchantRegistered:
-    type: Boolean
-
   creator:
     type: String
     optional: true

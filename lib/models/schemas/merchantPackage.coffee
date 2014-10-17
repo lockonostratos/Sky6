@@ -3,7 +3,25 @@ Schema2.merchantPackages = new SimpleSchema
     type: String
     optional: true
 
+  merchantRegistered:
+    type: Boolean
+
   user:
+    type: String
+
+  companyName:
+    type: String
+    optional: true
+
+  companyPhone:
+    type: String
+    optional: true
+
+  merchantName:
+    type: String
+    optional: true
+
+  warehouseName:
     type: String
     optional: true
 
@@ -24,7 +42,7 @@ Schema2.merchantPackages = new SimpleSchema
     defaultValue: 'free'
 
   price:
-    type: String
+    type: Number
     defaultValue: 0
 
   duration:
