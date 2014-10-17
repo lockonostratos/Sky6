@@ -172,7 +172,10 @@ class Sky
         when 0 then {sort: {'version.updateAt': -1, 'version.createdAt': -1}}
         when 1 then {sort: {'version.createdAt': -1, 'version.updateAt': -1}}
 
-
+    @regEx: (email)->
+      reg = /^\w+[\+\.\w-]*@([\w-]+\.)*\w+[\w-]*\.([a-z]{2,4}|\d+)$/i #''
+      reg1= /^[0-9A-Za-z]+[0-9A-Za-z_]*@[\w\d.]+.\w{2,4}$/
+      reg.test(email)
 
 @Sky = Sky
 

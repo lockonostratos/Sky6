@@ -17,6 +17,7 @@ Sky.template.extends Template.homeHeader,
       $password = $(template.find("#authSecret"))
       $.cookie('lastAuthAlias', $login.val())
 
+
       Meteor.loginWithPassword $login.val(), $password.val(), (error) ->
         currentReason = error?.reason
 
@@ -31,6 +32,11 @@ Sky.template.extends Template.homeHeader,
               $password.notify(currentLoginError.message, {position: "bottom right"})
             else
               $login.notify(currentLoginError.message)
+
+    "blur #authAlias": (event, template)->
+      $login = $(template.find("#authAlias"))
+      console.log 'blur'
+      unless Sky.helpers.regEx($login.val()) then $login.notify('Email không hợp lệ')
 
     "click #logoutButton": ->
       Meteor.logout()
