@@ -16,7 +16,7 @@ comments = [
   name: -> 'Nguyễn Ngọc Giàu'
   position: -> 'Chủ nhà hàng New Coffee Bar (Mỹ Tho - Tiền Giang)'
   avatar: -> 'c.giau.jpg'
-  comment: -> "Tôi vừa quản lý nhà hàng ở Mỹ Tho vừa làm việc tại TP.HCM nên suột ngày cứ chạy lên chạy xuống, nhiều lúc
+  comment: -> "Tôi vừa quản lý nhà hàng ở Mỹ Tho vừa làm việc tại TP.HCM nên suốt ngày cứ chạy lên chạy xuống, nhiều lúc
                mệt mỏi muốn nghĩ kinh doanh luôn. Nhưng từ khi sử dụng EDS thì mọi chuyện khác hẳn, tôi không cần phải
                di chuyển liên tục nữa vì có thể quản lý nhà hàng từ xa, cứ mở điện thoại lên là làm việc được ngay.
                Bây giờ việc kinh doanh của tôi đã thuận lợi hơn rất nhiều. Trước đây có nằm mơ cũng không nghĩ là làm

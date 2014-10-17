@@ -7,7 +7,9 @@ Sky.appTemplate.extends Template.home,
   avatarImages: -> AvatarImages.find()
 
   created: -> Router.go('/dashboard') unless Meteor.userId() is null or (Session.get('autoNatigateDashboardOff'))
-  rendered: -> $("body").css("overflow", "auto"); Sky.helpers.animateUsing("body", "bounceInDown")
+  rendered: ->
+    $("body").css("overflow", "auto"); Sky.helpers.animateUsing("body", "bounceInDown")
+    $(@find(".slider")).layerSlider()
 
   events:
     'click input': -> console.log 'Fuck YOU!'
