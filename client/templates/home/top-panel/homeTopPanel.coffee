@@ -43,12 +43,16 @@ Sky.template.extends Template.homeTopPanel,
     "blur #account": (event, template) ->
       $account = $(template.find("#account"))
       if $account.val().length > 0
-        Meteor.loginWithPassword $account.val(), '', (error) ->
-          if error?.reason is "Incorrect password"
-            $account.notify("tài khoản đã tồn tại", {position: "right"})
-            Session.set('registerAccountValid', 'invalid')
-          else
-            Session.set('registerAccountValid', 'valid')
+        if Sky.helpers.regEx($account.val())
+          Meteor.loginWithPassword $account.val(), '', (error) ->
+            if error?.reason is "Incorrect password"
+              $account.notify("tài khoản đã tồn tại", {position: "right"})
+              Session.set('registerAccountValid', 'invalid')
+            else
+              Session.set('registerAccountValid', 'valid')
+        else
+          $account.notify('Email không hợp lệ.', {position: "right"})
+          Session.set('registerAccountValid', 'invalid')
       else
         Session.set('registerAccountValid', 'invalid')
 
