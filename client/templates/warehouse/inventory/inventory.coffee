@@ -29,15 +29,18 @@ runInitInventoryTracker = (context) ->
 
 
 Sky.appTemplate.extends Template.inventory,
-  showName: -> 'wewe'
+  created: ->
+    Session.setDefault('showCreateNewInventory', true)
+    Session.setDefault('allowCreateNewInventory', false)
+
   inventory: -> Session.get('currentInventory')
-  show: ->
-    if Session.get('currentInventory') then true
-    else
-      if Session.get('inventoryWarehouse')?.checkingInventory == false
-        true
-      else
-        false
+  show: -> Session.get('showCreateNewInventory')
+#    if Session.get('currentInventory') then true
+#    else
+#      if Session.get('inventoryWarehouse')?.checkingInventory == false
+#        true
+#      else
+#        false
 
   allowCreate: -> if Session.get('allowCreateNewInventory') then 'btn-success' else 'btn-default disabled'
   showDescription: ->

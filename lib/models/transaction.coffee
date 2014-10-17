@@ -20,6 +20,23 @@ Schema.add 'transactions', class Transaction
     option._id = Schema.transactions.insert option
     option
 
+  @newByReturn: (returns)->
+    option =
+      merchant    : returns.merchant
+      warehouse   : returns.warehouse
+      parent      : returns._id
+      creator     : returns.creator
+      owner       : Schema.sales.findOne(returns.sale).buyer
+      group       : 'return'
+      receivable  : false
+      totalCash   : returns.finallyPrice
+      depositCash : returns.finallyPrice
+      debitCash   : 0
+      dueDay      : new Date()
+      status      : 'closed'
+    option._id = Schema.transactions.insert option
+    option
+
   @newByImport: (imports)->
     option =
       merchant    : imports.merchant

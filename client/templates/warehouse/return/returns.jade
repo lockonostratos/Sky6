@@ -37,10 +37,10 @@ template(name="returns")
         span.ilabel.optional  tỗng tiền
         input.totalPrice(value="{{saleReturn.finallyPrice}}" disabled)
       .editor-wrapper.right(style="width: 180px")
-        span.ilabel.center.optional giảm giá
+        span.ilabel.center.optional khấu hao
         +iSpinEdit(options=discountCashOptions)
       .editor-wrapper.right(style="width:110px")
-        span.ilabel.center giảm %
+        span.ilabel.center giá %
         +iSpinEdit(options=discountPercentOptions)
 
       .editor-wrapper.right(style="width: 150px")

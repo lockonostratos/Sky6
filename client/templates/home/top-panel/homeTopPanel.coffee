@@ -11,10 +11,10 @@ Sky.template.extends Template.homeTopPanel,
   showRegisterToggle: -> Meteor.userId() is null
 
   registerValid: ->
-    if Session.get('registerAccountValid') == Session.get('registerAccountValid') == 'valid'
+    if Session.get('registerAccountValid') == Session.get('registerSecretValid') == 'valid'
       'valid'
     else
-      'valid'
+      'invalid'
 
   created: ->
     Session.setDefault('registerAccountValid', 'invalid')
@@ -36,10 +36,16 @@ Sky.template.extends Template.homeTopPanel,
           Session.set('topPanelMinimize', true)
           Meteor.loginWithPassword $account.val(), $secret.val(), (error) -> Router.go('/merchantWizard') if !error
 
+#    "keypress #secretConfirm": (event, template) ->
+#      $(template.find("#merchantRegister")).click() if event.which is 13 and Template.homeTopPanel.registerValid is 'valid'
+#    "input #secretConfirm": (event, template) ->
+#      $secret  = $(template.find("#secret"))
+#      $secretConfirm = $(template.find("#secretConfirm"))
+#      if $secretConfirm.val().length > 0 or $secret.val().length > 0 or $secretConfirm.val() is $secret.val()
+#        Session.set('registerSecretValid', 'valid')
+#      else
+#        Session.set('registerSecretValid', 'invalid')
 
-
-    "keypress #secretConfirm": (event, template) ->
-      $(template.find("#merchantRegister")).click() if event.which is 13 and Template.homeTopPanel.registerValid is 'valid'
 
     "blur #account": (event, template) ->
       $account = $(template.find("#account"))
@@ -59,7 +65,11 @@ Sky.template.extends Template.homeTopPanel,
 
     "blur #secret": (event, template) ->
       $secret  = $(template.find("#secret"))
-      unless $secret.val().length > 0 then Session.set('registerSecretValid', 'invalid')
+      $secretConfirm = $(template.find("#secretConfirm"))
+      if $secretConfirm.val().length > 0 or $secret.val().length > 0 or $secretConfirm.val() is $secret.val()
+        Session.set('registerSecretValid', 'invalid')
+      else
+        Session.set('registerSecretValid', 'valid')
 
     "blur #secretConfirm": (event, template) ->
       $secret  = $(template.find("#secret"))

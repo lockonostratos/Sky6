@@ -14,10 +14,8 @@ runInitMerchantWizardTracker = (context) ->
   return if Sky.global.merchantWizardTracker
   Sky.global.merchantWizardTracker = Tracker.autorun ->
     Router.go('/') if Meteor.userId() is null
-    if Session.get('merchantPackages')
-      if Session.get('merchantPackages').user is Meteor.userId()
-        if Session.get('merchantPackages').merchantRegistered then Router.go('/dashboard')
-        else Router.go('/merchantWizard')
+    unless Session.get('merchantPackages')?.user is Meteor.userId() then Router.go('/dashboard')
+    if  Session.get('merchantPackages')?.merchantRegistered  then Router.go('/dashboard')
 
     if Session.get("merchantPackages")
       Session.set 'extendAccountLimit',   Session.get("merchantPackages").extendAccountLimit ? 0

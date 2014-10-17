@@ -1,15 +1,14 @@
 saleStatusIsExport = (sale)->
-  if sale.status == true and sale.success == sale.export == sale.import == false and (sale.paymentsDelivery == 0 || sale.paymentsDelivery == 1)
+  if sale.status == sale.received == true and sale.submitted == sale.exported == sale.imported == false and (sale.paymentsDelivery == 0 || sale.paymentsDelivery == 1)
     true
   else
     false
 
 saleStatusIsImport = (sale)->
-  if sale.status == sale.export == true and sale.success == sale.import == false and sale.paymentsDelivery == 1
+  if sale.status == sale.received == sale.exported == true and sale.submitted == sale.imported == false and sale.paymentsDelivery == 1
     true
   else
     false
-
 
 Schema.add 'metroSummaries', class MetroSummary
   @newByMerchant: (merchantId)->
@@ -166,7 +165,10 @@ Schema.add 'metroSummaries', class MetroSummary
         saleDepositCash: sale.deposit
         saleDebitCash: sale.debit
         saleRevenueCash: sale.totalPrice
-      incOption.stockProductCount = -sale.saleCount if sale.success == true
+
+      incOption.deliveryCount        = 1 if sale.paymentsDelivery is 1
+      incOption.deliveryProductCount = sale.saleCount if sale.paymentsDelivery is 1
+      incOption.stockProductCount    = -sale.saleCount if sale.success == true
 
       if sale.paymentMethod is 1
         incOption.deliveryCount = 1
@@ -282,7 +284,7 @@ Schema.add 'metroSummaries', class MetroSummary
       option =
         stockProductCount: returns.productQuality
         availableProductCount: returns.productQuality
-        returnCount: returns.productQuality
+        returnCount: 1
         returnProductCount: returns.productQuality
         returnCash: returns.totalPrice
 
@@ -317,7 +319,10 @@ Schema.add 'metroSummaries', class MetroSummary
   @updateMetroSummaryBySaleExport: (saleId)->
     sale  = Schema.sales.findOne(saleId)
     if sale
+      console.log sale
+      console.log saleStatusIsExport(sale)
       if saleStatusIsExport(sale)
+
         metroSummary = Schema.metroSummaries.findOne({merchant: sale.merchant})
         Schema.metroSummaries.update metroSummary._id, $inc: {stockProductCount: -sale.saleCount}
 
@@ -329,6 +334,7 @@ Schema.add 'metroSummaries', class MetroSummary
         Schema.metroSummaries.update metroSummary._id, $inc: {
           stockProductCount: sale.saleCount
           availableProductCount: sale.saleCount
+
         }
 
   @updateMetroSummaryBy: (context)->

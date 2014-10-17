@@ -83,8 +83,10 @@ Sky.appTemplate.extends Template.staffManager,
 
     "click #createStaffAccount": (event, template) -> createStaffAccount(template)
 
-
-
+    "blur #email": (event, template)->
+      $email = $(template.find("#email"))
+      if $email.val().length > 0
+        unless Sky.helpers.regEx($email.val()) then $email.notify('Tên đăng nhập không hợp lệ')
 
 
 

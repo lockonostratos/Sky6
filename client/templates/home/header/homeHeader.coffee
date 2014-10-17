@@ -36,7 +36,7 @@ Sky.template.extends Template.homeHeader,
     "blur #authAlias": (event, template)->
       $login = $(template.find("#authAlias"))
       console.log 'blur'
-      unless Sky.helpers.regEx($login.val()) then $login.notify('Email không hợp lệ')
+      unless Sky.helpers.regEx($login.val()) then $login.notify('Tên đăng nhập không hợp lệ')
 
     "click #logoutButton": ->
       Meteor.logout()
