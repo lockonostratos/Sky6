@@ -11,12 +11,12 @@ template(name="merchantWizard")
         +merchantPriceTable(options=fiveYearsPackageOption)
     .registeration-section(style="width: 400px")
       .sky-field
-        input#companyName(type="text" placeholder="tên doanh nghiệp *" value="{{merchantWizard.companyName}}")
+        input#companyName(type="text" placeholder="tên doanh nghiệp *" value="{{merchantPackage.companyName}}")
       .sky-field
-        input#companyPhone(type="text" placeholder="số điên thoại *" value="{{merchantWizard.companyPhone}}")
+        input#companyPhone(type="text" placeholder="số điên thoại *" value="{{merchantPackage.companyPhone}}")
       .sky-field
-        input#merchantName(type="text" placeholder="tên chi nhánh chính *" value="{{merchantWizard.merchantName}}")
+        input#merchantName(type="text" placeholder="tên chi nhánh chính *" value="{{merchantPackage.merchantName}}")
       .sky-field
-        input#warehouseName(type="text" placeholder="tên kho hàng *" value="{{merchantWizard.warehouseName}}")
+        input#warehouseName(type="text" placeholder="tên kho hàng *" value="{{merchantPackage.warehouseName}}")
 
       #merchantUpdate.btn.pull-right(class="{{updateValid}}") CẬP NHẬT

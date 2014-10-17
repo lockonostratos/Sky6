@@ -31,7 +31,8 @@ Sky.template.extends Template.homeTopPanel,
       Meteor.call "registerMerchant", $account.val(), $secret.val(), (error, result)->
         if !error
           user = result
-          Schema.userProfiles.insert UserProfile.newDefault(user, $companyName.val(), $companyPhone.val()), (error, result)-> console.log error if error
+          Schema.userProfiles.insert UserProfile.newDefault(user), (error, result)-> console.log error if error
+          Schema.merchantPackages.insert({merchantRegistered: false, user: user, companyName: $companyName.val(), companyPhone: $companyPhone.val()})
           Session.set('topPanelMinimize', true)
           Meteor.loginWithPassword $account.val(), $secret.val(), (error) -> Router.go('/merchantWizard') if !error
 

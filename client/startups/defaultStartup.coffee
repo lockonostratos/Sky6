@@ -25,11 +25,15 @@ Meteor.startup ->
           ]}
       ).fetch()
 
+      Session.set "merchantPackages"  , Schema.merchantPackages.findOne({merchant: Session.get('currentProfile').parentMerchant})
       Session.set "availableMerchant", availableMerchant
       Session.set 'availableCustomers', Schema.customers.find({parentMerchant: Session.get('currentProfile').parentMerchant}).fetch()
       Session.set "availableUserProfile" , Schema.userProfiles.find({parentMerchant: Session.get('currentProfile').parentMerchant}).fetch()
 
-
+      if Schema.merchantPackages.findOne({merchant: Session.get('currentProfile').parentMerchant}).merchantRegistered
+        Session.set "metroSummary", Schema.metroSummaries.findOne({merchant: Session.get('currentProfile').parentMerchant})
+      else
+        Session.set "metroSummary"
 
     if Session.get('currentProfile') #Temporaries SUBSCRUBIBE
       Meteor.subscribe 'merchantProfiles', Session.get('currentProfile').parentMerchant
@@ -45,12 +49,12 @@ Meteor.startup ->
           parentMerchant: Session.get('currentProfile').parentMerchant   })
 
     if Session.get('currentMerchant') and Session.get('currentProfile')
-      Session.set "metroSummary", Schema.metroSummaries.findOne({merchant: Session.get('currentMerchant')._id})
-
       Session.set "availableWarehouses", Schema.warehouses.find({merchant: Session.get('currentMerchant')._id}).fetch()
       Session.set "currentWarehouse", Schema.warehouses.findOne({
         _id     : Session.get('currentProfile').currentWarehouse
         merchant: Session.get('currentMerchant')._id })
+
+
 
   Tracker.autorun ->
     console.log ('popoverAutorunWorking..') if autorunDebug

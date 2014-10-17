@@ -1,6 +1,6 @@
 Sky.template.extends Template.merchantPriceTable,
   showExtension: ->
-    Session.get("currentProfile")?.packageClass is @options.packageClass and @options.packageClass isnt 'free'
+    Session.get("merchantPackages")?.packageClass is @options.packageClass and @options.packageClass isnt 'free'
 
   extendPrice: ->
     extendAccountPrice    = @options.extendAccountPrice * Session.get('extendAccountLimit')
@@ -10,7 +10,7 @@ Sky.template.extends Template.merchantPriceTable,
 
   accountLimitOptions:
     reactiveSetter: (val) ->
-      Schema.userProfiles.update Session.get("currentProfile")._id, $set: {extendAccountLimit: val}
+      Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {extendAccountLimit: val}
     reactiveValue: -> Session.get('extendAccountLimit') ? 0
     reactiveMax: -> 9999
     reactiveMin: -> 0
@@ -18,7 +18,7 @@ Sky.template.extends Template.merchantPriceTable,
 
   branchLimitOptions:
     reactiveSetter: (val) ->
-      Schema.userProfiles.update Session.get("currentProfile")._id, $set: {extendBranchLimit: val}
+      Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {extendBranchLimit: val}
     reactiveValue: -> Session.get('extendBranchLimit') ? 0
     reactiveMax: -> 500
     reactiveMin: -> 0
@@ -26,7 +26,7 @@ Sky.template.extends Template.merchantPriceTable,
 
   warehouseLimitOptions:
     reactiveSetter: (val) ->
-      Schema.userProfiles.update Session.get("currentProfile")._id, $set: {extendWarehouseLimit: val}
+      Schema.merchantPackages.update Session.get("merchantPackages")._id, $set: {extendWarehouseLimit: val}
     reactiveValue: -> Session.get('extendWarehouseLimit') ? 0
     reactiveMax: -> 999
     reactiveMin: -> 0
