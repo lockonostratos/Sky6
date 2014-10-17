@@ -166,6 +166,8 @@ Schema.add 'metroSummaries', class MetroSummary
         saleDepositCash: sale.deposit
         saleDebitCash: sale.debit
         saleRevenueCash: sale.totalPrice
+        deliveryCount  : 1
+        deliveryProductCount: sale.saleCount
       incOption.stockProductCount = -sale.saleCount if sale.success == true
 
       if sale.paymentMethod is 1
@@ -329,6 +331,7 @@ Schema.add 'metroSummaries', class MetroSummary
         Schema.metroSummaries.update metroSummary._id, $inc: {
           stockProductCount: sale.saleCount
           availableProductCount: sale.saleCount
+
         }
 
   @updateMetroSummaryBy: (context)->
