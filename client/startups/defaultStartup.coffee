@@ -16,7 +16,11 @@ Meteor.startup ->
       Session.set "currentProfile"    , Schema.userProfiles.findOne(user: Meteor.userId())
 
     if Session.get('currentProfile')
-      Session.set "merchantPackages"  , Schema.merchantPackages.findOne({merchant: Session.get('currentProfile').parentMerchant})
+      merchantPackages = Schema.merchantPackages.findOne({user: Meteor.userId()})
+      if merchantPackages  Session.set "merchantPackages", merchantPackages
+      else
+        merchantPackage = Schema.merchantPackages.findOne({merchant: Session.get('currentProfile').parentMerchant})
+        if merchantPackage then Session.set "merchantPackages" , merchantPackage else Session.set "merchantPackages"
     else
       Session.set "merchantPackages"
 
@@ -34,7 +38,7 @@ Meteor.startup ->
       Session.set 'availableCustomers', Schema.customers.find({parentMerchant: Session.get('currentProfile').parentMerchant}).fetch()
       Session.set "availableUserProfile" , Schema.userProfiles.find({parentMerchant: Session.get('currentProfile').parentMerchant}).fetch()
 
-      if Schema.merchantPackages.findOne({merchant: Session.get('currentProfile').parentMerchant}).merchantRegistered
+      if Session.get('merchantPackages')
         Session.set "metroSummary", Schema.metroSummaries.findOne({merchant: Session.get('currentProfile').parentMerchant})
       else
         Session.set "metroSummary"
