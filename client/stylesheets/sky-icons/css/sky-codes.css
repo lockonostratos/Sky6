@@ -78,6 +78,11 @@
 .icon-location-1:before { content: '\e84c'; } /* '' */
 .icon-home:before { content: '\e84d'; } /* '' */
 .icon-home-circled:before { content: '\e84e'; } /* '' */
+.icon-quote:before { content: '\e84f'; } /* '' */
+.icon-angle-double-right:before { content: '\e850'; } /* '' */
+.icon-angle-double-left:before { content: '\e851'; } /* '' */
+.icon-right-open-big:before { content: '\e852'; } /* '' */
+.icon-left-open-big:before { content: '\e854'; } /* '' */
 .icon-emo-happy:before { content: '\f027'; } /* '' */
 .icon-emo-wink:before { content: '\f028'; } /* '' */
 .icon-emo-wink2:before { content: '\f029'; } /* '' */

@@ -1,59 +1,70 @@
 comments = [
-  ownerName: -> '1'
-  ownerPosition: -> '1'
-  ownerAvatar: -> '1'
-  comment: -> "Hệ thống này là trực quan nhất so với tất cả những sản phẩm mà tôi đã từng sử dụng, tôi bị ấn tượng mạnh
-               bởi giao diện metro. Chúng tôi thậm chí không cần tốn thời gian training nhân viên vì nó quá dễ hiểu!"
+  name: -> 'Phan Ngọc Vinh'
+  position: -> 'Chủ xưởng gỗ Vinh Phát (Đắc Lắc)'
+  avatar: -> 'a.vinh.jpg'
+  comment: -> "Tôi đã tìm hiểu qua nhiều phần mềm quản lý trước khi quyết định sử dụng EDS. Đây là phần mềm tiện dụng
+               nhất mà tôi từng biết, tôi rất ấn tượng với giao diện metro, rất đẹp và dễ hiểu. Tôi rất phấn khởi vì
+               không cần tốn thời gian để dạy cho nhân viên."
 ,
-  ownerName: -> '2'
-  ownerPosition: -> '2'
-  ownerAvatar: -> '2'
-  comment: -> "Cửa hàng của tôi khá lớn, chúng tôi đã xử dụng excel rất tốt trước đó, cho đến khi tôi được giới thiệu về
-               hệ thống này. Ngoài việc kiểm soát được số liệu hàng hóa tôi bị ấn tượng bởi hệ thống nhắc nhở tôi không
-               cần phải ghi nhớ mọi thứ nữa, có nhiều thời gian hơn để đi du lịch"
+  name: -> 'Nguyễn Anh Phương'
+  position: -> 'Du học sinh (Mỹ)'
+  avatar: -> 'a.phuong.jpg'
+  comment: -> "Tôi hiện đang du học ở Mỹ nhưng Công ty của gia đình tại Việt Nam cũng cần quản lý. Vì vậy tôi cần tìm
+               một phần mềm có thể giúp tôi kiểm soát việc kinh doanh từ xa. Qua một người bạn giới thiệu, tôi đã ứng
+               dụng EDS và rất hài lòng về sự tiện dụng của nó, nhất là khi tôi có thể quản lý công việc kinh doanh từ nước ngoài"
 ,
-  ownerName: -> '3'
-  ownerPosition: -> '3'
-  ownerAvatar: -> '3'
-  comment: -> "Tôi là Quỳnh, chủ cửa hàng thời trang Quỳnh Nhi chuyên kinh doanh quần áo xách tay (Bàu Cát, Tân Bình).
-              Lúc trước quần áo nhập về quá nhiều, có đôi lúc tính nhầm giá bán cho khách hàng. Từ khi triển khai EDS,
-              hàng hóa được quản lý rõ ràng hơn, Tôi cũng có nhiều thời gian chăm lo cho gia đình hơn. Trong tương lai,
-              tôi dự tính sẽ mở thêm vài chi nhánh nữa, và dĩ nhiên vẫn sẽ áp dụng EDS cho mỗi chi nhánh"
+  name: -> 'Nguyễn Ngọc Giàu'
+  position: -> 'Chủ nhà hàng New Coffee Bar (Mỹ Tho - Tiền Giang)'
+  avatar: -> 'c.giau.jpg'
+  comment: -> "Tôi vừa quản lý nhà hàng ở Mỹ Tho vừa làm việc tại TP.HCM nên suột ngày cứ chạy lên chạy xuống, nhiều lúc
+               mệt mỏi muốn nghĩ kinh doanh luôn. Nhưng từ khi sử dụng EDS thì mọi chuyện khác hẳn, tôi không cần phải
+               di chuyển liên tục nữa vì có thể quản lý nhà hàng từ xa, cứ mở điện thoại lên là làm việc được ngay.
+               Bây giờ việc kinh doanh của tôi đã thuận lợi hơn rất nhiều. Trước đây có nằm mơ cũng không nghĩ là làm
+               cùng lúc được nhiều việc như vậy."
 ,
-  ownerName: -> '4'
-  ownerPosition: -> '4'
-  ownerAvatar: -> '4'
-  comment: -> "Anh Phương, một du học sinh tại Mỹ: Tôi hiện đang du học ở Mỹ nhưng Công ty của gia đình tại Việt Nam
-               cũng cần tôi quản lý. Vì vậy tôi cần tìm một phần mềm có thể giúp tôi kiểm soát việc kinh doanh từ xa.
-               Qua một người bạn giới thiệu, tôi đã ứng dụng EDS, tôi rất hài lòng về sự tiện dụng của nó, nhất là khi
-               tôi có thể quản lý công việc kinh doanh từ nước ngoài"
+  name: -> 'Nguyễn Thị Ngọc Tuyền'
+  position: -> 'Khu du lịch sinh thái (Tiền Giang)'
+  avatar: -> 'c.tuyen.jpg'
+  comment: -> "Vào những ngày cuối tuần hay dịp lễ Tết, khách đến tham quan rất nhiều, nhiều lúc không thể nào phục vụ
+               cho tất cả các khách hàng. Tôi nghĩ là bó tay rồi, cũng không nghĩ là phần mềm gì đó có thể cải thiện
+               được chuyện này đâu. Vậy mà công ty Thiên Ban phải làm tôi suy nghĩ lại và cuối cùng tôi quyết định sử
+               dụng phần mềm EDS, hệ thống nhắc nhở tự động của EDS giúp chúng tôi chủ động hơn trong việc chăm sóc khách
+               hàng, tình hình phàn nàn về chất lượng phục vụ hình như là không còn nữa."
 ,
-  ownerName: -> '5'
-  ownerPosition: -> '5'
-  ownerAvatar: -> '5'
-  comment: -> "Chị Giàu, chủ nhà hàng New Coffee Bar tại Mỹ Tho, Tiền Giang: đặc thù công việc của tôi là phải di chuyển
-               giữa Tiền Giang và Thành phố Hồ Chí Minh, nên khó khăn cho việc quản lý nhà hàng ở quê nhà, tôi cần tìm
-               một giải pháp phù hợp. Do đó tôi quyết định sử dụng EDS, từ đó việc quản lý kinh doanh đã thuận lợi và
-               chuyên nghiệp hơn rất nhiều"
+  name: -> 'Phạm Minh Hoàng'
+  position: -> 'Chủ shop đồng hồ DOHO Replica'
+  avatar: -> 'no-avatar.jpg'
+  comment: -> "Trước đây, chúng tôi sử dụng excel để quản lý công việc. Nhưng khi quy mô được mở rộng hơn thì mọi việc
+               cứ xáo trộn lên, tình trạng thất thoát liên tục xảy ra. Tình hình này làm tôi lo lắng suốt một thời gian,
+               tôi đã tìm hiểu nhiều hệ thống quản lý cho đến khi được giới thiệu về hệ thống này. Ngoài việc kiểm soát
+               được số liệu hàng hóa, tôi thật sự rất thích hệ thống nhắc nhở tự động, tôi không cần phải ghi nhớ mọi
+               thứ nữa, có nhiều thời gian hơn để đi du lịch với gia đình."
 ,
-  ownerName: -> 'Tuyền'
-  ownerPosition: -> 'Khu du lịch sinh thái Tiền Giang'
-  ownerAvatar: -> '6'
-  comment: -> "Vào những ngày cuối tuần hay dịp lễ Tết, khách đến tham quan khu du lịch của chúng tôi rất nhiều, đôi khi
-               không thể nào phục vụ tốt tất cả nhu cầu của khách hàng. Nhưng từ khi triển khai EDS, hệ thống nhắc nhở
-               tự động giúp chúng tôi chủ động hơn trong việc chăm sóc khách hàng tôi đã được chăm sóc tốt hơn rất nhiều"
+  name: -> 'Đỗ Thụy Vân Quỳnh'
+  position: -> 'Chủ shop thời trang Quỳnh Nhi (Bàu Cát, Tân Bình)'
+  avatar: -> 'no-avatar.jpg'
+  comment: -> "Lúc trước quần áo nhập về quá nhiều nên chuyện tính nhầm giá bán cho khách hàng xảy ra liên tục.
+               Từ khi triển khai EDS, hàng hóa được quản lý rõ ràng hơn, Tôi cũng có nhiều thời gian chăm lo cho gia
+               đình hơn. Trong tương lai, tôi dự tính sẽ mở thêm vài chi nhánh nữa, và dĩ nhiên vẫn sẽ áp dụng EDS cho
+               mỗi chi nhánh"
 ]
 
-navigateNextComment = ->
+navigateComment = (step = 1)->
   currentCommentIndex = Session.get('currentCommentPosition')
-  if currentCommentIndex + 1 >= comments.length
+  console.log currentCommentIndex, comments.length
+  currentCommentIndex += step
+
+  if currentCommentIndex >= comments.length
     currentCommentIndex = 0
-  else
-    currentCommentIndex++
+  else if currentCommentIndex < 0
+    currentCommentIndex = comments.length - 1
+
   Session.set('currentCommentPosition', currentCommentIndex)
+  Sky.helpers.animateUsing("#home-comment-wrapper", "fadeIn")
 
 Sky.template.extends Template.merchantTestimonials,
   currentComment: -> comments[Session.get('currentCommentPosition')]
   created: -> Session.set('currentCommentPosition', 0)
   events:
-    'click .nextCommand': -> navigateNextComment()
+    'click .nextCommand': -> navigateComment()
+    'click .previousCommand': -> navigateComment(-1)

@@ -8,6 +8,57 @@
     .details {
       margin-left: 35px;
     }
+
+    .comment-section {
+      height: 250px;
+
+      .details { margin-left: 125px; }
+      .navigateCommands {
+        position: absolute;
+        left: 190px; top: 19px;
+        .btn {
+          width: 25px; height: 25px;
+          line-height: 24px;
+          text-align: center;
+          .border-radius(50%);
+          background-color: #dedede;
+          color: #fff;
+          padding: 0;
+        }
+      }
+
+      .owner-info {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        span.name {
+          display: block;
+        }
+
+        span.position {
+          display: block;
+          font-style: italic;
+          color: #575757;
+        }
+      }
+
+      .icon-quote {
+        font-style: italic;
+        font-size: 14px;
+
+        &:before {
+          font-size: 18px;
+          color: #666666;
+        }
+      }
+
+      img.avatar {
+        position: absolute;
+        left: 28px; top: 55px;
+        .border-radius(50%);
+        width: 100px; height: 100px;
+      }
+    }
   }
 
   .sub-footer.row {

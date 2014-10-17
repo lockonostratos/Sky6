@@ -1,6 +1,10 @@
 template(name="merchantTestimonials")
-  span {{currentComment.ownerName}}
-  span {{currentComment.ownerPosition}}
-  span {{currentComment.ownerAvatar}}
-  span {{currentComment.comment}}
-  .btn.nextCommand >>>
+  #home-comment-wrapper
+    img.avatar(src="images/avatars/{{currentComment.avatar}}")
+    .owner-info
+      span.name {{currentComment.name}}
+      span.position {{currentComment.position}}
+    span.comment.icon-quote {{currentComment.comment}}
+  .navigateCommands
+    .btn.previousCommand.icon-left-open-big
+    .btn.nextCommand.icon-right-open-big
