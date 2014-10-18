@@ -11,6 +11,7 @@ Schema.add 'deliveries', class Delivery
       contactPhone    : order.contactPhone
       deliveryAddress : order.deliveryAddress
       comment         : order.comment
+      deliveryDate    : order.deliveryDate if order.deliveryDate
       status          : 0
     option
 

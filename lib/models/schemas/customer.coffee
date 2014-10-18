@@ -32,6 +32,10 @@ Schema2.customers = new SimpleSchema
     type: String
     optional: true
 
+  dateOfBirth:
+    type: Date
+    optional: true
+
   gender:
     type: Boolean
     optional: true

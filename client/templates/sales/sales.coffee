@@ -146,7 +146,17 @@ Sky.appTemplate.extends Template.sales,
 
   events:
     'click .addOrderDetail': (event, template)-> Order.addOrderDetail(Session.get('currentOrder')._id)
-    'click .finish': (event, template)-> console.log Order.finishOrder(Session.get('currentOrder')._id)
+    'click .finish': (event, template)->
+      expire = template.ui.$deliveryDate.data('datepicker').dates[0]
+      if expire > (new Date)
+        expireDate = new Date(expire.getFullYear(), expire.getMonth(), expire.getDate())
+        option = $set: {deliveryDate: expireDate}
+      else
+        option = $unset: {deliveryDate: true}
+
+      Schema.orders.update Session.get('currentOrder')._id, option
+      console.log Order.finishOrder(Session.get('currentOrder')._id)
+
     'blur .contactName': (event, template)->
       if template.find(".contactName").value.length > 1
         Schema.orders.update(Session.get('currentOrder')._id, {$set: {
@@ -171,15 +181,6 @@ Sky.appTemplate.extends Template.sales,
         }})
       else
         template.find(".deliveryAddress").value = Session.get('currentOrder').deliveryAddress
-
-#    'blur .deliveryDate': (event, template)->
-#      deliveryDate = template.ui.$deliveryDate.data('datepicker').dates[0]
-#      if template.find(".deliveryDate").value.length > 1
-#        Schema.orders.update(Session.get('currentOrder')._id, {$set: {
-#          deliveryDate: template.find(".deliveryDate").value
-#        }})
-#      else
-#        console.log 'Name is null'
 
     'blur .comment': (event, template)->
       if template.find(".comment").value.length > 1
@@ -338,6 +339,10 @@ Sky.appTemplate.extends Template.sales,
           option.contactName     = customer.name ? null
           option.contactPhone    = customer.phone ? null
           option.deliveryAddress = customer.address ? null
+          option.comment         = 'Giao trong ngày'
+          option.deliveryDate    = new Date
+
+          $("[name=deliveryDate]").datepicker('setDate', option.deliveryDate)
         else
           console.log 'Sai customer'; return
       Schema.orders.update(Session.get('currentOrder')._id, {$set: option})

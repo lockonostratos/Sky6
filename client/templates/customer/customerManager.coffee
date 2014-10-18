@@ -15,12 +15,14 @@ createCustomer = (context) ->
   phone = context.ui.$phone.val()
   address = context.ui.$address.val()
   dateOfBirth = context.ui.$dateOfBirth.data('datepicker').dates[0]
+  console.log dateOfBirth
 
   option =
     creator: Meteor.userId()
     name: fullName
     phone: phone
     address: address
+    dateOfBirth: dateOfBirth
     currentMerchant : Session.get('currentProfile').currentMerchant
     parentMerchant  : Session.get('currentProfile').parentMerchant
     gender          : Session.get('genderNewCustomer')

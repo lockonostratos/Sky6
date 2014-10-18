@@ -12,6 +12,7 @@ Schema.add 'productDetails', class ProductDetail
       name             : importDetail.name
       skulls           : importDetail.skulls
       checkingInventory: false
+    option.expire = importDetail.expire if importDetail.expire
     option
 
 

@@ -1,7 +1,8 @@
 template(name="inventoryProductThumbnail")
   .col
     .thumbnails(class="#{colorClass}")
-      .right-caption {{name}}
+      .left-caption {{expireDate productDetail.expire}}
+      .right-caption {{productDetail.name}}
       .avatar(style="background-image: url('images/missing.jpg')")
       .short-desc.quality
         .col.col-auto.pull-right(style="width:120px")

@@ -12,62 +12,94 @@ Meteor.startup ->
   Tracker.autorun ->
     console.log ('userAutorunWorking..') if autorunDebug
     if Meteor.userId()
-      Session.set "currentUser"       , Meteor.user()
-      Session.set "currentProfile"    , Schema.userProfiles.findOne(user: Meteor.userId())
+      Session.set "currentUser"    , Meteor.user()
+      Session.set "currentProfile" , Schema.userProfiles.findOne(user: Meteor.userId())
+    else
+      Session.set "currentUser"
+      Session.set "currentProfile"
 
+  Tracker.autorun ->
+    console.log ('merchantPackagesAutorunWorking..') if autorunDebug
     if Session.get('currentProfile')
-      merchantPackages = Schema.merchantPackages.findOne({user: Meteor.userId()})
-      if merchantPackages then Session.set "merchantPackages", merchantPackages
+      if Session.get('currentProfile').isRoot
+        merchantPackages = Schema.merchantPackages.findOne({user: Meteor.userId()})
       else
-        merchantPackage = Schema.merchantPackages.findOne({merchant: Session.get('currentProfile').parentMerchant})
-        if merchantPackage then Session.set "merchantPackages" , merchantPackage else Session.set "merchantPackages"
+        merchantPackages = Schema.merchantPackages.findOne({merchant: Session.get('currentProfile').parentMerchant})
+      Session.set "merchantPackages", merchantPackages
     else
       Session.set "merchantPackages"
 
-    if Session.get('currentProfile')?.parentMerchant
-      availableMerchant = Schema.merchants.find(
-        {$or:
-          [
-            {_id   : Session.get('currentProfile').parentMerchant}
-            {parent: Session.get('currentProfile').parentMerchant}
-          ]}
-      ).fetch()
+  Tracker.autorun ->
+    if Session.get('merchantPackages')?.merchantRegistered
+      parentMerchantId  = Session.get('currentProfile').parentMerchant
+      currentMerchantId= Session.get('currentProfile').currentMerchant
 
+      availableMerchant = Schema.merchants.find({
+        $or:[
+          {_id   : parentMerchantId}
+          {parent: parentMerchantId}] }).fetch()
 
-      Session.set "availableMerchant", availableMerchant
-      Session.set 'availableCustomers', Schema.customers.find({parentMerchant: Session.get('currentProfile').parentMerchant}).fetch()
-      Session.set "availableUserProfile" , Schema.userProfiles.find({parentMerchant: Session.get('currentProfile').parentMerchant}).fetch()
-
-      if Session.get('merchantPackages')
-        Session.set "metroSummary", Schema.metroSummaries.findOne({merchant: Session.get('currentProfile').parentMerchant})
+      if currentMerchantId is parentMerchantId
+        currentMerchant = Schema.merchants.findOne(parentMerchantId)
       else
-        Session.set "metroSummary"
+        currentMerchant = Schema.merchants.findOne({
+          _id           : currentMerchantId
+          parentMerchant: parentMerchantId })
 
-    if Session.get('currentProfile') #Temporaries SUBSCRUBIBE
-      Meteor.subscribe 'merchantProfiles', Session.get('currentProfile').parentMerchant
+      metroSummary         = Schema.metroSummaries.findOne({merchant: parentMerchantId})
+      availableCustomers   = Schema.customers.find({parentMerchant: parentMerchantId}).fetch()
+      availableUserProfile = Schema.userProfiles.find({parentMerchant: parentMerchantId}).fetch()
+
+      #Temporaries SUBSCRUBIBE
+      Meteor.subscribe 'merchantProfiles' , parentMerchantId
+
+      Session.set "metroSummary"          , metroSummary
+      Session.set "availableMerchant"     , availableMerchant
+      Session.set 'availableCustomers'    , availableCustomers
+      Session.set "availableUserProfile"  , availableUserProfile
+      Session.set "currentMerchant"       , currentMerchant
+    else
+      Session.set "metroSummary"
+      Session.set "availableMerchant"
+      Session.set "availableCustomers"
+      Session.set "availableUserProfile"
+      Session.set "currentMerchant"
 
   Tracker.autorun ->
-    console.log ('merchant-warehouseAutorunWorking..') if autorunDebug
-    if Session.get('currentProfile')
-      if Session.get('currentProfile').parentMerchant == Session.get('currentProfile').currentMerchant
-        Session.set "currentMerchant"   , Schema.merchants.findOne(Session.get('currentProfile').parentMerchant)
-      else
-        Session.set "currentMerchant"   , Schema.merchants.findOne({
-          _id           : Session.get('currentProfile').currentMerchant
-          parentMerchant: Session.get('currentProfile').parentMerchant   })
+    if Session.get('currentMerchant')
+      currentMerchantId = Session.get('currentMerchant')._id
 
-    if Session.get('currentMerchant') and Session.get('currentProfile')
-      Session.set "availableWarehouses", Schema.warehouses.find({merchant: Session.get('currentMerchant')._id}).fetch()
-      Session.set "currentWarehouse", Schema.warehouses.findOne({
+      availableSkulls = Schema.skulls.find({merchant: currentMerchantId}).fetch()
+      availableWarehouses = Schema.warehouses.find({merchant: currentMerchantId}).fetch()
+
+      currentProviders = Schema.providers.find({merchant: currentMerchantId, status: false}).fetch()
+      currentWarehouse = Schema.warehouses.findOne({
         _id     : Session.get('currentProfile').currentWarehouse
-        merchant: Session.get('currentMerchant')._id })
+        merchant: currentMerchantId })
 
+      personalNewCustomers = Schema.customers.find({currentMerchant: currentMerchantId, creator: Meteor.userId()}).fetch()
+      personalNewWarehouses = Schema.warehouses.find({merchant: currentMerchantId, creator: Meteor.userId()}).fetch()
+      personalNewSkulls = Schema.skulls.find({merchant: currentMerchantId, creator: Meteor.userId()}).fetch()
 
+      Session.set 'availableSkulls'      , availableSkulls
+      Session.set "availableWarehouses"  , availableWarehouses
+      Session.set "currentWarehouse"     , currentWarehouse
+      Session.set 'currentProviders'     , currentProviders
+      Session.set 'personalNewCustomers' , personalNewCustomers
+      Session.set 'personalNewWarehouses', personalNewWarehouses
+      Session.set 'personalNewSkulls'    , personalNewSkulls
+    else
+      Session.set "availableWarehouses"
+      Session.set "availableSkulls"
+      Session.set "currentWarehouse"
+      Session.set "currentProviders"
+      Session.set "personalNewCustomers"
+      Session.set "personalNewWarehouses"
+      Session.set "personalNewSkulls"
 
   Tracker.autorun ->
     console.log ('popoverAutorunWorking..') if autorunDebug
     if Session.get('currentProfile')?.parentMerchant
-
       if Session.get('currentWarehouse')
         Session.set 'availableProducts', Schema.products.find({warehouse: Session.get('currentWarehouse')._id}, Sky.helpers.defaultSort(1)).fetch()
         Session.set 'availableSaleProducts', Schema.products.find({
@@ -85,19 +117,7 @@ Meteor.startup ->
           providerList= []
           for item in providers
             unless Schema.products.findOne({provider: item._id}) then providerList.push(item)
-          Session.set 'personalNewProviders' , providerList
-
-
-
-      #chưa fix(viet lai dep)
-      if Session.get('currentMerchant')
-        Session.set 'personalNewCustomers' , Schema.customers.find({currentMerchant: Session.get('currentMerchant')._id, creator: Meteor.userId()}).fetch()
-        Session.set 'personalNewWarehouses', Schema.warehouses.find({merchant: Session.get('currentMerchant')._id, creator: Meteor.userId()}).fetch()
-        Session.set 'personalNewSkulls'    , Schema.skulls.find({merchant: Session.get('currentMerchant')._id, creator: Meteor.userId()}).fetch()
-
-        Session.set 'availableSkulls'      , Schema.skulls.find({merchant: Session.get('currentMerchant')._id}).fetch()
-        Session.set 'currentProviders'     , Schema.providers.find({merchant: Session.get('currentMerchant')._id, status: false}).fetch()
-
+            Session.set 'personalNewProviders' , providerList
 
   Tracker.autorun ->
     console.log ('inventoryAutorunWorking..') if autorunDebug
@@ -121,9 +141,6 @@ Meteor.startup ->
           Session.set "inventoryWarehouse", Session.get("allWarehouseInventory")[0]
       else
         Session.set "inventoryWarehouse"
-
-
-
 
   Tracker.autorun ->
     console.log ('exportAutorunWorking..') if autorunDebug
@@ -172,5 +189,9 @@ Meteor.startup ->
     console.log ('deliveriesAutorunWorking..') if autorunDebug
     if Session.get('currentWarehouse')
       Session.set 'availableSale'   , Schema.sales.find({warehouse: Session.get("currentWarehouse")._id, status: true}).fetch()
-      Session.set 'availableReturns'   , Schema.returns.find({warehouse: Session.get("currentWarehouse")._id}).fetch()
+      Session.set 'availableReturns', Schema.returns.find({warehouse: Session.get("currentWarehouse")._id}).fetch()
+    else
+      Session.set 'availableSale'
+      Session.set 'availableReturns'
+
 

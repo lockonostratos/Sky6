@@ -49,37 +49,37 @@ Schema2.userProfiles = new SimpleSchema
     type: String
     optional: true
 #--------------------------
-  companyName:
-    type: String
-    optional: true
-
-  companyPhone:
-    type: String
-    optional: true
-
-  merchantName:
-    type: String
-    optional: true
-
-  warehouseName:
-    type: String
-    optional: true
-
-  packageClass:
-    type: String
-    optional: true
-
-  extendAccountLimit:
-    type: Number
-    optional: true
-
-  extendBranchLimit:
-    type: Number
-    optional: true
-
-  extendWarehouseLimit:
-    type: Number
-    optional: true
+#  companyName:
+#    type: String
+#    optional: true
+#
+#  companyPhone:
+#    type: String
+#    optional: true
+#
+#  merchantName:
+#    type: String
+#    optional: true
+#
+#  warehouseName:
+#    type: String
+#    optional: true
+#
+#  packageClass:
+#    type: String
+#    optional: true
+#
+#  extendAccountLimit:
+#    type: Number
+#    optional: true
+#
+#  extendBranchLimit:
+#    type: Number
+#    optional: true
+#
+#  extendWarehouseLimit:
+#    type: Number
+#    optional: true
 #--------------------------
   currentOrder:
     type: String

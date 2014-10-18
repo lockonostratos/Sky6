@@ -39,6 +39,7 @@ Schema.add 'sales', class Sale
       productCount      : order.productCount
       saleCount         : order.saleCount
       return            : false
+      returnLock       : false
       returnCount       : 0
       returnQuality     : 0
       paymentMethod     : order.paymentMethod

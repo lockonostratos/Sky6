@@ -27,6 +27,10 @@ Schema2.sales = new SimpleSchema
     type: Boolean
     optional: true
 
+  returnLock:
+    type: Boolean
+    optional: true
+
   returnCount:
     type: Number
 

@@ -19,12 +19,13 @@ reUpdateProduct = (productId)->
       option.currentPrice = product.importPrice ? 0
       Schema.imports.update(Session.get('currentImport')._id, {$set: option})
       Session.set 'currentImport', Schema.imports.findOne(Session.get('currentImport')._id)
+    $("[name=expire]").datepicker('setDate', undefined)
     Session.set 'currentProductInstance', product
 
 runInitImportTracker = (context) ->
   return if Sky.global.importTracker
   Sky.global.importTracker = Tracker.autorun ->
-    if Session.get('currentWarehouse')._id
+    if Session.get('currentWarehouse')?._id
       importHistory = Schema.imports.find({
         warehouse : Session.get('currentWarehouse')._id
         creator   : Meteor.userId()
@@ -46,8 +47,6 @@ runInitImportTracker = (context) ->
     if currentProductId = Session.get('currentImport')?.currentProduct
       if currentProduct = Schema.products.findOne(currentProductId)
         Session.setDefault 'currentProductInstance', currentProduct
-
-
 
 Sky.appTemplate.extends Template.import,
   warehouseImport: -> Session.get 'currentImport'
@@ -177,6 +176,14 @@ Sky.appTemplate.extends Template.import,
     "click #popProvider": (event, template) -> $(template.find '#providerPopover').modalPopover('show')
 
     'click .addImportDetail': (event, template)->
+      expire = template.ui.$expire.data('datepicker').dates[0]
+      if expire > (new Date)
+        expireDate = new Date(expire.getFullYear(), expire.getMonth(), expire.getDate())
+        option = $set: {currentExpire: expireDate}
+      else
+        option = $unset: {currentExpire: true}
+
+      Schema.imports.update Session.get('currentImport')._id, option
       console.log ImportDetail.createByImport Session.get('currentImport')._id
 
     'click .editImport': (event, template)->

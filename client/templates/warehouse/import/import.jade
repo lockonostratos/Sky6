@@ -22,6 +22,9 @@ template(name="import")
       .editor-wrapper(style="width:150px; {{hidePrice}}")
         span.ilabel.center giá bán
         +iSpinEdit(options=priceOptions class="field")
+      .editor-wrapper(style="width: 120px")
+        span.ilabel.optional hết hạn
+        input(binding="datePicker" todayHighlight="true" name="expire")
       .editor-wrapper(style="width:100px")
         button.btn.btn-default.addImportDetail(type='submit' style="{{hideAddImportDetail}}") Add
 

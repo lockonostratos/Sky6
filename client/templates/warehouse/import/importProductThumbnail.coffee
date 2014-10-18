@@ -6,6 +6,7 @@ Sky.template.extends Template.importProductThumbnail,
   pad: (number) ->
     if number < 10 then '0' + number else number
   round: (number) -> Math.round(number)
+  expire: -> if @expire then @expire.toDateString()
 
   events:
     "dblclick .full-desc.trash": ->

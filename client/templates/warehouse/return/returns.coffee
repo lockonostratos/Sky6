@@ -17,10 +17,14 @@ runInitReturnsTracker = (context) ->
   return if Sky.global.returnTracker
   Sky.global.returnTracker = Tracker.autorun ->
     if Session.get('currentWarehouse')
-      Session.set "availableSales", Schema.sales.find({warehouse: Session.get('currentWarehouse')._id, status: true, submitted: true}).fetch()
+      Session.set "availableSales", Schema.sales.find({warehouse: Session.get('currentWarehouse')._id, status: true, submitted: true, returnLock: false}).fetch()
 
-    if Session.get('currentProfile')?.currentSale
-      Session.set 'currentSale', Schema.sales.findOne(Session.get('currentProfile')?.currentSale)
+
+    if Session.get('availableSales')?.length > 0
+      if Session.get('currentProfile')?.currentSale
+        Session.set 'currentSale', Schema.sales.findOne(Session.get('currentProfile')?.currentSale)
+    else
+      Session.set 'currentSale'
 
     if Session.get('currentSale')
       Session.set 'currentReturn', Schema.returns.findOne({sale: Session.get('currentSale')._id, status: {$ne: 2}})
@@ -44,6 +48,11 @@ Sky.appTemplate.extends Template.returns,
   hideEditReturn:   -> return "display: none" if Session.get('currentReturn')?.status != 1
   hideSubmitReturn: -> return "display: none" if Session.get('currentReturn')?.status != 1
 
+  returnDetailOptions:
+    itemTemplate: 'returnProductThumbnail'
+    reactiveSourceGetter: -> Session.get('currentReturnDetails')
+    wrapperClasses: 'detail-grid row'
+
   saleSelectOptions:
     query: (query) -> query.callback
       results: _.filter Session.get('availableSales'), (item) ->
@@ -51,7 +60,7 @@ Sky.appTemplate.extends Template.returns,
         unsignedName = Sky.helpers.removeVnSigns item.orderCode
         unsignedName.indexOf(unsignedTerm) > -1
       text: 'orderCode'
-    initSelection: (element, callback) -> callback(Session.get 'currentSale')
+    initSelection: (element, callback) -> callback(Session.get('currentSale') ? 'skyReset')
     formatSelection: formatSaleReturnSearch
     formatResult: formatSaleReturnSearch
     id: '_id'
@@ -66,7 +75,7 @@ Sky.appTemplate.extends Template.returns,
         sale.currentProductDetail = saleDetail._id
         sale.currentQuality       = 1
       Session.set 'currentSale', sale
-    reactiveValueGetter: -> Session.get('currentProfile')?.currentSale
+    reactiveValueGetter: -> Session.get('currentSale') ? 'skyReset'
 
   returnProductSelectOptions:
     query: (query) -> query.callback
@@ -91,11 +100,6 @@ Sky.appTemplate.extends Template.returns,
     reactiveMax: -> Session.get('currentMaxQualityReturn') ? 0
     reactiveMin: -> if Session.get('currentMaxQualityReturn') > 0 then 1 else 0
     reactiveStep: -> 1
-
-  returnDetailOptions:
-    itemTemplate: 'returnProductThumbnail'
-    reactiveSourceGetter: -> Session.get('currentReturnDetails')
-    wrapperClasses: 'detail-grid row'
 
   discountCashOptions:
     reactiveSetter: (val)->

@@ -26,14 +26,23 @@ Schema.add 'importDetails', class ImportDetail
     if !imports = Schema.imports.findOne({_id: importId}) then return {error: true, message: "Phiếu nhập kho không tồn tại"}
     if imports.finish == true then return {error: true, message: "Phiếu nhập kho đang chờ duyệt, không thể thêm sản phẩm"}
     if !product = Schema.products.findOne(imports.currentProduct) then return {error: true, message: "Không tìm thấy sản phẩm nhập kho"}
-    importDetails = Schema.importDetails.find({import: importId}).fetch()
+#    importDetails = Schema.importDetails.find({import: importId}).fetch()
     importDetail = @newImportDetail(imports, product)
 
-    findImportDetail =_.findWhere(importDetails,{
+    findImportDetail = Schema.importDetails.findOne ({
+      import      : importDetail.import
       product     : importDetail.product
       provider    : importDetail.provider
       importPrice : importDetail.importPrice
+      expire      : importDetail.expire
     })
+
+#    findImportDetail =_.findWhere(importDetails,{
+#      product     : importDetail.product
+#      provider    : importDetail.provider
+#      importPrice : importDetail.importPrice
+#      expire      : importDetail.expire
+#    })
 
     if findImportDetail
       reUpdateImportDetail(importDetail, findImportDetail)

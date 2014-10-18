@@ -73,6 +73,7 @@ Schema.add 'returns', class Return
     if returns.status == 1
       returnQuality = 0
       for returnDetail in Schema.returnDetails.find({return: returns._id, submit: true}).fetch()
+
         returnQuality = returnDetail.returnQuality
         option =
           availableQuality: returnDetail.returnQuality
@@ -81,15 +82,14 @@ Schema.add 'returns', class Return
         Schema.productDetails.update returnDetail.productDetail, $inc: option
         Schema.products.update returnDetail.product, $inc: option
         Schema.saleDetails.update returnDetail.saleDetail, $inc:{returnQuality: returnDetail.returnQuality}
-
+        saleDetail = Schema.saleDetails.findOne(returnDetail.saleDetail)
+        unless saleDetail.quality is saleDetail.returnQuality then unLockReturn = true
 
       Schema.returns.update returns._id, $set: {status: 2}
-      Schema.sales.update returns.sale, $set:{status: true, return: true}, $inc:{returnCount: 1, returnQuality: returnQuality}
+      Schema.sales.update returns.sale, $set:{status: true, return: true, returnLock: !unLockReturn}, $inc:{returnCount: 1, returnQuality: returnQuality}
       transaction =  Transaction.newByReturn(returns)
       transactionDetail = TransactionDetail.newByTransaction(transaction)
       MetroSummary.updateMetroSummaryByReturn(returns._id, returnQuality)
-
-
       return console.log('Ok, Phiếu đã được duyệt bởi quản lý.')
     return console.log('Lỗi, Phiếu chưa được xác nhận từ nhân viên.') if returns.status == 0
     return console.log('Lỗi, Phiếu đã được duyệt, không thể thao tác.') if returns.status == 2

@@ -77,6 +77,8 @@ Sky.template.extends Template.inventoryProductThumbnail,
     if @lock == @submit == false then return 'lime'
     if @lostQuality > 0 then 'pumpkin' else 'belize-hole'
 
+  productDetail: -> Schema.productDetails.findOne(@productDetail)
+  expireDate: (date)-> if date then date.toDateString() else ''
 
   originalQuality: -> calculateOriginalQuality(@)
   saleQuality: -> calculateSaleQuality(@)
