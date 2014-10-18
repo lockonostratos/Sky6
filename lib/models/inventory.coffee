@@ -69,6 +69,8 @@ Schema.add 'inventories', class Inventory
       $set:{checkingInventory: false}
       $unset:{inventory: ""}
 
+    MetroSummary.updateMetroSummaryByInventory(@id)
+
 
 
 

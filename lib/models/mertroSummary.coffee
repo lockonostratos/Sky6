@@ -276,6 +276,44 @@ Schema.add 'metroSummaries', class MetroSummary
       saleDebitCash         : -depositCash
     }
 
+  @updateMetroSummaryByInventory: (inventoryId)->
+    inventory = Schema.inventories.findOne({_id: inventoryId, submit: true})
+
+    inventoryDetails = Schema.inventoryDetails.find({inventory: inventory._id}).fetch()
+    lostQuality = 0
+    for importDetail in inventoryDetails
+      lostQuality += importDetail.lostQuality
+    setOption={}
+    option =
+      inventoryCount        : 1
+      inventoryProductCount : lostQuality
+      stockProductCount     : -lostQuality
+      availableProductCount : -lostQuality
+
+    #  oldImports = Schema.imports.findOne({$and: [
+    #    {merchant: imports.merchant}
+    #    {'version.updateAt': {$lt: imports.version.updateAt}}
+    #    {submitted: true}
+    #  ]}, Sky.helpers.defaultSort())
+    #  console.log imports.version.updateAt.getDate()
+    #  console.log oldImports
+    #
+    #  unless oldImports
+    #    oldImports = {version: {}}
+    #    oldImports.version.updateAt = imports.version.updateAt
+
+    #  if imports.version.updateAt.getDate() == oldImports.version.updateAt.getDate()
+    #    option.importCountDay = totalProduct
+    #  else
+    #    setOption.importCountDay = totalProduct
+    #
+    #  if imports.version.updateAt.getMonth() == oldImports.version.updateAt.getMonth()
+    #    option.importCountMonth = totalProduct
+    #  else
+    #    setOption.importCountMonth = totalProduct
+
+    metroSummary = Schema.metroSummaries.findOne({merchant: inventory.merchant})
+    Schema.metroSummaries.update metroSummary._id, $inc: option, $set: setOption
 
   @updateMetroSummaryByReturn: (returnId, returnQuality)->
     returns = Schema.returns.findOne(returnId)
