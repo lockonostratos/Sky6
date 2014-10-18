@@ -23,7 +23,14 @@ Package.onUse(function(api) {
     'lib/3rds/jquery.event.drag.live-2.2.js',
     'lib/3rds/notify.js',
     'lib/3rds/jquery.knob.js',
-    'lib/3rds/jquery.cookie.js'
+    'lib/3rds/jquery.cookie.js',
+
+    //layerslider
+    'lib/3rds/layerslider/layerslider.css',
+    'lib/3rds/layerslider/jquery-easing-1.3.js',
+    'lib/3rds/layerslider/jquerytransit.js',
+    'lib/3rds/layerslider/layerslider.transitions.js',
+    'lib/3rds/layerslider/layerslider.kreaturamedia.jquery.js'
     ]
   , 'client');
 
