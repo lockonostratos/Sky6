@@ -32,7 +32,6 @@ Sky.appTemplate.extends Template.roleManager,
     permissions = []
     for permission, obj of Sky.system.merchantPermissions
       permissions.push obj
-
     permissions
 
   created: ->
@@ -70,6 +69,9 @@ Sky.appTemplate.extends Template.roleManager,
         newPermissions.push item.key if item.val.isChecked()
 
       Schema.roles.update(Session.get('currentRoleSelection')._id, {$set: {permissions: newPermissions}})
+      Notification.permissionChanged(Session.get('currentRoleSelection'))
+
+
 
   roleSelectOptions:
     query: (query) -> query.callback

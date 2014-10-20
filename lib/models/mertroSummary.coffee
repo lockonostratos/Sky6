@@ -356,11 +356,8 @@ Schema.add 'metroSummaries', class MetroSummary
 
   @updateMetroSummaryBySaleExport: (saleId)->
     sale  = Schema.sales.findOne(saleId)
-    if sale
-      console.log sale
-      console.log saleStatusIsExport(sale)
+    if sale && saleStatusIsExport(sale)
       if saleStatusIsExport(sale)
-
         metroSummary = Schema.metroSummaries.findOne({merchant: sale.merchant})
         Schema.metroSummaries.update metroSummary._id, $inc: {stockProductCount: -sale.saleCount}
 

@@ -8,12 +8,13 @@ subtractQualityOnSales= (stockingItems, sellingItem , currentSale) ->
       takkenQuality = productDetail.availableQuality
 
     SaleDetail.createSaleDetailByOrder(currentSale, sellingItem, productDetail, takkenQuality)
-#    Schema.productDetails.update product._id, $inc:{availableQuality: -takkenQuality}
-#    Schema.products.update product.product,   $inc:{availableQuality: -takkenQuality}
 
-    if currentSale.paymentsDelivery == 2 then instockQuality = takkenQuality else instockQuality = 0
-    Schema.productDetails.update productDetail._id, $inc:{availableQuality: -takkenQuality, instockQuality: -instockQuality}
-    Schema.products.update productDetail.product,   $inc:{availableQuality: -takkenQuality, instockQuality: -instockQuality}
+#    if currentSale.paymentsDelivery == 2 then instockQuality = takkenQuality else instockQuality = 0
+#    Schema.productDetails.update productDetail._id, $inc:{availableQuality: -takkenQuality, instockQuality: -instockQuality}
+#    Schema.products.update productDetail.product,   $inc:{availableQuality: -takkenQuality, instockQuality: -instockQuality}
+
+    Schema.productDetails.update productDetail._id, $inc:{availableQuality: -takkenQuality}
+    Schema.products.update productDetail.product  , $inc:{availableQuality: -takkenQuality}
 
     transactionQuality += takkenQuality
     if transactionQuality == sellingItem.quality then break
@@ -136,10 +137,7 @@ Schema.add 'orders', class Order
     option._id = Schema.orders.insert option
     option
 
-  @createOrderAndSelect: ->
-    order = @createOrder()
-    UserProfile.update {currentOrder: order._id}
-    order
+  @createOrderAndSelect: -> order = @createOrder(); UserProfile.update {currentOrder: order._id}; order
 
   @removeAll: (orderId)->
     try
@@ -203,18 +201,17 @@ Schema.add 'orders', class Order
       return 'Thông tin giao hàng chưa đầy đủ (comment)' if !order.comment || order.comment < 1
 #      return 'Thông tin giao hàng chưa đầy đủ (deliveryDate)' if order.deliveryDate.length > 1
 
-
     result = checkProductInstockQuality(orderId)
     if result.error then console.log result.error; return
 
     saleId = createSaleAndSaleOrder(order)
-    #xac nhan tien()
+    Notification.newSaleDefault(saleId)
+
+#----Tự động xác nhận đã nhận tiền(Kế Toán)-----
 #    Sale.findOne(saleId).confirmReceiveSale()
-    #xac xuat kho
+#----Tự động xuất kho khi đã nhận tiền(Thủ Kho)----
 #    Sale.findOne(saleId).createSaleExport()
 
-#    createTransactionAndDetailByOrder(saleId)
-    MetroSummary.updateMetroSummaryBySale(saleId)
 
     removeOrderAndOrderDetailAfterCreateSale(orderId, userProfile)
     return("Tạo phiếu bán hàng thành công")

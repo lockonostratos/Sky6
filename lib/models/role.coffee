@@ -3,6 +3,13 @@ Schema.add 'roles', class Role
     Schema.userProfiles.update profileId, {$set: {roles: roles}}
 
   @isInRole: (userId, name) ->
+
+  @rolesOf: (permissions)->
+    roles = []
+    for role in @schema.find({permissions: {$elemMatch: {$in:[permissions, 'su']}}}).fetch()
+      roles.push role.name
+    roles
+
   @permissionsOf: (profile) ->
     if typeof profile isnt 'string'
       currentProfile = profile
@@ -11,9 +18,10 @@ Schema.add 'roles', class Role
       return [] if !currentProfile
 
     permissions = []
-    for role in currentProfile.roles
-      currentRole = @schema.findOne(role)
-      permissions = _.union permissions, currentRole.permissions if currentRole
+    if currentProfile.roles
+      for role in currentProfile.roles
+        currentRole = @schema.findOne({name: role})
+        permissions = _.union permissions, currentRole.permissions if currentRole
     permissions
 
   @hasPermission: (profileId, name) ->
@@ -22,3 +30,6 @@ Schema.add 'roles', class Role
 
     permissions = @permissionsOf currentProfile
     return _.contains(currentProfile.roles, 'admin') || _.contains(permissions, name)
+
+
+

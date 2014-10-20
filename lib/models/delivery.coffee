@@ -22,8 +22,10 @@ Schema.add 'deliveries', class Delivery
       when 1
         deliveryOption = {status: 2, shipper: Meteor.userId()}
         saleOption     = {status: true}
+        Notification.deliveryNotify(sale, status: 'selected')
       when 3
         deliveryOption = {status: 4, shipper: Meteor.userId()}
+        Notification.deliveryNotify(sale, status: 'working')
       when 4
         #thanh cong
         if success
@@ -33,22 +35,27 @@ Schema.add 'deliveries', class Delivery
           else
             deliveryOption = {status: 6, shipper: Meteor.userId()}
             saleOption     = {status: true, success: true}
+          Notification.deliveryNotify(sale, status: 'success')
         #that bai
         else
+          #TODO: Có vấn đề kho giao hàng thất bại (chưa biết tính cách trả tiền)
           if sale.debit > 0
             deliveryOption = {status: 8, shipper: Meteor.userId()}
             saleOption     = {status: true, success: false}
           else
             deliveryOption = {status: 8, shipper: Meteor.userId()}
             saleOption     = {status: true, success: false}
+          Notification.deliveryNotify(sale, status: 'fail')
       #xac nhan thanh cong
       when 6
         deliveryOption = {status: 7, shipper: Meteor.userId()}
         saleOption     = {status: true, submitted: true}
+        Notification.deliveryNotify(sale, status: 'done')
       #xac nhan that bai
       when 9
         deliveryOption = {status: 10, shipper: Meteor.userId()}
         saleOption     = {status: true, submitted: true}
+        Notification.deliveryNotify(sale, status: 'done')
 
     Schema.deliveries.update @id, $set: deliveryOption
     Schema.sales.update @data.sale, $set: saleOption

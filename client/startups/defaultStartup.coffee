@@ -52,6 +52,7 @@ Meteor.startup ->
 
       #Temporaries SUBSCRUBIBE
       Meteor.subscribe 'merchantProfiles' , parentMerchantId
+      Meteor.subscribe 'merchantRoles', Session.get('currentProfile').parentMerchant
 
       Session.set "metroSummary"          , metroSummary
       Session.set "availableMerchant"     , availableMerchant

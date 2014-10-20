@@ -2,38 +2,48 @@ colorGenerateHistory = []
 
 class Sky
   class @global
+
   class @system
     @merchantPermissions:
-      su:                     { group: 'special',   key: 'su',                  description: 'tất cả' }
-      sales:                  { group: 'sales',     key: 'sales',               description: 'bán hàng' }
-      returns:                { group: 'sales',     key: 'returns',             description: 'trả hàng' }
-      detroySalesBill:        { group: 'sales',     key: 'destroySalesBill',    description: 'xóa hóa đơn' }
+      su                    : { group: 'special'   , key: 'su'                 , description: 'tất cả' }
 
-      delivery:               { group: 'sales',     key: 'delivery',            description: 'giao hàng' }
-      deliveryConfirm:        { group: 'sales',     key: 'deliveryConfirm',     description: 'xác nhận giao hàng' }
-      deliveryDestroy:        { group: 'sales',     key: 'deliveryDestroy',     description: 'hủy giao hàng' }
+      sales                 : { group: 'sales'     , key: 'sales'              , description: 'bán hàng' }
+      returns               : { group: 'sales'     , key: 'returns'            , description: 'trả hàng' }
+      detroySalesBill       : { group: 'sales'     , key: 'destroySalesBill'   , description: 'xóa hóa đơn' }
+      delivery              : { group: 'sales'     , key: 'delivery'           , description: 'giao hàng' }
+      deliveryConfirm       : { group: 'sales'     , key: 'deliveryConfirm'    , description: 'xác nhận giao hàng' }
+      deliveryDestroy       : { group: 'sales'     , key: 'deliveryDestroy'    , description: 'hủy giao hàng' }
+      exportDelivery        : { group: 'sales'     , key: 'exportDelivery'     , description: 'xác nhận xuất kho giao hàng' }
+      importDestroy         : { group: 'sales'     , key: 'deliveryDestroy'    , description: 'xác nhận nhập kho giao hàng' }
+      cashDestroy           : { group: 'sales'     , key: 'importDestroy'      , description: 'xác nhận thu tiền giap hàng' }
 
-      exportDelivery:         { group: 'sales',     key: 'exportDelivery',      description: 'xác nhận xuất kho giao hàng' }
-      importDestroy:          { group: 'sales',     key: 'deliveryDestroy',     description: 'xác nhận nhập kho giao hàng' }
-      cashDestroy:            { group: 'sales',     key: 'importDestroy',       description: 'xác nhận thu tiền giap hàng' }
+      saleCashier           : { group: 'accounting', key: 'saleCashier'        , description: 'xác nhận thu tiền khi bán hàng' }
+      deliveryCashier       : { group: 'accounting', key: 'deliveryCashier'    , description: 'xác nhận thu tiền khi giao hàng' }
 
-      export:                 { group: 'warehouse', key: 'export',              description: 'xuất kho' }
-      exportDestroy:          { group: 'warehouse', key: 'exportDestroy',       description: 'hủy xuất kho' }
-      import:                 { group: 'warehouse', key: 'import',              description: 'nhập kho' }
-      importDestroy:          { group: 'warehouse', key: 'importDestroy',       description: 'hủy nhập kho' }
-      destroyImport:          { group: 'warehouse', key: 'destroyImport',       description: 'xóa phiếu nhập kho' }
+      saleExporter          : { group: 'warehouse' , key: 'saleExporter'       , description: 'xuất kho khi bán hàng' }
+      deliveryExporter      : { group: 'warehouse' , key: 'deliveryExporter'   , description: 'nhập kho khi giao hàng thất bại' }
 
-      accountManagement:      { group: 'human',     key: 'accountManagement',   description: 'quản lý nhân viên' }
-      createCustomer:         { group: 'crm',       key: 'createCustomer',      description: 'tạo khách hàng' }
-      customerShow:           { group: 'crm',       key: 'customerShow',        description: 'quản lý khách hàng' }
-      customerManagement:     { group: 'crm',       key: 'customerManagement',  description: 'quản lý khách hàng' }
+      export                : { group: 'warehouse' , key: 'export'             , description: 'xuất kho' }
+      exportDestroy         : { group: 'warehouse' , key: 'exportDestroy'      , description: 'hủy xuất kho' }
+      import                : { group: 'warehouse' , key: 'import'             , description: 'nhập kho' }
+      importDestroy         : { group: 'warehouse' , key: 'importDestroy'      , description: 'hủy nhập kho' }
+      destroyImport         : { group: 'warehouse' , key: 'destroyImport'      , description: 'xóa phiếu nhập kho' }
 
-      transactionShow:        { group: 'finance',   key: 'transactionShow',     description: 'xem thu chi' }
-      transactionManagement:  { group: 'finance',   key: 'transactionShow',     description: 'q.lý thu chi' }
 
-      taskShow:               { group: 'scrum',     key: 'scrumShow',           description: 'xem task' }
-      createTask:             { group: 'scrum',     key: 'scrumShow',           description: 'tạo task' }
-      taskManagement:         { group: 'scrum',     key: 'scrumShow',           description: 'q.lý task' }
+      shipper               : { group: 'delivery'  , key: 'shipper'            , description: 'giao hàng' }
+
+      accountManagement     : { group: 'human'     , key: 'accountManagement'  , description: 'quản lý nhân viên' }
+
+      createCustomer        : { group: 'crm'       , key: 'createCustomer'     , description: 'tạo khách hàng' }
+      customerShow          : { group: 'crm'       , key: 'customerShow'       , description: 'quản lý khách hàng' }
+      customerManagement    : { group: 'crm'       , key: 'customerManagement' , description: 'quản lý khách hàng' }
+
+      transactionShow       : { group: 'finance'   , key: 'transactionShow'    , description: 'xem thu chi' }
+      transactionManagement : { group: 'finance'   , key: 'transactionShow'    , description: 'q.lý thu chi' }
+
+      taskShow              : { group: 'scrum'     , key: 'scrumShow'          , description: 'xem task' }
+      createTask            : { group: 'scrum'     , key: 'scrumShow'          , description: 'tạo task' }
+      taskManagement        : { group: 'scrum'     , key: 'scrumShow'          , description: 'q.lý task' }
 
     @taskStatuses:
       deleted:                {key: 'deleted'}
@@ -176,6 +186,20 @@ class Sky
       reg = /^\w+[\+\.\w-]*@([\w-]+\.)*\w+[\w-]*\.([a-z]{2,4}|\d+)$/i #''
       reg1= /^[0-9A-Za-z]+[0-9A-Za-z_]*@[\w\d.]+.\w{2,4}$/
       reg.test(email)
+
+
+    @saleStatusIsExport: (sale)->
+      if sale.status == sale.received == true and sale.submitted == sale.exported == sale.imported == false and (sale.paymentsDelivery == 0 || sale.paymentsDelivery == 1)
+        true
+      else
+        false
+
+    @saleStatusIsImport: (sale)->
+      if sale.status == sale.received == sale.exported == true and sale.submitted == sale.imported == false and sale.paymentsDelivery == 1
+        true
+      else
+        false
+
 
 @Sky = Sky
 

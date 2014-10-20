@@ -46,7 +46,12 @@ createStaffAccount = (template)->
     #      Meteor.call "createMerchantAccount",
     #        email: template.ui.$email.val()
     #        password: template.ui.$password.val()
+
+    newMemberName = fullName ? email
+    Notification.newMemberJoined(newMemberName, Session.get("merchantPackages").companyName)
     resetForm(template)
+
+
 
 runInitTracker = (context) ->
   return if Sky.global.staffManagerTracker
@@ -56,16 +61,17 @@ runInitTracker = (context) ->
       Meteor.subscribe 'merchantRoles', Session.get('currentProfile').parentMerchant
       Meteor.subscribe 'merchantProfiles', Session.get('currentProfile').parentMerchant
 
-    Session.setDefault 'createStaffBranchSelection', Session.get('currentMerchant')
-    Session.setDefault 'createStaffWarehouseSelection', Session.get('currentWarehouse')
+    Session.set 'createStaffBranchSelection', Session.get('currentMerchant') if Session.get('currentMerchant')
+    Session.set 'createStaffWarehouseSelection', Session.get('currentWarehouse') if Session.get('currentWarehouse')
 
 Sky.appTemplate.extends Template.staffManager,
   allowCreate: -> if Session.get('allowCreateStaffAccount') then 'btn-success' else 'btn-default disabled'
 
   created: ->
     runInitTracker()
-    Session.set("createStaffGenderSelection", false)
+    Session.setDefault("createStaffGenderSelection", false)
     Session.setDefault('allowCreateStaffAccount', false)
+    Session.setDefault('currentRoleSelection', [])
 
   rendered: ->
     Sky.global.staffManagerTemplateInstance = @
