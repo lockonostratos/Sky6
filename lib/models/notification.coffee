@@ -69,8 +69,7 @@ Schema.add 'notifications', class Notification
 
 #kho
   @saleExporterConfirm: (sale) ->
-    unless sale then return
-    userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    unless sale then return; userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     unless sale.merchant is userProfile.currentMerchant then return
     unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.saleExport.key) then return
     if Sky.helpers.saleStatusIsExport(sale)
@@ -89,8 +88,7 @@ Schema.add 'notifications', class Notification
         @send(NotificationMessages.deliveryExport(exporterName, sale.orderCode), shipperId) unless shipperId is userProfile.user
 
   @saleImportConfirm: (sale) ->
-    unless sale then return
-    userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    unless sale then return; userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     unless sale.merchant is userProfile.currentMerchant then return
     unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.importDelivery.key) then return
     if Sky.helpers.saleStatusIsImport(sale)
@@ -106,8 +104,7 @@ Schema.add 'notifications', class Notification
 
 #giao hang
   @deliveryNotify: (sale, status) ->
-    unless sale or (sale.paymentsDelivery is 1) then return
-    userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    unless sale or (sale.paymentsDelivery is 1) then return; userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     unless sale.merchant is userProfile.currentMerchant then return
     unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.deliveryConfirm.key) then return
 
@@ -147,5 +144,28 @@ Schema.add 'notifications', class Notification
         @send(NotificationMessages.saleSellerByDeliveryFail(shipperName, creatorName, sale.orderCode), sale.seller) unless sale.seller is userProfile.user
 
 #trả hàng
+  @returnConfirm: (returns)->
+    unless returns then return; userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    unless returns.creator is userProfile.user then return
+    unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.returnCreate.key) then return
+
+    creatorName = userProfile.fullName ? Meteor.user().emails[0].address
+    for receiver in Schema.userProfiles.find({parentMerchant: userProfile.parentMerchant, roles: {$elemMatch: {$in:Role.rolesOf(Sky.system.merchantPermissions.returnConfirm.key)}}}).fetch()
+      @send(NotificationMessages.returnNotify(creatorName, returns.returnCode), receiver.user) unless userProfile.user is receiver.user
+
+  @returnSubmit: (returns)->
+    unless returns then return; userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.returnConfirm.key) then return
+    unless userProfile.user is returns.creator
+      creatorName = userProfile.fullName ? Meteor.user().emails[0].address
+      @send(NotificationMessages.returnConfirmNotify(creatorName, returns.returnCode), returns.creator)
+
+  @returnDestroy: (returns)->
+    unless returns then return; userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.returnDestroy.key) then return
+    unless userProfile.user is returns.creator
+      creatorName = userProfile.fullName ? Meteor.user().emails[0].address
+      @send(NotificationMessages.returnDestroyNotify(creatorName, returns.returnCode), returns.creator)
+
 
 
