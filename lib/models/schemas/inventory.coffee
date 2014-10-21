@@ -8,6 +8,10 @@ Schema2.inventories = new SimpleSchema
   creator:
     type: String
 
+  inventoryCode:
+    type: String
+    optional: true
+
   description:
     type: String
 

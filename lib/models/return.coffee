@@ -46,14 +46,15 @@ Schema.add 'returns', class Return
 
   finishReturn: ->
     try
+      userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
       throw 'Lỗi, Phiếu trả không chính xác.' if @data.creator isnt Meteor.userId()
       throw 'Lỗi, Phiếu trả hàng rỗng, không thể xác nhận.' if Schema.returnDetails.find({return: @id}).count() < 1
       throw 'Lỗi, Bạn không có quyền.' unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.returnCreate.key)
       if @data.status == 0
+        Notification.returnConfirm(@id)
         Schema.returns.update @id, $set: {status: 1}
         for returnDetail in Schema.returnDetails.find({return: @id, submit: false}).fetch()
           Schema.returnDetails.update returnDetail._id, $set: {submit: true}
-        Notification.returnConfirm(@data)
         throw 'Ok, Phiếu đã được xác nhận từ nhân viên'
       throw 'Lỗi, Phiếu đã được xác nhận, đang chờ duyệt, không thể thao tác.' if @data.status == 1
       throw 'Lỗi, Phiếu đã được duyệt, không thể thao tác.' if @data.status == 2
@@ -78,6 +79,7 @@ Schema.add 'returns', class Return
       userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
       throw 'Bạn không có quyền xác nhận.' unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.saleExport.key)
       if @data.status == 1
+        Notification.returnSubmit(@id)
         returnQuality = 0
         for returnDetail in Schema.returnDetails.find({return: @id, submit: true}).fetch()
           returnQuality = returnDetail.returnQuality
@@ -96,7 +98,6 @@ Schema.add 'returns', class Return
         transaction =  Transaction.newByReturn(@data)
         transactionDetail = TransactionDetail.newByTransaction(transaction)
         MetroSummary.updateMetroSummaryByReturn(@id, returnQuality)
-        Notification.returnSubmit(@data)
         throw 'Ok, Phiếu đã được duyệt bởi quản lý.'
       throw 'Lỗi, Phiếu chưa được xác nhận từ nhân viên.' if @data.status == 0
       throw 'Lỗi, Phiếu đã được duyệt, không thể thao tác.' if @data.status == 2

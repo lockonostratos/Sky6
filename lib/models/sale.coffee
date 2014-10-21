@@ -74,7 +74,7 @@ Schema.add 'sales', class Sale
 
         Schema.saleExports.insert SaleExport.new(@data, detail), (error, result) -> console.log error if error
 
-      Notification.saleExporterConfirm(@data)
+      Notification.saleConfirmByExporter(@id)
       MetroSummary.updateMetroSummaryBySaleExport(@id)
       if @data.paymentsDelivery == 0 then  Schema.sales.update @id, $set:{submitted: true, exported: true}
       if @data.paymentsDelivery == 1
@@ -92,11 +92,10 @@ Schema.add 'sales', class Sale
         Schema.products.update detail.product, $inc: option
 
 #        Schema.saleExports.insert SaleExport.new(@data, detail), (error, result) -> console.log error if error
-      Notification.saleImportConfirm(@data)
+      Notification.saleConfirmImporter(@id)
       MetroSummary.updateMetroSummaryBySaleImport(@id)
       Schema.sales.update @id, $set:{imported: true, status: false}
       Schema.deliveries.update @data.delivery, $set:{status: 9, importer: Meteor.userId()}
-
       console.log 'create ImportSale'
 
   #xác nhận đã nhận tiền
@@ -108,15 +107,11 @@ Schema.add 'sales', class Sale
         option.status = false
         Schema.deliveries.update @data.delivery, $set: {status: 1}
 
-      Schema.sales.update @id, $set: option
       transaction =  Transaction.newBySale(@data)
       transactionDetail = TransactionDetail.newByTransaction(transaction)
-
-      userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-      cashierName = userProfile.fullName ? Meteor.user().emails[0].address
-
-      Notification.newSaleAccountingConfirm(@data)
+      Notification.saleConfirmByAccounting(@id)
       MetroSummary.updateMetroSummaryBySale(@id)
+      Schema.sales.update @id, $set: option
 
     if @data.status == @data.success == @data.received == @data.exported == true and @data.submitted ==  @data.imported == false and @data.paymentsDelivery == 1
       unless Role.hasPermission(Schema.userProfiles.findOne({user: Meteor.userId()})._id, Sky.system.merchantPermissions.cashierDelivery.key) then return
@@ -125,7 +120,7 @@ Schema.add 'sales', class Sale
       transaction = Transaction.findOne({parent: @id, merchant: userProfile.currentMerchant, status: "tracking"})
       debitCash = @data.debit
       transaction.recalculateTransaction(debitCash)
-      Notification.saleAccountingConfirmByDelivery(@data)
+      Notification.saleAccountingConfirmByDelivery(@id)
 
 
 

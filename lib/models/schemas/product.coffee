@@ -29,17 +29,25 @@ Schema2.products = new SimpleSchema
     type: Schema.ChildProduct
     optional: true
 
+  alertQuality:
+    type: Number
+    defaultValue: 0
+
   totalQuality:
     type: Number
+    defaultValue: 0
 
   availableQuality:
     type: Number
+    defaultValue: 0
 
   instockQuality:
     type: Number
+    defaultValue: 0
 
   price:
     type: Number
+    defaultValue: 0
 
   version: { type: Schema.Version }
 

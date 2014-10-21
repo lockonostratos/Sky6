@@ -13,7 +13,7 @@ template(name="inventory")
           span.ilabel lý do kiểm kho
           input(name="description" maxlength="200" value="{{inventory.description}}")
         .editor-wrapper(style="width:100px; {{showCreate}}")
-          button.btn.btn-default.creatInventory(class="{{allowCreate}}") Tạo
+          button.btn.btn-default.createInventory(class="{{allowCreate}}") Tạo
         .editor-wrapper(style="width:100px; {{showDestroy}}")
           button.btn.btn-default.destroyInventory() Hủy
         .editor-wrapper(style="width:100px; {{showSubmit}}")

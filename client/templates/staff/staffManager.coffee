@@ -48,7 +48,7 @@ createStaffAccount = (template)->
     #        password: template.ui.$password.val()
 
     newMemberName = fullName ? email
-    Notification.newMemberJoined(newMemberName, Session.get("merchantPackages").companyName)
+    Notification.createNewMember(newMemberName, Session.get("merchantPackages").companyName)
     resetForm(template)
 
 

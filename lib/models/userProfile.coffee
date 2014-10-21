@@ -51,6 +51,7 @@ Schema.add 'userProfiles', class UserProfile
         parentMerchant: merchant
         currentMerchant: merchant
         currentWarehouse: warehouse
+        roles: ['admin']
 
       Schema.userProfiles.update @id, $set: setUser, (error, result)-> console.log error if error
 
