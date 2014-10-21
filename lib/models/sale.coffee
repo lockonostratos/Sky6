@@ -102,7 +102,7 @@ Schema.add 'sales', class Sale
   #xác nhận đã nhận tiền
   confirmReceiveSale: ->
     if @data.received == @data.imported ==  @data.exported == @data.submitted == false and @data.status == true
-      unless Role.hasPermission(Schema.userProfiles.findOne({user: Meteor.userId()})._id, Sky.system.merchantPermissions.saleCashier.key) then return
+      unless Role.hasPermission(Schema.userProfiles.findOne({user: Meteor.userId()})._id, Sky.system.merchantPermissions.cashierSale.key) then return
       option = {received: true}
       if @data.paymentsDelivery == 1
         option.status = false
@@ -119,7 +119,7 @@ Schema.add 'sales', class Sale
       MetroSummary.updateMetroSummaryBySale(@id)
 
     if @data.status == @data.success == @data.received == @data.exported == true and @data.submitted ==  @data.imported == false and @data.paymentsDelivery == 1
-      unless Role.hasPermission(Schema.userProfiles.findOne({user: Meteor.userId()})._id, Sky.system.merchantPermissions.deliveryExporter.key) then return
+      unless Role.hasPermission(Schema.userProfiles.findOne({user: Meteor.userId()})._id, Sky.system.merchantPermissions.cashierDelivery.key) then return
       userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
       Schema.deliveries.update @data.delivery, $set:{status: 6, cashier: Meteor.userId()}
       transaction = Transaction.findOne({parent: @id, merchant: userProfile.currentMerchant, status: "tracking"})
