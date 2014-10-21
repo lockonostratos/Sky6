@@ -53,7 +53,7 @@ Schema.add 'notifications', class Notification
 
       #trực tiếp
       if sale.paymentsDelivery is 0
-        for saleExporter in Schema.userProfiles.find({parentMerchant: userProfile.parentMerchant, roles: {$elemMatch: {$in:Role.rolesOf(Sky.system.merchantPermissions.saleExporter.key)}}}).fetch()
+        for saleExporter in Schema.userProfiles.find({parentMerchant: userProfile.parentMerchant, roles: {$elemMatch: {$in:Role.rolesOf(Sky.system.merchantPermissions.saleExport.key)}}}).fetch()
           @send(NotificationMessages.exportNotify(creatorName, sale.orderCode), saleExporter.user) unless userProfile.user is saleExporter.user
       #giao hàng
       if sale.paymentsDelivery is 1
