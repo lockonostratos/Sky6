@@ -48,6 +48,16 @@ Sky.appTemplate.extends Template.returns,
   hideEditReturn:   -> return "display: none" if Session.get('currentReturn')?.status != 1
   hideSubmitReturn: -> return "display: none" if Session.get('currentReturn')?.status != 1
 
+  rendered: ->
+    runInitReturnsTracker()
+
+  events:
+    'click .addReturnDetail': (event, template) -> ReturnDetail.addReturnDetail(Session.get('currentSale')._id)
+    'click .finishReturn'   : (event, template) -> Return.findOne(Session.get('currentReturn')._id).finishReturn() if Session.get('currentReturn')
+    'click .editReturn'     : (event, template) -> Return.findOne(Session.get('currentReturn')._id).editReturn() if Session.get('currentReturn')
+    'click .submitReturn'   : (event, template) -> Return.findOne(Session.get('currentReturn')._id).submitReturn() if Session.get('currentReturn')
+
+
   returnDetailOptions:
     itemTemplate: 'returnProductThumbnail'
     reactiveSourceGetter: -> Session.get('currentReturnDetails')
@@ -129,12 +139,4 @@ Sky.appTemplate.extends Template.returns,
     reactiveMin: -> 0
     reactiveStep: -> 1
 
-  events:
-    'click .addReturnDetail': (event, template)-> ReturnDetail.addReturnDetail(Session.get('currentSale')._id)
-    'click .finishReturn': (event, template)-> Return.finishReturn(Session.get('currentReturn')._id) if Session.get('currentReturn')
-    'click .editReturn': (event, template)-> Return.editReturn(Session.get('currentReturn')._id) if Session.get('currentReturn')
-    'click .submitReturn': (event, template)-> Return.submitReturn(Session.get('currentReturn')._id) if Session.get('currentReturn')
 
-
-  rendered: ->
-    runInitReturnsTracker()

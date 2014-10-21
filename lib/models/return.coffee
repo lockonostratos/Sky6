@@ -44,32 +44,36 @@ Schema.add 'returns', class Return
     }
     option
 
-  @finishReturn: (returnId)->
-    returns = Schema.returns.findOne({_id: returnId})
-    return console.log('Lỗi, Phiếu trả hàng không tồn tại.') if !returns
-    return console.log('Lỗi, Phiếu trả hàng rỗng, không thể xác nhận.') if Schema.returnDetails.find({return: returns._id}).fetch().length < 1
-    if returns.status == 0
-      Schema.returns.update returns._id, $set: {status: 1}
-      for returns in Schema.returnDetails.find({return: returns._id, submit: false}).fetch()
-        Schema.returnDetails.update returns._id, $set: {submit: true}
+  finishReturn: ->
+    return console.log('Lỗi, Phiếu trả không chính xác.') if @data.creator isnt Meteor.userId()
+    return console.log('Lỗi, Phiếu trả hàng rỗng, không thể xác nhận.') if Schema.returnDetails.find({return: returns._id}).count() < 1
+
+    if @data.status == 0
+      Schema.returns.update @id, $set: {status: 1}
+      for returnDetail in Schema.returnDetails.find({return: @id, submit: false}).fetch()
+        Schema.returnDetails.update returnDetail._id, $set: {submit: true}
+
       return console.log('Ok, Phiếu đã được xác nhận từ nhân viên')
-    return console.log('Lỗi, Phiếu đã được xác nhận, đang chờ duyệt, không thể thao tác.') if returns.status == 1
-    return console.log('Lỗi, Phiếu đã được duyệt, không thể thao tác.') if returns.status == 2
+    return console.log('Lỗi, Phiếu đã được xác nhận, đang chờ duyệt, không thể thao tác.') if @data.status == 1
+    return console.log('Lỗi, Phiếu đã được duyệt, không thể thao tác.') if @data.status == 2
 
-  @editReturn: (returnId)->
-    returns = Schema.returns.findOne({_id: returnId})
-    return console.log('Lỗi, Phiếu không tồn tại.') if !returns
-    if returns.status == 1
-      Schema.returns.update returns._id, $set: {status: 0}
-      for returns in Schema.returnDetails.find({return: returns._id, submit: true}).fetch()
-        Schema.returnDetails.update returns._id, $set: {submit: false}
+  editReturn: ->
+    return console.log('Lỗi, Phiếu trả không chính xác.') if @data.creator isnt Meteor.userId()
+
+    if @data.status == 1
+      Schema.returns.update @id, $set: {status: 0}
+      for returnDetail in Schema.returnDetails.find({return: @id, submit: true}).fetch()
+        Schema.returnDetails.update returnDetail._id, $set: {submit: false}
+
       return console.log('Ok, Phiếu đã có thể chỉnh sửa.')
-    return console.log('Lỗi, Phiếu chưa được xác nhận từ nhân viên.') if returns.status == 0
-    return console.log('Lỗi, Phiếu đã được duyệt, không thể thao tác.') if returns.status == 2
+    return console.log('Lỗi, Phiếu chưa được xác nhận từ nhân viên.') if @data.status == 0
+    return console.log('Lỗi, Phiếu đã được duyệt, không thể thao tác.') if @data.status == 2
 
-  @submitReturn: (returnId)->
+  submitReturn: ->
     returns = Schema.returns.findOne({_id: returnId})
     return console.log('Lỗi, Phiếu không tồn tại.') if !returns
+    unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.saleExporter.key) then return
+
     if returns.status == 1
       returnQuality = 0
       for returnDetail in Schema.returnDetails.find({return: returns._id, submit: true}).fetch()

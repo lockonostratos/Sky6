@@ -30,14 +30,15 @@ Schema.add 'notifications', class Notification
     if sale
       creatorName = userProfile.fullName ? Meteor.user().emails[0].address
       @send(NotificationMessages.saleHelper(creatorName, sale.orderCode, sale.finalPrice), sale.seller) unless sale.creator is sale.seller
-      for receiver in Schema.userProfiles.find({parentMerchant: userProfile.parentMerchant, roles: {$elemMatch: {$in:Role.rolesOf(Sky.system.merchantPermissions.saleCashier.key)}}}).fetch()
+      for receiver in Schema.userProfiles.find({parentMerchant: userProfile.parentMerchant, roles: {$elemMatch: {$in:Role.rolesOf(Sky.system.merchantPermissions.cashierSale.key)}}}).fetch()
         @send(NotificationMessages.accountingNotify(creatorName, sale.orderCode), receiver.user) unless userProfile.user is receiver.user
 
+#Ke toan
   @newSaleAccountingConfirm: (sale) ->
-    unless sale or sale.merchant is userProfile.currentMerchant then return
-    #kiểm tra đơn hàng và nhân viên có cùng cty hay ko.
+    unless sale then return
     userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-    unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.saleCashier.key) then return
+    unless sale.merchant is userProfile.currentMerchant then return
+    unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.cashierSale.key) then return
 
     if sale.received == sale.imported ==  sale.exported == sale.submitted == false and sale.status == true
       cashierName = userProfile.fullName ? Meteor.user().emails[0].address
@@ -56,20 +57,22 @@ Schema.add 'notifications', class Notification
           @send(NotificationMessages.exportNotify(creatorName, sale.orderCode), saleExporter.user) unless userProfile.user is saleExporter.user
       #giao hàng
       if sale.paymentsDelivery is 1
-        for shipper in Schema.userProfiles.find({parentMerchant: userProfile.parentMerchant, roles: {$elemMatch: {$in:Role.rolesOf(Sky.system.merchantPermissions.shipper.key)}}}).fetch()
+        for shipper in Schema.userProfiles.find({parentMerchant: userProfile.parentMerchant, roles: {$elemMatch: {$in:Role.rolesOf(Sky.system.merchantPermissions.deliveryConfirm.key)}}}).fetch()
           @send(NotificationMessages.deliveryNotify(creatorName, sale.orderCode), shipper.user) unless userProfile.user is shipper.user
 
+#TODO: Đang làm xác nhận lấy tiền lúc giao hàng
   @saleAccountingConfirmByDelivery: (sale) ->
     unless sale or sale.merchant is userProfile.currentMerchant then return
-    #kiểm tra đơn hàng và nhân viên có cùng cty hay ko.
     userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-    unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.deliveryExporter.key) then return
+    unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.cashierDelivery.key) then return
 #    if sale.status == sale.success == sale.received == sale.exported == true and sale.submitted ==  sale.imported == false and sale.paymentsDelivery == 1
 
+#kho
   @saleExporterConfirm: (sale) ->
-    unless sale or sale.merchant is userProfile.currentMerchant then return
+    unless sale then return
     userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-    unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.saleExporter.key) then return
+    unless sale.merchant is userProfile.currentMerchant then return
+    unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.saleExport.key) then return
     if Sky.helpers.saleStatusIsExport(sale)
       exporterName = userProfile.fullName ? Meteor.user().emails[0].address
       creatorName = (Schema.userProfiles.findOne({user: sale.creator})).fullName ? Meteor.users.findOne(sale.creator).emails[0].address
@@ -86,9 +89,10 @@ Schema.add 'notifications', class Notification
         @send(NotificationMessages.deliveryExport(exporterName, sale.orderCode), shipperId) unless shipperId is userProfile.user
 
   @saleImportConfirm: (sale) ->
-    unless sale or sale.merchant is userProfile.currentMerchant then return
+    unless sale then return
     userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-    unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.saleExporter.key) then return
+    unless sale.merchant is userProfile.currentMerchant then return
+    unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.importDelivery.key) then return
     if Sky.helpers.saleStatusIsImport(sale)
       importerName = userProfile.fullName ? Meteor.user().emails[0].address
       creatorName = (Schema.userProfiles.findOne({user: sale.creator})).fullName ? Meteor.users.findOne(sale.creator).emails[0].address
@@ -100,11 +104,12 @@ Schema.add 'notifications', class Notification
         @send(NotificationMessages.saleCreatorByImporter(importerName, sellerName, sale.orderCode), sale.creator) unless sale.creator is userProfile.user
         @send(NotificationMessages.saleSellerByImporter(importerName, creatorName, sale.orderCode), sale.seller) unless sale.seller is userProfile.user
 
-
+#giao hang
   @deliveryNotify: (sale, status) ->
-    unless sale or (sale.paymentsDelivery is 1) or (sale.merchant is userProfile.currentMerchant) then return
+    unless sale or (sale.paymentsDelivery is 1) then return
     userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
-    unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.shipper.key) then return
+    unless sale.merchant is userProfile.currentMerchant then return
+    unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.deliveryConfirm.key) then return
 
     shipperName = userProfile.fullName ? Meteor.user().emails[0].address
     creatorName = (Schema.userProfiles.findOne({user: sale.creator})).fullName ? Meteor.users.findOne(sale.creator).emails[0].address
@@ -141,5 +146,6 @@ Schema.add 'notifications', class Notification
         @send(NotificationMessages.saleCreatorByDeliveryFail(shipperName, sellerName, sale.orderCode), sale.creator) unless sale.creator is userProfile.user
         @send(NotificationMessages.saleSellerByDeliveryFail(shipperName, creatorName, sale.orderCode), sale.seller) unless sale.seller is userProfile.user
 
-#    if status is 'done'
+#trả hàng
+
 

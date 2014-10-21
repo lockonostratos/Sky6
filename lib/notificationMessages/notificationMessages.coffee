@@ -47,3 +47,4 @@ NotificationMessages.saleCreatorByDeliveryFail = (shipper, seller, orderCode)   
 NotificationMessages.saleSellerByDeliveryFail  = (shipper, cretator, orderCode) -> "Đơn bán hàng #{orderCode} được tạo dùm bởi #{cretator}, đã giao hàng thất bại bởi #{shipper}"
 
 
+NotificationMessages.returnConfirmNotify       = (creator, returnCode, place)    -> "Có một đơn trả hàng mới #{returnCode} của #{creator}, tại #{place} đang chờ bạn xác nhận."

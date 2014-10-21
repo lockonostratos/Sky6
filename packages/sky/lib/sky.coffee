@@ -5,45 +5,47 @@ class Sky
 
   class @system
     @merchantPermissions:
-      su                    : { group: 'special'   , key: 'su'                 , description: 'tất cả' }
+      su                    :{group: 'special'     ,key: 'su'                   ,description: 'tất cả' }
+      permissionManagement  :{group: 'account'     ,key: 'permissionManagement' ,description: 'thay đổi phân quyền' }
 
-      sales                 : { group: 'sales'     , key: 'sales'              , description: 'bán hàng' }
-      returns               : { group: 'sales'     , key: 'returns'            , description: 'trả hàng' }
-      detroySalesBill       : { group: 'sales'     , key: 'destroySalesBill'   , description: 'xóa hóa đơn' }
-      delivery              : { group: 'sales'     , key: 'delivery'           , description: 'giao hàng' }
-      deliveryConfirm       : { group: 'sales'     , key: 'deliveryConfirm'    , description: 'xác nhận giao hàng' }
-      deliveryDestroy       : { group: 'sales'     , key: 'deliveryDestroy'    , description: 'hủy giao hàng' }
-      exportDelivery        : { group: 'sales'     , key: 'exportDelivery'     , description: 'xác nhận xuất kho giao hàng' }
-      importDestroy         : { group: 'sales'     , key: 'deliveryDestroy'    , description: 'xác nhận nhập kho giao hàng' }
-      cashDestroy           : { group: 'sales'     , key: 'importDestroy'      , description: 'xác nhận thu tiền giap hàng' }
+      sales                 :{group: 'sales'       ,key: 'sales'                ,description: 'bán hàng'    }
+      returns               :{group: 'sales'       ,key: 'returns'              ,description: 'trả hàng'    }
+      detroySalesBill       :{group: 'sales'       ,key: 'destroySalesBill'     ,description: 'xóa hóa đơn' }
 
-      saleCashier           : { group: 'accounting', key: 'saleCashier'        , description: 'xác nhận thu tiền khi bán hàng' }
-      deliveryCashier       : { group: 'accounting', key: 'deliveryCashier'    , description: 'xác nhận thu tiền khi giao hàng' }
+      deliveryCreate        :{group: 'delivery'    ,key: 'deliveryCreate'       ,description: 'tạo phiếu giao hàng' }
+      deliveryConfirm       :{group: 'delivery'    ,key: 'deliveryConfirm'      ,description: 'xác nhận giao hàng'  }
+      deliveryDestroy       :{group: 'delivery'    ,key: 'deliveryDestroy'      ,description: 'hủy phiếu giao hàng' }
 
-      saleExporter          : { group: 'warehouse' , key: 'saleExporter'       , description: 'xuất kho khi bán hàng' }
-      deliveryExporter      : { group: 'warehouse' , key: 'deliveryExporter'   , description: 'nhập kho khi giao hàng thất bại' }
+      returnCreate          :{group: 'returns'    ,key: 'returnCreate'          ,description: 'tạo phiếu trả hàng' }
+      returnConfirm         :{group: 'returns'    ,key: 'returnConfirm'         ,description: 'xác nhận trả hàng'  }
+      returnDestroy         :{group: 'returns'    ,key: 'returnDestroy'         ,description: 'hủy phiếu trả hàng' }
 
-      export                : { group: 'warehouse' , key: 'export'             , description: 'xuất kho' }
-      exportDestroy         : { group: 'warehouse' , key: 'exportDestroy'      , description: 'hủy xuất kho' }
-      import                : { group: 'warehouse' , key: 'import'             , description: 'nhập kho' }
-      importDestroy         : { group: 'warehouse' , key: 'importDestroy'      , description: 'hủy nhập kho' }
-      destroyImport         : { group: 'warehouse' , key: 'destroyImport'      , description: 'xóa phiếu nhập kho' }
+      cashierSale           :{group: 'accounting'  ,key: 'cashierSale'          ,description: 'xác nhận thu tiền khi bán hàng' }
+      cashierDelivery       :{group: 'accounting'  ,key: 'cashierDelivery'      ,description: 'xác nhận thu tiền khi giao hàng thành công' }
 
+      saleExport            :{group: 'warehouse'   ,key: 'saleExport'           ,description: 'xuất kho khi bán hàng' }
+      importDelivery        :{group: 'warehouse'   ,key: 'importDelivery'       ,description: 'xác nhận nhập kho khi giao hàng thất bại' }
 
-      shipper               : { group: 'delivery'  , key: 'shipper'            , description: 'giao hàng' }
+      export                :{group: 'warehouse'   ,key: 'export'               ,description: 'xuất kho' }
+      exportDestroy         :{group: 'warehouse'   ,key: 'exportDestroy'        ,description: 'hủy xuất kho' }
+      destroyExport         :{group: 'warehouse'   ,key: 'destroyExport'        ,description: 'xóa phiếu nhập kho' }
 
-      accountManagement     : { group: 'human'     , key: 'accountManagement'  , description: 'quản lý nhân viên' }
+      import                :{group: 'warehouse'   ,key: 'import'               ,description: 'nhập kho' }
+      importDestroy         :{group: 'warehouse'   ,key: 'importDestroy'        ,description: 'hủy nhập kho' }
+      destroyImport         :{group: 'warehouse'   ,key: 'destroyImport'        ,description: 'xóa phiếu nhập kho' }
 
-      createCustomer        : { group: 'crm'       , key: 'createCustomer'     , description: 'tạo khách hàng' }
-      customerShow          : { group: 'crm'       , key: 'customerShow'       , description: 'quản lý khách hàng' }
-      customerManagement    : { group: 'crm'       , key: 'customerManagement' , description: 'quản lý khách hàng' }
+      accountManagement     :{group: 'human'       , key: 'accountManagement'   ,description: 'quản lý nhân viên' }
 
-      transactionShow       : { group: 'finance'   , key: 'transactionShow'    , description: 'xem thu chi' }
-      transactionManagement : { group: 'finance'   , key: 'transactionShow'    , description: 'q.lý thu chi' }
+      createCustomer        :{group: 'crm'         , key: 'createCustomer'      ,description: 'tạo khách hàng' }
+      customerShow          :{group: 'crm'         , key: 'customerShow'        ,description: 'quản lý khách hàng' }
+      customerManagement    :{group: 'crm'         , key: 'customerManagement'  ,description: 'quản lý khách hàng' }
 
-      taskShow              : { group: 'scrum'     , key: 'scrumShow'          , description: 'xem task' }
-      createTask            : { group: 'scrum'     , key: 'scrumShow'          , description: 'tạo task' }
-      taskManagement        : { group: 'scrum'     , key: 'scrumShow'          , description: 'q.lý task' }
+      transactionShow       :{group: 'finance'     , key: 'transactionShow'     ,description: 'xem thu chi' }
+      transactionManagement :{group: 'finance'     , key: 'transactionShow'     ,description: 'q.lý thu chi' }
+
+      taskShow              :{group: 'scrum'       , key: 'scrumShow'           ,description: 'xem task' }
+      createTask            :{group: 'scrum'       , key: 'scrumShow'           ,description: 'tạo task' }
+      taskManagement        :{group: 'scrum'       , key: 'scrumShow'           ,description: 'q.lý task' }
 
     @taskStatuses:
       deleted:                {key: 'deleted'}
