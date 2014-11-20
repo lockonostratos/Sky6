@@ -21,6 +21,14 @@ Schema2.notifications = new SimpleSchema
     type: String
     optional: true
 
+  product:
+    type: String
+    optional: true
+
+  group:
+    type: String
+    optional: true
+
   seen:
     type: Boolean
     defaultValue: false

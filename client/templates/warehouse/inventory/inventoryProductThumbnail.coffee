@@ -1,8 +1,8 @@
 calculateOriginalQuality = (context) ->
-  if context.lock == context.submit == false then return (Schema.productDetails.findOne(context.productDetail))?.instockQuality ? 0
+  if context.lock == context.submit == false then return (Schema.productDetails.findOne(context.productDetail))?.inStockQuality ? 0
   if context.lock != context.submit == false then return context.lockOriginalQuality
   if context.lock == context.submit != false
-    product = (Schema.productDetails.findOne(context.productDetail))?.instockQuality ? 0
+    product = (Schema.productDetails.findOne(context.productDetail))?.inStockQuality ? 0
     if context.originalQuality != product
       Schema.inventoryDetails.update context._id, $set: {originalQuality: product}
     else
@@ -126,8 +126,8 @@ Sky.template.extends Template.inventoryProductThumbnail,
         Schema.inventoryDetails.update @_id, $set: {
           lock: true
           lockDate: new Date
-          lockOriginalQuality: productDetail.instockQuality
-          realQuality    : productDetail.instockQuality
+          lockOriginalQuality: productDetail.inStockQuality
+          realQuality    : productDetail.inStockQuality
           saleQuality    : 0
           lostQuality    : 0
         }

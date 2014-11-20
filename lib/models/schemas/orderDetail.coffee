@@ -5,18 +5,6 @@ Schema2.orderDetails = new SimpleSchema
   product:
     type: String
 
-  name:
-    type: String
-    optional: true
-
-  skulls:
-    type: [String]
-    optional: true
-
-  color:
-    type: String
-    optional: true
-
   quality:
     type: Number
 
@@ -29,7 +17,6 @@ Schema2.orderDetails = new SimpleSchema
   discountPercent:
     type: Number
     decimal: true
-    optional: true
 
   tempDiscountPercent:
     type: Number
@@ -43,6 +30,10 @@ Schema2.orderDetails = new SimpleSchema
     type: Number
 
   styles:
+    type: String
+    optional: true
+
+  color:
     type: String
     optional: true
 

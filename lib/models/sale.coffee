@@ -39,7 +39,7 @@ Schema.add 'sales', class Sale
       productCount      : order.productCount
       saleCount         : order.saleCount
       return            : false
-      returnLock       : false
+      returnLock        : false
       returnCount       : 0
       returnQuality     : 0
       paymentMethod     : order.paymentMethod
@@ -56,9 +56,8 @@ Schema.add 'sales', class Sale
       status            : false
       submitted         : false
 
-
-
-    option
+  @insertByOrder: (order)->
+    @schema.insert Sale.newByOrder(order), (error, result) -> if error then console.log error; null else result
 
   @destroy: (saleId) ->
     Schema.saleDetails
@@ -69,8 +68,8 @@ Schema.add 'sales', class Sale
       saleDetails = Schema.saleDetails.find({sale: @id}).fetch()
       for detail in saleDetails
         Schema.saleDetails.update detail._id, $set:{exported: true, exportDate: new Date, status: true}
-        Schema.productDetails.update detail.productDetail , $inc:{instockQuality: -detail.quality}
-        Schema.products.update detail.product,   $inc:{instockQuality: -detail.quality}
+        Schema.productDetails.update detail.productDetail , $inc:{inStockQuality: -detail.quality}
+        Schema.products.update detail.product,   $inc:{inStockQuality: -detail.quality}
 
         Schema.saleExports.insert SaleExport.new(@data, detail), (error, result) -> console.log error if error
 
@@ -87,7 +86,7 @@ Schema.add 'sales', class Sale
       for detail in saleDetails
         option =
           availableQuality: detail.quality
-          instockQuality  : detail.quality
+          inStockQuality  : detail.quality
         Schema.productDetails.update detail.productDetail, $inc: option
         Schema.products.update detail.product, $inc: option
 

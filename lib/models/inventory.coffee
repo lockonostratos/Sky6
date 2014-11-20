@@ -5,7 +5,7 @@ Schema.add 'inventories', class Inventory
       throw 'Bạn không có quyền tạo phiếu kiểm kho.' unless Role.hasPermission(userProfile._id, Sky.system.merchantPermissions.inventoryCreate.key)
       throw 'Kho không tồn tại.' unless warehouse = Schema.warehouses.findOne({_id: warehouseId, merchant: userProfile.currentMerchant})
       throw 'Kho đang kiểm kho, không thể tạo phiếu kiểm kho mới' if warehouse.checkingInventory == true
-      throw 'Kho trống, không thể kiểm kho.' unless Schema.productDetails.findOne({warehouse: warehouseId,  instockQuality: { $gt: 0 } })
+      throw 'Kho trống, không thể kiểm kho.' unless Schema.productDetails.findOne({warehouse: warehouseId,  inStockQuality: { $gt: 0 } })
 
       option =
         merchant    : warehouse.merchant
@@ -63,7 +63,7 @@ Schema.add 'inventories', class Inventory
           temp = true
           option.status = false
           updateProduct =
-            instockQuality   : -detail.lostQuality
+            inStockQuality   : -detail.lostQuality
             availableQuality : -detail.lostQuality
 
           Schema.productLosts.insert ProductLost.new(warehouse, detail)

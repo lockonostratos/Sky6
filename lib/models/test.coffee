@@ -135,7 +135,7 @@
 #  #------Hoàn Thành Finish
 #
 #    'click .finishOrderDetail': (event, template)->
-#      result = checkProductInstockQuality(Template.createOrder.currentOrderDetails(), Template.addImportDetail.productList)
+#      result = checkProductinStockQuality(Template.createOrder.currentOrderDetails(), Template.addImportDetail.productList)
 #      if result.error then console.log result.error; return
 #      createSaleAndSaleOrder(Session.get('currentOrder'), Session.get('currentOrderDetails'), template)
 #
@@ -336,7 +336,7 @@
 #
 #  Session.set 'currentOrder', Schema.orders.findOne Session.get('currentOrder')._id
 #
-#checkProductInstockQuality= (orderDetailsList, productList)->
+#checkProductinStockQuality= (orderDetailsList, productList)->
 #  orderDetails = _.chain(orderDetailsList)
 #  .groupBy("product")
 #  .map (group, key) ->
@@ -424,16 +424,16 @@
 #        discountPercent: sellingItem.discountPercent
 #        finalPrice: totalPrice - discountCash
 #
-#    if currentSale.deliveryType == 0 then instockQuality = takkenQuality else instockQuality = 0
+#    if currentSale.deliveryType == 0 then inStockQuality = takkenQuality else inStockQuality = 0
 #    Schema.productDetails.update product._id,
 #      $inc:
 #        availableQuality: -takkenQuality
-#        instockQuality: -instockQuality
+#        inStockQuality: -inStockQuality
 #
 #    Schema.products.update product.product,
 #      $inc:
 #        availableQuality: -takkenQuality
-#        instockQuality  : -instockQuality
+#        inStockQuality  : -inStockQuality
 #
 #    transactionedQuality += takkenQuality
 #    if transactionedQuality == sellingItem.quality then break

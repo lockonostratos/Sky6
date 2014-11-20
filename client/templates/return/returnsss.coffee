@@ -113,11 +113,11 @@ _.extend Template.returnss,
         for returnDetail in Schema.returnDetails.find({returns: id_return}).fetch()
           Schema.productDetails.update returnDetail.productDetail, $inc: {
             availableQuality: returnDetail.returnQuality
-            instockQuality  : returnDetail.returnQuality
+            inStockQuality  : returnDetail.returnQuality
           }
           Schema.products.update returnDetail.product, $inc: {
             availableQuality: returnDetail.returnQuality
-            instockQuality  : returnDetail.returnQuality
+            inStockQuality  : returnDetail.returnQuality
           }
       else
         console.log 'Loi, Phieu Chua Xac Nhan Tu Nhan Vien'

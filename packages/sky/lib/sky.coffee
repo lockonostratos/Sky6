@@ -53,6 +53,7 @@ class Sky
 
       saleExport            :{group: 'warehouse'   ,key:'saleExport'           ,description: 'xuất kho khi bán hàng' }
       importDelivery        :{group: 'warehouse'   ,key:'importDelivery'       ,description: 'xác nhận nhập kho khi giao hàng thất bại' }
+      warehouseManagement   :{group: 'warehouse'   ,key:'warehouseManagement'  ,description: 'quản lý kho hàng' }
 
       accountManagement     :{group: 'human'       ,key:'accountManagement'   ,description: 'quản lý nhân viên' }
 

@@ -17,7 +17,7 @@ Schema.add 'inventoryDetails', class InventoryDetail
         productDetail       : productDetail._id
         name                : productDetail.name
         skulls              : productDetail.skulls
-        lockOriginalQuality : productDetail.instockQuality
+        lockOriginalQuality : productDetail.inStockQuality
         realQuality         : 0
         saleQuality         : 0
         lostQuality         : 0

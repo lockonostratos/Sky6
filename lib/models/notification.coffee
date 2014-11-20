@@ -1,6 +1,12 @@
 userHasPermission = (permission, userProfile)-> Role.hasPermission(userProfile._id, permission.key)
 userNameBy = (userId)-> (Schema.userProfiles.findOne({user: userId})).fullName ? Meteor.users.findOne(userId).emails[0].address
 
+allUserHasPermissionOf =(merchantId, permission)->
+  Schema.userProfiles.find({
+      parentMerchant: merchantId
+      roles: {$elemMatch: {$in:Role.rolesOf(permission.key)}}
+    }).fetch()
+
 sendAllUserOf = (permission, userProfile)->
   if permission and userHasPermission(Sky.system.merchantPermissions.permissionManagement, userProfile)
     allUserOfPermissionChanged = Schema.userProfiles.find(
@@ -161,8 +167,26 @@ sendAllUserHasPermissionInventoryConfirm = (creatorName, inventoryCode, userProf
     }).fetch()
   for receiver in allUserHasPermissionInventoryConfirm
     unless userProfile.user is receiver.user
-      @send(NotificationMessages.sendNewInventoryCreate(creatorName, inventoryCode), receiver.user)
+      Notification.send(NotificationMessages.sendNewInventoryCreate(creatorName, inventoryCode), receiver.user)
 
+
+sendAllUserHasPermissionWarehouseManagementByExpire = (product, userProfile)->
+  for warehouseManagement in allUserHasPermissionOf(userProfile.parentMerchant, Sky.system.merchantPermissions.warehouseManagement)
+    unless userProfile.user is warehouseManagement.user
+      Meteor.call("sendNotificationOptional",
+        NotificationMessages.productExpireDate(product.name, product.day, product.place),
+        warehouseManagement.user,
+        product._id,
+        Sky.notificationGroup.expireDate.key)
+
+sendAllUserHasPermissionWarehouseManagementAlertQuality = (product, userProfile)->
+  for warehouseManagement in allUserHasPermissionOf(userProfile.parentMerchant, Sky.system.merchantPermissions.warehouseManagement)
+    unless userProfile.user is warehouseManagement.user
+      Meteor.call("sendNotificationOptional",
+        NotificationMessages.productAlertQuality(product.name, product.quality, product.place),
+        warehouseManagement.user,
+        product._id,
+        Sky.notificationGroup.alertQuality.key)
 
 Schema.add 'notifications', class Notification
   @send: (message, receiver, notificationType = Sky.notificationTypes.notify.key) ->
@@ -173,6 +197,14 @@ Schema.add 'notifications', class Notification
       notificationType: notificationType
     }
     Schema.notifications.insert newNotification
+
+  @productExpire: (product)->
+    userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    sendAllUserHasPermissionWarehouseManagementByExpire(product, userProfile)
+
+  @productAlertQuality: (product)->
+    userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+    sendAllUserHasPermissionWarehouseManagementAlertQuality(product, userProfile)
 
   @permissionChanged: (permission) ->
     userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})

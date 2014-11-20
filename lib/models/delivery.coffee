@@ -1,11 +1,9 @@
 Schema.add 'deliveries', class Delivery
-  @newBySale: (saleId, orderId)->
-    sale = Schema.sales.findOne(saleId)
-    order = Schema.orders.findOne(orderId)
+  @newBySale: (order, sale)->
     option =
       merchant        : sale.merchant
       warehouse       : sale.warehouse
-      creator         : Meteor.userId()
+      creator         : sale.creator
       sale            : sale._id
       contactName     : order.contactName
       contactPhone    : order.contactPhone
@@ -13,7 +11,8 @@ Schema.add 'deliveries', class Delivery
       comment         : order.comment
       deliveryDate    : order.deliveryDate if order.deliveryDate
       status          : 0
-    option
+
+  @insertBySale: (order, sale)-> @schema.insert Delivery.newBySale(order, sale), (error, result) -> if error then error else result
 
   updateDelivery: (success = true) ->
     unless sale = Schema.sales.findOne(@data.sale) then return 'Phiếu Bán Hàng Không Có Giao Hàng'

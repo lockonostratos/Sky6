@@ -48,10 +48,10 @@ removeOrderAndOrderDetailAfterCreateSale= (orderId)->
   currentLength = allTabs.length
   if currentLength == 1
     Order.createOrderAndSelect()
-    Order.removeAll(orderId)
+    Order.removeAllOrderDetail(orderId)
   if currentLength > 1
     UserProfile.update {currentOrder: allTabs[currentIndex-1]._id}
-    Order.removeAll(orderId)
+    Order.removeAllOrderDetail(orderId)
 
 Sky.global.reCalculateImport = (importId)->
   if !warehouseImport = Schema.imports.findOne(importId) then console.log('Sai Import'); return
@@ -66,7 +66,7 @@ Sky.global.reCalculateImport = (importId)->
 
 Schema.add 'imports', class Import
   @removeAll: (importId)->
-#    return ('Chua Dang Nhap') if !userProfile = Sky.global.userProfile()
+#    return ('Chua Dang Nhap') if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     return ("Phiếu nhập kho không tồn tại") if !imports = Schema.imports.findOne({_id: importId, finish: false})
     return ("Phiếu nhập kho đã duyệt, không thể xóa") if imports.submitted == true
     return ("Phiếu nhập kho đang chờ duyệt, không thể xóa") if imports.finish == true
@@ -93,7 +93,7 @@ Schema.add 'imports', class Import
     option
 
   @finishImport: (importId)->
-    return('Bạn chưa đăng nhập') if !userProfile = Sky.global.userProfile()
+    return('Bạn chưa đăng nhập') if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     return('Phiếu nhập kho không tồn tại') if !imports = Schema.imports.findOne({_id: importId})
     return ("Phiếu nhập kho đã duyệt, không thể chờ duyệt") if imports.submitted == true && imports.finish == true
     return ("Phiếu nhập kho đã đang chờ duyệt") if imports.submitted == false && imports.finish == true
@@ -109,7 +109,7 @@ Schema.add 'imports', class Import
       return ('Đã có lỗi trong quá trình xác nhận')
 
   @editImport: (importId)->
-    return('Bạn chưa đăng nhập') if !userProfile = Sky.global.userProfile()
+    return('Bạn chưa đăng nhập') if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     return('Phiếu nhập kho không tồn tại') if !imports = Schema.imports.findOne({_id: importId})
     return ("Phiếu nhập kho đã duyệt, không thể chỉnh sửa") if imports.submitted == true && imports.finish == true
     return ("Phiếu nhập kho đang có thể chỉnh sửa") if imports.finish == false && imports.submitted == false
@@ -125,7 +125,7 @@ Schema.add 'imports', class Import
       return ('Đã có lỗi trong quá trình xác nhận')
 
   @submittedImport: (importId)->
-    return('Bạn chưa đăng nhập') if !userProfile = Sky.global.userProfile()
+    return('Bạn chưa đăng nhập') if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     return('Phiếu nhập kho không tồn tại') if !imports = Schema.imports.findOne({_id: importId})
     return ("Phiếu nhập kho đã duyệt, không thể duyệt lần thứ nữa") if imports.submitted == true && imports.finish == true
     return ("Phiếu nhập kho chưa chờ duyệt") if imports.finish == false && imports.submitted == false
@@ -147,7 +147,7 @@ Schema.add 'imports', class Import
         option1=
           totalQuality    : importDetail.importQuality
           availableQuality: importDetail.importQuality
-          instockQuality  : importDetail.importQuality
+          inStockQuality  : importDetail.importQuality
 
         option2=
           provider    : importDetail.provider

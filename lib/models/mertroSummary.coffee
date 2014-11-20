@@ -78,7 +78,7 @@ Schema.add 'metroSummaries', class MetroSummary
 
     stockProductCount = 0; availableProductCount = 0
     for item in products.fetch()
-      stockProductCount += item.instockQuality
+      stockProductCount += item.inStockQuality
       availableProductCount += item.availableQuality
 
     inventoryProductCount = 0

@@ -7,7 +7,7 @@ Schema.add 'productDetails', class ProductDetail
       product          : importDetail.product
       importQuality    : importDetail.importQuality
       availableQuality : importDetail.importQuality
-      instockQuality   : importDetail.importQuality
+      inStockQuality   : importDetail.importQuality
       importPrice      : importDetail.importPrice
       name             : importDetail.name
       skulls           : importDetail.skulls

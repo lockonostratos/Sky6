@@ -106,7 +106,7 @@ Meteor.startup ->
         Session.set 'availableSaleProducts', Schema.products.find({
           warehouse: Session.get('currentWarehouse')._id
           price: {$gt: 0}
-          instockQuality: {$gt: 0}
+          inStockQuality: {$gt: 0}
         }, Sky.helpers.defaultSort(1)).fetch()
         Session.set 'personalNewProducts', _.where(Session.get('availableProducts'), {creator: Session.get('currentProfile').user, totalQuality: 0}) if Session.get('availableProducts')
 

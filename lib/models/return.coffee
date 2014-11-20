@@ -85,7 +85,7 @@ Schema.add 'returns', class Return
           returnQuality = returnDetail.returnQuality
           option =
             availableQuality: returnDetail.returnQuality
-            instockQuality  : returnDetail.returnQuality
+            inStockQuality  : returnDetail.returnQuality
 
           Schema.productDetails.update returnDetail.productDetail, $inc: option
           Schema.products.update returnDetail.product, $inc: option

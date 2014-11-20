@@ -9,9 +9,9 @@ subtractQualityOnSales= (stockingItems, sellingItem , currentSale) ->
 
     SaleDetail.createSaleDetailByOrder(currentSale, sellingItem, productDetail, takkenQuality)
 
-#    if currentSale.paymentsDelivery == 2 then instockQuality = takkenQuality else instockQuality = 0
-#    Schema.productDetails.update productDetail._id, $inc:{availableQuality: -takkenQuality, instockQuality: -instockQuality}
-#    Schema.products.update productDetail.product,   $inc:{availableQuality: -takkenQuality, instockQuality: -instockQuality}
+#    if currentSale.paymentsDelivery == 2 then inStockQuality = takkenQuality else inStockQuality = 0
+#    Schema.productDetails.update productDetail._id, $inc:{availableQuality: -takkenQuality, inStockQuality: -inStockQuality}
+#    Schema.products.update productDetail.product,   $inc:{availableQuality: -takkenQuality, inStockQuality: -inStockQuality}
 
     Schema.productDetails.update productDetail._id, $inc:{availableQuality: -takkenQuality}
     Schema.products.update productDetail.product  , $inc:{availableQuality: -takkenQuality}
@@ -42,7 +42,7 @@ reUpdateOrderDetail = (newOrderDetail, oldOrderDetail) ->
 
   Schema.orderDetails.update oldOrderDetail._id, $set: option , (error, result) -> console.log error if error
 
-checkProductInstockQuality= (orderId)->
+checkProductinStockQuality= (orderId)->
   orderDetails = Schema.orderDetails.find({order: orderId}).fetch()
   product_ids = _.union(_.pluck(orderDetails, 'product'))
   products = Schema.products.find({_id: {$in: product_ids}}).fetch()
@@ -92,16 +92,29 @@ removeOrderAndOrderDetailAfterCreateSale= (orderId, userProfile)->
   currentLength = allTabs.length
   if currentLength == 1
     Order.createOrderAndSelect()
-    Order.removeAll(orderId)
+    Order.removeAllOrderDetail(orderId)
   if currentLength > 1
     if currentIndex > 0
       UserProfile.update {currentOrder: allTabs[currentIndex-1]._id}
     else
       UserProfile.update {currentOrder: allTabs[currentIndex+1]._id}
-    Order.removeAll(orderId)
+    Order.removeAllOrderDetail(orderId)
 
 #-----------------------------------------------------------------------------------------------------------------------
 Schema.add 'orders', class Order
+  updateContactName     : (value)-> @schema.update(@id, {$set:{contactName:     value}})
+  updateContactPhone    : (value)-> @schema.update(@id, {$set:{contactPhone:    value}})
+  updateDeliveryAddress : (value)-> @schema.update(@id, {$set:{deliveryAddress: value}})
+  updateComment         : (value)-> @schema.update(@id, {$set:{comment:         value}})
+  updateDeliveryDate    : (expire)->
+    if expire > (new Date)
+      expireDate = new Date(expire.getFullYear(), expire.getMonth(), expire.getDate())
+      option = $set: {deliveryDate: expireDate}
+    else
+      option = $unset: {deliveryDate: true}
+    @schema.update(@id, option)
+
+
   @createOrder: ->
     userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     buyer = Schema.customers.findOne({parentMerchant: userProfile.parentMerchant})
@@ -139,7 +152,7 @@ Schema.add 'orders', class Order
 
   @createOrderAndSelect: -> order = @createOrder(); UserProfile.update {currentOrder: order._id}; order
 
-  @removeAll: (orderId)->
+  @removeAllOrderDetail: (orderId)->
     try
       order = Schema.orders.findOne(orderId)
       if order
@@ -180,7 +193,7 @@ Schema.add 'orders', class Order
     else
       return console.log 'Mã phiếu không đúng'
 
-  @finishOrder: (orderId)->
+  @finish: (orderId)->
     return 'Bạn Chưa Đăng Nhập' if !userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
     return 'Order Không Tồn Tại' if !order = Schema.orders.findOne({
       _id       : orderId
@@ -201,7 +214,7 @@ Schema.add 'orders', class Order
       return 'Thông tin giao hàng chưa đầy đủ (comment)' if !order.comment || order.comment < 1
 #      return 'Thông tin giao hàng chưa đầy đủ (deliveryDate)' if order.deliveryDate.length > 1
 
-    result = checkProductInstockQuality(orderId)
+    result = checkProductinStockQuality(orderId)
     if result.error then console.log result.error; return
 
     saleId = createSaleAndSaleOrder(order)
@@ -251,6 +264,7 @@ Sky.global.reCalculateOrder = (orderId)->
 
       option.deposit = option.finalPrice
       option.debit = 0
+
     if order.paymentMethod == 1
       if order.currentDeposit >= option.finalPrice
         option.paymentMethod = 0
@@ -273,8 +287,6 @@ Sky.global.reCalculateOrder = (orderId)->
       deposit         : 0
       debit           : 0
     Schema.orders.update order._id, $set: option
-
-Sky.global.userProfile = -> Schema.userProfiles.findOne({user: Meteor.userId()})
 
 
 

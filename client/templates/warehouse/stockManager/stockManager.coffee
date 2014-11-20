@@ -14,7 +14,7 @@ Sky.appTemplate.extends Template.stockManager,
     if Session.get("availableStockProducts")
       total = 0
       for item in Session.get("availableStockProducts")
-        total += item.instockQuality
+        total += item.inStockQuality
       total
 
   totalQualityProduct: ->

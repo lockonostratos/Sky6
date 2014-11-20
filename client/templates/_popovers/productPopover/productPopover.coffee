@@ -23,7 +23,7 @@ createProduct= (event, template)->
     skulls           : [template.find(".skull").value]
     totalQuality     : 0
     availableQuality : 0
-    instockQuality   : 0
+    inStockQuality   : 0
     price            : 0
 
   findProduct =  Schema.products.findOne({

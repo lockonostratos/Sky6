@@ -13,7 +13,7 @@ reUpdateProduct = (productId)->
       currentProvider    : product.provider ? 'skyReset'
       currentQuality     : 1
       currentImportPrice : product.importPrice ? 0
-    if product.price > 0 and product.instockQuality > 0
+    if product.price > 0 and product.inStockQuality > 0
       Schema.imports.update(Session.get('currentImport')._id, $set: option, $unset: {currentPrice: ""})
     else
       option.currentPrice = product.importPrice ? 0
@@ -177,6 +177,7 @@ Sky.appTemplate.extends Template.import,
 
     'click .addImportDetail': (event, template)->
       expire = template.ui.$expire.data('datepicker').dates[0]
+      console.log expire
       if expire > (new Date)
         expireDate = new Date(expire.getFullYear(), expire.getMonth(), expire.getDate())
         option = $set: {currentExpire: expireDate}

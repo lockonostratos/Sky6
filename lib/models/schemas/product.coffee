@@ -41,7 +41,7 @@ Schema2.products = new SimpleSchema
     type: Number
     defaultValue: 0
 
-  instockQuality:
+  inStockQuality:
     type: Number
     defaultValue: 0
 

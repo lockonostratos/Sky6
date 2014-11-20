@@ -1,26 +1,38 @@
+#--------------Format option-------------------------------------------->
 formatProductSearch = (item) -> "#{item.name} [#{item.skulls}]" if item
 formatSellerSearch = (item) -> "#{item.emails[0].address}" if item
 formatCustomerSearch = (item) -> "#{item.name}" if item
-formatpaymentMethodSearch = (item) -> "#{item.display}" if item
+formatPaymentMethodSearch = (item) -> "#{item.display}" if item
 formatWarehouseSearch = (item) -> "#{item.name}" if item
 
-reloadOrderDetail = (template, disCash)->
-  quality         = template.find(".quality").value         = calculationValueNumber(template.find(".quality").value, 1, 100)
-  price           = template.find(".price").value           = calculationValueNumber(template.find(".price").value, 0)
-  totalPrice      = template.find(".totalPrice").value      = quality * price
-  if disCash
-    discountCash    = template.find(".discountCash").value    = calculationValueNumber(template.find(".discountCash").value, 0, totalPrice)
-    discountPercent = template.find(".discountPercent").value = discountCash/(totalPrice/100)
-  else
-    discountPercent = template.find(".discountPercent").value = calculationValueNumber(template.find(".discountPercent").value, 0, 100)
-    discountCash    = template.find(".discountCash").value = (totalPrice/100)*discountPercent
-  template.find(".finalPrice").value = totalPrice - discountCash
+#--------------Helper-------------------------------------------->
+calculateCurrentOrderPercentDiscount= (currentOrder)->
+  if currentOrder.discountCash is 0 then 0
+  else Math.round(currentOrder.discountCash/currentOrder.totalPrice*100)
 
-calculationValueNumber= (value, min, max)->
-  temp = parseInt(value); min = parseInt(min); max = parseInt(max)
-  return min if !temp || !temp || temp < min || max == min
-  return max if max and temp > max
-  return temp
+loadDeliverDetail = (currentOrder)->
+  if currentOrder.paymentsDelivery is 1
+    {
+    contactName     : currentOrder.contactName
+    contactPhone    : currentOrder.contactPhone
+    deliveryAddress : currentOrder.deliveryAddress
+    deliveryDate    : currentOrder.deliveryDate
+    comment         : currentOrder.comment
+    }
+  else {}
+
+calculateCurrentDebit = (currentOrder)->
+  switch currentOrder.paymentMethod
+    when 0 then currentOrder.currentDeposit - currentOrder.finalPrice
+    when 1 then 0
+
+calculateCurrentFinalPrice = (currentOrder)->
+  totalPrice = Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality
+  totalPrice - Session.get('currentOrder')?.currentDiscountCash
+
+#---------------Tracker Autorun------------------------------>
+calculateTotalPrice = -> Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality
+calculatePercentDiscount = -> Math.round(Session.get('currentOrder')?.currentDiscount*100/(Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality))
 
 maxQuality = ->
   qualityProduct = Session.get('currentProductInstance')?.availableQuality if Session.get('currentProductInstance')
@@ -28,21 +40,249 @@ maxQuality = ->
   max = qualityProduct - qualityOrderDetail
   max
 
-newDeliver = ->
-  option =
-    contactName: null
-    contactPhone: null
-    deliveryAddress: null
-    deliveryDate: null
-    comment: null
+#--------------Event Blur-------------------------------------------->
+checkingContactNameAndReUpdateOrder = (event, template)->
+  contactName = template.find(".contactName").value
+  if contactName.length > 1 then Sky.global.currentOrder.updateContactName(contactName.value)
+  else contactName.value = Session.get('currentOrder').contactName
 
-calculateTotalPrice = -> Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality
-calculatePercentDiscount = -> Math.round(Session.get('currentOrder')?.currentDiscount*100/(Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality))
-calculateCashDiscount = (percentage)-> Math.floor(calculateTotalPrice() * (percentage / 100))
+checkingContactPhoneAndReUpdateOrder = (event, template)->
+  contactPhone = template.find(".contactPhone")
+  if contactPhone.value.length > 1 then Sky.global.currentOrder.updateContactPhone(contactPhone.value)
+  else contactPhone.value = Session.get('currentOrder').contactPhone
 
-Session.set('dummyMax', 5)
-Session.set('dummyQuality', 10)
+checkingDeliveryAddressAndReUpdateOrder = (event, template)->
+  deliveryAddress = template.find(".deliveryAddress")
+  if deliveryAddress.value.length > 1 then Sky.global.currentOrder.updateDeliveryAddress(deliveryAddress.value)
+  else deliveryAddress.value = Session.get('currentOrder').deliveryAddress
 
+checkingCommentAndReUpdateOrder = (event, template)->
+  comment = template.find(".comment")
+  if comment.value.length > 1 then Sky.global.currentOrder.updateComment(comment.value)
+  else comment.value = Session.get('currentOrder').comment
+
+#--------------reCalculateOrder-------------------------------------------->
+calculateDepositAndDebitByProduct = (order, orderUpdate)->
+  if order.currentDeposit == order.finalPrice
+    orderUpdate.currentDeposit = orderUpdate.finalPrice
+
+  if order.currentDeposit > orderUpdate.finalPrice
+    orderUpdate.currentDeposit = order.currentDeposit
+
+  if order.currentDeposit < orderUpdate.finalPrice
+    orderUpdate.currentDeposit = orderUpdate.finalPrice
+
+  orderUpdate.deposit = orderUpdate.finalPrice
+  orderUpdate.debit = 0
+  orderUpdate
+
+calculateDepositAndDebitByBill = (order, orderUpdate)->
+  if order.currentDeposit >= orderUpdate.finalPrice
+    orderUpdate.paymentMethod = 0
+    orderUpdate.deposit = orderUpdate.finalPrice
+    orderUpdate.debit = 0
+  else
+    orderUpdate.deposit = order.currentDeposit
+    orderUpdate.debit = orderUpdate.finalPrice - order.currentDeposit
+  orderUpdate
+
+calculateOrderDeposit= (order, orderOptionDefault)->
+  switch order.paymentMethod
+    when 0 then calculateDepositAndDebitByProduct(order, orderOptionDefault) #Tính theo từng sp
+    when 1 then calculateDepositAndDebitByBill(order, orderOptionDefault) #Tính theo tổng bill
+
+calculateDefaultOrder = (order, orderDetails)->
+  orderUpdate =
+    saleCount       :0
+    discountCash    :0
+    discountPercent :0
+    totalPrice      :0
+
+  for detail in orderDetails
+    orderUpdate.totalPrice += detail.quality * detail.price
+    orderUpdate.saleCount += detail.quality
+    if order.billDiscount
+      orderUpdate.discountCash = orderUpdate.discountCash
+    else
+      orderUpdate.discountCash += detail.discountCash
+  orderUpdate.discountPercent = orderUpdate.discountCash/orderUpdate.totalPrice*100
+  orderUpdate.finalPrice      = orderUpdate.totalPrice - orderUpdate.discountCash
+  orderUpdate
+
+updateOrderByOrderDetail = (order, orderDetails)->
+  orderOptionDefault = calculateDefaultOrder(order, orderDetails)
+  updateOrder = calculateOrderDeposit(order ,orderOptionDefault)
+  Schema.orders.update order._id, $set: updateOrder
+
+updateOrderByOrderDetailEmpty = (orderId)->
+  updateOrder =
+    saleCount       : 0
+    discountCash    : 0
+    discountPercent : 0
+    totalPrice      : 0
+    finalPrice      : 0
+    paymentMethod   : 0
+    currentDeposit  : 0
+    deposit         : 0
+    debit           : 0
+
+  Schema.orders.update orderId, $set: updateOrder
+
+reCalculateOrder = (order)->
+  orderDetails = Schema.orderDetails.find({order: order._id}).fetch()
+  if orderDetails.length > 0
+    updateOrderByOrderDetail(order, orderDetails)
+  else
+    updateOrderByOrderDetailEmpty(order._id)
+#-------------------------------------------------------------------------------->
+
+reUpdateOrderDetail = (newOrderDetail, oldOrderDetail) ->
+  option={}
+  option.quality      = oldOrderDetail.quality + newOrderDetail.quality
+  option.totalPrice   = option.quality * oldOrderDetail.price
+  option.discountCash = Math.round(option.totalPrice * oldOrderDetail.discountPercent/100)
+  option.finalPrice   = option.totalPrice - option.discountCash
+
+  Schema.orderDetails.update oldOrderDetail._id, $set: option , (error, result) -> console.log error if error
+
+checkingValueNewOrderDetail = (order)->
+    unless product = Schema.products.findOne(order.currentProduct)
+      console.log 'Chưa chọn sản phẩm'
+      return false
+    else if order.currentQuality == 0
+      console.log 'Số lượng phải lớn hơn 0'
+      return false
+    else if order.currentPrice == 0
+      console.log 'Giá sản phẩm phải lớn hơn 0'
+      return false
+    else if order.currentPrice < product.price
+      console.log 'Giá sản phẩm phải lớn hơn giá nhập'
+      return false
+    else
+      return true
+
+addOrderDetail= (orderDetail, orderDetails)->
+  findOrderDetailOld =_.findWhere(orderDetails,
+    {
+      product         : orderDetail.product
+      price           : orderDetail.price
+      discountPercent : orderDetail.discountPercent
+    })
+  if findOrderDetailOld
+    reUpdateOrderDetail(orderDetail, findOrderDetailOld)
+  else
+    Schema.orderDetails.insert orderDetail, (error, result) -> console.log error if error
+
+addOrderDetailAndCalculateOrder = (order)->
+  orderDetails = Schema.orderDetails.find({order: order._id}).fetch()
+  orderDetail = OrderDetail.newByOrder(order)
+
+  addOrderDetail(orderDetail, orderDetails)
+  reCalculateOrder(order)
+
+checkingAndAddOrderDetail = (event, template)->
+  currentOrder = Order.findOne(Sky.global.currentOrder.id)
+  if checkingValueNewOrderDetail(currentOrder.data)
+    addOrderDetailAndCalculateOrder(currentOrder.data)
+#--------------Event Click Finish-------------------------------------------->
+subtractQualityOnSales = (stockingItems, sellingItem , currentSale) ->
+  transactionQuality = 0
+  for productDetail in stockingItems
+    requiredQuality = sellingItem.quality - transactionQuality
+    if productDetail.availableQuality > requiredQuality
+      takenQuality = requiredQuality
+    else
+      takenQuality = productDetail.availableQuality
+
+    SaleDetail.createSaleDetailByOrder(currentSale, sellingItem, productDetail, takenQuality)
+    Schema.productDetails.update productDetail._id, $inc:{availableQuality: -takenQuality}
+    Schema.products.update productDetail.product  , $inc:{availableQuality: -takenQuality}
+
+    transactionQuality += takenQuality
+    if transactionQuality == sellingItem.quality then break
+  return transactionQuality == sellingItem.quality
+
+checkProductInStockQuality = (order, orderDetails)-> #----ok------->
+  product_ids = _.union(_.pluck(orderDetails, 'product'))
+  products = Schema.products.find({_id: {$in: product_ids}}).fetch()
+
+  orderDetails = _.chain(orderDetails)
+  .groupBy("product")
+  .map (group, key) ->
+    return {
+    product: key
+    quality: _.reduce(group, ((res, current) -> res + current.quality), 0)
+    }
+  .value()
+  try
+    for currentDetail in orderDetails
+      currentProduct = _.findWhere(products, {_id: currentDetail.product})
+      if currentProduct.availableQuality < currentDetail.quality
+        throw {message: "lỗi", item: currentDetail}
+
+    return {}
+  catch e
+    return {error: e}
+
+createSaleAndSaleOrder = (order, orderDetails)->
+  unless currentSale = Sale.findOne(Sale.insertByOrder(order)) then return null
+  for currentOrderDetail in orderDetails
+    productDetails = Schema.productDetails.find({product: currentOrderDetail.product}).fetch()
+    subtractQualityOnSales(productDetails, currentOrderDetail, currentSale.data)
+
+  option = {status: true}
+  if currentSale.data.paymentsDelivery == 1
+    option.delivery = Delivery.insertBySale(order, currentSale.data)
+  Schema.sales.update currentSale.id, $set: option, (error, result) ->
+    if error then console.log error
+  currentSale.id
+
+removeOrderAndOrderDetailAfterCreateSale = (orderId)->
+  userProfile = Schema.userProfiles.findOne({user: Meteor.userId()})
+  allTabs = Schema.orders.find(
+    {
+      creator   : userProfile.user
+      merchant  : userProfile.currentMerchant
+      warehouse : userProfile.currentWarehouse
+    }).fetch()
+  currentSource = _.findWhere(allTabs, {_id: userProfile.currentOrder})
+  currentIndex = allTabs.indexOf(currentSource)
+  currentLength = allTabs.length
+  console.log currentIndex
+  if currentLength > 1
+    if currentLength is currentIndex+1
+      UserProfile.update {currentOrder: allTabs[currentIndex-1]._id}
+    else
+      console.log allTabs[currentIndex+1]
+      UserProfile.update {currentOrder: allTabs[currentIndex+1]._id}
+    Order.removeAllOrderDetail(orderId)
+  else
+    Order.createOrderAndSelect()
+    Order.removeAllOrderDetail(orderId)
+
+
+calculateAndFinishOrder = (order, orderDetails)->
+  result = checkProductInStockQuality(order, orderDetails)
+  if result.error then console.log result.error
+
+  saleId = createSaleAndSaleOrder(order, orderDetails)
+
+  removeOrderAndOrderDetailAfterCreateSale(order._id)
+  Notification.newSaleDefault(saleId)
+
+checkingPaymentsDelivery = (event, template)->
+  if Sky.global.currentOrder.data.paymentsDelivery is 1
+    expire = template.ui.$deliveryDate.data('datepicker').dates[0]
+    Sky.global.currentOrder.updateDeliveryDate(expire)
+
+checkingPaymentsDeliveryAndFinishOrder = (event, template) ->
+  currentOrder        = Order.findOne(Sky.global.currentOrder.id).data
+  currentOrderDetails = OrderDetail.find({order: Sky.global.currentOrder.id}).data.fetch()
+
+  checkingPaymentsDelivery(event, template)
+  calculateAndFinishOrder(currentOrder, currentOrderDetails)
+
+#--------------runInitTracker-------------------------------------------->
 runInitTracker = (context) ->
   return if Sky.global.saleTracker
   Sky.global.saleTracker = Tracker.autorun ->
@@ -64,9 +304,11 @@ runInitTracker = (context) ->
       if orderHistory.length > 0
         order = _.findWhere(orderHistory, {_id: Session.get('currentProfile').currentOrder})
         if order
-          Session.set 'currentOrder', order
+          Sky.global.currentOrder = Order.findOne(order._id)
+          Session.set 'currentOrder', Sky.global.currentOrder.data
         else
-          Session.set 'currentOrder', orderHistory[0]
+          Sky.global.currentOrder = Order.findOne(orderHistory[0]._id)
+          Session.set 'currentOrder', Sky.global.currentOrder.data
       else
 #        Order.createOrderAndSelect()
 
@@ -105,34 +347,14 @@ runInitTracker = (context) ->
 
 Sky.appTemplate.extends Template.sales,
   order: -> Session.get('currentOrder')
-  formatNumber: (number) -> accounting.formatNumber(number)
-  currentFinalPrice: -> (Session.get('currentOrder')?.currentPrice * Session.get('currentOrder')?.currentQuality) - Session.get('currentOrder')?.currentDiscountCash
-  delivery: ->
-    if Session.get('currentOrder')?.paymentsDelivery == 1
-      return {
-        contactName:     Session.get('currentOrder').contactName
-        contactPhone:    Session.get('currentOrder').contactPhone
-        deliveryAddress: Session.get('currentOrder').deliveryAddress
-        deliveryDate:    Session.get('currentOrder').deliveryDate
-        comment:         Session.get('currentOrder').comment
-        }
-    else
-      return {}
-
-  currentOrderPercentDiscount: ->
-    if Session.get('currentOrder')?.discountCash == 0
-      return 0
-    else
-      return Math.round(Session.get('currentOrder')?.discountCash/Session.get('currentOrder')?.totalPrice*100)
-
-  currentDebit: ->
-    return 0 if Session.get('currentOrder')?.paymentMethod == 1
-    if Session.get('currentOrder')?.paymentMethod == 0
-      return Session.get('currentOrder')?.currentDeposit - Session.get('currentOrder')?.finalPrice
-
   allowAllOrderDetail: -> unless Session.get('allowAllOrderDetail') then 'disabled'
   allowSuccessOrder: -> unless Session.get('allowSuccessOrder') then 'disabled'
+  formatNumber: (number) -> accounting.formatNumber(number)
 
+  currentFinalPrice: -> calculateCurrentFinalPrice(Session.get('currentOrder')) if Session.get('currentOrder')
+  delivery: -> loadDeliverDetail(Session.get('currentOrder')) if Session.get('currentOrder')
+  currentOrderPercentDiscount: -> calculateCurrentOrderPercentDiscount(Session.get('currentOrder')) if Session.get('currentOrder')
+  currentDebit: ->  calculateCurrentDebit(Session.get('currentOrder')) if Session.get('currentOrder')
 
   created: ->
     Session.setDefault('allowAllOrderDetail', false)
@@ -145,55 +367,15 @@ Sky.appTemplate.extends Template.sales,
       language: "vi"
 
   events:
-    'click .addOrderDetail': (event, template)-> Order.addOrderDetail(Session.get('currentOrder')._id)
-    'click .finish': (event, template)->
-      expire = template.ui.$deliveryDate.data('datepicker').dates[0]
-      if expire > (new Date)
-        expireDate = new Date(expire.getFullYear(), expire.getMonth(), expire.getDate())
-        option = $set: {deliveryDate: expireDate}
-      else
-        option = $unset: {deliveryDate: true}
-
-      Schema.orders.update Session.get('currentOrder')._id, option
-      console.log Order.finishOrder(Session.get('currentOrder')._id)
-
-    'blur .contactName': (event, template)->
-      if template.find(".contactName").value.length > 1
-        Schema.orders.update(Session.get('currentOrder')._id, {$set: {
-          contactName: template.find(".contactName").value
-        }})
-      else
-        template.find(".contactName").value = Session.get('currentOrder').contactName
-
-    'blur .contactPhone': (event, template)->
-      if template.find(".contactPhone").value.length > 1
-        Schema.orders.update(Session.get('currentOrder')._id, {$set: {
-          contactPhone: template.find(".contactPhone").value
-        }})
-      else
-        template.find(".contactPhone").value = Session.get('currentOrder').contactPhone
-
-
-    'blur .deliveryAddress': (event, template)->
-      if template.find(".deliveryAddress").value.length > 1
-        Schema.orders.update(Session.get('currentOrder')._id, {$set: {
-          deliveryAddress: template.find(".deliveryAddress").value
-        }})
-      else
-        template.find(".deliveryAddress").value = Session.get('currentOrder').deliveryAddress
-
-    'blur .comment': (event, template)->
-      if template.find(".comment").value.length > 1
-        Schema.orders.update(Session.get('currentOrder')._id, {$set: {
-          comment: template.find(".comment").value
-        }})
-      else
-        template.find(".comment").value = Session.get('currentOrder').comment
-
     "change [name='advancedMode']": (event, template) ->
       Sky.global.salesTemplateInstance.ui.extras.toggleExtra 'advanced', event.target.checked
 
-
+    'blur .contactName'     : (event, template)-> checkingContactNameAndReUpdateOrder(event, template)
+    'blur .contactPhone'    : (event, template)-> checkingContactPhoneAndReUpdateOrder(event, template)
+    'blur .deliveryAddress' : (event, template)-> checkingDeliveryAddressAndReUpdateOrder(event, template)
+    'blur .comment'         : (event, template)-> checkingCommentAndReUpdateOrder(event, template)
+    'click .addOrderDetail' : (event, template)-> checkingAndAddOrderDetail(event, template)
+    'click .finish'         : (event, template)-> checkingPaymentsDeliveryAndFinishOrder(event, template)
 
   tabOptions:
     source: 'orderHistory'
@@ -201,7 +383,7 @@ Sky.appTemplate.extends Template.sales,
     caption: 'tabDisplay'
     key: '_id'
     createAction: -> Order.createOrderAndSelect()
-    destroyAction: (instance) -> Order.removeAll(instance._id)
+    destroyAction: (instance) -> Order.removeAllOrderDetail(instance._id)
     navigateAction: (instance) -> UserProfile.update {currentOrder: instance._id}
 
   saleDetailOptions:
@@ -267,7 +449,13 @@ Sky.appTemplate.extends Template.sales,
     placeholder: 'CHỌN NGƯỜI MUA'
     changeAction: (e) ->
       if customer = Schema.customers.findOne(e.added._id)
-        option = newDeliver()
+        option =
+          contactName: null
+          contactPhone: null
+          deliveryAddress: null
+          deliveryDate: null
+          comment: null
+
         if Session.get('currentOrder')?.paymentsDelivery == 1
           option.contactName     = customer.name ? null
           option.contactPhone    = customer.phone ? null
@@ -302,8 +490,8 @@ Sky.appTemplate.extends Template.sales,
       results: Sky.system.paymentMethods
       text: 'id'
     initSelection: (element, callback) -> callback _.findWhere(Sky.system.paymentMethods, {_id: Session.get('currentOrder')?.paymentMethod})
-    formatSelection: formatpaymentMethodSearch
-    formatResult: formatpaymentMethodSearch
+    formatSelection: formatPaymentMethodSearch
+    formatResult: formatPaymentMethodSearch
     placeholder: 'CHỌN SẢN PTGD'
     minimumResultsForSearch: -1
     changeAction: (e) ->
@@ -327,8 +515,8 @@ Sky.appTemplate.extends Template.sales,
       results: Sky.system.paymentsDeliveries
       text: 'id'
     initSelection: (element, callback) -> callback _.findWhere(Sky.system.paymentsDeliveries, {_id: Session.get('currentOrder')?.paymentsDelivery})
-    formatSelection: formatpaymentMethodSearch
-    formatResult: formatpaymentMethodSearch
+    formatSelection: formatPaymentMethodSearch
+    formatResult: formatPaymentMethodSearch
     placeholder: 'CHỌN SẢN PTGD'
     minimumResultsForSearch: -1
     changeAction: (e) ->
@@ -353,8 +541,8 @@ Sky.appTemplate.extends Template.sales,
       results: Sky.system.billDiscounts
       text: 'id'
     initSelection: (element, callback) -> callback _.findWhere(Sky.system.billDiscounts, {_id: Session.get('currentOrder')?.billDiscount})
-    formatSelection: formatpaymentMethodSearch
-    formatResult: formatpaymentMethodSearch
+    formatSelection: formatPaymentMethodSearch
+    formatResult: formatPaymentMethodSearch
     placeholder: 'CHỌN SẢN PTGD'
     minimumResultsForSearch: -1
     changeAction: (e) ->
@@ -453,12 +641,13 @@ Sky.appTemplate.extends Template.sales,
         option = {}
         option.discountCash = val
         if val > 0
-          if val == Session.get('currentOrder').finalPrice
+          if val == Session.get('currentOrder').totalPrice
             option.discountPercent = 100
           else
-            option.discountPercent = val*100/Session.get('currentOrder').finalPrice
+            option.discountPercent = val*100/Session.get('currentOrder').totalPrice
         else
           option.discountPercent = 0
+        option.finalPrice = Session.get('currentOrder').totalPrice - option.discountCash
       Schema.orders.update(Session.get('currentOrder')._id, {$set: option}) if Session.get('currentOrder')
     reactiveValue: -> Session.get('currentOrder')?.discountCash ? 0
     reactiveMax: ->
@@ -482,11 +671,12 @@ Sky.appTemplate.extends Template.sales,
         option.discountPercent = val
         if val > 0
           if val == 100
-            option.discountCash = Session.get('currentOrder').finalPrice
+            option.discountCash = Session.get('currentOrder').totalPrice
           else
-            option.discountCash = Math.round(Session.get('currentOrder').finalPrice*option.discountPercent/100)
+            option.discountCash = Math.round(Session.get('currentOrder').totalPrice*option.discountPercent/100)
         else
           option.discountCash = 0
+        option.finalPrice = Session.get('currentOrder').totalPrice - option.discountCash
       Schema.orders.update(Session.get('currentOrder')._id, {$set: option}) if Session.get('currentOrder')
     reactiveValue: -> Math.round(Session.get('currentOrder')?.discountPercent*100)/100 ? 0
     reactiveMax: ->
@@ -499,7 +689,7 @@ Sky.appTemplate.extends Template.sales,
         0
       else
         Session.get('currentOrder')?.discountPercent ? 0
-    reactiveStep: -> 0.01
+    reactiveStep: -> 1
     others:
       forcestepdivisibility: 'none'
       decimals: 2

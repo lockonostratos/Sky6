@@ -7,6 +7,9 @@ NotificationMessages.placeChanged      = (creator, place) -> "#{userName} đã c
 NotificationMessages.managerReturnConfirm = (creator, value) -> "Có một đơn trả hàng #{value} cần duyệt" #Manager, Warehouse, Accounting
 NotificationMessages.saleHelper       = (creator, orderCode, value) -> "#{creator} đã bán dùm bạn một đơn hàng #{orderCode} có giá trị #{value}"
 
+NotificationMessages.productExpireDate   = (productName, date, place)    -> "Sản phẩm #{productName}, tại kho #{place} sắp hết hạn (còn #{date} ngày)."
+NotificationMessages.productAlertQuality = (productName, quality, place) -> "Sản phẩm #{productName}, tại kho #{place} sắp hết hàng (còn #{quality} sản phẩm)."
+
 NotificationMessages.sendAccountingByNewSale  = (creator, orderCode, place)    -> "Có một đơn hàng mới #{orderCode} của #{creator}, cần bạn xác nhận đã thu tiền"
 NotificationMessages.sendExporterBySaleExport = (creator, orderCode, place)    -> "Có một đơn hàng mới #{orderCode} của #{creator}, cần bạn xác nhận đã xuất kho"
 NotificationMessages.sendShipperByNewDelivery = (creator, orderCode, place)    -> "Có một đơn hàng mới #{orderCode} của #{creator}, tại #{place} đang chờ giao"

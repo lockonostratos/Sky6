@@ -33,7 +33,7 @@ Schema2.productDetails = new SimpleSchema
     type: Number
     optional: true
 
-  instockQuality:
+  inStockQuality:
     type: Number
     optional: true
 
